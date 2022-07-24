@@ -1,0 +1,20 @@
+{
+  "name": "midi-jar",
+  "version": "1.0.0",
+  "description": "A MIDI tool box for displaying chords and notes, routing devices, and more",
+  "main": "./dist/main/main.js",
+  "author": {
+    "name": "Rémi Jarasson",
+    "email": "contact+midijar@ljas.fr",
+    "url": "https://midi-jar.ljas.fr"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
+    "postinstall": "npm run electron-rebuild && npm run link-modules"
+  },
+  "dependencies": {
+    "midi": "^2.0.0"
+  },
+  "license": "MIT"
+}

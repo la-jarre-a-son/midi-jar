@@ -1,0 +1,98 @@
+@import 'variables.scss';
+
+.keyboard {
+  vertical-align: bottom;
+  width: 100%;
+  user-select: none;
+}
+
+.pianoKey {
+  stroke: #000;
+  stroke-opacity: 0.3;
+}
+
+.pianoInterval {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.pianoKeyName {
+  font-size: 14px;
+}
+
+.note.black {
+  color: $color-primary-normal;
+
+  .pianoKey {
+    fill: #000;
+  }
+
+  .pianoKeyName {
+    fill: #fff;
+    opacity: 0.4;
+  }
+
+  .pianoTonic {
+    fill: #fff;
+    opacity: 0;
+  }
+
+  .pianoInterval {
+    fill: #fff;
+    opacity: 0.6;
+  }
+}
+
+.note.white {
+  color: $color-primary-normal;
+
+  .pianoKey {
+    fill: #fff;
+  }
+
+  .pianoKeyName {
+    fill: #000;
+    opacity: 0.3;
+  }
+
+  .pianoTonic {
+    fill: #000;
+    opacity: 0;
+  }
+
+  .pianoInterval {
+    fill: #000;
+    opacity: 0.4;
+  }
+}
+
+.note {
+  &:global(.active) .pianoKey {
+    fill: currentColor !important;
+    stroke: #000;
+    stroke-opacity: 0.3;
+  }
+
+  &:global(.sustained) .pianoKey {
+    fill: #777 !important;
+  }
+
+  &:global(.active) .pianoKeyName {
+    fill: #fff !important;
+    opacity: 0.4;
+  }
+
+  &:global(.active) .pianoInterval {
+    fill: #fff !important;
+    opacity: 1;
+  }
+
+  &:global(.active) .pianoInterval,
+  &:global(.active) .pianoTonic {
+    fill: #fff !important;
+  }
+
+  &:global(.tonic) .pianoTonic {
+    opacity: 1;
+  }
+}

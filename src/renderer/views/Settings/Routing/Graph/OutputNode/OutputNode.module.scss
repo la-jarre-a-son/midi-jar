@@ -1,0 +1,103 @@
+@import 'variables';
+
+$Node-handle_size: 8px !default;
+$Node-handle_padding: 8px !default;
+$Node_boxShadow: none !default;
+
+.container {
+  @include hipsterBackground($color-neutral-dark);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 4px 4px 4px (4px + $Node-handle_size);
+  box-shadow: $Node_boxShadow;
+
+  &.isOpened.isPhysical {
+    @include hipsterBackground($color-success-dark);
+
+    .handle {
+      color: $color-success-light;
+
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
+  &.isInternal {
+    @include hipsterBackground($color-primary-dark);
+
+    .handle {
+      color: $color-primary-light;
+
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
+  &.isWebsocket {
+    @include hipsterBackground($color-warning-dark);
+
+    .handle {
+      color: $color-warning-light;
+
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+
+  &.isDisconnected {
+    opacity: 0.5;
+  }
+
+  .handle {
+    border: none;
+    background: none;
+    width: $Node-handle_padding;
+    height: 2 * $Node-handle_size + 2 * $Node-handle_padding;
+    left: 0;
+    color: $color-neutral-normal;
+    padding: $Node-handle_padding $Node-handle_padding $Node-handle_padding 0;
+
+    &::after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      left: 0;
+      top: $Node-handle_padding;
+      border-top: $Node-handle_size transparent solid;
+      border-left: $Node-handle_size currentColor solid;
+      border-bottom: $Node-handle_size transparent solid;
+      border-right: $Node-handle_size transparent solid;
+    }
+
+    &:hover {
+      color: $color-white;
+    }
+  }
+}
+
+.name {
+  font-size: 12px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.error {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: $color-white;
+  background: $color-danger-normal;
+  padding: 0 3px;
+  border-radius: 2px;
+}

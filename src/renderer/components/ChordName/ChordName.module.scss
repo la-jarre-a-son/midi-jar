@@ -1,0 +1,35 @@
+.base {
+  display: flex;
+  align-items: flex-end;
+  height: 1.5em;
+  line-height: 1.5em;
+  vertical-align: bottom;
+}
+
+.tonic {
+  font-weight: bold;
+}
+
+.name {
+  font-size: 0.8em;
+  line-height: 1.5em;
+}
+
+.quality {
+  margin: 0 0.1em;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.extension {
+  margin-left: 0.1em;
+  vertical-align: super;
+  font-style: italic;
+}
+
+.root {
+  line-height: 1.5em;
+  margin-left: 0.25em;
+  font-size: 0.6em;
+  opacity: 0.5;
+}

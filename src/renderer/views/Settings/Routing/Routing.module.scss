@@ -1,0 +1,32 @@
+@import 'variables';
+
+$View_SettingsRouting_padding: $View_padding !default;
+
+.base {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.latency {
+  padding: 0 $View_SettingsRouting_padding;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  flex-grow: 1;
+  padding: 0 $View_SettingsRouting_padding;
+}
+
+.header {
+  min-height: 42px;
+}
+
+:global {
+  .react-flow__attribution {
+    display: none;
+  }
+}

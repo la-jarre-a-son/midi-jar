@@ -1,0 +1,105 @@
+@import 'variables.scss';
+
+.keyboard {
+  vertical-align: bottom;
+  width: 100%;
+  user-select: none;
+}
+
+.pianoKeyBackground {
+  stroke: #000;
+  stroke-opacity: 0.3;
+}
+
+.pianoInterval {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.note.black {
+  color: $color-primary-normal;
+
+  .pianoKeyBackground {
+    fill: #000;
+  }
+
+  .pianoKey {
+    fill: url(#blackKey);
+  }
+
+  .pianoKeyName {
+    font-size: 10px;
+    fill: #fff;
+    opacity: 0.4;
+  }
+
+  .pianoTonic {
+    fill: #fff;
+    opacity: 0;
+  }
+
+  .pianoInterval {
+    fill: #fff;
+    opacity: 0.6;
+  }
+}
+
+.note.white {
+  color: $color-primary-normal;
+
+  .pianoKeyBackground {
+    fill: #fff;
+  }
+
+  .pianoKey {
+    fill: url(#whiteKey);
+  }
+
+  .pianoKeyName {
+    font-size: 14px;
+    fill: #000;
+    opacity: 0.4;
+  }
+
+  .pianoTonic {
+    fill: #000;
+    opacity: 0;
+  }
+
+  .pianoInterval {
+    fill: #000;
+    opacity: 0.4;
+  }
+}
+
+.note {
+  &:global(.active) .pianoKey {
+    fill: currentColor;
+    filter: url(#insetKey);
+    stroke: #000;
+    stroke-opacity: 0.3;
+  }
+
+  &:global(.sustained) .pianoKey {
+    fill: #777;
+    filter: url(#insetKey);
+  }
+
+  &:global(.active) .pianoKeyName {
+    fill: #fff !important;
+  }
+
+  &:global(.active) .pianoInterval {
+    fill: #fff !important;
+    opacity: 1;
+  }
+
+  &:global(.active) .pianoInterval,
+  &:global(.active) .pianoTonic {
+    fill: #fff !important;
+  }
+
+  &:global(.tonic) .pianoTonic {
+    opacity: 1;
+  }
+}

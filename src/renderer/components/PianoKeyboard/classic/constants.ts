@@ -1,0 +1,13 @@
+export const NOTE_RADIUS = 4;
+export const NOTE_WHITE_WIDTH = 40;
+export const NOTE_WHITE_HEIGHT = 150;
+export const NOTE_BLACK_WIDTH = 24;
+export const NOTE_BLACK_HEIGHT = 90;
+export const NOTE_BLACK_OFFSET = 5;
+export const NOTE_TONIC_RADIUS = 4;
+export const NOTE_WHITE_TONIC_BOTTOM_OFFSET = 24;
+export const NOTE_WHITE_NAME_BOTTOM_OFFSET = 2;
+export const NOTE_WHITE_INTERVAL_BOTTOM_OFFSET = 24;
+export const NOTE_BLACK_TONIC_BOTTOM_OFFSET = 24;
+export const NOTE_BLACK_NAME_BOTTOM_OFFSET = 5;
+export const NOTE_BLACK_INTERVAL_BOTTOM_OFFSET = 24;

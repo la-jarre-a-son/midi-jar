@@ -1,0 +1,24 @@
+@import 'variables';
+
+.base {
+  display: flex;
+  flex-direction: row;
+  border-radius: 4px;
+  border: solid 1px $color-neutral-normal;
+}
+
+.highest,
+.current {
+  padding: 0.5ch;
+  text-align: right;
+  appearance: none;
+  width: 8ch;
+  background: transparent;
+  color: $color-neutral-light;
+}
+
+.highest {
+  color: $color-warning-normal;
+  border: 0;
+  border-left: solid 1px $color-neutral-normal;
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>README.md</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<p><img src="assets/icon.png" alt="MIDI Jar logo"></p>
+<h1 id="midi-jar"><a href="https://github.com/la-jarre-a-son/midi-jar">MIDI Jar</a></h1>
+<p>MIDI Jar is a tool box for musicians, learners, streamers, that want to route MIDI message between devices, and display a piano or chords while playing, and integrate it on a video or on a Twitch stream.</p>
+<h2 id="releases">Releases</h2>
+<p>Check out the releases on Github: <a href="https://github.com/la-jarre-a-son/midi-jar/releases">Releases</a></p>
+<h3 id="unsigned-app">Unsigned App</h3>
+<p>Due to code sign certificates being a bit expensive, MIDI Jar is not signed (yet?).<br>If you are willing to help me sign this app, financially, don&#39;t hesitate to contact me.</p>
+<p>So to install it on <strong>Windows</strong>, Windows Defender may block it, and warn you that this could be dangerous. You can still execute it anyway.</p>
+<p>On <strong>MacOS</strong> though, the <em>.dmg</em> or any downloaded unsigned file will be blocked, as if &quot;app is damaged and can’t be opened&quot;.</p>
+<p>You will need to unquarantine the file after you downloaded, by executing in a terminal:</p>
+<pre><code>xattr -dr com.apple.quarantine &lt;Your Downloaded File Name&gt;
+</code></pre><h2 id="why-this-app-">Why this app ?</h2>
+<p>I needed a way to display a piano and chords when i was playing, but found no solution to do it properly.<br>So I created a previous tool called <a href="https://github.com/rednetio/chord-display">Chord Display</a> to do it in a Web browser, but due to Windows having exclusive MIDI (only one software can use the same MIDI device at a time), I needed a new solution.<br>Plus, OBS BrowserSource is unable to use MIDI devices, so integrating it in a Twitch stream was not possible.</p>
+<p>MIDI Jar fixes all theses issues as a Standalone Desktop Application made with Electron.</p>
+<h2 id="features">Features</h2>
+<p>MIDI Jar includes:</p>
+<ul>
+<li>MIDI routing between devices and internal modules</li>
+<li>A Chord Display module, to display a piano and chords being played</li>
+<li>A HTTP/Websocket server to include modules externally (in OBS Browser source for instance)</li>
+<li>Running at startup</li>
+<li>Running in background (no window, only Tray icon)</li>
+</ul>
+<h2 id="routing">Routing</h2>
+<p>You can route MIDI between devices, or to internal and external modules of MIDI Jar, and MIDI messages will be routed when the application is running.</p>
+<p>This can be a simple alternative to replace complex softwares like <strong>MIDI-OX</strong> if you <em>just</em> want to route messages from a device to another.</p>
+<h3 id="note-for-windows-users-">NOTE FOR WINDOWS USERS:</h3>
+<p>Windows Standard MIDI drivers are exclusive, only one software can be connected to a device at the same time.</p>
+<p><em>If you want to use MIDI Jar with other sofwares like your DAW, or a Standalone VST, you should install <a href="https://www.tobias-erichsen.de/software/loopmidi.html">loopMIDI</a> by Tobias Erichsen.</em></p>
+<p>You will be able to create multiple Virtual MIDI devices (loopbacks) and route MIDI messages to it. Plus, those virtual devices are non-exclusive, so multiple softwares can use them.</p>
+<p><img src="assets/midi-jar-routing.png" alt="MIDI Jar Routing Example"></p>
+<h3 id="latency">Latency</h3>
+<p>MIDI Jar may introduce latency to MIDI messages. I did my best to keep it as low as possible, in the Routing settings page you can see the latency that is introduced by your config: this is only the latency added to the existing latency, from when MIDI Jar receives a message, and forwarded it to other devices and modules.</p>
+<p>Any other latency (due to USB, your device drivers or LoopMidi loopback) is not taken into account.</p>
+<p>My tests had an <code>average additional latency &lt; 0.2ms</code> but this can vary a lot with PC configuration, routing, and CPU Usage, and some freezes could occur.</p>
+<h2 id="chord-display">Chord Display</h2>
+<p>Chord Display is a module of MIDI Jar for displaying a piano keyboard and the chords played.</p>
+<p>It uses the detect feature from <a href="https://github.com/tonaljs/tonal">tonal</a>.</p>
+<p>To use it, route your MIDI devices to the internal <code>chord-display</code> output.</p>
+<h3 id="customize-in-settings">Customize in Settings</h3>
+<p>Piano rendering is customizable in the Settings:</p>
+<ul>
+<li>Theme:<ul>
+<li><code>classic</code> - a classical looking piano</li>
+<li><code>flat</code> -a simplified version on a single row</li>
+</ul>
+</li>
+<li>Keyboard size: start &amp; end note</li>
+<li>Accidentals: display <code>flats</code> ♭ or <code>sharps</code> ♯</li>
+<li>Enabling infos:<ul>
+<li><code>chord</code> - the detected chord</li>
+<li><code>piano</code> - a keyboard displaying your played notes</li>
+<li><code>alternative chords</code> - a list of other detected chord names if any</li>
+<li><code>key names</code> - name of the notes on the piano</li>
+<li><code>chord degrees</code> - degrees of each note of the detecterd chord on the piano</li>
+<li><code>tonic</code> - a little dot on the chord tonic on the piano</li>
+</ul>
+</li>
+<li>Colors: blacks and whites, and pressed notes.</li>
+</ul>
+<h3 id="customize-via-css">Customize via CSS</h3>
+<p>OBS Browser Source let you inject any CSS in the page, so you can add any style to existing layout, like:</p>
+<p>Remove detected Chord:</p>
+<pre><code class="lang-css">#chord {
+  display: none;
+}
+</code></pre>
+<p>Remove Bass Note / Slash chord / Compound chord notation:</p>
+<pre><code class="lang-css">.chord-root {
+  display: none;
+}
+</code></pre>
+<p>Remove played Notes:</p>
+<pre><code class="lang-css">#notes {
+  display: none;
+}
+</code></pre>
+<p>Remove piano keyboard:</p>
+<pre><code class="lang-css">#keyboard {
+  display: none;
+}
+</code></pre>
+<p>Change display order:</p>
+<pre><code class="lang-css">#keyboard {
+  order: 1;
+}
+#chord {
+  order: 2;
+}
+#notes {
+  order: 3;
+}
+</code></pre>
+<p>Change Text Color:</p>
+<pre><code class="lang-css">body {
+  color: #fff;
+  background: transparent;
+}
+</code></pre>
+<p>Change chord size and placement:</p>
+<pre><code class="lang-css">#chordDisplay {
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 2vh;
+}
+
+#chord {
+  flex-grow: 0;
+  font-size: 10vh;
+}
+
+#notes,
+#alternativeChords {
+  display: none;
+}
+</code></pre>
+<h2 id="http-ws-server-overlay">HTTP/WS Server - Overlay</h2>
+<p>It enables integrating modules in an external web browser, or in an OBS Browser Source. For instance, you can integrate MIDI Jar in your Twitch stream, or load it on a different computer or phone for displaying chords while jamming, and even use it as a Desktop Wallpaper using <a href="https://rocksdanister.github.io/lively/">Lively Wallpaper</a>.</p>
+<p>Chord Display module has dedicated settings if you need a different rendering when using external access, and they are automatically synced when you change them.</p>
+<p>To use it, route your MIDI devices to the overlay <code>chord-display</code> output.</p>
+<h2 id="what-then-">What then ?</h2>
+<h3 id="build">Build</h3>
+<p>This project is built with Electron &amp; Webpack:</p>
+<pre><code>npm install
+
+npm run start
+ -or-
+npm run package
+</code></pre><h3 id="planned-features-ideas">Planned features / Ideas</h3>
+<ul>
+<li>[x] Simple Routing (v1)</li>
+<li>[x] Chord Display (v1)</li>
+<li>[x] HTTP/WS overlay for OBS (v1)</li>
+<li>[ ] Display Standard notation</li>
+<li>[ ] Chords Quiz</li>
+<li>[ ] Virtual Keyboard (use pc keyboard as a MIDI device)</li>
+<li>[ ] More Keyboard themes</li>
+<li>[ ] Visualizations / Vertical scrolling notes</li>
+<li>[ ] Soundboard</li>
+<li>[ ] MIDI recording (playback/backup)</li>
+<li>[ ] Chromesthesia</li>
+<li>[ ] Advanced Routing (split keyboard, filter, velocity/value remapping)</li>
+</ul>
+<h3 id="contribute-bugs">Contribute / Bugs</h3>
+<p>This project is fully open to contribution and it would be appreciated to have some feedbacks and new ideas.<br>Please feel free to open an issue or open a Merge request.</p>
+<p>For any UI or UX bug, please <a href="https://github.com/la-jarre-a-son/midi-jar/issues">Open an issue</a>.</p>
+<p>If you discover unexpected Chord detection, please see <a href="https://github.com/tonaljs/tonal/issues">tonaljs/tonal issues</a> and contribute to make it work perfectly.</p>
+<h3 id="credits">Credits</h3>
+<ul>
+<li><a href="https://github.com/tonaljs/tonal">tonal</a>: A functional music theory library for Javascript, that detects chords, and handles MIDI notes</li>
+<li><a href="https://github.com/justinlatimer/node-midi">node-midi</a>: A node.js wrapper for the RtMidi C++ library that provides realtime MIDI I/O.</li>
+<li><a href="https://github.com/wbkd/react-flow">React Flow</a>: Highly customizable library for building interactive node-based UIs, editors, flow charts and diagrams. It allows MIDI Jar to have understandable MIDI routing with nodes and draggable edges.</li>
+<li><a href="https://github.com/electron-react-boilerplate/electron-react-boilerplate">React Electron Boilerplate</a>: A Foundation for Scalable Cross-Platform Apps in Electron, the base boilerplate for MIDI Jar.</li>
+</ul>
+</body>
+</html>

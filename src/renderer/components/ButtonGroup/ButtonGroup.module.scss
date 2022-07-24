@@ -1,0 +1,33 @@
+@import 'variables';
+
+$Button_borderRadius: 0 !default;
+$Button_boxShadow: none !default;
+
+.base {
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-radius: $Button_borderRadius;
+  box-shadow: $Button_boxShadow;
+  overflow: hidden;
+
+  > * {
+    flex-grow: 1;
+    margin: 0;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+.base--fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.base--balanced {
+  > * {
+    flex-grow: 1;
+    flex-basis: 0px;
+  }
+}

@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+}
+
+body {
+  color: white;
+  background: #191919 url('assets/cassettes-tiled.png');
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body > * {
+  max-width: 640px;
+}
+
+h1 > a {
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+}
+
+p {
+  width: 100%;
+}
+
+img {
+  display: inherit;
+  margin: auto;
+  max-width: 100%;
+}
+
+pre {
+  width: 100%;
+  text-align: left;
+  background: black;
+  padding: 8px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+code {
+  background: black;
+  padding: 1px 3px;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+a {
+  color: #315bce;
+  font-weight: 700;
+}

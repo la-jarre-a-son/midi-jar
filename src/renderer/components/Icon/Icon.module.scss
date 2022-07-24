@@ -1,0 +1,51 @@
+@import 'variables';
+
+// Inherits button variables
+$Button_transition: 0.2s ease !default;
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.base {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  vertical-align: bottom;
+  vertical-align: -0.13em;
+
+  * {
+    fill: currentColor !important;
+    opacity: 1;
+    transition: fill $Button_transition,
+      opacity $Button_transition;
+  }
+
+  &--spin {
+    animation: spin 2s infinite linear;
+  }
+}
+
+.base--hover {
+  &:hover {
+    * {
+      opacity: 0.8 !important;
+    }
+  }
+
+  &:focus,
+  &:active {
+    svg * {
+      opacity: 0.5 !important;
+    }
+  }
+}

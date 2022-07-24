@@ -1,0 +1,39 @@
+@import 'variables';
+
+$View_GeneralSettings_padding: $View_padding !default;
+
+.base {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.state {
+  @include hipsterBackground($color-neutral-dark);
+  padding: $View_GeneralSettings_padding;
+  width: 100%;
+  font-weight: bold;
+
+  &.isError {
+    @include hipsterBackground($color-danger-normal);
+  }
+
+  &.isStarted {
+    @include hipsterBackground($color-success-normal);
+  }
+
+  a {
+    text-decoration: underline;
+    color: $color-white;
+  }
+}
+
+.container {
+  @include customScrollBar();
+  flex-grow: 1;
+  padding: $View_GeneralSettings_padding;
+  overflow-y: auto;
+  width: 100%;
+}

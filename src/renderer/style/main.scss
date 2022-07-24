@@ -1,0 +1,68 @@
+@import 'variables.scss';
+@import 'fonts.scss';
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  user-select: none;
+}
+
+body {
+  color: $color-white;
+  background: $color-neutral-darker url('assets/cassettes-tiled.png');
+  font-size: $body_fontSize;
+  font-family: $body_fontFamily;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  appearance: none;
+  padding: 0;
+  margin: 0;
+}
+
+a,
+button {
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+a {
+  color: $color-primary-light;
+  &:hover {
+    color: $color-primary-normal;
+  }
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+table {
+  border-collapse: collapse;
+}

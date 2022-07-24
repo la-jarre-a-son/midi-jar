@@ -1,0 +1,28 @@
+@import 'variables';
+
+$FormField_padding: $View_padding 0 !default;
+$FormField-label_height: 42px !default;
+$FormField-label_padding: 13px 0 !default;
+$FormField-field_gap: 16px !default;
+
+.base {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: $FormField_padding;
+  width: 100%;
+}
+
+.label {
+  display: flex;
+  min-height: $FormField-label_height;
+  text-transform: uppercase;
+  align-items: center;
+  width: 30%;
+}
+
+.field {
+  margin-left: $FormField-field_gap;
+  flex-grow: 1;
+}

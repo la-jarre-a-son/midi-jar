@@ -1,0 +1,30 @@
+@import 'variables';
+
+.base {
+  input {
+    font-family: monospace;
+  }
+}
+
+.color {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-right: 4px;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    margin: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: 2px solid $color-neutral-light;
+    border-radius: 50%;
+  }
+
+  &:focus::-webkit-color-swatch,
+  &:active::-webkit-color-swatch {
+    border: 2px solid $color-primary-light;
+    border-radius: 50%;
+  }
+}

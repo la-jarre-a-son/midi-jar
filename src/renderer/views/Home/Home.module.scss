@@ -1,0 +1,42 @@
+@import 'variables';
+
+$View_Home_padding: $View_padding !default;
+$View_Debugger-output_padding: $spacing-md !default;
+
+.base {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: $View_Home_padding;
+  min-height: 100%;
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+}
+
+.logo {
+  width: min(160px, 30vh);
+}
+
+.title {
+  margin: 0;
+}
+
+.subtitle {
+  font-style: italic;
+}
+
+.description {
+  max-width: 640px;
+}
+
+.loopMidi {
+  font-style: italic;
+}
+
+.cta {
+  text-align: center;
+}

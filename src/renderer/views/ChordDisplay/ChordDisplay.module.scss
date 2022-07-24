@@ -1,0 +1,57 @@
+@import 'variables';
+
+$View_ChordDisplay_padding: $View_padding !default;
+$View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
+
+.base {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.chord {
+  display: flex;
+  font-size: 10vw;
+  overflow: visible;
+  flex-grow: 1;
+  flex-shrink: 1;
+  align-items: center;
+  justify-content: center;
+  text-shadow: $View_ChordDisplay_textShadow;
+}
+
+.alternativeChords {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  text-shadow: $View_ChordDisplay_textShadow;
+}
+
+.notes {
+  text-align: center;
+  padding: 16px;
+  font-size: 5vh;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  text-shadow: $View_ChordDisplay_textShadow;
+}
+
+.note {
+  margin: 0 0.25em;
+}
+
+.keyboard {
+  width: 100%;
+  flex-shrink: 0;
+  flex-grow: 0;
+}

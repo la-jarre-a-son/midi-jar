@@ -1,0 +1,73 @@
+$font_path: 'assets/fonts' !default;
+
+$body_fontSize: 16px;
+$body_fontFamily: 'Lato', sans-serif;
+
+$color-black: #0e0e0e;
+$color-white: #ffffff;
+
+$color-neutral-darker: #191919;
+$color-neutral-dark: #303030;
+$color-neutral-normal: #5c5c5c;
+$color-neutral-light: #cccccc;
+$color-neutral-lighter: #efefef;
+
+$color-primary-normal: #315bce;
+$color-primary-dark: darken($color-primary-normal, 15%); // #142452
+$color-primary-light: lighten($color-primary-normal, 15%); // #6f8cdd
+
+$color-secondary-normal: #d84547;
+$color-secondary-dark: darken($color-secondary-normal, 15%); // #6d1718
+$color-secondary-light: lighten($color-secondary-normal, 15%); // #e58486
+
+$color-danger-normal: #d84547;
+$color-danger-dark: darken($color-danger-normal, 15%);
+$color-danger-light: lighten($color-danger-normal, 15%);
+
+$color-warning-normal: #d89845;
+$color-warning-dark: darken($color-warning-normal, 15%);
+$color-warning-light: lighten($color-warning-normal, 15%);
+
+$color-success-normal: #19a86c;
+$color-success-dark: darken($color-success-normal, 15%);
+$color-success-light: lighten($color-success-normal, 15%);
+
+$global_borderRadius: 1px;
+
+$zindex-header: 400;
+$zindex-side: 100;
+$zindex-body: 200;
+$zindex-dropdown: 500;
+$zindex-modal: 1000;
+
+$transition_slow: 0.8s ease;
+$transition_medium: 0.3s ease;
+$transition_fast: 0.15s ease;
+
+$spacing-xs: 2px;
+$spacing-sm: 4px;
+$spacing-md: 8px;
+$spacing-lg: 12px;
+$spacing-xl: 24px;
+
+/*
+  Contextual
+*/
+$View_padding: $spacing-lg;
+
+$Node-handle_size: 8px;
+$Node-handle_padding: 8px;
+$Node_boxShadow: 0 4px 8px 0 rgba($color-black, 0.6);
+
+/*
+  BREAKPOINTS
+ */
+
+$breakpoint--small: 'only screen and (max-width : 720px)';
+
+$Button_fontFamily: $body_fontFamily;
+$Button_borderRadius: $global_borderRadius;
+$Button_boxShadow: 0 4px 32px -8px rgba($color-black, 0.6);
+
+@import './functions';
+@import './mixins';
