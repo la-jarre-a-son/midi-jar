@@ -2,7 +2,9 @@
 
 # [MIDI Jar](https://github.com/la-jarre-a-son/midi-jar)
 
-MIDI Jar is a tool box for musicians, learners, streamers, that want to route MIDI message between devices, and display a piano or chords while playing, and integrate it on a video or on a Twitch stream.
+MIDI Jar is a tool box for musicians, learners, streamers, that want to route MIDI message between devices, and display a piano or monitor chords while playing, and integrate it on a video or on a Twitch stream with OBS.
+
+![MIDI Jar Chord Display example](assets/midi-jar-chord-display.png)
 
 ## Releases
 
@@ -25,7 +27,7 @@ xattr -dr com.apple.quarantine <Your Downloaded File Name>
 
 ## Why this app ?
 
-I needed a way to display a piano and chords when i was playing, but found no solution to do it properly.
+I needed a way to display a piano and monitor chords when i was playing, but found no solution to do it properly.
 So I created a previous tool called [Chord Display](https://github.com/rednetio/chord-display) to do it in a Web browser, but due to Windows having exclusive MIDI (only one software can use the same MIDI device at a time), I needed a new solution.
 Plus, OBS BrowserSource is unable to use MIDI devices, so integrating it in a Twitch stream was not possible.
 
@@ -36,7 +38,7 @@ MIDI Jar fixes all theses issues as a Standalone Desktop Application made with E
 MIDI Jar includes:
 
 - MIDI routing between devices and internal modules
-- A Chord Display module, to display a piano and chords being played
+- A Chord Display module, to display a piano and monitor chords being played
 - A HTTP/Websocket server to include modules externally (in OBS Browser source for instance)
 - Running at startup
 - Running in background (no window, only Tray icon)
@@ -51,7 +53,7 @@ This can be a simple alternative to replace complex softwares like **MIDI-OX** i
 
 Windows Standard MIDI drivers are exclusive, only one software can be connected to a device at the same time.
 
-_If you want to use MIDI Jar with other sofwares like your DAW, or a Standalone VST, you should install [loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html) by Tobias Erichsen._
+**If you want to use MIDI Jar with other sofwares like your DAW, or a Standalone VST, you should install [loopMIDI](https://www.tobias-erichsen.de/software/loopmidi.html) by Tobias Erichsen.**
 
 You will be able to create multiple Virtual MIDI devices (loopbacks) and route MIDI messages to it. Plus, those virtual devices are non-exclusive, so multiple softwares can use them.
 
@@ -73,23 +75,40 @@ It uses the detect feature from [tonal](https://github.com/tonaljs/tonal).
 
 To use it, route your MIDI devices to the internal `chord-display` output.
 
+### Music Notation
+
+You can enable displaying the standard music notation in Chord Display.
+
+It is implemented with [VexFlow](https://github.com/0xfe/vexflow) and supports displaying notes in any major Key.
+
+NOTE: Key signature that would have more than 7 alterations will be changed automatically to the equivalent major key (e.g. `G#` will produce a key signature of `Ab`).
+
+**
+DISCLAIMER: As i am not really into reading and writing music, Chord Display notation could be wrong... If so, do not hesitate to post an issue.
+**
+
 ### Customize in Settings
 
-Piano rendering is customizable in the Settings:
+Chord Display rendering is customizable in the Settings:
 
-- Theme:
-  - `classic` - a classical looking piano
-  - `flat` -a simplified version on a single row
-- Keyboard size: start & end note
-- Accidentals: display `flats` ♭ or `sharps` ♯
-- Enabling infos:
+- Fundamentals:
+  - Key Signature
+  - Accidentals (when in C Key): displays `flats` ♭ or `sharps` ♯
+- Keyboard:
+  - Theme:
+    - `classic` - a classical looking piano
+    - `flat` - a simplified version on a single row
+  - Keyboard size: start & end note
+  - Colors: blacks and whites, and pressed notes.
+  - Enabling some infos on the piano:
+    - `key names` - name of the notes
+    - `chord degrees` - degrees of each note of the detecterd chord
+    - `tonic` - a little dot on the chord tonic
+- Enabling elements:
   - `chord` - the detected chord
+  - `notation` - the music notation of the played notes
   - `piano` - a keyboard displaying your played notes
   - `alternative chords` - a list of other detected chord names if any
-  - `key names` - name of the notes on the piano
-  - `chord degrees` - degrees of each note of the detecterd chord on the piano
-  - `tonic` - a little dot on the chord tonic on the piano
-- Colors: blacks and whites, and pressed notes.
 
 ### Customize via CSS
 
@@ -133,7 +152,7 @@ Change display order:
 #keyboard {
   order: 1;
 }
-#chord {
+#chordDisplayContainer {
   order: 2;
 }
 #notes {
@@ -154,10 +173,15 @@ Change chord size and placement:
 
 ```css
 #chordDisplay {
-  flex-direction: column-reverse;
   align-items: flex-end;
   justify-content: flex-end;
   padding: 2vh;
+  flex-direction: column-reverse;
+}
+
+#chordDisplayContainer {
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 #chord {
@@ -165,9 +189,21 @@ Change chord size and placement:
   font-size: 10vh;
 }
 
-#notes,
+#notes {
+  display: none;
+}
+
 #alternativeChords {
   display: none;
+}
+
+#notation {
+  color: black;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 32px;
+  margin-top: 16px;
 }
 ```
 
@@ -198,10 +234,10 @@ npm run package
 - [x] Simple Routing (v1)
 - [x] Chord Display (v1)
 - [x] HTTP/WS overlay for OBS (v1)
-- [ ] Display Standard notation
-- [ ] Chords Quiz
-- [ ] Virtual Keyboard (use pc keyboard as a MIDI device)
+- [x] Display Standard notation
 - [ ] More Keyboard themes
+- [ ] Virtual Keyboard (use pc keyboard as a MIDI device)
+- [ ] Chords Quiz
 - [ ] Visualizations / Vertical scrolling notes
 - [ ] Soundboard
 - [ ] MIDI recording (playback/backup)
@@ -220,6 +256,7 @@ If you discover unexpected Chord detection, please see [tonaljs/tonal issues](ht
 ### Credits
 
 - [tonal](https://github.com/tonaljs/tonal): A functional music theory library for Javascript, that detects chords, and handles MIDI notes
+- [VexFlow](https://github.com/0xfe/vexflow): A JavaScript library for rendering music notation and guitar tablature.
 - [node-midi](https://github.com/justinlatimer/node-midi): A node.js wrapper for the RtMidi C++ library that provides realtime MIDI I/O.
 - [React Flow](https://github.com/wbkd/react-flow): Highly customizable library for building interactive node-based UIs, editors, flow charts and diagrams. It allows MIDI Jar to have understandable MIDI routing with nodes and draggable edges.
 - [React Electron Boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate): A Foundation for Scalable Cross-Platform Apps in Electron, the base boilerplate for MIDI Jar.
