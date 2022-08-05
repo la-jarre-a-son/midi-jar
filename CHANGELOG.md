@@ -5,11 +5,13 @@
 - **Chord Display:** Added music notation with VexFlow
 - **Chord Display:** Added Key Signature with note names in key
 - **Settings:** Input for Notes + Midi Learn
+- **Debugger:** Filter Midi Clock
 
 ## Fixes
 
 - **Settings:** Fixed Input Color accepting any text
 - **Chord Display:** Fixed Keyboard size overflowing in some windows sizes
+- **Debugger:** Fixed message manager being disposed in useMidiMessages hook
 
 # 1.0.0 (2022-07-26)
 
