@@ -1,9 +1,8 @@
+import { formatSharpsFlats } from './note';
+
 export const CHORD_NAME_REGEX = /^(([A-G])(b|#)?)([^/]+)(\/([A-G](b|#)?))?$/;
 export const CHORD_TYPE_REGEX =
   /^([\d]{1,2}|(m|M|min|maj|mMaj)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
-
-const FLAT = '♭';
-const SHARP = '♯';
 
 const CHORD_PART_ALIASES = {
   M: [''],
@@ -34,9 +33,6 @@ const CHORD_PART_ALIASES = {
 const aliasChordPart = (part: string) => {
   return CHORD_PART_ALIASES[part as keyof typeof CHORD_PART_ALIASES] ?? [part];
 };
-
-export const formatSharpsFlats = (str: string) =>
-  str ? str.replace('b', FLAT).replace('#', SHARP) : str;
 
 export const tokenizeChord = (chordName: string): string[] => {
   const match = chordName.match(CHORD_NAME_REGEX);

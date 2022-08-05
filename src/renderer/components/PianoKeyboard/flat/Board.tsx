@@ -25,10 +25,11 @@ const Board: React.FC<Props> = ({
   displayTonic,
 }) => (
   <g className={styles.board} transform="translate(0,0)">
-    {notes.map(({ note, isBlack, offset }) => (
+    {notes.map(({ displayName, note, isBlack, offset }) => (
       <Note
         key={note.midi}
         name={note.name}
+        displayName={displayName}
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}

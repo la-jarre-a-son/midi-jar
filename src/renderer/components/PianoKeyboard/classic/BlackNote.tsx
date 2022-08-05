@@ -17,6 +17,7 @@ import styles from './classic.module.scss';
 
 type BlackNoteProps = {
   name: string;
+  displayName: string;
   chroma: number;
   midi: number;
   offset: number;
@@ -37,6 +38,7 @@ const getChromaNoteOffset = (chroma: number) => {
 
 const BlackNote: React.FC<BlackNoteProps> = ({
   name,
+  displayName,
   chroma,
   midi,
   color,
@@ -109,7 +111,7 @@ const BlackNote: React.FC<BlackNoteProps> = ({
           textAnchor="middle"
           style={{ fill: getContrastColor(color) }}
         >
-          {name}
+          {displayName}
         </text>
       )}
     </g>

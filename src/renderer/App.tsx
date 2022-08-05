@@ -72,7 +72,14 @@ export default function App() {
                         />
                         <Route
                           path=":namespace"
-                          element={<ChordDisplaySettings />}
+                          element={
+                            <MidiMessageManagerProvider
+                              namespace="chord-display"
+                              source="internal"
+                            >
+                              <ChordDisplaySettings />
+                            </MidiMessageManagerProvider>
+                          }
                         />
                       </Route>
                       <Route path="server" element={<ServerSettings />} />

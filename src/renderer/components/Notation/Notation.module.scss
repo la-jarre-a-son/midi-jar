@@ -1,0 +1,24 @@
+.base {
+  rect,
+  path {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+  }
+
+  text {
+    fill: currentColor !important;
+    font-family: inherit;
+  }
+
+  :global(.vf-stave),
+  :global(.vf-stavenote) {
+    > path {
+      opacity: 0.4;
+    }
+  }
+
+  svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

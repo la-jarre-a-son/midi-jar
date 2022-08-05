@@ -32,11 +32,30 @@ $View_SettingsChordDisplay_padding: $View_padding !default;
 }
 
 .group {
-  + .group {
+  &--disabled {
+    opacity: 0.5;
+  }
+}
+
+.groupTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 16px;
+
+  &::before,
+  &::after {
+    content: ' ';
+    display: block;
     border-top: 1px solid $color-neutral-normal;
+    flex-grow: 1;
   }
 
-  &--useInternal {
-    opacity: 0.5;
+  &::before {
+    margin-right: 8px;
+  }
+  &::after {
+    margin-left: 8px;
   }
 }

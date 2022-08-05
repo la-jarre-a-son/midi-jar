@@ -1,6 +1,7 @@
 @import 'variables';
 
 .base {
+  width: 110px;
   input {
     font-family: monospace;
   }
@@ -11,6 +12,7 @@
   height: 28px;
   padding: 0;
   margin-right: 4px;
+  flex-shrink: 0;
 
   &::-webkit-color-swatch-wrapper {
     padding: 0;

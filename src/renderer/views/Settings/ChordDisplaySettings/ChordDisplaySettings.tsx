@@ -10,8 +10,8 @@ import ButtonGroup from 'renderer/components/ButtonGroup';
 import Icon from 'renderer/components/Icon';
 import FormField from 'renderer/components/FormField';
 import Toggle from 'renderer/components/Toggle';
-import Input from 'renderer/components/Input';
 import InputColor from 'renderer/components/InputColor';
+import InputNote from 'renderer/components/InputNote';
 
 import { Settings } from 'main/types/Settings';
 import { fields } from './constants';
@@ -90,7 +90,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
       </Toolbar>
       <div className={cx('container')}>
         {namespace !== 'internal' && (
-          <div className={cx('group')}>
+          <section className={cx('group')}>
             <FormField
               fieldId="chord_display_settings:use-internal"
               label="Use same settings as Internal"
@@ -104,55 +104,30 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
                 successIcon="save"
               />
             </FormField>
-          </div>
+          </section>
         )}
-        <div
+
+        <section
           className={cx('group', {
-            'group--useInternal': useInternal,
+            'group--disabled': useInternal,
           })}
         >
-          <FormField
-            fieldId="chord_display_settings:skin"
-            label="Keyboard skin"
-          >
-            <Toggle
-              id="chord_display_settings:skin"
-              choices={fields.skin.choices}
-              onChange={(value) => updateNamespaceSettings('skin', value)}
-              value={namespaceSettings.skin}
-              successIcon="save"
-              disabled={useInternal}
-            />
-          </FormField>
+          <header className={cx('groupTitle')}>Fundamentals</header>
 
-          <FormField
-            fieldId="chord_display_settings:note-from"
-            label="Keyboard Start"
-          >
-            <Input
-              id="chord_display_settings:note-from"
-              onChange={(value) => updateNamespaceSettings('from', value)}
-              value={namespaceSettings.from ?? null}
+          <FormField fieldId="chord_display_settings:key" label="Key Signature">
+            <InputNote
+              id="chord_display_settings:key"
+              onChange={(value) => updateNamespaceSettings('key', value)}
+              value={namespaceSettings.key ?? null}
               type="text"
               disabled={useInternal}
-            />
-          </FormField>
-
-          <FormField
-            fieldId="chord_display_settings:note-to"
-            label="Keyboard End"
-          >
-            <Input
-              id="chord_display_settings:note-to"
-              onChange={(value) => updateNamespaceSettings('to', value)}
-              value={namespaceSettings.to ?? null}
-              disabled={useInternal}
+              learn
             />
           </FormField>
 
           <FormField
             fieldId="chord_display_settings:accidentals"
-            label="Accidentals"
+            label="Accidentals (in C)"
           >
             <Toggle
               id="chord_display_settings:accidentals"
@@ -162,39 +137,17 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               }
               value={namespaceSettings.accidentals ?? 'flat'}
               successIcon="save"
-              disabled={useInternal}
+              disabled={useInternal || namespaceSettings.key !== 'C'}
             />
           </FormField>
+        </section>
 
-          <FormField
-            fieldId="chord_display_settings:display-keyboard"
-            label="Display Keyboard"
-          >
-            <Toggle
-              id="chord_display_settings:display-keyboard"
-              onChange={(value) =>
-                updateNamespaceSettings('displayKeyboard', value)
-              }
-              value={namespaceSettings.displayKeyboard ?? true}
-              successIcon="save"
-              disabled={useInternal}
-            />
-          </FormField>
-
-          <FormField
-            fieldId="chord_display_settings:display-notes"
-            label="Display Notes"
-          >
-            <Toggle
-              id="chord_display_settings:display-notes"
-              onChange={(value) =>
-                updateNamespaceSettings('displayNotes', value)
-              }
-              value={namespaceSettings.displayNotes ?? true}
-              successIcon="save"
-              disabled={useInternal}
-            />
-          </FormField>
+        <section
+          className={cx('group', {
+            'group--disabled': useInternal,
+          })}
+        >
+          <header className={cx('groupTitle')}>Chords</header>
 
           <FormField
             fieldId="chord_display_settings:display-chord"
@@ -225,10 +178,127 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               disabled={useInternal}
             />
           </FormField>
+        </section>
+
+        <section
+          className={cx('group', {
+            'group--disabled': useInternal,
+          })}
+        >
+          <header className={cx('groupTitle')}>Notation</header>
+          <FormField
+            fieldId="chord_display_settings:display-notation"
+            label="Display Notation"
+          >
+            <Toggle
+              id="chord_display_settings:display-notation"
+              onChange={(value) =>
+                updateNamespaceSettings('displayNotation', value)
+              }
+              value={namespaceSettings.displayNotation ?? true}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:display-notes"
+            label="Display Notes"
+          >
+            <Toggle
+              id="chord_display_settings:display-notes"
+              onChange={(value) =>
+                updateNamespaceSettings('displayNotes', value)
+              }
+              value={namespaceSettings.displayNotes ?? true}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
+        </section>
+
+        <section
+          className={cx('group', {
+            'group--disabled': useInternal,
+          })}
+        >
+          <header className={cx('groupTitle')}>Keyboard</header>
+
+          <FormField
+            fieldId="chord_display_settings:display-keyboard"
+            label="Display Keyboard"
+          >
+            <Toggle
+              id="chord_display_settings:display-keyboard"
+              onChange={(value) =>
+                updateNamespaceSettings('displayKeyboard', value)
+              }
+              value={namespaceSettings.displayKeyboard ?? true}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:skin"
+            label="Keyboard skin"
+          >
+            <Toggle
+              id="chord_display_settings:skin"
+              choices={fields.skin.choices}
+              onChange={(value) => updateNamespaceSettings('skin', value)}
+              value={namespaceSettings.skin}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:note-from"
+            label="Keyboard Start"
+          >
+            <InputNote
+              id="chord_display_settings:note-from"
+              onChange={(value) => updateNamespaceSettings('from', value)}
+              value={namespaceSettings.from ?? null}
+              disabled={useInternal}
+              withOctave
+              learn
+            />
+          </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:note-to"
+            label="Keyboard End"
+          >
+            <InputNote
+              id="chord_display_settings:note-to"
+              onChange={(value) => updateNamespaceSettings('to', value)}
+              value={namespaceSettings.to ?? null}
+              disabled={useInternal}
+              withOctave
+              learn
+            />
+          </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:display-key-name"
+            label="Display Key Names"
+          >
+            <Toggle
+              id="chord_display_settings:display-key-name"
+              onChange={(value) =>
+                updateNamespaceSettings('displayKeyNames', value)
+              }
+              value={namespaceSettings.displayKeyNames ?? true}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
 
           <FormField
             fieldId="chord_display_settings:display-tonic"
-            label="Display Tonic"
+            label="Display Tonic Dot"
           >
             <Toggle
               id="chord_display_settings:display-tonic"
@@ -251,21 +321,6 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
                 updateNamespaceSettings('displayDegrees', value)
               }
               value={namespaceSettings.displayDegrees ?? true}
-              successIcon="save"
-              disabled={useInternal}
-            />
-          </FormField>
-
-          <FormField
-            fieldId="chord_display_settings:display-key-name"
-            label="Display Key Names"
-          >
-            <Toggle
-              id="chord_display_settings:display-key-name"
-              onChange={(value) =>
-                updateNamespaceSettings('displayKeyNames', value)
-              }
-              value={namespaceSettings.displayKeyNames ?? true}
               successIcon="save"
               disabled={useInternal}
             />
@@ -312,7 +367,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               disabled={useInternal}
             />
           </FormField>
-        </div>
+        </section>
       </div>
       <Toolbar bottom>
         <Button onClick={() => resetSettings('chordDisplay')}>

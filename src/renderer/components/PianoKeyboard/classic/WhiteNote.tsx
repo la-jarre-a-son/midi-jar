@@ -16,6 +16,7 @@ import styles from './classic.module.scss';
 
 type WhiteNoteProps = {
   name: string;
+  displayName: string;
   chroma: number;
   midi: number;
   offset: number;
@@ -28,6 +29,7 @@ type WhiteNoteProps = {
 
 const WhiteNote: React.FC<WhiteNoteProps> = ({
   name,
+  displayName,
   chroma,
   midi,
   offset,
@@ -96,7 +98,7 @@ const WhiteNote: React.FC<WhiteNoteProps> = ({
         textAnchor="middle"
         style={{ fill: getContrastColor(color) }}
       >
-        {name}
+        {displayName}
       </text>
     )}
   </g>

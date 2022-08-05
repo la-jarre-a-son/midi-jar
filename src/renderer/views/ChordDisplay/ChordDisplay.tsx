@@ -7,9 +7,10 @@ import { defaults } from 'main/settings/schema';
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
 import ChordName from 'renderer/components/ChordName';
+import Notation from 'renderer/components/Notation';
 import PianoKeyboard from 'renderer/components/PianoKeyboard';
 
-import { formatSharpsFlats } from 'renderer/helpers/chords';
+import { formatSharpsFlats } from 'renderer/helpers/note';
 
 import styles from './ChordDisplay.module.scss';
 
@@ -49,6 +50,7 @@ const ChordDisplay: React.FC<Props> = ({
     skin,
     from,
     to,
+    key,
     accidentals,
     colorHighlight,
     colorNoteWhite,
@@ -56,14 +58,23 @@ const ChordDisplay: React.FC<Props> = ({
     displayKeyboard,
     displayNotes,
     displayChord,
+    displayNotation,
     displayAltChords,
     displayKeyNames,
     displayDegrees,
     displayTonic,
   } = namespaceSettings;
 
-  const { notes, sustainedMidiNotes, playedMidiNotes, chords } = useNotes({
+  const {
+    notes,
+    pitchClasses,
+    sustainedMidiNotes,
+    playedMidiNotes,
+    chords,
+    keySignature,
+  } = useNotes({
     accidentals,
+    key,
     midiChannel: 0,
   });
 
@@ -71,11 +82,6 @@ const ChordDisplay: React.FC<Props> = ({
 
   return (
     <div id="chordDisplay" className={cx('base', className)}>
-      {displayChord && (
-        <div id="chord" className={cx('chord')}>
-          <ChordName chord={chords[0]} />
-        </div>
-      )}
       {displayAltChords && (
         <div id="alternativeChords" className={cx('alternativeChords')}>
           {chords.map((chord, index) =>
@@ -83,9 +89,28 @@ const ChordDisplay: React.FC<Props> = ({
           )}
         </div>
       )}
+      <div id="chordDisplayContainer" className={cx('container')}>
+        {displayNotation && (
+          <Notation
+            id="notation"
+            className={cx('notation', { 'notation--withChord': displayChord })}
+            notes={notes}
+            keySignature={keySignature}
+          />
+        )}
+        {displayChord && (
+          <div
+            id="chord"
+            className={cx('chord', { 'chord--withNotation': displayNotation })}
+          >
+            <ChordName chord={chords[0]} />
+          </div>
+        )}
+      </div>
+
       {displayNotes && (
         <div id="notes" className={cx('notes')}>
-          {notes.map((note, index) => (
+          {pitchClasses.map((note, index) => (
             <span key={index} className={cx('note')}>
               {formatSharpsFlats(note)}
             </span>
@@ -95,14 +120,17 @@ const ChordDisplay: React.FC<Props> = ({
       {displayKeyboard && (
         <PianoKeyboard
           id="keyboard"
-          className={cx('keyboard')}
+          className={cx('keyboard', {
+            'keyboard--withNotation': displayNotation,
+            'keyboard--withChord': displayChord,
+          })}
           skin={skin}
           sustained={sustainedMidiNotes}
           midi={playedMidiNotes}
           chord={chords[0] ?? undefined}
           from={from}
           to={to}
-          accidentals={accidentals}
+          keySignature={keySignature}
           colorHighlight={colorHighlight ?? undefined}
           colorNoteWhite={colorNoteWhite ?? undefined}
           colorNoteBlack={colorNoteBlack ?? undefined}
