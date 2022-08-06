@@ -73,7 +73,7 @@ const Home: React.FC<Props> = ({ className }) => (
         }
       </p>
       <div className={cx('cta')}>
-        <Button to="https://github.com/rednetio/chord-display/issues">
+        <Button to="https://github.com/la-jarre-a-son/midi-jar/issues">
           <Icon name="github" />
           Report Issues
         </Button>
