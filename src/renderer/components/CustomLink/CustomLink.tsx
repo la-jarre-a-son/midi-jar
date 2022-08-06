@@ -60,7 +60,11 @@ const CustomLink: React.FC<Props> = ({
   const to = propsTo || propsHref;
 
   const handleClick = useCallback(
-    (event) => {
+    (
+      event:
+        | React.MouseEvent<HTMLButtonElement>
+        | React.MouseEvent<HTMLAnchorElement>
+    ) => {
       if (disabled) {
         event.preventDefault();
       }

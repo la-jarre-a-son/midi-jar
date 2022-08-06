@@ -1,4 +1,6 @@
 import React, { useCallback } from 'react';
+
+import { MidiMessage } from 'main/types';
 import useMidiMessage from 'renderer/hooks/useMidiMessage';
 import { getMidiChannel, getMidiCommand, getMidiNote } from 'renderer/helpers';
 
@@ -18,7 +20,7 @@ const defaultProps = {
 
 const MidiLearn: React.FC<Props> = ({ type, midiChannel, onLearn }) => {
   const handleMessage = useCallback(
-    (message) => {
+    (message: MidiMessage) => {
       const cmd = getMidiCommand(message);
       const ch = getMidiChannel(message);
       const midi = getMidiNote(message);

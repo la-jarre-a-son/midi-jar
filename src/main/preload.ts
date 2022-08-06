@@ -33,7 +33,8 @@ export const AppApi = {
   setAlwaysOnTop: (flag: boolean) =>
     ipcRenderer.send('app:setAlwaysOnTop', flag),
   titleBarDoubleClick: () => ipcRenderer.send('app:titleBarDoubleClick'),
-  on: (appEvent: AppEvent, callback: (...args: unknown[]) => void) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on: (appEvent: AppEvent, callback: (...args: any[]) => void) =>
     registerListener(`app:${appEvent}`)(callback),
   settings: {
     clear: () => ipcRenderer.send('app:settings:clear'),

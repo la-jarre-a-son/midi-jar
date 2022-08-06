@@ -77,13 +77,6 @@ export type Props = {
    *
    * @since 1.4.0
    */
-  toggle?: boolean;
-
-  /**
-   * An external promise given for feedback.
-   *
-   * @since 1.4.0
-   */
   active?: boolean;
 };
 
@@ -100,7 +93,6 @@ const defaultProps = {
   pendingIcon: 'loading',
   hoverVariant: false,
   type: 'button' as ButtonTypes,
-  toggle: false,
   active: undefined,
   promise: null,
   to: undefined,
@@ -150,7 +142,7 @@ const Button: React.FC<Props> = ({
   }, [setStatus]);
 
   const handlePromiseSuccess = useCallback(
-    (resolvedPromise) => {
+    (resolvedPromise: Promise<unknown>) => {
       if (currentPromise?.current === resolvedPromise) {
         setStatus('success');
         startTimeout();
@@ -160,7 +152,7 @@ const Button: React.FC<Props> = ({
   );
 
   const handlePromiseError = useCallback(
-    (resolvedPromise) => {
+    (resolvedPromise: Promise<unknown>) => {
       if (currentPromise?.current === resolvedPromise) {
         setStatus('error');
         startTimeout();
@@ -234,15 +226,6 @@ const Button: React.FC<Props> = ({
       if (typeof child === 'string' && child) {
         return <span>{child}</span>;
       }
-      // if (child instanceof React.Component && child.constructor === Icon) {
-      //   return <span className={cx('icon')}>{child}</span>;
-      // }
-      // if (
-      //   child instanceof React.Component &&
-      //   child.constructor === NotificationsBadge
-      // ) {
-      //   return <span className={cx('badge')}>{child}</span>;
-      // }
 
       return child;
     });

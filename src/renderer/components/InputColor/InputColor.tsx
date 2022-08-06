@@ -32,7 +32,7 @@ const InputColor: React.FC<Props> = ({
   ...rest
 }) => {
   const handleKeyPress = useCallback(
-    (event) => {
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (!value && event.key === '#') return;
 
       if (
@@ -48,7 +48,7 @@ const InputColor: React.FC<Props> = ({
   );
 
   const handleColorChange = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: newValue } = event.target;
 
       onChange(newValue.toLowerCase());

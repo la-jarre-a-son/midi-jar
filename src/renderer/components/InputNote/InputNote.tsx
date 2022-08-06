@@ -47,7 +47,7 @@ const InputColor: React.FC<Props> = ({
   const learningPromise = useRef<Promise<void> | null>(null);
 
   const handleKeyPress = useCallback(
-    (event) => {
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
       const currentNote = Note.get(value?.toString() || '');
 
       if (currentNote.empty && NOTES.includes(event.key)) return;
@@ -82,7 +82,7 @@ const InputColor: React.FC<Props> = ({
   const toggleLearning = () => setLearning((v) => !v);
 
   const handleLearn = useCallback(
-    (midi) => {
+    (midi: number) => {
       const inputNote = Note.fromMidi(midi);
       const note = Note.get(inputNote);
       if (withOctave) {

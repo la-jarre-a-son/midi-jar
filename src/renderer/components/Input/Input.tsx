@@ -42,14 +42,14 @@ const Input: React.FC<Props> = ({
   const [focused, setFocused] = useState<boolean>(false);
 
   const handleKeyPress = useCallback(
-    (event) => {
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (onKeyPress) onKeyPress(event);
     },
     [onKeyPress]
   );
 
   const handleChange = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: newValue } = event.target;
 
       onChange(newValue);
