@@ -1,12 +1,13 @@
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { MidiMessage } from 'main/types';
 import MidiMessageManager, { MidiMessageEvent } from './MidiMessageManager';
 
 class WebsocketMidiMessages extends MidiMessageManager {
-  private ws: WebSocket;
+  private ws: ReconnectingWebSocket;
 
   constructor(namespace: string) {
     super(namespace);
-    this.ws = new window.WebSocket(
+    this.ws = new ReconnectingWebSocket(
       `ws://${window.location.host}/ws/${namespace}`
     );
     this.ws.binaryType = 'arraybuffer';

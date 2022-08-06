@@ -1,3 +1,4 @@
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Settings } from 'main/types/Settings';
 import SettingsManager, { SettingsEvent } from './SettingsManager';
 
@@ -12,12 +13,14 @@ function parseMessage(str: string) {
 }
 
 class WebsocketSettings extends SettingsManager {
-  private ws: WebSocket;
+  private ws: ReconnectingWebSocket;
 
   constructor() {
     super();
     this.isConnected = false;
-    this.ws = new window.WebSocket(`ws://${window.location.host}/ws/settings`);
+    this.ws = new ReconnectingWebSocket(
+      `ws://${window.location.host}/ws/settings`
+    );
 
     this.handleMessage.bind(this);
     this.handleOpen.bind(this);
