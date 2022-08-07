@@ -12,12 +12,10 @@ const cx = classnames.bind(styles);
 
 const FOREIGN_OBJECT_SIZE = 32;
 
-type Props = EdgeProps & {
-  data: {
-    wire: ApiMidiWire;
-    onDelete: (wire: ApiMidiWire) => void;
-  };
-};
+type Props = EdgeProps<{
+  wire: ApiMidiWire;
+  onDelete: (wire: ApiMidiWire) => void;
+}>;
 
 const CustomEdge: React.FC<Props> = ({
   id,

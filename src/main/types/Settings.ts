@@ -5,10 +5,12 @@ export type ChordDisplaySettings = {
   skin: 'classic' | 'flat';
   from: string;
   to: string;
+  key: string;
   accidentals: 'flat' | 'sharp';
   displayKeyboard: boolean;
   displayNotes: boolean;
   displayChord: boolean;
+  displayNotation: boolean;
   displayAltChords: boolean;
   displayTonic: boolean;
   displayDegrees: boolean;

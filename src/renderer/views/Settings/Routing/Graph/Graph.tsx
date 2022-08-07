@@ -89,7 +89,7 @@ const Routing: React.FC<Props> = ({
   const { setViewport, getViewport, project } = useReactFlow();
 
   const limitViewport = useCallback(
-    (currentNodes) => {
+    (currentNodes: Node[]) => {
       const viewport = getViewport();
       if (containerRef.current) {
         const nodeRect = getRectOfNodes(currentNodes);

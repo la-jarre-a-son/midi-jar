@@ -73,6 +73,22 @@ const Credits: React.FC<Props> = ({ className }) => {
             </td>
           </tr>
           <tr>
+            <td>VexFlow</td>
+            <td>
+              A JavaScript library for rendering music notation and guitar
+              tablature.
+            </td>
+            <td>
+              <a
+                href="https://github.com/0xfe/vexflow"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon name="github" /> Github
+              </a>
+            </td>
+          </tr>
+          <tr>
             <td>node-midi</td>
             <td>
               A node.js wrapper for the RtMidi C++ library that provides

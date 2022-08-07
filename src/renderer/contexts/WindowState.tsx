@@ -37,7 +37,7 @@ const WindowStateProvider: React.FC<Props> = ({ children }) => {
   }, [setIsMaximized]);
 
   const onAlwaysOnTop = useCallback(
-    (isAoT) => {
+    (isAoT: boolean) => {
       setIsAlwaysOnTop(isAoT);
     },
     [setIsAlwaysOnTop]
@@ -47,7 +47,7 @@ const WindowStateProvider: React.FC<Props> = ({ children }) => {
   const unmaximize = useCallback(() => window.app.unmaximize(), []);
   const minimize = useCallback(() => window.app.minimize(), []);
   const setAlwaysOnTop = useCallback(
-    (flag) => window.app.setAlwaysOnTop(flag),
+    (flag: boolean) => window.app.setAlwaysOnTop(flag),
     []
   );
   const close = useCallback(() => window.app.close(), []);

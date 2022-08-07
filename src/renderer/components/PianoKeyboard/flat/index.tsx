@@ -2,6 +2,12 @@ import React from 'react';
 import { Note } from '@tonaljs/tonal';
 
 import { range } from 'renderer/helpers';
+import {
+  formatSharpsFlats,
+  getKeySignature,
+  getNoteInKeySignature,
+  KeySignatureConfig,
+} from 'renderer/helpers/note';
 
 import { NOTE_WIDTH, NOTE_HEIGHT } from './constants';
 import { KeyboardNotes, NoteDef } from './types';
@@ -12,7 +18,7 @@ import styles from './flat.module.scss';
 type KeyboardProps = {
   from?: string;
   to?: string;
-  accidentals?: 'flat' | 'sharp';
+  keySignature?: KeySignatureConfig;
   colorHighlight?: string;
   colorNoteWhite?: string;
   colorNoteBlack?: string;
@@ -24,7 +30,7 @@ type KeyboardProps = {
 const defaultProps = {
   from: 'C2',
   to: 'C5',
-  accidentals: 'flat' as const,
+  keySignature: getKeySignature('C'),
   colorHighlight: '#315bce',
   colorNoteWhite: '#ffffff',
   colorNoteBlack: '#000000',
@@ -36,7 +42,7 @@ const defaultProps = {
 const Keyboard: React.FC<KeyboardProps> = ({
   from = defaultProps.from,
   to = defaultProps.to,
-  accidentals = defaultProps.accidentals,
+  keySignature = defaultProps.keySignature,
   colorNoteWhite,
   colorNoteBlack,
   colorHighlight,
@@ -54,12 +60,14 @@ const Keyboard: React.FC<KeyboardProps> = ({
   const end = Math.max(noteStart, noteEnd);
   const keyboard = range(start, end).reduce<KeyboardNotes>(
     (kb: KeyboardNotes, midi: number) => {
-      const note =
-        accidentals === 'sharp'
-          ? Note.fromMidiSharps(midi)
-          : Note.fromMidi(midi);
+      const note = Note.fromMidi(midi);
+      const displayName = formatSharpsFlats(
+        getNoteInKeySignature(note, keySignature.notes)
+      );
+
       const noteDef = Note.get(note);
       const def: NoteDef = {
+        displayName,
         note: noteDef,
         offset: kb.width,
         isBlack: !!noteDef.alt,

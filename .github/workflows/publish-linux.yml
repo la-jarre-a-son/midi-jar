@@ -1,0 +1,42 @@
+name: Publish Linux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    if: ${{ github.repository_owner == 'la-jarre-a-son' }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Install libasound2-dev
+        run: sudo apt-get install -y libasound2-dev
+
+      - name: Checkout git repo
+        uses: actions/checkout@v2
+
+      - name: Install Node and NPM
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Publish releases
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run postinstall
+          npm run build
+          npm exec electron-builder -- --publish always --linux

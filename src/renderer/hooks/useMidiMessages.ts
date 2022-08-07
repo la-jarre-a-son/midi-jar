@@ -28,7 +28,6 @@ export default function useMidiMessages(
 
       return () => {
         manager.removeEventListener('message', listener);
-        manager.dispose();
       };
     }
     return () => null;

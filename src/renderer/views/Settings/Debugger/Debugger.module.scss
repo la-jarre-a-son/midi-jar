@@ -32,3 +32,7 @@ $View_SettingsDebugger-output_padding: $spacing-md !default;
   background: $View_SettingsDebugger-output_background;
   margin: 0;
 }
+
+.header {
+  justify-content: flex-end;
+}

@@ -15,6 +15,7 @@ import styles from './flat.module.scss';
 
 type NoteProps = {
   name: string;
+  displayName: string;
   chroma: number;
   midi: number;
   offset: number;
@@ -28,6 +29,7 @@ type NoteProps = {
 
 const WhiteNote: React.FC<NoteProps> = ({
   name,
+  displayName,
   chroma,
   midi,
   offset,
@@ -84,7 +86,7 @@ const WhiteNote: React.FC<NoteProps> = ({
         textAnchor="middle"
         style={{ fill: getContrastColor(color) }}
       >
-        {name}
+        {displayName}
       </text>
     )}
   </g>

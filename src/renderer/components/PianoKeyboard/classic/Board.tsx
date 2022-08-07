@@ -26,10 +26,11 @@ const Board: React.FC<Props> = ({
   displayTonic,
 }) => (
   <g className={styles.board} transform="translate(0,0)">
-    {keyboard.whites.map(({ note, offset }) => (
+    {keyboard.whites.map(({ displayName, note, offset }) => (
       <WhiteNote
         key={note.midi}
         name={note.name}
+        displayName={displayName}
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}
@@ -40,10 +41,11 @@ const Board: React.FC<Props> = ({
         displayTonic={displayTonic}
       />
     ))}
-    {keyboard.blacks.map(({ note, offset }) => (
+    {keyboard.blacks.map(({ displayName, note, offset }) => (
       <BlackNote
         key={note.midi}
         name={note.name}
+        displayName={displayName}
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}

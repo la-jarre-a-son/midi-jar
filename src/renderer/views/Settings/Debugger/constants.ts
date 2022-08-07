@@ -1,3 +1,6 @@
+export const MIDI_CLOCK_CMD = 0xf8;
+export const MIDI_SYSEX_CMD = 0xf0;
+
 export const MIDI_CMD = {
   0x80: 'Note Off',
   0x90: 'Note On',

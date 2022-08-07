@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { chroma as getChroma } from '@tonaljs/note';
 import { Chord } from '@tonaljs/chord';
 
+import { getKeySignature, KeySignatureConfig } from 'renderer/helpers/note';
 import {
   fadeNotes,
   highlightNotes,
@@ -18,7 +19,7 @@ type Props = {
   skin?: 'classic' | 'flat';
   from?: string;
   to?: string;
-  accidentals?: 'flat' | 'sharp';
+  keySignature?: KeySignatureConfig;
   colorNoteWhite?: string;
   colorNoteBlack?: string;
   colorHighlight?: string;
@@ -36,7 +37,7 @@ const defaultProps = {
   skin: 'classic' as Props['skin'],
   from: 'C2',
   to: 'C7',
-  accidentals: 'flat' as const,
+  keySignature: getKeySignature('C'),
   colorHighlight: '#315bce',
   colorNoteWhite: '#ffffff',
   colorNoteBlack: '#000000',
@@ -54,7 +55,7 @@ const PianoKeyboard: React.FC<Props> = ({
   skin,
   from,
   to,
-  accidentals,
+  keySignature,
   colorNoteWhite,
   colorNoteBlack,
   colorHighlight,
@@ -103,7 +104,7 @@ const PianoKeyboard: React.FC<Props> = ({
         <ClassicPiano
           from={from}
           to={to}
-          accidentals={accidentals}
+          keySignature={keySignature}
           colorHighlight={colorHighlight}
           colorNoteWhite={colorNoteWhite}
           colorNoteBlack={colorNoteBlack}
@@ -116,7 +117,7 @@ const PianoKeyboard: React.FC<Props> = ({
         <FlatPiano
           from={from}
           to={to}
-          accidentals={accidentals}
+          keySignature={keySignature}
           colorHighlight={colorHighlight}
           colorNoteWhite={colorNoteWhite}
           colorNoteBlack={colorNoteBlack}

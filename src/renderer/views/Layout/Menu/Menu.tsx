@@ -78,7 +78,7 @@ const Menu: React.FC<Props> = ({ className }: Props) => {
       >
         <Icon name="power" />
       </Button>
-      {!window.os?.isMac && (
+      {window.os?.isWindows && (
         <TrafficLightButtons className={cx('trafficLights')} />
       )}
     </ButtonGroup>

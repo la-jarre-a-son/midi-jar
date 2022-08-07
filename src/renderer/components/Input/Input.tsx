@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { ReactEventHandler, useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './Input.module.scss';
@@ -13,6 +13,7 @@ type Props = InputProps & {
   id: string;
   value: string | number | null;
   onChange: (value: string) => unknown;
+  onKeyPress?: ReactEventHandler<HTMLInputElement>;
   block?: boolean;
   disabled?: boolean;
 };
@@ -23,6 +24,7 @@ const defaultProps = {
   right: undefined,
   block: false,
   disabled: false,
+  onKeyPress: undefined,
 };
 
 const Input: React.FC<Props> = ({
@@ -32,14 +34,22 @@ const Input: React.FC<Props> = ({
   right,
   value,
   onChange,
+  onKeyPress,
   block,
   disabled,
   ...rest
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
 
+  const handleKeyPress = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (onKeyPress) onKeyPress(event);
+    },
+    [onKeyPress]
+  );
+
   const handleChange = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: newValue } = event.target;
 
       onChange(newValue);
@@ -73,10 +83,12 @@ const Input: React.FC<Props> = ({
         className={cx('input')}
         id={id}
         value={value ?? ''}
+        onKeyPress={handleKeyPress}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         disabled={disabled}
+        spellCheck="false"
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       />
