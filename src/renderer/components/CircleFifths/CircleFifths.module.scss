@@ -1,0 +1,149 @@
+@import 'variables';
+
+.root {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.circle-of-fifths {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25%;
+  height: 25%;
+  margin-top: -12.5%;
+  margin-left: -12.5%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+// Circle of Fifths classes
+
+.wheel {
+  fill: $color-neutral-dark;
+  transition: transform 0.7s ease;
+}
+
+.name {
+  fill: rgba($color-white, 0.5);
+  transition: transform 0.7s ease;
+}
+
+.badge {
+  fill: rgba(0, 0, 0, 0.3);
+  transition: fill 300ms ease;
+}
+
+.alteration {
+  > path {
+    fill: none;
+    stroke: none;
+  }
+
+  > text {
+    fill: rgba($color-white, 0.5);
+  }
+
+  &--active {
+    > .alteration--selected {
+      fill: $color-white;
+    }
+  }
+}
+
+.sector {
+  transition: fill 300ms ease;
+  stroke: $color-neutral-darker;
+}
+
+.root--interactive {
+  .key {
+    cursor: pointer;
+
+    &:hover,
+    &.key--isInScale:hover {
+      .sector {
+        fill: $color-primary-light;
+      }
+    }
+  }
+}
+
+.key.key--isInScale {
+  .sector {
+    fill: $color-primary-dark;
+  }
+}
+
+.key.key--active {
+  pointer-events: none;
+  .name {
+    fill: $color-white;
+  }
+}
+
+.key.key--multiple {
+  pointer-events: all;
+
+  &.key--active {
+    .name {
+      fill: rgba($color-white, 0.5);
+
+      &--selected {
+        fill: $color-white;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.key--major {
+  .sector {
+    fill: $color-neutral-light;
+  }
+
+  &.key--active {
+    .sector {
+      fill: $color-primary-normal;
+    }
+  }
+}
+
+.key--minor {
+  .sector {
+    fill: $color-neutral-normal;
+  }
+
+  &.key--active {
+    .sector {
+      fill: $color-primary-normal;
+    }
+  }
+}
+
+.key--diminished {
+  .sector {
+    fill: $color-neutral-dark;
+  }
+
+  &.key--active {
+    .sector {
+      fill: $color-primary-normal;
+    }
+  }
+}
+
+.key.key--isPressed {
+  .sector {
+    fill: $color-success-normal;
+  }
+}

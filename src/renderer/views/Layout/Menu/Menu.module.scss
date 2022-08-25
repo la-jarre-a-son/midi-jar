@@ -7,11 +7,13 @@ $Menu_background: lighten($color-neutral-darker, 5%) !default;
 
   > * {
     order: 1;
-    flex-basis: 0;
+    flex-basis: content;
+    flex-grow: 0;
   }
 
   .icon {
     flex-grow: 0;
+    flex-shrink: 0;
     padding: 0;
   }
 }
@@ -22,7 +24,7 @@ $Menu_background: lighten($color-neutral-darker, 5%) !default;
   flex-direction: row;
   align-items: center;
   padding: 0 16px;
-  flex-grow: 2;
+  flex-grow: 1;
 }
 
 .base--isMac {

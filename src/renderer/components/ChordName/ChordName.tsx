@@ -11,14 +11,16 @@ const cx = classnames.bind(styles);
 type Props = {
   className?: string;
   chord?: Chord | null;
+  hideRoot?: boolean;
 };
 
 const defaultProps = {
   className: undefined,
   chord: null,
+  hideRoot: false,
 };
 
-const ChordName: React.FC<Props> = ({ className, chord }) => {
+const ChordName: React.FC<Props> = ({ className, chord, hideRoot }) => {
   if (!chord) return null;
   const { symbol } = chord;
   const [tonic, type, root] = tokenizeChord(symbol);
@@ -36,7 +38,9 @@ const ChordName: React.FC<Props> = ({ className, chord }) => {
           </span>
         ))}
       </span>
-      {root && <span className={cx('root', 'chord-root')}>/{root}</span>}
+      {!hideRoot && root && (
+        <span className={cx('root', 'chord-root')}>/{root}</span>
+      )}
     </div>
   );
 };

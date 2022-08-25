@@ -31,3 +31,7 @@ $Button_boxShadow: none !default;
     flex-basis: 0px;
   }
 }
+
+.base--vertical {
+  flex-direction: column;
+}

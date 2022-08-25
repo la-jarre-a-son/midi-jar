@@ -9,6 +9,7 @@ type Props = {
   children?: React.ReactNode;
   fullWidth?: boolean;
   balanced?: boolean;
+  vertical?: boolean;
 };
 
 const defaultProps = {
@@ -16,6 +17,7 @@ const defaultProps = {
   children: undefined,
   fullWidth: false,
   balanced: false,
+  vertical: false,
 };
 
 /**
@@ -29,11 +31,16 @@ const ButtonGroup: React.FC<Props> = ({
   children,
   fullWidth = false,
   balanced = false,
+  vertical = false,
 }) => (
   <div
     className={cx(
       'base',
-      { 'base--fullWidth': fullWidth, 'base--balanced': balanced },
+      {
+        'base--fullWidth': fullWidth,
+        'base--balanced': balanced,
+        'base--vertical': vertical,
+      },
       className
     )}
   >

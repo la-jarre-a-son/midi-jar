@@ -1,8 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Button from 'renderer/components/Button';
+import ButtonGroup from 'renderer/components/ButtonGroup';
+import Icon from 'renderer/components/Icon';
 import MidiMessageManagerProvider from 'renderer/contexts/MidiMessageManager';
 import SettingsProvider from 'renderer/contexts/Settings';
 import SettingsManagerProvider from 'renderer/contexts/SettingsManager';
 import ChordDisplay from 'renderer/views/ChordDisplay';
+import CircleOfFifths from 'renderer/views/CircleOfFifths';
 import icon from '../../assets/icon.svg';
 import './App.scss';
 
@@ -17,7 +21,16 @@ const Home = () => {
         remotely.
       </p>
       <p>Settings can be edited directly through the main application.</p>
-      <a href="chords">Go to Chord Display</a>
+      <ButtonGroup vertical>
+        <Button to="chords">
+          <Icon name="music" />
+          Chord Display
+        </Button>
+        <Button to="circle-of-fifths">
+          <Icon name="circle-of-fifths" />
+          Circle of 5th
+        </Button>
+      </ButtonGroup>
     </div>
   );
 };
@@ -38,6 +51,17 @@ export default function App() {
                     source="websocket"
                   >
                     <ChordDisplay namespace="overlay" />
+                  </MidiMessageManagerProvider>
+                }
+              />
+              <Route
+                path="circle-of-fifths"
+                element={
+                  <MidiMessageManagerProvider
+                    namespace="chord-display"
+                    source="websocket"
+                  >
+                    <CircleOfFifths disableUpdate />
                   </MidiMessageManagerProvider>
                 }
               />
