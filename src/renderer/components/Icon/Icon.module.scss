@@ -22,12 +22,12 @@ $Button_transition: 0.2s ease !default;
   line-height: 1em;
   vertical-align: bottom;
   vertical-align: -0.13em;
+  flex-shrink: 0;
 
   * {
     fill: currentColor !important;
     opacity: 1;
-    transition: fill $Button_transition,
-      opacity $Button_transition;
+    transition: fill $Button_transition, opacity $Button_transition;
   }
 
   &--spin {
