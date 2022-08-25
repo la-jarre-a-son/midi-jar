@@ -8,6 +8,9 @@ export type KeySignatureConfig = {
   scale: string[];
 };
 
+const REGEX_FLAT = new RegExp(/b/, 'g');
+const REGEX_SHARP = new RegExp(/#/, 'g');
+
 const FLAT = '♭';
 const SHARP = '♯';
 
@@ -69,7 +72,7 @@ export const getNoteInKeySignature = (
 ) => {
   const chroma = Note.chroma(note);
 
-  if (chroma && keySignatureNotes[chroma]) {
+  if (chroma !== undefined && keySignatureNotes[chroma]) {
     return Note.enharmonic(note, keySignatureNotes[chroma]);
   }
 
@@ -77,4 +80,4 @@ export const getNoteInKeySignature = (
 };
 
 export const formatSharpsFlats = (str: string) =>
-  str ? str.replace('b', FLAT).replace('#', SHARP) : str;
+  str ? str.replace(REGEX_FLAT, FLAT).replace(REGEX_SHARP, SHARP) : str;
