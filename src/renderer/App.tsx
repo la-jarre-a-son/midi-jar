@@ -24,6 +24,7 @@ import ChordDisplaySettings from './views/Settings/ChordDisplaySettings';
 import ServerSettings from './views/Settings/ServerSettings';
 import Credits from './views/Settings/Credits';
 import Licenses from './views/Settings/Licenses';
+import CircleOfFifths from './views/CircleOfFifths';
 import NotationSettings from './views/Settings/NotationSettings';
 
 export default function App() {
@@ -45,6 +46,17 @@ export default function App() {
                           source="internal"
                         >
                           <ChordDisplay namespace="internal" />
+                        </MidiMessageManagerProvider>
+                      }
+                    />
+                    <Route
+                      path="circle-of-fifths"
+                      element={
+                        <MidiMessageManagerProvider
+                          namespace="chord-display"
+                          source="internal"
+                        >
+                          <CircleOfFifths />
                         </MidiMessageManagerProvider>
                       }
                     />

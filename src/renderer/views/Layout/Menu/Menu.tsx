@@ -39,7 +39,6 @@ const Menu: React.FC<Props> = ({ className }: Props) => {
     <ButtonGroup
       className={cx('base', { 'base--isMac': window.os?.isMac }, className)}
       fullWidth
-      balanced
     >
       <div className={cx('title')} onDoubleClick={titleBarDoubleClick}>
         <CustomLink className={cx('homeButton')} to="/">
@@ -53,8 +52,17 @@ const Menu: React.FC<Props> = ({ className }: Props) => {
         to="/chords"
         title="Chord Display"
       >
-        <Icon name="piano" />
+        <Icon name="music" />
         <span className={cx('label')}>Chord Display</span>
+      </Button>
+      <Button
+        intent="transparent"
+        className={cx('button')}
+        to="/circle-of-fifths"
+        title="Circle of Fifths"
+      >
+        <Icon name="circle-of-fifths" />
+        <span className={cx('label')}>Circle of 5th</span>
       </Button>
       <Button to="/settings" className={cx('icon')} title="Settings">
         <Icon name="settings" />
