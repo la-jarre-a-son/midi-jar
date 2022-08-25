@@ -18,6 +18,7 @@ export const ICON_NAMES = [
   'minimize',
   'maximize',
   'unmaximize',
+  'music',
   'overlay',
   'pads',
   'piano',

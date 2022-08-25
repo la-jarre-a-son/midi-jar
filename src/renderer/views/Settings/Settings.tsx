@@ -50,6 +50,15 @@ const Settings: React.FC<Props> = ({ className }) => (
         <Button
           className={cx('tab')}
           intent="transparent"
+          to="/settings/notation"
+          title="Music Notation"
+        >
+          <Icon name="music" />
+          <span className={cx('label')}>Music Notation</span>
+        </Button>
+        <Button
+          className={cx('tab')}
+          intent="transparent"
           to="/settings/chords"
           title="Chord Display"
         >

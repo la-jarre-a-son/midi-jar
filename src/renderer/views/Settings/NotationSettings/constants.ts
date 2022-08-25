@@ -1,16 +1,16 @@
 import { ButtonIntents } from 'renderer/components/Button';
 
 export const fields = {
-  skin: {
+  accidentals: {
     choices: [
       {
-        value: 'classic',
-        label: 'Classic',
+        value: 'flat',
+        label: '♭',
         intent: 'primary' as ButtonIntents,
       },
       {
-        value: 'flat',
-        label: 'Flat',
+        value: 'sharp',
+        label: '♯',
         intent: 'primary' as ButtonIntents,
       },
     ],
