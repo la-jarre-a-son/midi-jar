@@ -5,8 +5,6 @@ export type ChordDisplaySettings = {
   skin: 'classic' | 'flat';
   from: string;
   to: string;
-  key: string;
-  accidentals: 'flat' | 'sharp';
   displayKeyboard: boolean;
   displayNotes: boolean;
   displayChord: boolean;
@@ -18,6 +16,14 @@ export type ChordDisplaySettings = {
   colorHighlight: string | null;
   colorNoteWhite: string | null;
   colorNoteBlack: string | null;
+  // removed
+  key?: never;
+  accidentals?: never;
+};
+
+export type NotationSettings = {
+  key: string;
+  accidentals: 'flat' | 'sharp';
 };
 
 export type ServerSettings = {
@@ -34,6 +40,7 @@ export type Settings = {
     internal: ChordDisplaySettings;
     overlay?: ChordDisplaySettings;
   };
+  notation: NotationSettings;
   server: ServerSettings;
 };
 

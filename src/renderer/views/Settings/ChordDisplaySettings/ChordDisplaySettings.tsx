@@ -116,44 +116,6 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
             'group--disabled': useInternal,
           })}
         >
-          <header className={cx('groupTitle')}>Fundamentals</header>
-
-          <FormField fieldId="chord_display_settings:key" label="Key Signature">
-            <InputNote
-              id="chord_display_settings:key"
-              onChange={(value) => updateNamespaceSettings('key', value)}
-              value={namespaceSettings.key ?? namespaceDefaultSettings.key}
-              type="text"
-              disabled={useInternal}
-              learn
-            />
-          </FormField>
-
-          <FormField
-            fieldId="chord_display_settings:accidentals"
-            label="Accidentals (in C)"
-          >
-            <Toggle
-              id="chord_display_settings:accidentals"
-              choices={fields.accidentals.choices}
-              onChange={(value) =>
-                updateNamespaceSettings('accidentals', value)
-              }
-              value={
-                namespaceSettings.accidentals ??
-                namespaceDefaultSettings.accidentals
-              }
-              successIcon="save"
-              disabled={useInternal || namespaceSettings.key !== 'C'}
-            />
-          </FormField>
-        </section>
-
-        <section
-          className={cx('group', {
-            'group--disabled': useInternal,
-          })}
-        >
           <header className={cx('groupTitle')}>Chords</header>
 
           <FormField

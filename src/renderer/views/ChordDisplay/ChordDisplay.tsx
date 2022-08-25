@@ -38,6 +38,8 @@ const ChordDisplay: React.FC<Props> = ({
 }) => {
   const { settings } = useSettings();
 
+  const { key, accidentals } = settings?.notation ?? defaults.settings.notation;
+
   let namespaceSettings = settings?.chordDisplay?.[namespace];
 
   if (!namespaceSettings || namespaceSettings.useInternal) {
@@ -50,8 +52,6 @@ const ChordDisplay: React.FC<Props> = ({
     skin,
     from,
     to,
-    key,
-    accidentals,
     colorHighlight,
     colorNoteWhite,
     colorNoteBlack,

@@ -46,8 +46,6 @@ export const schema: Schema<StoreType> = {
               skin: { type: 'string', enum: ['classic', 'flat'] },
               from: { type: 'string' },
               to: { type: 'string' },
-              key: { type: 'string' },
-              accidentals: { type: 'boolean' },
               displayKeyboard: { type: 'boolean' },
               displayNotes: { type: 'boolean' },
               displayChord: { type: 'boolean' },
@@ -61,6 +59,13 @@ export const schema: Schema<StoreType> = {
               colorNoteBlack: { type: ['string', 'null'] },
             },
           },
+        },
+      },
+      notation: {
+        type: 'object',
+        properties: {
+          key: { type: 'string' },
+          accidentals: { type: 'string', enum: ['flat', 'sharp'] },
         },
       },
       server: {
@@ -78,8 +83,6 @@ const defaultChordDisplaySettings = {
   skin: 'classic' as ChordDisplaySettings['skin'],
   from: 'C3',
   to: 'C5',
-  key: 'C',
-  accidentals: 'flat' as const,
   displayKeyboard: true,
   displayNotes: true,
   displayChord: true,
@@ -105,6 +108,10 @@ export const defaults = {
     chordDisplay: {
       internal: { useInternal: false, ...defaultChordDisplaySettings },
       overlay: { useInternal: true, ...defaultChordDisplaySettings },
+    },
+    notation: {
+      key: 'C',
+      accidentals: 'flat' as const,
     },
     server: {
       enabled: true,

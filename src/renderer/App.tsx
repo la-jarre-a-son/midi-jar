@@ -24,6 +24,7 @@ import ChordDisplaySettings from './views/Settings/ChordDisplaySettings';
 import ServerSettings from './views/Settings/ServerSettings';
 import Credits from './views/Settings/Credits';
 import Licenses from './views/Settings/Licenses';
+import NotationSettings from './views/Settings/NotationSettings';
 
 export default function App() {
   return (
@@ -54,6 +55,17 @@ export default function App() {
                       />
                       <Route path="general" element={<GeneralSettings />} />
                       <Route path="routing" element={<Routing />} />
+                      <Route
+                        path="notation"
+                        element={
+                          <MidiMessageManagerProvider
+                            namespace="chord-display"
+                            source="internal"
+                          >
+                            <NotationSettings />
+                          </MidiMessageManagerProvider>
+                        }
+                      />
                       <Route
                         path="debug"
                         element={

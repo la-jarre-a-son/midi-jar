@@ -1,0 +1,19 @@
+@import 'variables';
+
+$View_MusicNotationSettings_padding: $View_padding !default;
+
+.base {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.container {
+  @include customScrollBar();
+  flex-grow: 1;
+  padding: $View_MusicNotationSettings_padding;
+  overflow-y: auto;
+  width: 100%;
+}
