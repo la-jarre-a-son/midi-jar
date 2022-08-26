@@ -17,15 +17,17 @@ import Layout from './views/Layout';
 import Settings from './views/Settings';
 import Home from './views/Home';
 import ChordDisplay from './views/ChordDisplay';
+import CircleOfFifths from './views/CircleOfFifths';
+
 import GeneralSettings from './views/Settings/GeneralSettings';
 import Debugger from './views/Settings/Debugger';
 import Routing from './views/Settings/Routing';
+import NotationSettings from './views/Settings/NotationSettings';
 import ChordDisplaySettings from './views/Settings/ChordDisplaySettings';
+import CircleOfFifthsSettings from './views/Settings/CircleOfFifthsSettings';
 import ServerSettings from './views/Settings/ServerSettings';
 import Credits from './views/Settings/Credits';
 import Licenses from './views/Settings/Licenses';
-import CircleOfFifths from './views/CircleOfFifths';
-import NotationSettings from './views/Settings/NotationSettings';
 
 export default function App() {
   return (
@@ -77,6 +79,10 @@ export default function App() {
                             <NotationSettings />
                           </MidiMessageManagerProvider>
                         }
+                      />
+                      <Route
+                        path="circle-of-fifths"
+                        element={<CircleOfFifthsSettings />}
                       />
                       <Route
                         path="debug"

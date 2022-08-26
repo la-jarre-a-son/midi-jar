@@ -18,13 +18,12 @@ $View_SettingsChordDisplay_padding: $View_padding !default;
   width: 100%;
 }
 
-.noSettings {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  width: 100%;
+.group {
+  max-width: 480px;
+  margin: auto;
+  &--disabled {
+    opacity: 0.5;
+  }
 }
 
 .header {
@@ -32,8 +31,6 @@ $View_SettingsChordDisplay_padding: $View_padding !default;
 }
 
 .group {
-  max-width: 480px;
-  margin: auto;
   &--disabled {
     opacity: 0.5;
   }

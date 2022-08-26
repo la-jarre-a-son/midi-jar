@@ -63,26 +63,28 @@ const ServerSettings: React.FC<Props> = ({ className }) => {
         )}
       </div>
       <div className={cx('container')}>
-        <FormField
-          fieldId="server_settings:enabled"
-          label="Enable HTTP &amp; WS server"
-        >
-          <Toggle
-            id="server_settings:enabled"
-            onChange={(value) => enable(!!value)}
-            value={settings?.server?.enabled}
-            successIcon="save"
-          />
-        </FormField>
+        <section className={cx('group')}>
+          <FormField
+            fieldId="server_settings:enabled"
+            label="Enable HTTP &amp; WS server"
+          >
+            <Toggle
+              id="server_settings:enabled"
+              onChange={(value) => enable(!!value)}
+              value={settings?.server?.enabled}
+              successIcon="save"
+            />
+          </FormField>
 
-        <FormField fieldId="server_settings:port" label="Server Port">
-          <Input
-            id="server_settings:port"
-            onChange={(value) => updateSetting('server.port', Number(value))}
-            value={settings?.server?.port ?? null}
-            type="number"
-          />
-        </FormField>
+          <FormField fieldId="server_settings:port" label="Server Port">
+            <Input
+              id="server_settings:port"
+              onChange={(value) => updateSetting('server.port', Number(value))}
+              value={settings?.server?.port ?? null}
+              type="number"
+            />
+          </FormField>
+        </section>
       </div>
     </div>
   );

@@ -39,6 +39,9 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
 
   if (!settings) return null;
 
+  const displaySettings =
+    settings.circleOfFifths ?? defaults.settings.circleOfFifths;
+
   return (
     <div className={cx('base')}>
       <CircleFifths
@@ -46,6 +49,7 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
         keySignature={keySignature}
         chord={chords[0]}
         onChange={disableUpdate ? undefined : handleKeyChange}
+        {...displaySettings}
       >
         <div id="chord" className={cx('chord')}>
           <ChordName chord={chords[0]} hideRoot />

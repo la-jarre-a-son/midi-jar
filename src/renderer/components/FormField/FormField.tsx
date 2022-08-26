@@ -10,11 +10,13 @@ type Props = {
   label: string;
   children: React.ReactNode;
   fieldId: string;
+  hint?: React.ReactNode;
 };
 
 const defaultProps = {
   className: undefined,
   value: null,
+  hint: undefined,
 };
 
 /**
@@ -28,12 +30,17 @@ export const FormField: React.FC<Props> = ({
   children,
   label,
   fieldId,
+  hint,
 }) => (
   <div className={cx('base', className)}>
-    <label htmlFor={fieldId} className={cx('label')}>
-      {label}
-    </label>
-    <div className={cx('field')}>{children}</div>
+    <div className={cx('label')}>
+      <label htmlFor={fieldId} className={cx('name')}>
+        {label}
+      </label>
+      {hint && <div className={cx('hint')}>{hint}</div>}
+    </div>
+
+    <div className={cx('control')}>{children}</div>
   </div>
 );
 

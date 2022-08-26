@@ -10,6 +10,14 @@ $View_GeneralSettings_padding: $View_padding !default;
   align-items: flex-start;
 }
 
+.group {
+  max-width: 480px;
+  margin: auto;
+  &--disabled {
+    opacity: 0.5;
+  }
+}
+
 .state {
   @include hipsterBackground($color-neutral-dark);
   padding: $View_GeneralSettings_padding;

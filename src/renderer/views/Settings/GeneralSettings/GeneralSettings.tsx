@@ -31,28 +31,32 @@ const GeneralSettings: React.FC<Props> = ({ className }) => {
   return (
     <div className={cx('base', className)}>
       <div className={cx('container')}>
-        <FormField
-          fieldId="general_settings:launchAtStartup"
-          label="Launch At Startup"
-        >
-          <Toggle
-            id="general_settings:launchAtStartup"
-            onChange={(value) =>
-              updateSetting('general.launchAtStartup', value)
-            }
-            value={settings?.general?.launchAtStartup}
-            successIcon="save"
-          />
-        </FormField>
+        <section className={cx('group')}>
+          <FormField
+            fieldId="general_settings:launchAtStartup"
+            label="Launch At Startup"
+          >
+            <Toggle
+              id="general_settings:launchAtStartup"
+              onChange={(value) =>
+                updateSetting('general.launchAtStartup', value)
+              }
+              value={settings?.general?.launchAtStartup}
+              successIcon="save"
+            />
+          </FormField>
 
-        <FormField fieldId="general_settings:port" label="Start Minimized">
-          <Toggle
-            id="general_settings:startMinimized"
-            onChange={(value) => updateSetting('general.startMinimized', value)}
-            value={settings?.general?.startMinimized}
-            successIcon="save"
-          />
-        </FormField>
+          <FormField fieldId="general_settings:port" label="Start Minimized">
+            <Toggle
+              id="general_settings:startMinimized"
+              onChange={(value) =>
+                updateSetting('general.startMinimized', value)
+              }
+              value={settings?.general?.startMinimized}
+              successIcon="save"
+            />
+          </FormField>
+        </section>
       </div>
     </div>
   );

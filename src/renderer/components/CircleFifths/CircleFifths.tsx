@@ -39,6 +39,13 @@ export type Props = {
   keySignature?: KeySignatureConfig;
   chord?: Chord | null;
   onChange?: (key: string) => unknown;
+  displayDominants?: boolean;
+  displayMajor?: boolean;
+  displayMinor?: boolean;
+  displayDiminished?: boolean;
+  displayAlt?: boolean;
+  displaySuspended?: boolean;
+  displayDegrees?: boolean;
 };
 
 const defaultProps = {
@@ -47,6 +54,13 @@ const defaultProps = {
   onChange: undefined,
   chord: undefined,
   keySignature: getKeySignature('C'),
+  displayDominants: true,
+  displayMajor: true,
+  displayMinor: true,
+  displayDiminished: true,
+  displayAlt: true,
+  displaySuspended: true,
+  displayDegrees: true,
 };
 
 /**
@@ -61,18 +75,33 @@ const CircleFifths: React.FC<Props> = ({
   children,
   chord,
   onChange,
+  displayDominants = true,
+  displayMajor = true,
+  displayMinor = true,
+  displayDiminished = true,
+  displayAlt = true,
+  displaySuspended = true,
+  displayDegrees = true,
 }) => {
   const displayConfig = useMemo(
     () => ({
-      displayDominants: true,
-      displayMajor: true,
-      displayMinor: true,
-      displayDiminished: true,
-      displayAlt: true,
-      displaySuspended: true,
-      displayDegrees: true,
+      displayDominants,
+      displayMajor,
+      displayMinor,
+      displayDiminished,
+      displayAlt,
+      displaySuspended,
+      displayDegrees,
     }),
-    []
+    [
+      displayDominants,
+      displayMajor,
+      displayMinor,
+      displayDiminished,
+      displayAlt,
+      displaySuspended,
+      displayDegrees,
+    ]
   );
 
   const SECTORS = useMemo(() => getSectors(displayConfig), [displayConfig]);
