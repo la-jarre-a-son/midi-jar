@@ -1,0 +1,10 @@
+export { SectorAlteration } from './Alteration';
+export { SectorDominants } from './Dominants';
+export { SectorLabel } from './Label';
+export { SectorSusLabel } from './SusLabel';
+export { SectorMajor } from './Major';
+export { SectorMinor } from './Minor';
+export { SectorDiminished } from './Diminished';
+export { SectorSuspended } from './Suspended';
+export { DegreeLabel } from './DegreeLabel';
+export { Degrees } from './Degrees';
