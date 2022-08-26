@@ -61,6 +61,18 @@ export const schema: Schema<StoreType> = {
           },
         },
       },
+      circleOfFifths: {
+        type: 'object',
+        properties: {
+          displayDominants: { type: 'boolean' },
+          displayMajor: { type: 'boolean' },
+          displayMinor: { type: 'boolean' },
+          displayDiminished: { type: 'boolean' },
+          displayAlt: { type: 'boolean' },
+          displaySuspended: { type: 'boolean' },
+          displayDegrees: { type: 'boolean' },
+        },
+      },
       notation: {
         type: 'object',
         properties: {
@@ -96,6 +108,16 @@ const defaultChordDisplaySettings = {
   colorNoteBlack: '#000000',
 };
 
+const defaultCircleOfFifthsSettings = {
+  displayDominants: false,
+  displayMajor: true,
+  displayMinor: true,
+  displayDiminished: true,
+  displayAlt: true,
+  displaySuspended: false,
+  displayDegrees: false,
+};
+
 export const defaults = {
   midi: {
     routes: [],
@@ -109,6 +131,7 @@ export const defaults = {
       internal: { useInternal: false, ...defaultChordDisplaySettings },
       overlay: { useInternal: true, ...defaultChordDisplaySettings },
     },
+    circleOfFifths: defaultCircleOfFifthsSettings,
     notation: {
       key: 'C',
       accidentals: 'flat' as const,

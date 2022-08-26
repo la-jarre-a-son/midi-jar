@@ -35,32 +35,34 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
   return (
     <div className={cx('base', className)}>
       <div className={cx('container')}>
-        <FormField fieldId="notation_settings:key" label="Key Signature">
-          <InputNote
-            id="notation_settings:key"
-            onChange={(value: string) => updateSetting('notation.key', value)}
-            value={settings?.notation.key ?? defaults.settings.notation.key}
-            type="text"
-            learn
-          />
-        </FormField>
+        <section className={cx('group')}>
+          <FormField fieldId="notation_settings:key" label="Key Signature">
+            <InputNote
+              id="notation_settings:key"
+              onChange={(value: string) => updateSetting('notation.key', value)}
+              value={settings?.notation.key ?? defaults.settings.notation.key}
+              type="text"
+              learn
+            />
+          </FormField>
 
-        <FormField
-          fieldId="notation_settings:accidentals"
-          label="Accidentals (in C)"
-        >
-          <Toggle
-            id="notation_settings:accidentals"
-            choices={fields.accidentals.choices}
-            onChange={(value) => updateSetting('notation.accidentals', value)}
-            value={
-              settings?.notation.accidentals ??
-              defaults.settings.notation.accidentals
-            }
-            successIcon="save"
-            disabled={settings?.notation.key !== 'C'}
-          />
-        </FormField>
+          <FormField
+            fieldId="notation_settings:accidentals"
+            label="Accidentals (in C)"
+          >
+            <Toggle
+              id="notation_settings:accidentals"
+              choices={fields.accidentals.choices}
+              onChange={(value) => updateSetting('notation.accidentals', value)}
+              value={
+                settings?.notation.accidentals ??
+                defaults.settings.notation.accidentals
+              }
+              successIcon="save"
+              disabled={settings?.notation.key !== 'C'}
+            />
+          </FormField>
+        </section>
       </div>
     </div>
   );

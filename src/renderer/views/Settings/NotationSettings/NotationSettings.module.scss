@@ -17,3 +17,11 @@ $View_MusicNotationSettings_padding: $View_padding !default;
   overflow-y: auto;
   width: 100%;
 }
+
+.group {
+  max-width: 480px;
+  margin: auto;
+  &--disabled {
+    opacity: 0.5;
+  }
+}

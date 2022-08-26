@@ -68,6 +68,15 @@ const Settings: React.FC<Props> = ({ className }) => (
         <Button
           className={cx('tab')}
           intent="transparent"
+          to="/settings/circle-of-fifths"
+          title="Circle of 5th"
+        >
+          <Icon name="circle-of-fifths" />
+          <span className={cx('label')}>Circle of 5th</span>
+        </Button>
+        <Button
+          className={cx('tab')}
+          intent="transparent"
           to="/settings/server"
           title="Server"
         >

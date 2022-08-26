@@ -21,6 +21,16 @@ export type ChordDisplaySettings = {
   accidentals?: never;
 };
 
+export type CircleOfFifthsSettings = {
+  displayDominants: boolean;
+  displayMajor: boolean;
+  displayMinor: boolean;
+  displayDiminished: boolean;
+  displayAlt: boolean;
+  displaySuspended: boolean;
+  displayDegrees: boolean;
+};
+
 export type NotationSettings = {
   key: string;
   accidentals: 'flat' | 'sharp';
@@ -40,6 +50,7 @@ export type Settings = {
     internal: ChordDisplaySettings;
     overlay?: ChordDisplaySettings;
   };
+  circleOfFifths: CircleOfFifthsSettings;
   notation: NotationSettings;
   server: ServerSettings;
 };

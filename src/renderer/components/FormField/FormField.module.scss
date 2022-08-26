@@ -16,13 +16,30 @@ $FormField-field_gap: 16px !default;
 
 .label {
   display: flex;
+  flex-direction: column;
   min-height: $FormField-label_height;
-  text-transform: uppercase;
-  align-items: center;
-  width: 30%;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 1;
+  flex-grow: 1;
+  min-height: 42px;
 }
 
-.field {
+.name {
+  text-transform: uppercase;
+}
+
+.hint {
+  font-size: 0.8em;
+  color: $color-neutral-light;
+}
+
+.control {
+  flex-shrink: 0;
   margin-left: $FormField-field_gap;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
