@@ -33,6 +33,15 @@
   transition: transform 0.7s ease;
 }
 
+.degrees {
+  pointer-events: none;
+  text {
+    font-family: serif;
+    font-weight: bold;
+    fill: rgba($color-white, 0.5);
+  }
+}
+
 .name {
   fill: rgba($color-white, 0.5);
   transition: transform 0.7s ease;
@@ -43,7 +52,7 @@
   transition: fill 300ms ease;
 }
 
-.alteration {
+.alterations {
   > path {
     fill: none;
     stroke: none;
@@ -53,8 +62,30 @@
     fill: rgba($color-white, 0.5);
   }
 
-  &--active {
+  &--selected {
     > .alteration--selected {
+      fill: $color-white;
+    }
+  }
+}
+
+.dominants {
+  > path {
+    fill: none;
+    stroke: none;
+  }
+
+  > text {
+    fill: rgba($color-white, 0.5);
+  }
+
+  .dominant--active {
+    font-weight: bold;
+    fill: $color-success-normal;
+  }
+
+  &--selected {
+    > text {
       fill: $color-white;
     }
   }
@@ -84,7 +115,7 @@
   }
 }
 
-.key.key--active {
+.key.key--selected {
   pointer-events: none;
   .name {
     fill: $color-white;
@@ -94,7 +125,7 @@
 .key.key--multiple {
   pointer-events: all;
 
-  &.key--active {
+  &.key--selected {
     .name {
       fill: rgba($color-white, 0.5);
 
@@ -111,7 +142,7 @@
     fill: $color-neutral-light;
   }
 
-  &.key--active {
+  &.key--selected {
     .sector {
       fill: $color-primary-normal;
     }
@@ -123,7 +154,7 @@
     fill: $color-neutral-normal;
   }
 
-  &.key--active {
+  &.key--selected {
     .sector {
       fill: $color-primary-normal;
     }
@@ -135,14 +166,27 @@
     fill: $color-neutral-dark;
   }
 
-  &.key--active {
+  &.key--selected {
     .sector {
       fill: $color-primary-normal;
     }
   }
 }
 
-.key.key--isPressed {
+.key--suspended {
+  pointer-events: none;
+  .sector {
+    fill: $color-neutral-normal;
+  }
+
+  &.key--selected {
+    .sector {
+      fill: $color-primary-normal;
+    }
+  }
+}
+
+.key.key--active {
   .sector {
     fill: $color-success-normal;
   }

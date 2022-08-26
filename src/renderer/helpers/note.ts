@@ -68,11 +68,11 @@ export const getKeySignature = (
 
 export const getNoteInKeySignature = (
   note: string,
-  keySignatureNotes: string[]
+  keySignatureNotes?: string[]
 ) => {
   const chroma = Note.chroma(note);
 
-  if (chroma !== undefined && keySignatureNotes[chroma]) {
+  if (chroma !== undefined && keySignatureNotes && keySignatureNotes[chroma]) {
     return Note.enharmonic(note, keySignatureNotes[chroma]);
   }
 
