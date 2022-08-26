@@ -3,7 +3,37 @@ import { Chord } from '@tonaljs/chord';
 
 import { range } from 'renderer/helpers';
 
+// Types
+
+export type Sector = {
+  enabled: boolean;
+  size: number;
+  start: number;
+  end: number;
+  middle: number;
+  align: number;
+};
+
+export type SectorType = 'alt' | 'major' | 'dom' | 'minor' | 'dim';
+export type Sectors = Record<SectorType, Sector>;
+
+export type CircleOfFifthsDisplayConfig = {
+  displaySuspended?: boolean;
+  displayDominants?: boolean;
+  displayMajor?: boolean;
+  displayMinor?: boolean;
+  displayDiminished?: boolean;
+  displayAlt?: boolean;
+};
+
 // Constants
+
+export const SIZE = 100; // SVG viewport size
+export const CX = SIZE / 2; // Circle origin X
+export const CY = SIZE / 2; // Circle origin Y
+
+export const SUSPENDED_OFFSET = 0.15;
+
 export const FIFTHS_INDEXES = range(0, 11);
 export const FIFTHS_MAJOR = 'C G D A E B/Cb F#/Gb C#/Db Ab Eb Bb F'
   .split(' ')
@@ -23,9 +53,22 @@ export const FIFTHS_ALTERATIONS =
     .split(' ')
     .map((v) => v.split('/'));
 
+export const DEGREES_OFFSETS: [SectorType, number][] = [
+  /* sector, offset */
+  ['major', 0],
+  ['minor', -1],
+  ['minor', 1],
+  ['major', -1],
+  ['major', 1],
+  ['minor', 0],
+  ['dim', 0],
+];
+export const DEGREES_MAJOR = 'I ii iii IV V vi vii°'.split(' ');
+export const DEGREES_MINOR = 'bIII iv v bVI bVII i ii'.split(' ');
+
 const SECTORS_TOTAL = 0.37;
 
-const SECTORS = {
+const SECTORS: Sectors = {
   alt: {
     size: 0.05,
     enabled: true,
@@ -69,26 +112,36 @@ const SECTORS = {
 };
 
 /**
+ * Returns true if the sector is displayed
+ * @param type - The type of sector
+ * @param config - the display config
+ * @returns
+ */
+export const isSectorDisplayed = (
+  type: SectorType,
+  config?: CircleOfFifthsDisplayConfig
+) => {
+  if (config) {
+    if (type === 'alt' && !config.displayAlt) return false;
+    if (type === 'major' && !config.displayMajor) return false;
+    if (type === 'dom' && !config.displayDominants) return false;
+    if (type === 'minor' && !config.displayMinor) return false;
+    if (type === 'dim' && !config.displayDiminished) return false;
+  }
+
+  return true;
+};
+
+/**
  * Get the sectors radius ranges
  * @returns
  */
-export const getSectors = ({
-  displayDominants = true,
-  displayMajor = true,
-  displayMinor = true,
-  displayDiminished = true,
-  displayAlt = true,
-} = {}) => {
+export const getSectors = (config: CircleOfFifthsDisplayConfig = {}) => {
   const sectorsObj = (Object.keys(SECTORS) as (keyof typeof SECTORS)[]).reduce(
     (obj, type: keyof typeof SECTORS) => {
       const { size } = SECTORS[type];
 
-      let enabled = true;
-      if (type === 'alt' && !displayAlt) enabled = false;
-      if (type === 'major' && !displayMajor) enabled = false;
-      if (type === 'dom' && !displayDominants) enabled = false;
-      if (type === 'minor' && !displayMinor) enabled = false;
-      if (type === 'dim' && !displayDiminished) enabled = false;
+      const enabled = isSectorDisplayed(type, config);
 
       obj.sectors[type].enabled = enabled;
       obj.total += enabled ? size : 0;
@@ -155,7 +208,7 @@ export const cPolar = (ox: number, oy: number, r: number, a: number): string =>
  * @param a2 - end angle of the arc
  * @returns {string} - the svg path of the arc
  */
-export const arc = (
+export const drawArc = (
   ox: number,
   oy: number,
   d: number,
@@ -177,7 +230,7 @@ export const arc = (
  * @param a2 - end angle of the sector
  * @returns {string} - the svg path of the sector
  */
-export const sector = (
+export const drawSector = (
   ox: number, // origin X
   oy: number, // origin Y
   d1: number, // distance 1
@@ -272,13 +325,13 @@ export const isPressed = (
     return true;
 
   if (
-    quality === 'Sus4' &&
+    quality === 'sus4' &&
     isSameNote(tonic, chord.tonic) &&
     SUS4_CHORDS.includes(chord.aliases[0])
   )
     return true;
   if (
-    quality === 'Sus2' &&
+    quality === 'sus2' &&
     isSameNote(tonic, chord.tonic) &&
     SUS2_CHORDS.includes(chord.aliases[0])
   )

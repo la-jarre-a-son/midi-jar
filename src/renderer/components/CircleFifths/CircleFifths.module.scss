@@ -7,7 +7,7 @@
   max-height: 100%;
 }
 
-.circle-of-fifths {
+.circle {
   width: 100%;
   height: auto;
   max-height: 100%;
@@ -49,7 +49,10 @@
 
 .badge {
   fill: rgba(0, 0, 0, 0.3);
-  transition: fill 300ms ease;
+}
+
+.sector {
+  stroke: $color-neutral-darker;
 }
 
 .alterations {
@@ -79,11 +82,6 @@
     fill: rgba($color-white, 0.5);
   }
 
-  .dominant--active {
-    font-weight: bold;
-    fill: $color-success-normal;
-  }
-
   &--selected {
     > text {
       fill: $color-white;
@@ -91,23 +89,7 @@
   }
 }
 
-.sector {
-  transition: fill 300ms ease;
-  stroke: $color-neutral-darker;
-}
-
-.root--interactive {
-  .key {
-    cursor: pointer;
-
-    &:hover,
-    &.key--isInScale:hover {
-      .sector {
-        fill: $color-primary-light;
-      }
-    }
-  }
-}
+// Sector variants
 
 .key.key--isInScale {
   .sector {
@@ -186,8 +168,32 @@
   }
 }
 
+// Chord play
+
+.dominants {
+  .dominant--active {
+    font-weight: bold;
+    fill: $color-success-normal;
+  }
+}
+
 .key.key--active {
   .sector {
     fill: $color-success-normal;
+  }
+}
+
+// Interactive
+
+.root--interactive {
+  .key {
+    cursor: pointer;
+
+    &:hover,
+    &.key--isInScale:hover {
+      .sector {
+        fill: $color-primary-light;
+      }
+    }
   }
 }
