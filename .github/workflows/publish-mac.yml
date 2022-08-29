@@ -1,9 +1,7 @@
 name: Publish Mac
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   publish:
