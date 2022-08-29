@@ -1,31 +1,38 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
 import {
-  formatSharpsFlats,
   KeySignatureConfig,
   getNoteInKeySignature,
 } from 'renderer/helpers/note';
 
-import { CX, CY, SUSPENDED_OFFSET, polar, cPolar } from '../utils';
+import {
+  CX,
+  CY,
+  SUSPENDED_OFFSET,
+  polar,
+  cPolar,
+  Section,
+  formatLabel,
+} from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
 const cx = classnames.bind(styles);
 
-type SectorSusLabelProps = {
+type SectionSusLabelProps = {
   value: number;
   label: string | string[];
-  radius: number;
+  section: Section;
   fontSize: number;
   keySignature?: KeySignatureConfig;
   quality: string;
 };
 
-export const SectorSusLabel: React.FC<SectorSusLabelProps> = ({
+const SectionSusLabel: React.FC<SectionSusLabelProps> = ({
   value,
   label,
-  radius,
+  section,
   fontSize,
   keySignature,
   quality,
@@ -39,22 +46,25 @@ export const SectorSusLabel: React.FC<SectorSusLabelProps> = ({
   return (
     <text
       className={cx('name', 'name--sus')}
-      x={polar(CX, CY, radius, angle)[0]}
-      y={polar(CX, CY, radius, angle)[1]}
+      x={polar(CX, CY, section.middle, angle)[0]}
+      y={polar(CX, CY, section.middle, angle)[1]}
       textAnchor="middle"
       fontSize={fontSize}
       dy={0.33 * fontSize}
       transform={`rotate(${
         angle * 360 + (quality === 'sus4' ? -90 : +90)
-      }, ${cPolar(CX, CY, radius, angle)})`}
+      }, ${cPolar(CX, CY, section.middle, angle)})`}
     >
-      {formatSharpsFlats(
-        getNoteInKeySignature(labels[0], keySignature?.notes)
-      ) + quality}
+      {formatLabel(
+        getNoteInKeySignature(labels[0], keySignature?.notes),
+        quality
+      )}
     </text>
   );
 };
 
-SectorSusLabel.defaultProps = {
+SectionSusLabel.defaultProps = {
   keySignature: undefined,
 };
+
+export default memo(SectionSusLabel);

@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
-import { CX, CY, drawArc, isKeySelected } from '../utils';
+import { CX, CY, drawArc, isKeySelected, Section } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
 const cx = classnames.bind(styles);
 
-type SectorAlterationProps = {
+type SectionAlterationProps = {
   value: number;
   current: number;
   label: string | string[];
-  radius: number;
+  section: Section;
   tonic: string | undefined;
 };
 
-export const SectorAlteration: React.FC<SectorAlterationProps> = ({
+const SectionAlteration: React.FC<SectionAlterationProps> = ({
   value,
   current,
   label,
-  radius,
+  section,
   tonic,
 }) => {
   const labels = Array.isArray(label) ? label : [label];
@@ -29,7 +29,14 @@ export const SectorAlteration: React.FC<SectorAlterationProps> = ({
   const renderFollowPath = (
     <path
       id={`alteration_${value}_followpath`}
-      d={drawArc(CX, CY, radius, (value - 0.5) / 12, (value + 0.5) / 12)}
+      className={cx('followPath')}
+      d={drawArc(
+        CX,
+        CY,
+        section.middle,
+        (value - 0.5) / 12,
+        (value + 0.5) / 12
+      )}
     />
   );
 
@@ -86,3 +93,5 @@ export const SectorAlteration: React.FC<SectorAlterationProps> = ({
     </g>
   );
 };
+
+export default memo(SectionAlteration);

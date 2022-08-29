@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import classnames from 'classnames/bind';
 
 import { Chord } from '@tonaljs/chord';
@@ -16,18 +16,21 @@ import {
   FIFTHS_DIMINISHED,
   FIFTHS_ALTERATIONS,
   getCurrentKey,
-  getSectors,
+  getSections,
+  CircleOfFifthsConfig,
 } from './utils';
 
 import {
-  SectorAlteration,
-  SectorDominants,
-  SectorMajor,
-  SectorMinor,
-  SectorDiminished,
-  SectorSuspended,
+  SectionAlteration,
+  SectionDominants,
+  SectionMajor,
+  SectionMinor,
+  SectionDiminished,
+  SectionSuspended,
   Degrees,
-} from './Sectors';
+  DegreeLabels,
+  Modes,
+} from './Sections';
 
 import styles from './CircleFifths.module.scss';
 
@@ -38,14 +41,9 @@ export type Props = {
   children?: React.ReactNode;
   keySignature?: KeySignatureConfig;
   chord?: Chord | null;
+  notes?: string[];
   onChange?: (key: string) => unknown;
-  displayDominants?: boolean;
-  displayMajor?: boolean;
-  displayMinor?: boolean;
-  displayDiminished?: boolean;
-  displayAlt?: boolean;
-  displaySuspended?: boolean;
-  displayDegrees?: boolean;
+  config?: CircleOfFifthsConfig;
 };
 
 const defaultProps = {
@@ -53,14 +51,20 @@ const defaultProps = {
   children: undefined,
   onChange: undefined,
   chord: undefined,
+  notes: undefined,
   keySignature: getKeySignature('C'),
-  displayDominants: true,
-  displayMajor: true,
-  displayMinor: true,
-  displayDiminished: true,
-  displayAlt: true,
-  displaySuspended: true,
-  displayDegrees: true,
+  config: {
+    scale: 'major' as const,
+    displayMajor: true,
+    displayMinor: true,
+    displayDiminished: true,
+    displayDominants: true,
+    displaySuspended: true,
+    displayAlterations: true,
+    displayModes: true,
+    displayDegrees: true,
+    displayDegreeLabels: true,
+  },
 };
 
 /**
@@ -74,42 +78,18 @@ const CircleFifths: React.FC<Props> = ({
   className,
   children,
   chord,
+  notes,
   onChange,
-  displayDominants = true,
-  displayMajor = true,
-  displayMinor = true,
-  displayDiminished = true,
-  displayAlt = true,
-  displaySuspended = true,
-  displayDegrees = true,
+  config = defaultProps.config,
 }) => {
-  const displayConfig = useMemo(
-    () => ({
-      displayDominants,
-      displayMajor,
-      displayMinor,
-      displayDiminished,
-      displayAlt,
-      displaySuspended,
-      displayDegrees,
-    }),
-    [
-      displayDominants,
-      displayMajor,
-      displayMinor,
-      displayDiminished,
-      displayAlt,
-      displaySuspended,
-      displayDegrees,
-    ]
-  );
-
-  const SECTORS = useMemo(() => getSectors(displayConfig), [displayConfig]);
+  const sections = useMemo(() => getSections(config), [config]);
 
   const [current, setCurrent] = useState<number>(
     getCurrentKey(keySignature?.alteration || 0)
   );
+
   const [rotation, setRotation] = useState<number>(((current * 1) / 12) * 360);
+  const [isRotating, setIsRotating] = useState<boolean>(false);
 
   const handleClick = (newValue: number) => {
     if (onChange) {
@@ -136,9 +116,21 @@ const CircleFifths: React.FC<Props> = ({
         (previousRotation) => previousRotation + ((diff * 1) / 12) * 360
       );
 
+      if (diff) {
+        setIsRotating(true);
+      }
+
       return newValue;
     });
   }, [keySignature]);
+
+  // Avoids transition between other transform than rotation
+  const handleTransitionEnd = useCallback(
+    (e: React.TransitionEvent<SVGElement>) => {
+      if (e.currentTarget.nodeName === 'g') setIsRotating(false);
+    },
+    []
+  );
 
   return (
     <div className={cx('root', { 'root--interactive': !!onChange }, className)}>
@@ -149,150 +141,161 @@ const CircleFifths: React.FC<Props> = ({
         viewBox={`0 0 ${SIZE} ${SIZE}`}
       >
         <g
-          className={cx('wheel')}
+          className={cx('wheel', isRotating && 'wheel--isRotating')}
           transform={`rotate(${-rotation}, ${CX}, ${CY})`}
+          onTransitionEnd={handleTransitionEnd}
         >
           {/* ALTERATIONS */}
-          {displayConfig.displayAlt &&
+          {config.displayAlterations &&
             FIFTHS_INDEXES.map((value) => (
-              <SectorAlteration
+              <SectionAlteration
                 key={value}
                 value={value}
                 current={current}
                 tonic={keySignature?.tonic}
                 label={FIFTHS_ALTERATIONS[value]}
-                radius={SECTORS.alt.middle * SIZE}
+                section={sections.alt}
               />
             ))}
           {/* MAJOR */}
-          {displayConfig.displayMajor &&
+          {config.displayMajor &&
             FIFTHS_INDEXES.map((value) => (
-              <SectorMajor
+              <SectionMajor
                 label={FIFTHS_MAJOR[value]}
                 key={`major_${value}`}
                 value={value}
                 current={current}
                 rotation={rotation}
-                sector={SECTORS.major}
+                section={sections.major}
                 onClick={handleClick}
-                displaySuspended={displayConfig.displaySuspended}
+                config={config}
                 chord={chord}
+                notes={notes}
                 keySignature={keySignature}
               />
             ))}
           {/* SUSPENDED MAJOR */}
-          {displayConfig.displayMajor &&
-            displayConfig.displaySuspended &&
+          {config.displayMajor &&
+            config.displaySuspended &&
             FIFTHS_INDEXES.map((value) => (
               <g key={`sus_maj_${value}`}>
-                <SectorSuspended
+                <SectionSuspended
                   value={value}
                   current={current}
                   quality="sus4"
-                  sector={SECTORS.major}
-                  sectorType="major"
+                  section={sections.major}
+                  sectionType="major"
                   onClick={handleClick}
                   chord={chord}
                   keySignature={keySignature}
+                  config={config}
                 />
-                <SectorSuspended
+                <SectionSuspended
                   value={value}
                   current={current}
                   quality="sus2"
-                  sector={SECTORS.major}
-                  sectorType="major"
+                  section={sections.major}
+                  sectionType="major"
                   onClick={handleClick}
                   chord={chord}
                   keySignature={keySignature}
+                  config={config}
                 />
               </g>
             ))}
+          {/* DOMINANTS */}
+          {config.displayDominants &&
+            FIFTHS_INDEXES.map((value) => (
+              <SectionDominants
+                key={`dom_${value}`}
+                value={value}
+                current={current}
+                label={FIFTHS_DOMINANTS[value]}
+                section={sections.dom}
+                chord={chord}
+                keySignature={keySignature}
+                config={config}
+              />
+            ))}
           {/* SUSPENDED MINOR */}
-          {displayConfig.displayMinor &&
-            displayConfig.displaySuspended &&
+          {config.displayMinor &&
+            config.displaySuspended &&
             FIFTHS_INDEXES.map((value) => (
               <g key={`sus_min_${value}`}>
-                <SectorSuspended
+                <SectionSuspended
                   value={value}
                   current={current}
                   quality="sus4"
-                  sector={SECTORS.minor}
-                  sectorType="minor"
+                  section={sections.minor}
+                  sectionType="minor"
                   onClick={handleClick}
                   chord={chord}
                   keySignature={keySignature}
+                  config={config}
                 />
-                <SectorSuspended
+                <SectionSuspended
                   value={value}
                   current={current}
                   quality="sus2"
-                  sector={SECTORS.minor}
-                  sectorType="minor"
+                  section={sections.minor}
+                  sectionType="minor"
                   onClick={handleClick}
                   chord={chord}
                   keySignature={keySignature}
+                  config={config}
                 />
               </g>
             ))}
           {/* MINOR */}
-          {displayConfig.displayMinor &&
+          {config.displayMinor &&
             FIFTHS_INDEXES.map((value) => (
-              <SectorMinor
+              <SectionMinor
                 key={`minor_${value}`}
                 label={FIFTHS_MINOR[value]}
                 value={value}
                 current={current}
                 rotation={rotation}
-                sector={SECTORS.minor}
+                section={sections.minor}
                 onClick={handleClick}
-                displaySuspended={displayConfig.displaySuspended}
+                config={config}
                 chord={chord}
+                notes={notes}
                 keySignature={keySignature}
               />
             ))}
           {/* DIMINISHED */}
-          {displayConfig.displayDiminished &&
+          {config.displayDiminished &&
             FIFTHS_INDEXES.map((value) => (
-              <SectorDiminished
+              <SectionDiminished
                 key={`diminished_${value}`}
                 label={FIFTHS_DIMINISHED[value]}
                 value={value}
                 current={current}
                 rotation={rotation}
-                sector={SECTORS.dim}
+                section={sections.dim}
                 onClick={handleClick}
                 chord={chord}
+                notes={notes}
                 keySignature={keySignature}
-              />
-            ))}
-          {/* DOMINANTS */}
-          {displayConfig.displayDominants &&
-            FIFTHS_INDEXES.map((value) => (
-              <SectorDominants
-                key={`dom_${value}`}
-                value={value}
-                current={current}
-                label={FIFTHS_DOMINANTS[value]}
-                radius={SECTORS.dom.middle * SIZE}
-                chord={chord}
-                keySignature={keySignature}
+                config={config}
               />
             ))}
         </g>
         {/* DEGREES */}
-        {displayConfig.displayDegrees && displayConfig.displayMajor && (
-          <Degrees
-            scale="major"
-            sectors={SECTORS}
-            displayConfig={displayConfig}
-          />
+        {config.displayDegrees && config.displayMajor && (
+          <Degrees scale="major" section={sections.degreesMajor} />
         )}
-        {displayConfig.displayDegrees && displayConfig.displayMinor && (
-          <Degrees
-            scale="minor"
-            sectors={SECTORS}
-            displayConfig={displayConfig}
-          />
+        {config.displayDegrees && config.displayMinor && (
+          <Degrees scale="minor" section={sections.degreesMinor} />
+        )}
+        {config.displayModes && (
+          <Modes section={sections.modes} config={config} />
+        )}
+        {config.displayDegreeLabels && (
+          <DegreeLabels scale="major" sections={sections} config={config} />
+        )}
+        {config.displayDegreeLabels && (
+          <DegreeLabels scale="minor" sections={sections} config={config} />
         )}
       </svg>
       <div className={cx('content')}>{children}</div>

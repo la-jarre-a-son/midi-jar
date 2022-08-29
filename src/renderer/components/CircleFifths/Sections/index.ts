@@ -1,0 +1,12 @@
+export { default as SectionAlteration } from './Alteration';
+export { default as SectionDominants } from './Dominants';
+export { default as SectionLabel } from './Label';
+export { default as SectionSusLabel } from './SusLabel';
+export { default as SectionMajor } from './Major';
+export { default as SectionMinor } from './Minor';
+export { default as SectionDiminished } from './Diminished';
+export { default as SectionSuspended } from './Suspended';
+export { default as DegreeLabel } from './DegreeLabel';
+export { default as DegreeLabels } from './DegreeLabels';
+export { default as Degrees } from './Degrees';
+export { default as Modes } from './Modes';

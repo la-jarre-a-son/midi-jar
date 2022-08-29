@@ -30,21 +30,10 @@
 
 .wheel {
   fill: $color-neutral-dark;
-  transition: transform 0.7s ease;
-}
-
-.degrees {
-  pointer-events: none;
-  text {
-    font-family: serif;
-    font-weight: bold;
-    fill: rgba($color-white, 0.5);
-  }
 }
 
 .name {
   fill: rgba($color-white, 0.5);
-  transition: transform 0.7s ease;
 }
 
 .badge {
@@ -52,16 +41,60 @@
 }
 
 .sector {
+  fill: $color-neutral-normal;
   stroke: $color-neutral-darker;
 }
 
-.alterations {
-  > path {
-    fill: none;
-    stroke: none;
+.followPath {
+  fill: none;
+  stroke: none;
+}
+
+// DEGREES
+
+.degreeLabels {
+  pointer-events: none;
+}
+
+.degreeLabel {
+  font-family: serif;
+  font-weight: bold;
+  fill: rgba($color-white, 0.5);
+}
+
+.degreeTitle {
+  .degreeSection {
+    fill: $color-neutral-dark;
   }
 
-  > text {
+  text {
+    fill: $color-white;
+  }
+}
+
+.degree {
+  text {
+    fill: $color-neutral-darker;
+  }
+}
+
+// MODES
+
+.mode {
+  text {
+    fill: $color-white;
+  }
+}
+
+.modeSeparator {
+  stroke: $color-white;
+  stroke-width: 0.1;
+}
+
+// ALTERATIONS
+
+.alterations {
+  text {
     fill: rgba($color-white, 0.5);
   }
 
@@ -72,24 +105,33 @@
   }
 }
 
-.dominants {
-  > path {
-    fill: none;
-    stroke: none;
-  }
+// DOMINANTS
 
-  > text {
+.dominants {
+  text {
     fill: rgba($color-white, 0.5);
   }
 
   &--selected {
-    > text {
+    text {
       fill: $color-white;
     }
   }
 }
 
-// Sector variants
+.dominant--isInScale {
+  .sector {
+    fill: $color-primary-dark;
+  }
+}
+
+// Section variants
+
+.key--isMainSection {
+  .sector {
+    fill: $color-neutral-light;
+  }
+}
 
 .key.key--isInScale {
   .sector {
@@ -120,10 +162,6 @@
 }
 
 .key--major {
-  .sector {
-    fill: $color-neutral-light;
-  }
-
   &.key--selected {
     .sector {
       fill: $color-primary-normal;
@@ -132,10 +170,6 @@
 }
 
 .key--minor {
-  .sector {
-    fill: $color-neutral-normal;
-  }
-
   &.key--selected {
     .sector {
       fill: $color-primary-normal;
@@ -170,9 +204,8 @@
 
 // Chord play
 
-.dominants {
-  .dominant--active {
-    font-weight: bold;
+.dominant.dominant--active {
+  .sector {
     fill: $color-success-normal;
   }
 }
@@ -195,5 +228,15 @@
         fill: $color-primary-light;
       }
     }
+  }
+}
+
+// Transition
+
+.wheel--isRotating {
+  transition: transform 0.7s ease;
+
+  .name {
+    transition: transform 0.7s ease;
   }
 }

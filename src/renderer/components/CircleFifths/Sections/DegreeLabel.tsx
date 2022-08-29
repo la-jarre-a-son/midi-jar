@@ -1,46 +1,50 @@
-import React from 'react';
+import React, { memo } from 'react';
+import classNames from 'classnames/bind';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
-import { SIZE, CX, CY, SUSPENDED_OFFSET, polar, Sector } from '../utils';
+import { CX, CY, SUSPENDED_OFFSET, polar, Section } from '../utils';
+
+import styles from '../CircleFifths.module.scss';
+
+const cx = classNames.bind(styles);
 
 type DegreeLabelProps = {
   offset: number;
-  sector: Sector;
+  section: Section;
   label: string;
   anchor?: 'left' | 'right';
   displaySuspended?: boolean;
-  displayed?: boolean;
 };
 
-export const DegreeLabel: React.FC<DegreeLabelProps> = ({
+const DegreeLabel: React.FC<DegreeLabelProps> = ({
   offset,
-  sector,
+  section,
   anchor,
   label,
   displaySuspended,
-  displayed,
 }) => {
-  if (!displayed) return null;
   const value = offset < 0 ? 12 + offset : offset;
-  const radius = sector.start * SIZE;
   const suspendedOffset = displaySuspended ? SUSPENDED_OFFSET : 0;
   const ANGLE_OFFSET =
     anchor === 'left' ? -0.46 + suspendedOffset : 0.46 - suspendedOffset;
-  const WHEEL_OFFSET = -2.25;
+  const fontSize = (section.start - section.end) / 7;
+
+  const WHEEL_OFFSET = -1.2 * fontSize;
   const COORDS = polar(
     CX,
     CY,
-    radius + WHEEL_OFFSET,
+    section.start + WHEEL_OFFSET,
     (value + ANGLE_OFFSET) / 12
   );
 
   return (
     <text
+      className={cx('degreeLabel')}
       x={COORDS[0]}
       y={COORDS[1]}
       textAnchor={anchor === 'left' ? 'start' : 'end'}
-      fontSize={2}
+      fontSize={fontSize}
       transform={`rotate(${(value + ANGLE_OFFSET) * 30}, ${COORDS[0]}, ${
         COORDS[1]
       })`}
@@ -53,5 +57,6 @@ export const DegreeLabel: React.FC<DegreeLabelProps> = ({
 DegreeLabel.defaultProps = {
   anchor: 'left',
   displaySuspended: false,
-  displayed: false,
 };
+
+export default memo(DegreeLabel);

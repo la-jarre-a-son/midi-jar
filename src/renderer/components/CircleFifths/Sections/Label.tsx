@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
-import { formatSharpsFlats } from 'renderer/helpers/note';
-
-import { CX, CY, polar, cPolar, isKeySelected } from '../utils';
+import { CX, CY, polar, cPolar, isKeySelected, formatLabel } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
 const cx = classnames.bind(styles);
 
-type SectorLabelProps = {
+type SectionLabelProps = {
   value: number;
   label: string | string[];
   rotation: number;
@@ -19,7 +17,7 @@ type SectorLabelProps = {
   quality: string;
 };
 
-export const SectorLabel: React.FC<SectorLabelProps> = ({
+const SectionLabel: React.FC<SectionLabelProps> = ({
   value,
   label,
   rotation,
@@ -50,7 +48,7 @@ export const SectorLabel: React.FC<SectorLabelProps> = ({
             value / 12
           )})`}
         >
-          {formatSharpsFlats(labels[0]) + quality}
+          {formatLabel(labels[0], quality)}
         </text>
         <text
           className={cx('name', {
@@ -69,7 +67,7 @@ export const SectorLabel: React.FC<SectorLabelProps> = ({
             value / 12
           )})`}
         >
-          {formatSharpsFlats(labels[1]) + quality}
+          {formatLabel(labels[1], quality)}
         </text>
       </>
     );
@@ -85,11 +83,13 @@ export const SectorLabel: React.FC<SectorLabelProps> = ({
       dy={0.33 * fontSize}
       transform={`rotate(${rotation}, ${cPolar(CX, CY, radius, value / 12)})`}
     >
-      {formatSharpsFlats(labels[0]) + quality}
+      {formatLabel(labels[0], quality)}
     </text>
   );
 };
 
-SectorLabel.defaultProps = {
+SectionLabel.defaultProps = {
   tonic: undefined,
 };
+
+export default memo(SectionLabel);
