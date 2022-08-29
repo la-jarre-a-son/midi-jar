@@ -22,13 +22,18 @@ export type ChordDisplaySettings = {
 };
 
 export type CircleOfFifthsSettings = {
-  displayDominants: boolean;
+  scale: 'major' | 'minor';
+  highlightSector: 'chord' | 'notes';
+  highlightInScale: boolean;
   displayMajor: boolean;
   displayMinor: boolean;
   displayDiminished: boolean;
-  displayAlt: boolean;
+  displayDominants: boolean;
+  displayAlterations: boolean;
   displaySuspended: boolean;
+  displayModes: boolean;
   displayDegrees: boolean;
+  displayDegreeLabels: boolean;
 };
 
 export type NotationSettings = {

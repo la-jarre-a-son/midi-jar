@@ -25,7 +25,7 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
   const { settings, updateSetting } = useSettings();
 
   const key = settings?.notation.key || defaults.settings.notation.key;
-  const { chords, keySignature } = useNotes({
+  const { chords, pitchClasses, keySignature } = useNotes({
     key,
     midiChannel: 0,
   });
@@ -39,8 +39,7 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
 
   if (!settings) return null;
 
-  const displaySettings =
-    settings.circleOfFifths ?? defaults.settings.circleOfFifths;
+  const config = settings.circleOfFifths ?? defaults.settings.circleOfFifths;
 
   return (
     <div className={cx('base')}>
@@ -48,8 +47,9 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
         className={className}
         keySignature={keySignature}
         chord={chords[0]}
+        notes={pitchClasses}
         onChange={disableUpdate ? undefined : handleKeyChange}
-        {...displaySettings}
+        config={config}
       >
         <div id="chord" className={cx('chord')}>
           <ChordName chord={chords[0]} hideRoot />

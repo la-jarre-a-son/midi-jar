@@ -81,7 +81,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <SettingsContext.Provider value={value}>
-      {children}
+      {settings ? children : null}
     </SettingsContext.Provider>
   );
 };

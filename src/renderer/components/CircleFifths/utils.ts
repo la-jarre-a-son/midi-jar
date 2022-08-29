@@ -2,10 +2,11 @@ import { Note } from '@tonaljs/tonal';
 import { Chord } from '@tonaljs/chord';
 
 import { range } from 'renderer/helpers';
+import { formatSharpsFlats } from 'renderer/helpers/note';
 
 // Types
 
-export type Sector = {
+export type Section = {
   enabled: boolean;
   size: number;
   start: number;
@@ -14,16 +15,30 @@ export type Sector = {
   align: number;
 };
 
-export type SectorType = 'alt' | 'major' | 'dom' | 'minor' | 'dim';
-export type Sectors = Record<SectorType, Sector>;
+export type SectionType =
+  | 'alt'
+  | 'modes'
+  | 'degreesMajor'
+  | 'major'
+  | 'dom'
+  | 'degreesMinor'
+  | 'minor'
+  | 'dim';
+export type Sections = Record<SectionType, Section>;
 
-export type CircleOfFifthsDisplayConfig = {
-  displaySuspended?: boolean;
-  displayDominants?: boolean;
+export type CircleOfFifthsConfig = {
+  scale?: 'major' | 'minor';
+  highlightSector?: 'chord' | 'notes';
+  highlightInScale?: boolean;
   displayMajor?: boolean;
   displayMinor?: boolean;
+  displayDominants?: boolean;
+  displaySuspended?: boolean;
   displayDiminished?: boolean;
-  displayAlt?: boolean;
+  displayAlterations?: boolean;
+  displayModes?: boolean;
+  displayDegrees?: boolean;
+  displayDegreeLabels?: boolean;
 };
 
 // Constants
@@ -53,122 +68,260 @@ export const FIFTHS_ALTERATIONS =
     .split(' ')
     .map((v) => v.split('/'));
 
-export const DEGREES_OFFSETS: [SectorType, number][] = [
-  /* sector, offset */
-  ['major', 0],
-  ['minor', -1],
-  ['minor', 1],
-  ['major', -1],
-  ['major', 1],
-  ['minor', 0],
-  ['dim', 0],
+export const DEGREE_NAMES =
+  'tonic,supertonic,mediant,subdominant,dominant,submediant,leading tone'
+    .toUpperCase()
+    .split(',');
+
+export const DEGREE_COLORS = [
+  '#6F8CDD',
+  '#958FF2',
+  '#DEB54E',
+  '#F28FCF',
+  '#F2777B',
+  '#F2DE6B',
+  '#64DE84',
 ];
+
+export const DEGREE_OFFSETS_MAJOR = [0, 2, 4, -1, 1, 3, 5];
+export const DEGREE_OFFSETS_MINOR = [0, 2, -3, -1, 1, -4, -2];
+
 export const DEGREES_MAJOR = 'I ii iii IV V vi vii°'.split(' ');
-export const DEGREES_MINOR = 'bIII iv v bVI bVII i ii'.split(' ');
+export const DEGREES_MINOR = 'i ii bIII iv v bVI bVII'.split(' ');
 
-const SECTORS_TOTAL = 0.37;
+export const MODE_OFFSETS = [0, 2, 4, -1, 1, 3, 5];
 
-const SECTORS: Sectors = {
+export const MODE_NAMES =
+  'ionian dorian phrygian lydian mixolydian aeolian locrian'
+    .toUpperCase()
+    .split(' ');
+
+const SECTIONS_TOTAL = 0.41;
+
+const SECTIONS: Sections = {
   alt: {
-    size: 0.05,
+    size: 0.03,
     enabled: true,
     start: 0.5,
-    end: 0.45,
-    middle: 0.46,
+    end: 0.47,
+    middle: 0.476,
     align: 0.2,
+  },
+  modes: {
+    size: 0.02,
+    enabled: true,
+    start: 0.47,
+    end: 0.45,
+    middle: 0.466,
+    align: 0.3,
+  },
+  degreesMajor: {
+    size: 0.02,
+    enabled: true,
+    start: 0.45,
+    end: 0.43,
+    middle: 0.446,
+    align: 0.25,
   },
   major: {
     size: 0.1,
     enabled: true,
-    start: 0.45,
-    end: 0.35,
-    middle: 0.4,
+    start: 0.43,
+    end: 0.33,
+    middle: 0.38,
     align: 0.5,
   },
   dom: {
+    size: 0.03,
+    enabled: true,
+    start: 0.33,
+    end: 0.3,
+    middle: 0.31,
+    align: 0.3,
+  },
+  degreesMinor: {
     size: 0.02,
     enabled: true,
-    start: 0.35,
-    end: 0.33,
-    middle: 0.3325,
-    align: 0.15,
+    start: 0.3,
+    end: 0.28,
+    middle: 0.286,
+    align: 0.25,
   },
   minor: {
     size: 0.1,
     enabled: true,
-    start: 0.33,
-    end: 0.23,
-    middle: 0.28,
+    start: 0.28,
+    end: 0.18,
+    middle: 0.24,
     align: 0.5,
   },
   dim: {
-    size: 0.1,
+    size: 0.09,
     enabled: true,
-    start: 0.23,
-    end: 0.13,
-    middle: 0.18,
+    start: 0.18,
+    end: 0.09,
+    middle: 0.135,
     align: 0.5,
   },
 };
 
+const SECTIONS_ORDER_MAJOR: (keyof typeof SECTIONS)[] = [
+  'alt',
+  'modes',
+  'degreesMajor',
+  'major',
+  'dom',
+  'degreesMinor',
+  'minor',
+  'dim',
+];
+const SECTIONS_ORDER_MINOR: (keyof typeof SECTIONS)[] = [
+  'alt',
+  'modes',
+  'degreesMinor',
+  'minor',
+  'dom',
+  'degreesMajor',
+  'major',
+  'dim',
+];
+
 /**
- * Returns true if the sector is displayed
- * @param type - The type of sector
+ * Returns true if the section is displayed
+ * @param type - The type of section
  * @param config - the display config
  * @returns
  */
-export const isSectorDisplayed = (
-  type: SectorType,
-  config?: CircleOfFifthsDisplayConfig
+export const isSectionDisplayed = (
+  type: SectionType,
+  config?: CircleOfFifthsConfig
 ) => {
   if (config) {
-    if (type === 'alt' && !config.displayAlt) return false;
+    if (type === 'alt' && !config.displayAlterations) return false;
     if (type === 'major' && !config.displayMajor) return false;
-    if (type === 'dom' && !config.displayDominants) return false;
     if (type === 'minor' && !config.displayMinor) return false;
     if (type === 'dim' && !config.displayDiminished) return false;
+    if (type === 'dom' && !config.displayDominants) return false;
+    if (type === 'modes' && !config.displayModes) return false;
+    if (
+      type === 'degreesMajor' &&
+      !(config.displayDegrees && config.displayMajor)
+    )
+      return false;
+    if (
+      type === 'degreesMinor' &&
+      !(config.displayDegrees && config.displayMinor)
+    )
+      return false;
   }
 
   return true;
 };
 
 /**
- * Get the sectors radius ranges
+ * Get the sections radius ranges
  * @returns
  */
-export const getSectors = (config: CircleOfFifthsDisplayConfig = {}) => {
-  const sectorsObj = (Object.keys(SECTORS) as (keyof typeof SECTORS)[]).reduce(
-    (obj, type: keyof typeof SECTORS) => {
-      const { size } = SECTORS[type];
+export const getSections = (config: CircleOfFifthsConfig = {}) => {
+  const order =
+    config.scale === 'minor' ? SECTIONS_ORDER_MINOR : SECTIONS_ORDER_MAJOR;
 
-      const enabled = isSectorDisplayed(type, config);
+  const sectionsObj = order.reduce(
+    (obj, type: keyof typeof SECTIONS) => {
+      const { size } = SECTIONS[type];
 
-      obj.sectors[type].enabled = enabled;
+      const enabled = isSectionDisplayed(type, config);
+
+      obj.sections[type].enabled = enabled;
       obj.total += enabled ? size : 0;
 
       return obj;
     },
-    { total: 0, sectors: { ...SECTORS } }
+    { total: 0, sections: { ...SECTIONS } }
   );
 
-  const newTotal = (SECTORS_TOTAL + sectorsObj.total) / 2;
+  const newTotal = (SECTIONS_TOTAL + sectionsObj.total) / 2;
   let start = 0.5;
-  (Object.keys(SECTORS) as (keyof typeof SECTORS)[]).forEach((type) => {
-    const { size, enabled } = sectorsObj.sectors[type];
+  order.forEach((type) => {
+    const { size: initialSize, enabled } = sectionsObj.sections[type];
 
     if (enabled) {
-      const end = start - (size / sectorsObj.total) * newTotal;
-      const newSize = start - end;
-      sectorsObj.sectors[type].start = start;
-      sectorsObj.sectors[type].end = end;
-      sectorsObj.sectors[type].middle =
-        sectorsObj.sectors[type].end + newSize * sectorsObj.sectors[type].align;
+      const end = start - (initialSize / sectionsObj.total) * newTotal;
+      const size = start - end;
+
+      sectionsObj.sections[type].start = start * SIZE;
+      sectionsObj.sections[type].end = end * SIZE;
+      sectionsObj.sections[type].middle =
+        sectionsObj.sections[type].end +
+        size * sectionsObj.sections[type].align * SIZE;
 
       start = end;
     }
   });
 
-  return sectorsObj.sectors;
+  return sectionsObj.sections;
+};
+
+export const getDegreePosition = (
+  scale: 'major' | 'minor',
+  degree: number,
+  config?: CircleOfFifthsConfig
+): [SectionType, number, string] | null => {
+  if (scale === 'minor') {
+    const offset = DEGREE_OFFSETS_MINOR[degree];
+    const label = DEGREES_MINOR[degree];
+
+    if (config?.displayMinor) {
+      if (
+        offset - 2 === 0 &&
+        config?.displayDiminished &&
+        config?.highlightInScale
+      ) {
+        return ['dim', offset - 2, label];
+      }
+
+      if (
+        (offset < -1 || offset > 1) &&
+        config?.displayMajor &&
+        config?.highlightInScale
+      ) {
+        return ['major', offset + 3, label];
+      }
+
+      return ['minor', offset, label];
+    }
+
+    if (config?.displayMajor) {
+      return ['major', offset + 3, label];
+    }
+  }
+
+  if (scale === 'major') {
+    const offset = DEGREE_OFFSETS_MAJOR[degree];
+    const label = DEGREES_MAJOR[degree];
+
+    if (config?.displayMajor) {
+      if (
+        offset - 5 === 0 &&
+        config?.displayDiminished &&
+        config?.highlightInScale
+      ) {
+        return ['dim', offset - 5, label];
+      }
+
+      if (
+        (offset < -1 || offset > 1) &&
+        config?.displayMinor &&
+        config?.highlightInScale
+      ) {
+        return ['minor', offset - 3, label];
+      }
+
+      return ['major', offset, label];
+    }
+  }
+
+  return null;
 };
 
 /**
@@ -220,17 +373,17 @@ export const drawArc = (
 `;
 
 /**
- * Returns the svg path for a sector of the circle
+ * Returns the svg path for a section of the circle
  *
  * @param ox - origin X of the center
  * @param oy - origin Y of the center
- * @param d1 - close distance of the sector
- * @param d2 - far distance of the sector
- * @param a1 - start angle of the sector
- * @param a2 - end angle of the sector
- * @returns {string} - the svg path of the sector
+ * @param d1 - close distance of the section
+ * @param d2 - far distance of the section
+ * @param a1 - start angle of the section
+ * @param a2 - end angle of the section
+ * @returns {string} - the svg path of the section
  */
-export const drawSector = (
+export const drawSection = (
   ox: number, // origin X
   oy: number, // origin Y
   d1: number, // distance 1
@@ -245,11 +398,22 @@ export const drawSector = (
   Z
 `;
 
+export const drawLineSeparator = (
+  ox: number, // origin X
+  oy: number, // origin Y
+  d1: number, // distance 1
+  d2: number, // distance 2
+  a: number // angle
+) => `
+  M ${cPolar(ox, oy, d1, a)}
+  L ${cPolar(ox, oy, d2, a)}
+`;
+
 /**
- * Returns true if the current sector is in the corresponding scale of the circle of fifths
+ * Returns true if the current section is in the corresponding scale of the circle of fifths
  *
  * @param current - the current key index in the circle of fifths
- * @param value - the sector index in the circle of fifths
+ * @param value - the section index in the circle of fifths
  * @returns {boolean}
  */
 export const isInScale = (current: number, value: number) => {
@@ -293,51 +457,142 @@ export const isSusInScale = (
   return false;
 };
 
-export const isSameNote = (a: string, b: string) =>
-  Note.chroma(a) === Note.chroma(b);
+export const isSameNote = (a?: string | null, b?: string | null) =>
+  a && b && Note.chroma(a) === Note.chroma(b);
 
-const SUS4_CHORDS = ['sus4', 'sus24', '7sus4', 'M7sus4', 'M9sus4'];
-const SUS2_CHORDS = ['sus2', 'sus24'];
+const DOMINANT_CHORDS = ['7', '7no5', '9', '9no5', '7b9'];
+
+export const isDiminished = (chord?: Chord | null, tonic?: string) =>
+  (chord &&
+    chord.quality === 'Diminished' &&
+    chord.quality === 'Diminished' &&
+    (!tonic || isSameNote(tonic, chord.tonic))) ||
+  (chord?.aliases[0] === 'dim7' &&
+    (!tonic ||
+      isSameNote(tonic, chord?.notes[0]) ||
+      isSameNote(tonic, chord?.notes[1]) ||
+      isSameNote(tonic, chord?.notes[2]) ||
+      isSameNote(tonic, chord?.notes[3])));
+
+export const isDominantChord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  DOMINANT_CHORDS.includes(chord.aliases[0]) &&
+  (!tonic || isSameNote(chord.tonic, tonic));
+
+export const isMajorChord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.quality === 'Major' &&
+  !isDominantChord(chord) &&
+  (!tonic || isSameNote(chord.tonic, tonic));
+
+export const isMinorChord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.quality === 'Minor' &&
+  (!tonic || isSameNote(chord.tonic, tonic));
+
+export const isSus2Chord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.aliases[0].match(/sus2/) &&
+  (!tonic || isSameNote(tonic, chord.tonic));
+
+export const isSus4Chord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.aliases[0].match(/sus24|sus4/) &&
+  (!tonic || isSameNote(tonic, chord.tonic));
+
+export const isMinorAugmentedChord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.quality === 'Augmented' &&
+  chord.aliases[0].startsWith('m') &&
+  (!tonic || isSameNote(chord.tonic, tonic));
+
+export const isMajorAugmentedChord = (chord?: Chord | null, tonic?: string) =>
+  chord &&
+  chord.quality === 'Augmented' &&
+  !isMinorAugmentedChord(chord) &&
+  (!tonic || isSameNote(chord.tonic, tonic));
+
+export const isMainSection = (
+  section: 'major' | 'minor' | 'dim' | 'dom' | 'sus2' | 'sus4',
+  config: CircleOfFifthsConfig
+) =>
+  (section === config.scale && config.displayMajor && config.displayMinor) ||
+  (section === 'minor' && !config.displayMajor && config.displayMinor) ||
+  (section === 'major' && !config.displayMinor && config.displayMajor);
 
 /**
- * Returns true if the chord corresponds to the circle of fifths sector
+ * Returns true if the chord corresponds to the circle of fifths section, also depending on the sections shown
  *
- * @param tonic - the tonic of the sector
- * @param quality - the quality of the correspondig chords
+ * @param tonic - the tonic of the section
+ * @param section - the section being checked
  * @param chord - the currently detected chord
+ * @param config - the circle config
  * @returns
  */
-export const isPressed = (
+export const isChordPressed = (
   tonic: string,
-  quality: string,
-  chord?: Chord | null
+  section: 'major' | 'minor' | 'dim' | 'dom' | 'sus2' | 'sus4',
+  chord: Chord | null | undefined,
+  config: CircleOfFifthsConfig
 ) => {
   if (!chord || !chord.tonic) return false;
+  if (config.highlightSector !== 'chord') return false;
 
   if (
-    quality === 'Diminished' &&
-    chord.aliases[0] === 'dim7' &&
-    (isSameNote(tonic, chord.notes[0]) ||
-      isSameNote(tonic, chord.notes[1]) ||
-      isSameNote(tonic, chord.notes[2]) ||
-      isSameNote(tonic, chord.notes[3]))
+    (section === 'dim' ||
+      (isMainSection(section, config) && !config.displayDiminished)) &&
+    isDiminished(chord, tonic)
   )
     return true;
 
   if (
-    quality === 'sus4' &&
-    isSameNote(tonic, chord.tonic) &&
-    SUS4_CHORDS.includes(chord.aliases[0])
-  )
-    return true;
-  if (
-    quality === 'sus2' &&
-    isSameNote(tonic, chord.tonic) &&
-    SUS2_CHORDS.includes(chord.aliases[0])
+    (section === 'dom' ||
+      (isMainSection(section, config) && !config.displayDominants)) &&
+    isDominantChord(chord, tonic)
   )
     return true;
 
-  return isSameNote(tonic, chord.tonic) && quality === chord.quality;
+  if (
+    (section === 'sus4' ||
+      (isMainSection(section, config) && !config.displaySuspended)) &&
+    isSus4Chord(chord, tonic)
+  )
+    return true;
+  if (
+    (section === 'sus2' ||
+      (isMainSection(section, config) && !config.displaySuspended)) &&
+    isSus2Chord(chord, tonic)
+  )
+    return true;
+
+  if (
+    (section === 'minor' ||
+      (isMainSection(section, config) && !config.displayMinor)) &&
+    (isMinorChord(chord, tonic) || isMinorAugmentedChord(chord, tonic))
+  )
+    return true;
+
+  if (
+    (section === 'major' ||
+      (isMainSection(section, config) && !config.displayMajor)) &&
+    (isMajorChord(chord, tonic) || isMajorAugmentedChord(chord, tonic))
+  )
+    return true;
+
+  return false;
+};
+
+/**
+ * Returns true if the not is in passed array
+ *
+ * @param note - the note to compare
+ * @param notes - the pressed notes
+ * @returns
+ */
+export const isNotePressed = (note: string, notes?: string[]) => {
+  if (!notes || !notes.length) return false;
+
+  return notes.findIndex((pressed) => isSameNote(note, pressed)) > -1;
 };
 
 /**
@@ -350,10 +605,10 @@ export const getCurrentKey = (alteration: number) =>
   alteration < 0 ? alteration + 12 : alteration;
 
 /**
- * Returns true if the sector key name is currently selected
+ * Returns true if the section key name is currently selected
  *
  * @param tonic - the current key signature tonic
- * @param fifthsIndex - this index of the fifths (sector)
+ * @param fifthsIndex - this index of the fifths (section)
  * @param alternative - the alternative to compare - defaults to 0
  * @returns
  */
@@ -367,12 +622,19 @@ export const isKeySelected = (
   return FIFTHS_MAJOR[fifthsIndex][alternative] === tonic;
 };
 
-const DOMINANT_CHORDS = ['7', '7no5', '9', '9no5', '7b9'];
+export const formatLabel = (label: string, quality: string) => {
+  const note = formatSharpsFlats(label);
 
-export const isSameDominant = (note: string, chord?: Chord | null) => {
-  if (!note || !chord || !chord.tonic) return false;
-
-  return (
-    isSameNote(note, chord.tonic) && DOMINANT_CHORDS.includes(chord.aliases[0])
-  );
+  switch (quality) {
+    case 'major':
+      return note;
+    case 'minor':
+      return note.toLocaleLowerCase();
+    case 'dim':
+      return `${note}°`;
+    case 'dom':
+      return `${note}7`;
+    default:
+      return note + quality;
+  }
 };

@@ -1,71 +1,79 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import classnames from 'classnames/bind';
 import { Chord } from '@tonaljs/chord';
 
 import { KeySignatureConfig } from 'renderer/helpers/note';
 
 import {
-  SIZE,
   CX,
   CY,
   SUSPENDED_OFFSET,
   polar,
-  drawSector,
+  drawSection,
   isInScale,
-  isPressed,
-  Sector,
+  isChordPressed,
+  Section,
+  CircleOfFifthsConfig,
+  isNotePressed,
+  isMainSection,
 } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
-import { SectorLabel } from './Label';
+import SectionLabel from './Label';
 
 const cx = classnames.bind(styles);
 
-type SectorMinorProps = {
+type SectionMajorProps = {
   label: string[];
   value: number;
   current: number;
   rotation: number;
-  sector: Sector;
+  section: Section;
   onClick: (value: number) => void;
   chord?: Chord | null;
+  notes?: string[];
   keySignature?: KeySignatureConfig;
-  displaySuspended: boolean;
+  config: CircleOfFifthsConfig;
 };
 
-export const SectorMinor: React.FC<SectorMinorProps> = ({
+const SectionMajor: React.FC<SectionMajorProps> = ({
   label,
   value,
   current,
   rotation,
   chord,
+  notes,
   keySignature,
   onClick,
-  sector,
-  displaySuspended,
+  section,
+  config,
 }) => {
-  const suspendedOffset = displaySuspended ? SUSPENDED_OFFSET : 0;
+  const suspendedOffset = config.displaySuspended ? SUSPENDED_OFFSET : 0;
 
   const handleClick = useCallback(() => onClick(value), [value, onClick]);
 
   return (
     <g
-      className={cx('key', 'key--minor', {
+      className={cx('key', 'key--major', {
+        'key--isMainSection': isMainSection('major', config),
         'key--selected': value === current,
-        'key--isInScale': isInScale(current, value),
-        'key--active': isPressed(label[0], 'Minor', chord),
+        'key--isInScale': config?.highlightInScale && isInScale(current, value),
+        'key--active':
+          config.highlightSector === 'notes'
+            ? isNotePressed(label[0], notes)
+            : isChordPressed(label[0], 'major', chord, config),
         'key--multiple': label.length > 1,
       })}
       onClick={handleClick}
     >
       <path
         className={cx('sector')}
-        d={drawSector(
+        d={drawSection(
           CX,
           CY,
-          sector.start * SIZE,
-          sector.end * SIZE,
+          section.start,
+          section.end,
           (value - (0.5 - suspendedOffset)) / 12,
           (value + (0.5 - suspendedOffset)) / 12
         )}
@@ -73,24 +81,27 @@ export const SectorMinor: React.FC<SectorMinorProps> = ({
       />
       <circle
         className={cx('badge')}
-        cx={polar(CX, CY, sector.middle * SIZE, value / 12)[0]}
-        cy={polar(CX, CY, sector.middle * SIZE, value / 12)[1]}
+        cx={polar(CX, CY, section.middle, value / 12)[0]}
+        cy={polar(CX, CY, section.middle, value / 12)[1]}
         r="3.6"
       />
-      <SectorLabel
-        rotation={rotation}
-        radius={sector.middle * SIZE}
+      <SectionLabel
         value={value}
-        fontSize={2.5}
+        rotation={rotation}
+        radius={section.middle}
+        fontSize={4}
         label={label}
         tonic={keySignature?.tonic}
-        quality="min"
+        quality="major"
       />
     </g>
   );
 };
 
-SectorMinor.defaultProps = {
+SectionMajor.defaultProps = {
   chord: undefined,
+  notes: undefined,
   keySignature: undefined,
 };
+
+export default memo(SectionMajor);

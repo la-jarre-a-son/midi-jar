@@ -64,13 +64,18 @@ export const schema: Schema<StoreType> = {
       circleOfFifths: {
         type: 'object',
         properties: {
-          displayDominants: { type: 'boolean' },
+          scale: { type: 'string', enum: ['major', 'minor'] },
+          highlightSector: { type: 'string', enum: ['chord', 'notes'] },
+          highlightInScale: { type: 'boolean' },
           displayMajor: { type: 'boolean' },
           displayMinor: { type: 'boolean' },
           displayDiminished: { type: 'boolean' },
-          displayAlt: { type: 'boolean' },
+          displayDominants: { type: 'boolean' },
+          displayAlterations: { type: 'boolean' },
           displaySuspended: { type: 'boolean' },
+          displayModes: { type: 'boolean' },
           displayDegrees: { type: 'boolean' },
+          displayDegreeLabels: { type: 'boolean' },
         },
       },
       notation: {
@@ -109,13 +114,18 @@ const defaultChordDisplaySettings = {
 };
 
 const defaultCircleOfFifthsSettings = {
-  displayDominants: false,
+  scale: 'major' as const,
+  highlightSector: 'chord' as const,
+  highlightInScale: true,
   displayMajor: true,
   displayMinor: true,
   displayDiminished: true,
-  displayAlt: true,
+  displayDominants: false,
   displaySuspended: false,
+  displayAlterations: true,
+  displayModes: false,
   displayDegrees: false,
+  displayDegreeLabels: false,
 };
 
 export const defaults = {
