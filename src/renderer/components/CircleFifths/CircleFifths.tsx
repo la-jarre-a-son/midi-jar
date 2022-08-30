@@ -37,6 +37,7 @@ import {
   Degrees,
   DegreeLabels,
   Modes,
+  Arrow,
 } from './Sections';
 
 import styles from './CircleFifths.module.scss';
@@ -329,6 +330,7 @@ const CircleFifths: React.FC<Props> = ({
             {config.displayDegreeLabels && (
               <DegreeLabels scale="minor" sections={sections} config={config} />
             )}
+            <Arrow section={sections.arrow} />
           </>
         )}
       </svg>

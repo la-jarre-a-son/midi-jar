@@ -15,6 +15,7 @@
 }
 
 .content {
+  z-index: -1;
   position: absolute;
   top: 0;
   left: 0;
@@ -48,6 +49,10 @@
 .followPath {
   fill: none;
   stroke: none;
+}
+
+.arrow {
+  fill: $color-neutral-light;
 }
 
 // DEGREES
