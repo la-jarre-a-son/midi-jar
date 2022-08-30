@@ -10,3 +10,4 @@ export { default as DegreeLabel } from './DegreeLabel';
 export { default as DegreeLabels } from './DegreeLabels';
 export { default as Degrees } from './Degrees';
 export { default as Modes } from './Modes';
+export { default as Arrow } from './Arrow';

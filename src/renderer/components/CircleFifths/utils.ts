@@ -23,7 +23,9 @@ export type SectionType =
   | 'dom'
   | 'degreesMinor'
   | 'minor'
-  | 'dim';
+  | 'dim'
+  | 'arrow';
+
 export type Sections = Record<SectionType, Section>;
 
 export type CircleOfFifthsConfig = {
@@ -96,7 +98,7 @@ export const MODE_NAMES =
     .toUpperCase()
     .split(' ');
 
-const SECTIONS_TOTAL = 0.41;
+const SECTIONS_TOTAL = 0.46;
 
 const SECTIONS: Sections = {
   alt: {
@@ -163,6 +165,14 @@ const SECTIONS: Sections = {
     middle: 0.135,
     align: 0.5,
   },
+  arrow: {
+    size: 0.04,
+    enabled: true,
+    start: 0.09,
+    end: 0.06,
+    middle: 0.075,
+    align: 0.5,
+  },
 };
 
 const SECTIONS_ORDER_MAJOR: (keyof typeof SECTIONS)[] = [
@@ -174,6 +184,7 @@ const SECTIONS_ORDER_MAJOR: (keyof typeof SECTIONS)[] = [
   'degreesMinor',
   'minor',
   'dim',
+  'arrow',
 ];
 const SECTIONS_ORDER_MINOR: (keyof typeof SECTIONS)[] = [
   'alt',
@@ -184,6 +195,7 @@ const SECTIONS_ORDER_MINOR: (keyof typeof SECTIONS)[] = [
   'degreesMajor',
   'major',
   'dim',
+  'arrow',
 ];
 
 /**
@@ -232,7 +244,7 @@ export const getSections = (config: CircleOfFifthsConfig = {}) => {
 
       const enabled = isSectionDisplayed(type, config);
 
-      obj.sections[type].enabled = enabled;
+      obj.sections[type] = { ...obj.sections[type], enabled };
       obj.total += enabled ? size : 0;
 
       return obj;
@@ -408,6 +420,17 @@ export const drawLineSeparator = (
   M ${cPolar(ox, oy, d1, a)}
   L ${cPolar(ox, oy, d2, a)}
 `;
+
+export const drawRegularPolygon = (
+  n: number, // number of sides
+  ox: number, // origin X
+  oy: number, // origin Y
+  r: number, // radius
+  a: number // angle
+) =>
+  range(0, n - 1)
+    .map((i) => cPolar(ox, oy, r, i / n + a))
+    .join(' ');
 
 /**
  * Returns true if the current section is in the corresponding scale of the circle of fifths
