@@ -38,7 +38,8 @@ const ChordDisplay: React.FC<Props> = ({
 }) => {
   const { settings } = useSettings();
 
-  const { key, accidentals } = settings?.notation ?? defaults.settings.notation;
+  const { key, accidentals, staffClef, staffTranspose } =
+    settings?.notation ?? defaults.settings.notation;
 
   let namespaceSettings = settings?.chordDisplay?.[namespace];
 
@@ -66,7 +67,7 @@ const ChordDisplay: React.FC<Props> = ({
   } = namespaceSettings;
 
   const {
-    notes,
+    midiNotes,
     pitchClasses,
     sustainedMidiNotes,
     playedMidiNotes,
@@ -94,8 +95,10 @@ const ChordDisplay: React.FC<Props> = ({
           <Notation
             id="notation"
             className={cx('notation', { 'notation--withChord': displayChord })}
-            notes={notes}
+            midiNotes={midiNotes}
             keySignature={keySignature}
+            staffClef={staffClef}
+            staffTranspose={staffTranspose}
           />
         )}
         {displayChord && (

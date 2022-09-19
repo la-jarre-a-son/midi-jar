@@ -1,5 +1,6 @@
 import { Voice, StaveNote } from 'vexflow';
 import { Note } from '@tonaljs/tonal';
+import { getNoteInKeySignature } from 'renderer/helpers/note';
 
 const NOTE_REGEX = /([a-g])(b|#)?(\d+)/i;
 const NOTE_C4_MIDI = Note.midi('C4') as number;
@@ -24,12 +25,16 @@ export const noteToVex = (note: string): VexNote | null => {
   return null;
 };
 
-export const getVoice = (notes: string[], clef: 'treble' | 'bass') => {
+export const getVoice = (
+  notes: string[],
+  clef: 'treble' | 'bass',
+  filterClef = true
+) => {
   const voice = new Voice();
 
   const voiceNotes = notes
     .map(noteToVex)
-    .filter((vn) => vn && vn.clef === clef) as VexNote[];
+    .filter((vn) => vn && (!filterClef || vn.clef === clef)) as VexNote[];
 
   if (voiceNotes.length) {
     const staveNote = new StaveNote({
@@ -44,4 +49,15 @@ export const getVoice = (notes: string[], clef: 'treble' | 'bass') => {
   }
 
   return null;
+};
+
+export const getTransposedNotes = (
+  midiNotes: number[],
+  keySignatureNotes: string[],
+  transpose = 0
+) => {
+  return midiNotes
+    .map((m) => Note.fromMidi(m + transpose))
+    .filter((m) => typeof m === 'string')
+    .map((n) => getNoteInKeySignature(n, keySignatureNotes));
 };

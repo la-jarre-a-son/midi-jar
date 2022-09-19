@@ -8,6 +8,7 @@ import FormField from 'renderer/components/FormField';
 import Toggle from 'renderer/components/Toggle';
 import InputNote from 'renderer/components/InputNote';
 
+import InputNumber from 'renderer/components/InputNumber';
 import { fields } from './constants';
 
 import styles from './NotationSettings.module.scss';
@@ -60,6 +61,38 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
               }
               successIcon="save"
               disabled={settings?.notation.key !== 'C'}
+            />
+          </FormField>
+
+          <FormField fieldId="notation_settings:staff-clef" label="Staff Clef">
+            <Toggle
+              id="notation_settings:staff-clef"
+              choices={fields.staffClef.choices}
+              onChange={(value) => updateSetting('notation.staffClef', value)}
+              value={
+                settings?.notation.staffClef ??
+                defaults.settings.notation.staffClef
+              }
+              successIcon="save"
+            />
+          </FormField>
+
+          <FormField
+            fieldId="notation_settings:staff-transpose"
+            label="Staff Transpose (in semitones)"
+            hint="You can transpose the staff notes: +12 for an octave"
+          >
+            <InputNumber
+              id="notation_settings:staff-transpose"
+              onChange={(value: number) =>
+                updateSetting('notation.staffTranspose', value)
+              }
+              type="number"
+              step="1"
+              value={
+                settings?.notation.staffTranspose ??
+                defaults.settings.notation.staffTranspose
+              }
             />
           </FormField>
         </section>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import classnames from 'classnames/bind';
 import {
   Accidental,
@@ -13,12 +13,14 @@ import {
 
 import { formatSharpsFlats, KeySignatureConfig } from '../../helpers/note';
 
-import { getVoice } from './utils';
+import { getTransposedNotes, getVoice } from './utils';
 
 import styles from './Notation.module.scss';
 
 const NOTATION_HEIGHT = 300;
 const STAVE_NOTE_WIDTH = 200;
+const STAVE_TREBLE_Y = 70;
+const STAVE_BASS_Y = 130;
 const ALTERATION_WIDTH = 8;
 
 const cx = classnames.bind(styles);
@@ -26,17 +28,34 @@ const cx = classnames.bind(styles);
 type Props = {
   id?: string;
   className?: string;
-  notes?: string[];
+  midiNotes?: number[];
   keySignature: KeySignatureConfig;
+  staffClef?: 'both' | 'bass' | 'treble';
+  staffTranspose?: number;
 };
 
 const defaultProps = {
   id: undefined,
   className: undefined,
-  notes: [],
+  midiNotes: [],
+  staffClef: 'both' as const,
+  staffTranspose: 0,
 };
 
-const Notation: React.FC<Props> = ({ id, className, notes, keySignature }) => {
+const Notation: React.FC<Props> = ({
+  id,
+  className,
+  midiNotes,
+  keySignature,
+  staffClef,
+  staffTranspose,
+}) => {
+  const notes = useMemo(
+    () =>
+      getTransposedNotes(midiNotes ?? [], keySignature.notes, staffTranspose),
+    [midiNotes, keySignature, staffTranspose]
+  );
+
   const container = useRef<HTMLDivElement | null>(null);
   const renderer = useRef<Renderer | null>(null);
 
@@ -56,63 +75,96 @@ const Notation: React.FC<Props> = ({ id, className, notes, keySignature }) => {
 
       context.clear();
 
-      const staveTreble = new Stave(0, 70, staveWidth);
-      staveTreble.addClef('treble');
-      staveTreble.addKeySignature(keySignature.tonic);
-      staveTreble.setText(
-        `Key: ${formatSharpsFlats(keySignature.tonic)}`,
-        Modifier.Position.ABOVE,
-        {
-          justification: 0,
+      if (staffClef === 'both') {
+        const staveTreble = new Stave(0, STAVE_TREBLE_Y, staveWidth);
+        staveTreble.addClef('treble');
+        staveTreble.addKeySignature(keySignature.tonic);
+        staveTreble.setText(
+          `Key: ${formatSharpsFlats(keySignature.tonic)}`,
+          Modifier.Position.ABOVE,
+          {
+            justification: 0,
+          }
+        );
+        staveTreble.setBegBarType(BarlineType.NONE);
+        staveTreble.setNoteStartX(60 + keySignatureWidth);
+        staveTreble.setContext(context).draw();
+
+        const staveBass = new Stave(0, STAVE_BASS_Y, staveWidth);
+        staveBass.addClef('bass');
+        staveBass.addKeySignature(keySignature.tonic);
+        staveBass.setBegBarType(BarlineType.NONE);
+        staveBass.setNoteStartX(60 + keySignatureWidth);
+        staveBass.setContext(context).draw();
+
+        const connector = new StaveConnector(staveTreble, staveBass);
+        connector.setType('single');
+        connector.setContext(context).draw();
+
+        if (notes && notes.length) {
+          const voiceTreble = getVoice(notes, 'treble');
+          const voiceBass = getVoice(notes, 'bass');
+
+          const formatter = new Formatter();
+
+          if (voiceTreble) {
+            Accidental.applyAccidentals([voiceTreble], keySignature.tonic);
+            formatter.joinVoices([voiceTreble]);
+            //   .formatToStave([voiceTreble], staveTreble);
+          }
+          if (voiceBass) {
+            Accidental.applyAccidentals([voiceBass], keySignature.tonic);
+            formatter.joinVoices([voiceBass]);
+            //   .formatToStave([voiceBass], staveBass);
+          }
+
+          if (voiceTreble || voiceBass) {
+            const v = [voiceTreble, voiceBass].filter(Boolean) as Voice[];
+            formatter.createTickContexts(v);
+            formatter.preFormat(STAVE_NOTE_WIDTH, context, v);
+          }
+
+          if (voiceTreble) {
+            voiceTreble.draw(context, staveTreble);
+          }
+          if (voiceBass) {
+            voiceBass.draw(context, staveBass);
+          }
         }
-      );
-      staveTreble.setBegBarType(BarlineType.NONE);
-      staveTreble.setNoteStartX(60 + keySignatureWidth);
-      staveTreble.setContext(context).draw();
+      } else if (staffClef === 'bass' || staffClef === 'treble') {
+        const stave = new Stave(
+          0,
+          staffClef === 'bass' ? STAVE_BASS_Y : STAVE_TREBLE_Y,
+          staveWidth
+        );
+        stave.addClef(staffClef);
+        stave.addKeySignature(keySignature.tonic);
+        stave.setText(
+          `Key: ${formatSharpsFlats(keySignature.tonic)}`,
+          Modifier.Position.ABOVE,
+          {
+            justification: 0,
+          }
+        );
+        stave.setBegBarType(BarlineType.NONE);
+        stave.setNoteStartX(60 + keySignatureWidth);
+        stave.setContext(context).draw();
 
-      const staveBass = new Stave(0, 130, staveWidth);
-      staveBass.addClef('bass');
-      staveBass.addKeySignature(keySignature.tonic);
-      staveBass.setBegBarType(BarlineType.NONE);
-      staveBass.setNoteStartX(60 + keySignatureWidth);
-      staveBass.setContext(context).draw();
+        if (notes && notes.length) {
+          const voice = getVoice(notes, staffClef, false);
 
-      const connector = new StaveConnector(staveTreble, staveBass);
-      connector.setType('single');
-      connector.setContext(context).draw();
+          const formatter = new Formatter();
 
-      if (notes && notes.length) {
-        const voiceTreble = getVoice(notes, 'treble');
-        const voiceBass = getVoice(notes, 'bass');
+          if (voice) {
+            Accidental.applyAccidentals([voice], keySignature.tonic);
+            formatter.joinVoices([voice]).formatToStave([voice], stave);
 
-        const formatter = new Formatter();
-
-        if (voiceTreble) {
-          Accidental.applyAccidentals([voiceTreble], keySignature.tonic);
-          formatter.joinVoices([voiceTreble]);
-          //   .formatToStave([voiceTreble], staveTreble);
-        }
-        if (voiceBass) {
-          Accidental.applyAccidentals([voiceBass], keySignature.tonic);
-          formatter.joinVoices([voiceBass]);
-          //   .formatToStave([voiceBass], staveBass);
-        }
-
-        if (voiceTreble || voiceBass) {
-          const v = [voiceTreble, voiceBass].filter(Boolean) as Voice[];
-          formatter.createTickContexts(v);
-          formatter.preFormat(STAVE_NOTE_WIDTH, context, v);
-        }
-
-        if (voiceTreble) {
-          voiceTreble.draw(context, staveTreble);
-        }
-        if (voiceBass) {
-          voiceBass.draw(context, staveBass);
+            voice.draw(context, stave);
+          }
         }
       }
     }
-  }, [notes, keySignature]);
+  }, [notes, staffClef, keySignature]);
 
   return <div id={id} ref={container} className={cx('base', className)} />;
 };

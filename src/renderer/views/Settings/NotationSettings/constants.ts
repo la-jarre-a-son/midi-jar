@@ -15,4 +15,23 @@ export const fields = {
       },
     ],
   },
+  staffClef: {
+    choices: [
+      {
+        value: 'both',
+        label: 'Bass+Treble',
+        intent: 'primary' as ButtonIntents,
+      },
+      {
+        value: 'bass',
+        label: 'Bass',
+        intent: 'primary' as ButtonIntents,
+      },
+      {
+        value: 'treble',
+        label: 'Treble',
+        intent: 'primary' as ButtonIntents,
+      },
+    ],
+  },
 };
