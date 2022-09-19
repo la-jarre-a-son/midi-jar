@@ -18,6 +18,8 @@ const migrations: Migrations<StoreType> = {
     settings.notation = {
       key: settings.chordDisplay.internal.key || 'C',
       accidentals: settings.chordDisplay.internal.accidentals || 'flat',
+      staffClef: 'both',
+      staffTranspose: 0,
     };
 
     delete settings.chordDisplay.internal.key;

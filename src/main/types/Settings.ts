@@ -39,6 +39,8 @@ export type CircleOfFifthsSettings = {
 export type NotationSettings = {
   key: string;
   accidentals: 'flat' | 'sharp';
+  staffClef: 'both' | 'bass' | 'treble';
+  staffTranspose: number;
 };
 
 export type ServerSettings = {

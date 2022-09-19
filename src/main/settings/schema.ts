@@ -83,6 +83,8 @@ export const schema: Schema<StoreType> = {
         properties: {
           key: { type: 'string' },
           accidentals: { type: 'string', enum: ['flat', 'sharp'] },
+          staffClef: { type: 'string', enum: ['both', 'bass', 'treble'] },
+          staffTranspose: { type: 'number' },
         },
       },
       server: {
@@ -128,6 +130,13 @@ const defaultCircleOfFifthsSettings = {
   displayDegreeLabels: false,
 };
 
+const defaultNotationSettings = {
+  key: 'C',
+  accidentals: 'flat' as const,
+  staffClef: 'both' as const,
+  staffTranspose: 0,
+};
+
 export const defaults = {
   midi: {
     routes: [],
@@ -142,10 +151,7 @@ export const defaults = {
       overlay: { useInternal: true, ...defaultChordDisplaySettings },
     },
     circleOfFifths: defaultCircleOfFifthsSettings,
-    notation: {
-      key: 'C',
-      accidentals: 'flat' as const,
-    },
+    notation: defaultNotationSettings,
     server: {
       enabled: true,
       port: 25011,
