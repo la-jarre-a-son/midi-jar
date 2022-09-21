@@ -83,17 +83,12 @@ It is implemented with [VexFlow](https://github.com/0xfe/vexflow) and supports d
 
 NOTE: Key signature that would have more than 7 alterations will be changed automatically to the equivalent major key (e.g. `G#` will produce a key signature of `Ab`).
 
-**
-DISCLAIMER: As i am not really into reading and writing music, Chord Display notation could be wrong... If so, do not hesitate to post an issue.
-**
+**DISCLAIMER: As i am not really into reading and writing music, Chord Display notation could be wrong... If so, do not hesitate to post an issue.**
 
 ### Customize in Settings
 
 Chord Display rendering is customizable in the Settings:
 
-- Fundamentals:
-  - Key Signature
-  - Accidentals (when in C Key): displays `flats` ♭ or `sharps` ♯
 - Keyboard:
   - Theme:
     - `classic` - a classical looking piano
@@ -207,6 +202,35 @@ Change chord size and placement:
 }
 ```
 
+## Circle of Fifths
+
+The Circle of Fifths is a music theory tool to help understanding and writing music.
+
+This modules let you choose easily the Key signature you are playing in, and displaying notes.
+
+![MIDI Jar Circle of Fifths Example](assets/midi-jar-circle-of-fifths.png)
+
+It will react (in green), at your choosing:
+
+- `on Chords`: the circle sector that corresponds the most to the currently played chord will be highlighted
+- `on Notes`: all sectors that represent the played notes will be highlighted
+
+You can customize its rendering by adding/removing sections of the wheel:
+
+- `Display Major`: displays the circle of major fifths
+- `Display Minor`: displays the circle of minor fifths
+- `Display Diminished`: displays the circle of diminished fifths
+- `Main Scale`: choose which of Major or Minor is displayed first in the circle
+- `Display Dominant Chords`: Adds a section containing for each key, the corresponding dominant chords (and substitutions) - V7, bVII7, bII7 and III7
+- `Display Suspended Chords`: adds sectors around each minor and major key that are suspended. Their position corresponds to their inversion in the adjacent fifths (e.g.: Csus2 can be inverted as a Gsus4 so it is placed between C and G).
+- `Display Alterations`: displays the number of ♭ or ♯ of the coresponding key signature
+- `Display Modes`: displays the enharmonic modes above the corresponding keys (e.g. when in C ionian, the next fifth enharmonic mode is G mixolydian)
+- `Display Degree`: adds labels for each fifth with its degree and its name
+- `Display Degree Label`: adds degree inside the key sectors. Left is major degree, right is minor degree.
+- `Highlight Sectors in the key`: shows in blue the sectors in the currently selected key scale
+
+_NOTE: The Circle of Fifths is usually for displaying notes, not chords. But i found that it was also suited for chords, and particularly visualizing resolutions between degrees. Any chord in a same angular part of the circle will tend to resolve to the first degree in the scale. This module is more a personal vision than a standard representation. Don't hesitate to disable the sections you don't need._
+
 ## HTTP/WS Server - Overlay
 
 It enables integrating modules in an external web browser, or in an OBS Browser Source. For instance, you can integrate MIDI Jar in your Twitch stream, or load it on a different computer or phone for displaying chords while jamming, and even use it as a Desktop Wallpaper using [Lively Wallpaper](https://rocksdanister.github.io/lively/).
@@ -214,6 +238,17 @@ It enables integrating modules in an external web browser, or in an OBS Browser 
 Chord Display module has dedicated settings if you need a different rendering when using external access, and they are automatically synced when you change them.
 
 To use it, route your MIDI devices to the overlay `chord-display` output.
+
+## Music Notation
+
+Music Notation can be displayed in the Chord Display module and changed through the Circle of Fifths.
+
+You can customize it in the settings, and this will affect all modules (including the overlay)::
+
+- Key Signature: the key signature to display notes in, and for choosing the key in staff notation.
+- Accidentals (when in C Key): displays `flats` ♭ or `sharps` ♯
+- Staff Clef: the Clef to display in staff notation
+- Staff Transpose (in semitones): transcribes notes for transposing instruments
 
 ## What then ?
 
@@ -235,6 +270,8 @@ npm run package
 - [x] Chord Display (v1)
 - [x] HTTP/WS overlay for OBS (v1)
 - [x] Display Standard notation
+- [x] Circle of Fifths
+- [ ] Tonnetz chart
 - [ ] More Keyboard themes
 - [ ] Virtual Keyboard (use pc keyboard as a MIDI device)
 - [ ] Chords Quiz
