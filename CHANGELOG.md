@@ -1,3 +1,16 @@
+# 1.2.0 (2022-09-21)
+
+## Features
+
+- **Circle of Fifths:** Added a Circle of Fifths module with customizable rendering
+- **Overlay:** Circle of Fifths also available in overlay
+- **Settings:** Moved Music Notation settings to its own section (affecting all modules now)
+- **Staff Notation:** Added clef and transpose settings for transposing instruments
+
+## Fixes
+
+- **Music Notation:** Fixed notation in C# giving C instead of B#
+
 # 1.1.0 (2022-08-07)
 
 ## Features
