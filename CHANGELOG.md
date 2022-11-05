@@ -1,3 +1,9 @@
+# 1.2.1 (2022-11-05)
+
+## Fixes
+
+- **Midi**: Consider NOTE_ON with velocity 0 as NOTE_OFF
+
 # 1.2.0 (2022-09-21)
 
 ## Features
