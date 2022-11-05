@@ -224,13 +224,15 @@ export default function useNotes({
 
       if (
         cmd === MIDI_CMD_NOTE_ON &&
+        value !== 0 &&
         (midiChannel === MIDI_CHANNEL_ALL || midiChannel === ch)
       ) {
         dispatch({ type: MidiActionTypes.NOTE_ON, midi });
       }
 
       if (
-        cmd === MIDI_CMD_NOTE_OFF &&
+        (cmd === MIDI_CMD_NOTE_OFF ||
+          (cmd === MIDI_CMD_NOTE_ON && value === 0)) && // MIDI RUNNING MODE => ALWAYS NOTE_ON messages with velocity 0
         (midiChannel === MIDI_CHANNEL_ALL || midiChannel === ch)
       ) {
         dispatch({ type: MidiActionTypes.NOTE_OFF, midi });
