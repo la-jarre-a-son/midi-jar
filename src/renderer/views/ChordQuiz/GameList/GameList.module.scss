@@ -1,0 +1,92 @@
+@import 'variables';
+
+$GameList_height: 32px !default;
+$GameList_gap: 8px !default;
+$GameList_transition: 0.8s ease;
+
+.base {
+  display: flex;
+  flex-direction: column;
+  gap: $GameList_gap;
+  margin: 0;
+  padding: $GameList_gap 0;
+  list-style-type: none;
+}
+
+.game {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: transform $GameList_transition, margin $GameList_transition,
+    opacity $GameList_transition;
+
+  &--hidden {
+    pointer-events: none;
+    margin-top: -1 * $GameList_height - $GameList_gap;
+    opacity: 0;
+  }
+}
+
+.label,
+.score {
+  line-height: $GameList_height;
+  height: $GameList_height;
+  position: relative;
+  display: block;
+  font-weight: bold;
+  text-align: right;
+  transition: background-color $GameList_transition;
+
+  &::after {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 100%;
+    bottom: 0;
+    content: ' ';
+    border: calc($GameList_height / 2) solid transparent;
+    transition: border-color $GameList_transition;
+  }
+}
+
+.label {
+  flex-grow: 0;
+  z-index: 1;
+  padding: 0px 32px;
+  background: $color-neutral-normal;
+
+  &::after {
+    border-left-color: $color-neutral-normal;
+  }
+}
+
+.score {
+  flex-grow: 1;
+  background: $color-neutral-dark;
+  padding: 0px $GameList_height 0 ($GameList_height + 12px);
+
+  &::after {
+    border-left-color: $color-neutral-dark;
+  }
+}
+
+.game--current {
+  transform: scale(1.2);
+  transform-origin: 0 0;
+
+  .label {
+    background: $color-primary-normal;
+
+    &::after {
+      border-left-color: $color-primary-normal;
+    }
+  }
+
+  .score {
+    background: $color-primary-dark;
+
+    &::after {
+      border-left-color: $color-primary-dark;
+    }
+  }
+}

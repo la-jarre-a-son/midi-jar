@@ -1,0 +1,61 @@
+@import 'variables';
+
+.base {
+  display: flex;
+  align-items: center;
+  height: 96px;
+}
+
+.interval {
+  @include buttonStyle($color-neutral-dark);
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  font-size: 0.8em;
+  height: 50%;
+  gap: 8px;
+  background-color: $color-neutral-darker;
+  transition: height 0.2s cubic-bezier(0.5, 0, 0.33, 3);
+}
+
+@for $i from 0 through 4 {
+  .interval--played-#{$i} {
+    height: calc(50% + $i * 10%);
+  }
+}
+
+.interval--target {
+  font-weight: bold;
+  background-color: $color-neutral-normal;
+}
+
+.interval--active {
+  background-color: $color-success-normal;
+}
+
+.interval--played {
+  font-weight: bold;
+  background-color: $color-primary-normal;
+}
+
+.base--withTargets {
+  .interval--played {
+    background-color: $color-danger-dark;
+  }
+
+  .interval--target.interval--played {
+    background-color: $color-success-dark;
+  }
+
+  .interval--active {
+    background-color: $color-primary-normal;
+  }
+
+  .interval--target.interval--active {
+    background-color: $color-success-normal;
+  }
+}

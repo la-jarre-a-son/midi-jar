@@ -64,6 +64,15 @@ const Menu: React.FC<Props> = ({ className }: Props) => {
         <Icon name="circle-of-fifths" />
         <span className={cx('label')}>Circle of 5th</span>
       </Button>
+      <Button
+        intent="transparent"
+        className={cx('button')}
+        to="/quiz"
+        title="Chord Quiz"
+      >
+        <Icon name="quiz" />
+        <span className={cx('label')}>Quiz</span>
+      </Button>
       <Button to="/settings" className={cx('icon')} title="Settings">
         <Icon name="settings" />
       </Button>

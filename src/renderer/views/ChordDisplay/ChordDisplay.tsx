@@ -8,6 +8,7 @@ import useNotes from 'renderer/hooks/useNotes';
 import ChordName from 'renderer/components/ChordName';
 import Notation from 'renderer/components/Notation';
 import PianoKeyboard from 'renderer/components/PianoKeyboard';
+import ChordIntervals from 'renderer/components/ChordIntervals';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
@@ -62,6 +63,8 @@ const ChordDisplay: React.FC<Props> = ({
     displayTonic,
   } = namespaceSettings;
 
+  const displayIntervals = false;
+
   const {
     midiNotes,
     pitchClasses,
@@ -106,7 +109,15 @@ const ChordDisplay: React.FC<Props> = ({
           </div>
         )}
       </div>
-
+      {displayIntervals && (
+        <div id="intervals" className={cx('intervals')}>
+          <ChordIntervals
+            intervals={chords[0]?.intervals}
+            pitchClasses={pitchClasses}
+            tonic={chords[0]?.tonic}
+          />
+        </div>
+      )}
       {displayNotes && (
         <div id="notes" className={cx('notes')}>
           {pitchClasses.map((note, index) => (

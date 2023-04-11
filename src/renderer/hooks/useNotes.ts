@@ -7,12 +7,12 @@ import {
   getMidiCommand,
   getMidiNote,
   getMidiValue,
-} from 'renderer/helpers';
-import {
   getKeySignature,
   getNoteInKeySignature,
   KeySignatureConfig,
-} from 'renderer/helpers/note';
+  tokenizeChord,
+} from 'renderer/helpers';
+
 import useMidiMessage from './useMidiMessage';
 
 const MIDI_CMD_NOTE_OFF = 0x80;
@@ -22,16 +22,16 @@ const MIDI_CMD_CC = 0xb0;
 const MIDI_CC_SUSTAIN = 0x40;
 
 const getChordInfo = (chord: string, keySignatureNotes: string[]) => {
-  const match = chord.match(/^([A-G](b|#)?)([^/]+)(\/([A-G](b|#)?))?$/);
-  if (match) {
-    const tonic = getNoteInKeySignature(match[1], keySignatureNotes);
-    const type = match[3];
-    const root = getNoteInKeySignature(match[5], keySignatureNotes);
-    const c = Chord.getChord(type, tonic);
-    const rootInterval = Interval.distance(tonic, root);
+  const [tonic, type, root] = tokenizeChord(chord);
+  if (tonic) {
+    const tonicInKey = getNoteInKeySignature(tonic, keySignatureNotes);
+    const rootInKey = getNoteInKeySignature(root, keySignatureNotes);
+    const c = Chord.getChord(type, tonicInKey);
+    const rootInterval = Interval.distance(tonicInKey, rootInKey);
     const rootDegree = c.intervals.indexOf(rootInterval) + 1;
     return { ...c, symbol: chord, root, rootInterval, rootDegree };
   }
+
   return null;
 };
 
@@ -51,7 +51,6 @@ interface Parameters {
   midiChannel: number;
 }
 
-// An enum with all the types of actions to use in our reducer
 enum MidiActionTypes {
   NOTE_ON = 'NOTE_ON',
   NOTE_OFF = 'NOTE_OFF',
@@ -74,7 +73,6 @@ interface ParametersAction {
 
 type Action = MidiAction | ParametersAction;
 
-// An interface for our state
 interface State {
   sustainedMidiNotes: number[];
   playedMidiNotes: number[];
@@ -86,7 +84,6 @@ interface State {
   keySignature: KeySignatureConfig;
 }
 
-// Our reducer function that uses a switch statement to handle our actions
 function reducer(state: State, action: Action): State {
   const { type } = action;
 

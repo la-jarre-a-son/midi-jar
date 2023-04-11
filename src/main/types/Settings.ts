@@ -21,6 +21,10 @@ export type ChordDisplaySettings = {
   accidentals?: never;
 };
 
+export type ChordQuizSettings = {
+  mode: 'random';
+};
+
 export type CircleOfFifthsSettings = {
   scale: 'major' | 'minor';
   highlightSector: 'chord' | 'notes';
@@ -57,6 +61,7 @@ export type Settings = {
     internal: ChordDisplaySettings;
     overlay?: ChordDisplaySettings;
   };
+  chordQuiz: ChordQuizSettings;
   circleOfFifths: CircleOfFifthsSettings;
   notation: NotationSettings;
   server: ServerSettings;

@@ -61,6 +61,12 @@ export const schema: Schema<StoreType> = {
           },
         },
       },
+      chordQuiz: {
+        type: 'object',
+        properties: {
+          mode: { type: 'string', enum: ['random'] },
+        },
+      },
       circleOfFifths: {
         type: 'object',
         properties: {
@@ -115,6 +121,10 @@ const defaultChordDisplaySettings = {
   colorNoteBlack: '#000000',
 };
 
+const defaultChordQuizSettings = {
+  mode: 'random' as const,
+};
+
 const defaultCircleOfFifthsSettings = {
   scale: 'major' as const,
   highlightSector: 'chord' as const,
@@ -150,6 +160,8 @@ export const defaults = {
       internal: { useInternal: false, ...defaultChordDisplaySettings },
       overlay: { useInternal: true, ...defaultChordDisplaySettings },
     },
+
+    chordQuiz: defaultChordQuizSettings,
     circleOfFifths: defaultCircleOfFifthsSettings,
     notation: defaultNotationSettings,
     server: {

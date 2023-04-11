@@ -1,10 +1,11 @@
+@import 'variables.scss';
+
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: url(#{$font-path}/Lato/Lato-Light.woff2) format('woff2');
 }
-
 
 @font-face {
   font-family: 'Lato';
@@ -25,4 +26,53 @@
   font-style: italic;
   font-weight: 700;
   src: url(#{$font-path}/Lato/Lato-BoldItalic.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Rocher';
+  font-style: normal;
+  font-weight: 300;
+  src: url(#{$font-path}/RocherColor/RocherColorGX.woff2) format('woff2');
+}
+
+@font-palette-values --Rocher--white {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 $color-neutral-dark, 1 $color-neutral-lighter,
+    2 $color-neutral-light, 3 $color-white;
+}
+
+@font-palette-values --Rocher--neutral {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 darken($color-neutral-dark, 10%), 1 $color-neutral-normal,
+    2 $color-neutral-dark, 3 $color-neutral-light;
+}
+
+@font-palette-values --Rocher--danger {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 darken($color-danger-dark, 10%), 1 $color-danger-normal,
+    2 $color-danger-dark, 3 $color-danger-light;
+}
+
+@font-palette-values --Rocher--warning {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 darken($color-warning-dark, 10%), 1 $color-warning-normal,
+    2 $color-warning-dark, 3 $color-warning-light;
+}
+
+@font-palette-values --Rocher--success {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 darken($color-success-dark, 10%), 1 $color-success-normal,
+    2 $color-success-dark, 3 $color-success-light;
+}
+
+@font-palette-values --Rocher--primary {
+  font-family: 'Rocher';
+  base-palette: 1;
+  override-colors: 0 $color-primary-dark, 1 $color-primary-light,
+    2 $color-primary-normal, 3 lighten($color-primary-light, 10%);
 }

@@ -29,6 +29,7 @@ let loopTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const internalOutputs = [
   new InternalOutput('chord-display'),
+  new InternalOutput('chord-quiz'),
   new InternalOutput('debugger'),
 ];
 

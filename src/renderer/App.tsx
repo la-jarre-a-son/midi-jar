@@ -17,6 +17,7 @@ import Layout from './views/Layout';
 import Settings from './views/Settings';
 import Home from './views/Home';
 import ChordDisplay from './views/ChordDisplay';
+import ChordQuiz from './views/ChordQuiz';
 import CircleOfFifths from './views/CircleOfFifths';
 
 import GeneralSettings from './views/Settings/GeneralSettings';
@@ -59,6 +60,17 @@ export default function App() {
                           source="internal"
                         >
                           <CircleOfFifths />
+                        </MidiMessageManagerProvider>
+                      }
+                    />
+                    <Route
+                      path="quiz"
+                      element={
+                        <MidiMessageManagerProvider
+                          namespace="chord-quiz"
+                          source="internal"
+                        >
+                          <ChordQuiz />
                         </MidiMessageManagerProvider>
                       }
                     />
