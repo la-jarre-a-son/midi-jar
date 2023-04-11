@@ -1,9 +1,10 @@
-import { formatSharpsFlats } from './note';
+import { Note } from '@tonaljs/tonal';
+import { Chord as TChord } from '@tonaljs/chord';
 
 export const CHORD_NAME_REGEX =
   /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
 export const CHORD_TYPE_REGEX =
-  /^([\d]{1,2}|(m|M|min|maj|mMaj)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
+  /^([\d]{1,2}(\/[\d]{1,2})?|(m|M|min|maj|mMaj|m\/ma)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
 
 const CHORD_PART_ALIASES = {
   M: [''],
@@ -16,6 +17,7 @@ const CHORD_PART_ALIASES = {
   maj11: ['maj', '11'],
   M13: ['maj', '13'],
   maj13: ['maj', '13'],
+  'm/ma7': ['m', 'M7'], // strange notation...
   mMaj7: ['m', 'M7'],
   mMaj9: ['m', 'M9'],
   69: ['', '69'],
@@ -43,10 +45,10 @@ export const tokenizeChord = (chordName: string): string[] => {
     const type = match[4];
     const root = match[6];
 
-    return [formatSharpsFlats(key), type, formatSharpsFlats(root)];
+    return [key, type, root];
   }
 
-  return [];
+  throw new Error(`Chord parsing error: "${chordName}"`);
 };
 
 export const tokenizeChordType = (chordType: string): string[] => {
@@ -63,5 +65,22 @@ export const tokenizeChordType = (chordType: string): string[] => {
     }
   }
   const [first, ...rest] = tokens;
-  return [...aliasChordPart(first), ...rest.map(formatSharpsFlats)];
+  return [...aliasChordPart(first), ...rest];
 };
+
+/**
+ * Maps a list of pitch classes to the note degrees of a chord.
+ * @param chord - the chord
+ * @param pitchClasses - the notes played
+ * @returns string[]
+ */
+export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
+  return pitchClasses.map((pc: string) => {
+    const i = chord.notes.findIndex(
+      (note) => Note.chroma(note) === Note.chroma(pc)
+    );
+    if (i < 0) return '';
+
+    return chord.intervals[i];
+  });
+}
