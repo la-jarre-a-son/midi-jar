@@ -26,6 +26,7 @@ import Routing from './views/Settings/Routing';
 import NotationSettings from './views/Settings/NotationSettings';
 import ChordDisplaySettings from './views/Settings/ChordDisplaySettings';
 import CircleOfFifthsSettings from './views/Settings/CircleOfFifthsSettings';
+import ChordQuizSettings from './views/Settings/ChordQuizSettings';
 import ServerSettings from './views/Settings/ServerSettings';
 import Credits from './views/Settings/Credits';
 import Licenses from './views/Settings/Licenses';
@@ -96,6 +97,7 @@ export default function App() {
                         path="circle-of-fifths"
                         element={<CircleOfFifthsSettings />}
                       />
+                      <Route path="quiz" element={<ChordQuizSettings />} />
                       <Route
                         path="debug"
                         element={

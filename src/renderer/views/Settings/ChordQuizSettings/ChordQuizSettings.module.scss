@@ -25,3 +25,18 @@ $View_SettingsChordDisplay_padding: $View_padding !default;
     opacity: 0.5;
   }
 }
+
+.chordList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.chord {
+  background: $color-neutral-dark;
+  padding: 2px 4px;
+  border-radius: 2px;
+}

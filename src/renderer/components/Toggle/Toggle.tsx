@@ -41,14 +41,14 @@ type Props = {
 
 const defaultChoices = [
   {
-    label: <Icon name="check" />,
-    value: true,
-    intent: 'success' as ButtonIntents,
-  },
-  {
     label: <Icon name="cross" />,
     intent: 'danger' as ButtonIntents,
     value: false,
+  },
+  {
+    label: <Icon name="check" />,
+    value: true,
+    intent: 'success' as ButtonIntents,
   },
 ];
 

@@ -64,7 +64,12 @@ export const schema: Schema<StoreType> = {
       chordQuiz: {
         type: 'object',
         properties: {
-          mode: { type: 'string', enum: ['random'] },
+          mode: { type: 'string', enum: ['random', 'randomInKey'] },
+          difficulty: { type: 'integer', minimum: 0, maximum: 5 },
+          gameLength: { type: 'integer', minimum: 0 },
+          gamification: { type: 'boolean' },
+          displayReaction: { type: 'boolean' },
+          displayIntervals: { type: 'boolean' },
         },
       },
       circleOfFifths: {
@@ -123,6 +128,11 @@ const defaultChordDisplaySettings = {
 
 const defaultChordQuizSettings = {
   mode: 'random' as const,
+  difficulty: 0 as const,
+  gameLength: 16,
+  gamification: true,
+  displayReaction: true,
+  displayIntervals: true,
 };
 
 const defaultCircleOfFifthsSettings = {

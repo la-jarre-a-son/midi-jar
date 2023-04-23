@@ -2,19 +2,17 @@ import { useEffect, useReducer } from 'react';
 
 import { Chord as TChord } from '@tonaljs/chord';
 
+import { defaults } from 'main/settings/schema';
+
+import { ChordQuizSettings, NotationSettings } from 'main/types';
 import {
   getGameState,
   GameState,
+  Parameters,
   Game,
-  GameMode,
   STATUSES,
   generateGame,
-  GAME_LENGTH,
 } from './utils';
-
-interface Parameters {
-  mode: 'random';
-}
 
 enum QuizActionType {
   CHORD_PLAYED = 'CHORD_PLAYED',
@@ -28,7 +26,7 @@ interface QuizAction {
 }
 
 enum ParametersActionTypes {
-  MODE_CHANGED = 'MODE_CHANGED',
+  PARAMETERS_CHANGED = 'PARAMETERS_CHANGED',
 }
 
 interface ParametersAction {
@@ -39,7 +37,7 @@ interface ParametersAction {
 type Action = QuizAction | ParametersAction;
 
 interface State {
-  mode: GameMode;
+  parameters: Parameters;
   games: Game[];
   gameState: GameState;
 }
@@ -48,16 +46,16 @@ function reducer(state: State, action: Action): State {
   const { type } = action;
 
   switch (type) {
-    case ParametersActionTypes.MODE_CHANGED: {
-      const mode = action.value as typeof state.mode;
+    case ParametersActionTypes.PARAMETERS_CHANGED: {
+      const parameters = action.value as Parameters;
 
-      const game = generateGame(mode);
+      const game = generateGame(parameters);
 
       if (!game) return state;
 
       return {
         ...state,
-        mode,
+        parameters,
         games: [game],
         gameState: {
           gameIndex: 0,
@@ -83,7 +81,7 @@ function reducer(state: State, action: Action): State {
         if (
           !best.chord ||
           best.status < c.status ||
-          (best.status === c.status && best.score < c.score)
+          (best.status === c.status && best.score <= c.score)
         ) {
           return c;
         }
@@ -109,8 +107,8 @@ function reducer(state: State, action: Action): State {
         currentGame.score += state.gameState.score;
         currentGame.played.push(state.gameState.chord);
 
-        if (state.gameState.index + 2 >= GAME_LENGTH) {
-          const game = generateGame(state.mode);
+        if (state.gameState.index + 2 >= currentGame.chords.length) {
+          const game = generateGame(state.parameters);
 
           if (game) {
             games.push(game);
@@ -122,11 +120,11 @@ function reducer(state: State, action: Action): State {
           games,
           gameState: {
             gameIndex:
-              state.gameState.index + 1 === GAME_LENGTH
+              state.gameState.index + 1 === currentGame.chords.length
                 ? state.gameState.gameIndex + 1
                 : state.gameState.gameIndex,
             index:
-              state.gameState.index + 1 === GAME_LENGTH
+              state.gameState.index + 1 === currentGame.chords.length
                 ? 0
                 : state.gameState.index + 1,
             status: STATUSES.none,
@@ -154,7 +152,11 @@ function reducer(state: State, action: Action): State {
 }
 
 const defaultState: State = {
-  mode: 'random',
+  parameters: {
+    ...defaults.settings.chordQuiz,
+    key: defaults.settings.notation.key,
+    accidentals: defaults.settings.notation.accidentals,
+  },
   games: [],
   gameState: {
     gameIndex: 0,
@@ -168,19 +170,28 @@ const defaultState: State = {
 export default function useQuiz(
   pitchClasses: string[],
   chords: (TChord | null)[],
-  { mode = 'random' }: Partial<Parameters> = {}
+  settings: ChordQuizSettings,
+  notationSettings: NotationSettings
 ) {
   const [state, dispatch] = useReducer(reducer, {
     ...defaultState,
-    mode,
+    parameters: {
+      ...settings,
+      key: notationSettings.key,
+      accidentals: notationSettings.accidentals,
+    },
   });
 
   useEffect(() => {
     dispatch({
-      type: ParametersActionTypes.MODE_CHANGED,
-      value: mode,
+      type: ParametersActionTypes.PARAMETERS_CHANGED,
+      value: {
+        ...settings,
+        key: notationSettings.key,
+        accidentals: notationSettings.accidentals,
+      },
     });
-  }, [mode]);
+  }, [settings, notationSettings]);
 
   useEffect(() => {
     if (pitchClasses.length === 0) {
