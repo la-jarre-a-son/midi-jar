@@ -13,6 +13,7 @@ export type ChordDisplaySettings = {
   displayTonic: boolean;
   displayDegrees: boolean;
   displayKeyNames: boolean;
+  displayIntervals: boolean;
   colorHighlight: string | null;
   colorNoteWhite: string | null;
   colorNoteBlack: string | null;

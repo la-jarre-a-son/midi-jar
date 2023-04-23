@@ -89,3 +89,7 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
     max-height: 40vh;
   }
 }
+
+.intervals {
+  font-size: min(2vh, 3vw);
+}

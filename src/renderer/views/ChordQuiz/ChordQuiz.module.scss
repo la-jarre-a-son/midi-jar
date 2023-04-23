@@ -60,6 +60,10 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   align-items: center;
 }
 
+.intervalsContainer {
+  font-size: min(3vw, 3vh);
+}
+
 /** Top Section **/
 
 .reactionContainer {
@@ -86,9 +90,9 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   position: absolute;
   top: 0;
   bottom: 0;
-  transition: left 0.5s ease, right 0.5s ease, width 0.5s ease,
-    font-size 0.5s ease, opacity 0.5s ease,
-    color 0.1s cubic-bezier(0.5, 0, 0.33, 3), transform 0.3s ease;
+  transition: all 0.5s ease, color 0.1s cubic-bezier(0.5, 0, 0.33, 3),
+    transform 0.3s linear;
+  transition-delay: 0s, 0s, 0s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,7 +104,7 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   right: 0;
   font-size: min(20vh, 10vw);
   opacity: 1;
-  transform: perspective(160px) rotateY(0deg);
+  transform: perspective(3em) rotateY(0deg);
 }
 
 .nextChord {
@@ -109,7 +113,7 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   font-size: 3vw;
   opacity: 0.8;
   animation: swipe 0.3s ease 1;
-  transform: perspective(160px) rotateY(-36deg);
+  transform: perspective(3em) rotateY(-36deg);
 }
 
 .prevChord {
@@ -118,7 +122,8 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   right: auto;
   font-size: 2vw;
   opacity: 0;
-  transform: perspective(160px) rotateY(36deg);
+  transform: perspective(3em) rotateY(36deg);
+  transition-delay: 0s, 0s, 0.1s;
 }
 
 .status--none {

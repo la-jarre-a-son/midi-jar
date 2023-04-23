@@ -79,6 +79,8 @@ const migrations: Migrations<StoreType> = {
   },
   '1.3.0': (store) => {
     store.set('version', '1.3.0');
+    store.set('settings.chordDisplay.internal.displayIntervals', false);
+    store.set('settings.chordDisplay.overlay.displayIntervals', false);
 
     const settings = store.get('settings');
 
