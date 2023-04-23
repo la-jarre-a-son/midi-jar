@@ -7,11 +7,14 @@ import React, {
 } from 'react';
 
 import { Settings } from 'main/types/Settings';
+import { defaults } from 'main/settings/schema';
 import { SettingsEvent } from 'renderer/managers/SettingsManager';
+import { mergeDeep } from 'renderer/helpers';
+
 import { useSettingsManager } from './SettingsManager';
 
 interface SettingsContextInterface {
-  settings: Settings | null;
+  settings: Settings;
   updateSetting: (key: string, value: unknown) => Promise<void>;
   updateSettings: (value: Settings) => Promise<void>;
   resetSettings: (key: keyof Settings) => Promise<void>;
@@ -27,11 +30,14 @@ type Props = {
 
 const SettingsProvider: React.FC<Props> = ({ children }) => {
   const manager = useSettingsManager();
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const [settings, setSettings] = useState<Settings>(defaults.settings);
+  const [inited, setInited] = useState<boolean>(false);
 
   const onSettingsChange = useCallback(
     (s: Settings) => {
-      setSettings(s);
+      const newSettings = mergeDeep(defaults.settings, s);
+      setSettings(newSettings);
+      setInited(true);
     },
     [setSettings]
   );
@@ -81,7 +87,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <SettingsContext.Provider value={value}>
-      {settings ? children : null}
+      {inited ? children : null}
     </SettingsContext.Provider>
   );
 };

@@ -41,7 +41,7 @@ const GeneralSettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateSetting('general.launchAtStartup', value)
               }
-              value={settings?.general?.launchAtStartup}
+              value={settings.general.launchAtStartup}
               successIcon="save"
             />
           </FormField>
@@ -52,7 +52,7 @@ const GeneralSettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateSetting('general.startMinimized', value)
               }
-              value={settings?.general?.startMinimized}
+              value={settings.general.startMinimized}
               successIcon="save"
             />
           </FormField>

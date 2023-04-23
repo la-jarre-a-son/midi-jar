@@ -1,8 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import { ChordDisplaySettings, Settings } from 'main/types/Settings';
-import { defaults } from 'main/settings/schema';
+import { Settings } from 'main/types/Settings';
 
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
@@ -38,15 +37,12 @@ const ChordDisplay: React.FC<Props> = ({
 }) => {
   const { settings } = useSettings();
 
-  const { key, accidentals, staffClef, staffTranspose } =
-    settings?.notation ?? defaults.settings.notation;
+  const { key, accidentals, staffClef, staffTranspose } = settings.notation;
 
-  let namespaceSettings = settings?.chordDisplay?.[namespace];
+  let namespaceSettings = settings.chordDisplay[namespace];
 
   if (!namespaceSettings || namespaceSettings.useInternal) {
-    namespaceSettings =
-      settings?.chordDisplay?.internal ||
-      (defaults.settings.chordDisplay.internal as ChordDisplaySettings);
+    namespaceSettings = settings.chordDisplay.internal;
   }
 
   const {

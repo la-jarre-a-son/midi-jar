@@ -1,5 +1,5 @@
 import { JSONSchema as TypedJSONSchema } from 'json-schema-typed';
-import { ChordDisplaySettings, StoreType } from '../types/Settings';
+import { StoreType } from '../types/Settings';
 
 export declare type Schema<T> = {
   [Property in keyof T]: TypedJSONSchema;
@@ -99,7 +99,7 @@ export const schema: Schema<StoreType> = {
 };
 
 const defaultChordDisplaySettings = {
-  skin: 'classic' as ChordDisplaySettings['skin'],
+  skin: 'classic' as const,
   from: 'C3',
   to: 'C5',
   displayKeyboard: true,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import classnames from 'classnames/bind';
-import { defaults } from 'main/settings/schema';
 
 import { useSettings } from 'renderer/contexts/Settings';
 
@@ -46,12 +45,8 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
     return <Navigate to="/settings/chords/internal" />;
   }
 
-  const namespaceDefaultSettings =
-    defaults.settings.chordDisplay[namespace as keyof Settings['chordDisplay']];
-
-  const namespaceSettings = settings
-    ? settings.chordDisplay[namespace as keyof Settings['chordDisplay']]
-    : namespaceDefaultSettings;
+  const namespaceSettings =
+    settings.chordDisplay[namespace as keyof Settings['chordDisplay']];
 
   if (!namespaceSettings) {
     return (
@@ -127,10 +122,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayChord', value)
               }
-              value={
-                namespaceSettings.displayChord ??
-                namespaceDefaultSettings.displayChord
-              }
+              value={namespaceSettings.displayChord}
               successIcon="save"
               disabled={useInternal}
             />
@@ -145,10 +137,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayAltChords', value)
               }
-              value={
-                namespaceSettings.displayAltChords ??
-                namespaceDefaultSettings.displayAltChords
-              }
+              value={namespaceSettings.displayAltChords}
               successIcon="save"
               disabled={useInternal}
             />
@@ -170,10 +159,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayNotation', value)
               }
-              value={
-                namespaceSettings.displayNotation ??
-                namespaceDefaultSettings.displayNotation
-              }
+              value={namespaceSettings.displayNotation}
               successIcon="save"
               disabled={useInternal}
             />
@@ -188,10 +174,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayNotes', value)
               }
-              value={
-                namespaceSettings.displayNotes ??
-                namespaceDefaultSettings.displayNotes
-              }
+              value={namespaceSettings.displayNotes}
               successIcon="save"
               disabled={useInternal}
             />
@@ -214,10 +197,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayKeyboard', value)
               }
-              value={
-                namespaceSettings.displayKeyboard ??
-                namespaceDefaultSettings.displayKeyboard
-              }
+              value={namespaceSettings.displayKeyboard}
               successIcon="save"
               disabled={useInternal}
             />
@@ -231,7 +211,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               id="chord_display_settings:skin"
               choices={fields.skin.choices}
               onChange={(value) => updateNamespaceSettings('skin', value)}
-              value={namespaceSettings.skin ?? namespaceDefaultSettings.skin}
+              value={namespaceSettings.skin}
               successIcon="save"
               disabled={useInternal}
             />
@@ -244,7 +224,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
             <InputNote
               id="chord_display_settings:note-from"
               onChange={(value) => updateNamespaceSettings('from', value)}
-              value={namespaceSettings.from ?? namespaceDefaultSettings.from}
+              value={namespaceSettings.from}
               disabled={useInternal}
               withOctave
               learn
@@ -258,7 +238,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
             <InputNote
               id="chord_display_settings:note-to"
               onChange={(value) => updateNamespaceSettings('to', value)}
-              value={namespaceSettings.to ?? namespaceDefaultSettings.to}
+              value={namespaceSettings.to}
               disabled={useInternal}
               withOctave
               learn
@@ -274,10 +254,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayKeyNames', value)
               }
-              value={
-                namespaceSettings.displayKeyNames ??
-                namespaceDefaultSettings.displayKeyNames
-              }
+              value={namespaceSettings.displayKeyNames}
               successIcon="save"
               disabled={useInternal}
             />
@@ -292,10 +269,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayTonic', value)
               }
-              value={
-                namespaceSettings.displayTonic ??
-                namespaceDefaultSettings.displayTonic
-              }
+              value={namespaceSettings.displayTonic}
               successIcon="save"
               disabled={useInternal}
             />
@@ -310,10 +284,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('displayDegrees', value)
               }
-              value={
-                namespaceSettings.displayDegrees ??
-                namespaceDefaultSettings.displayDegrees
-              }
+              value={namespaceSettings.displayDegrees}
               successIcon="save"
               disabled={useInternal}
             />
@@ -328,10 +299,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('colorNoteBlack', value)
               }
-              value={
-                namespaceSettings.colorNoteBlack ??
-                namespaceDefaultSettings.colorNoteBlack
-              }
+              value={namespaceSettings.colorNoteBlack}
               disabled={useInternal}
             />
           </FormField>
@@ -345,10 +313,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('colorNoteWhite', value)
               }
-              value={
-                namespaceSettings.colorNoteWhite ??
-                namespaceDefaultSettings.colorNoteWhite
-              }
+              value={namespaceSettings.colorNoteWhite}
               disabled={useInternal}
             />
           </FormField>
@@ -362,10 +327,7 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               onChange={(value) =>
                 updateNamespaceSettings('colorHighlight', value)
               }
-              value={
-                namespaceSettings.colorHighlight ??
-                namespaceDefaultSettings.colorHighlight
-              }
+              value={namespaceSettings.colorHighlight}
               disabled={useInternal}
             />
           </FormField>
