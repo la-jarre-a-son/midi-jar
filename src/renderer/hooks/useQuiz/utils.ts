@@ -41,7 +41,10 @@ export type GameState = {
   score: number;
 };
 
-const MAJOR_SCALE_CHROMA = '101011010101';
+// RandomInKey chroma masks - allows borrowings from other scales
+// const IN_KEY_SCALE_CHROMA = '101011010101'; // Major only
+// const IN_KEY_SCALE_CHROMA = '101011011101'; // Major + Harmonic
+const IN_KEY_SCALE_CHROMA = '101011111101'; // Major + Melodic + Harmonic
 
 const SCORE_DIFFERENT = -1000;
 const SCORE_COMPLEXITY = 500; // Bonus per evaluated complexity
@@ -57,7 +60,7 @@ const INTERVAL_COMPLEXITY = {
   '3M': 0,
   '4P': 1,
   '5P': 0,
-  '5d': 2,
+  '5d': 1,
   '5A': 2,
   '6m': 1, // same as 5A
   '6M': 1,
@@ -264,16 +267,15 @@ export function getRandomChordInKey(
   keySignature: KeySignatureConfig,
   chordComplexity: number
 ) {
+  const keyChroma = Note.chroma(keySignature.tonic) ?? 0;
   let chordTypes: ReturnType<typeof ChordType.all> = [];
   let tonic;
 
   while (!chordTypes.length) {
     tonic = randomPick(keySignature.scale);
     const chroma = Note.chroma(tonic) ?? 0;
-    const scaleChroma = stringRotate(
-      MAJOR_SCALE_CHROMA,
-      chroma - keySignature.alteration
-    );
+    const scaleChroma = stringRotate(IN_KEY_SCALE_CHROMA, chroma - keyChroma);
+
     const isInKey = isSubsetOf(scaleChroma);
 
     chordTypes = ChordType.all().filter(
@@ -291,6 +293,31 @@ export function getRandomChordInKey(
 }
 
 /**
+ * Generates {count} chords with a generator, but avoiding twice the same chord.
+ *
+ * @param count - number of chords to generate
+ * @param generator - the generator function, having index and previous chords as arguments
+ * @returns a chord array
+ */
+export function generateChords(
+  count: number,
+  generator: (index: number, previous: TChord[]) => TChord
+) {
+  return Array(count)
+    .fill(null)
+    .reduce<TChord[]>((acc, _, index) => {
+      let newChord;
+      const previous = acc.length ? acc[acc.length - 1] : null;
+      do {
+        newChord = generator(index, acc);
+      } while (previous && previous.symbol === newChord.symbol);
+
+      acc.push(newChord);
+      return acc;
+    }, []);
+}
+
+/**
  * Generates a new game depending on game settings
  *
  * @param mode - the game mode
@@ -300,9 +327,9 @@ export function generateGame(parameters: Parameters) {
   if (parameters.mode === 'random') {
     const keySignature = getRandomKeySignature();
     const game = {
-      chords: Array(parameters.gameLength)
-        .fill(null)
-        .map(() => getRandomChord(keySignature, parameters.difficulty)),
+      chords: generateChords(parameters.gameLength, () =>
+        getRandomChord(keySignature, parameters.difficulty)
+      ),
       score: 0,
       played: [],
       succeeded: 0,
@@ -316,9 +343,9 @@ export function generateGame(parameters: Parameters) {
       parameters.accidentals === 'sharp'
     );
     const game = {
-      chords: Array(parameters.gameLength)
-        .fill(null)
-        .map(() => getRandomChordInKey(keySignature, parameters.difficulty)),
+      chords: generateChords(parameters.gameLength, () =>
+        getRandomChordInKey(keySignature, parameters.difficulty)
+      ),
       score: 0,
       played: [],
       succeeded: 0,
