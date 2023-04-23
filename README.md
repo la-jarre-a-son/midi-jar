@@ -1,4 +1,4 @@
-![MIDI Jar logo](assets/icon.png)
+<img src="assets/icon.png" align="right" alt="MIDI Jar logo" />
 
 # [MIDI Jar](https://github.com/la-jarre-a-son/midi-jar)
 
@@ -39,6 +39,8 @@ MIDI Jar includes:
 
 - MIDI routing between devices and internal modules
 - A Chord Display module, to display a piano and monitor chords being played
+- A Circle of Fifths highly customizatble
+- A Chord Quiz module, with different modes and settings to train
 - A HTTP/Websocket server to include modules externally (in OBS Browser source for instance)
 - Running at startup
 - Running in background (no window, only Tray icon)
@@ -97,13 +99,14 @@ Chord Display rendering is customizable in the Settings:
   - Colors: blacks and whites, and pressed notes.
   - Enabling some infos on the piano:
     - `key names` - name of the notes
-    - `chord degrees` - degrees of each note of the detecterd chord
+    - `chord degrees` - degrees of each note of the detected chord
     - `tonic` - a little dot on the chord tonic
 - Enabling elements:
   - `chord` - the detected chord
   - `notation` - the music notation of the played notes
   - `piano` - a keyboard displaying your played notes
   - `alternative chords` - a list of other detected chord names if any
+  - `intervals` - a list of intervals that constitutes the chord
 
 ### Customize via CSS
 
@@ -153,6 +156,9 @@ Change display order:
 #notes {
   order: 3;
 }
+#intervals {
+  order: 4;
+}
 ```
 
 Change Text Color:
@@ -190,6 +196,10 @@ Change chord size and placement:
 
 #alternativeChords {
   display: none;
+}
+
+#intervals {
+  font-size: 2vh;
 }
 
 #notation {
@@ -245,10 +255,45 @@ Music Notation can be displayed in the Chord Display module and changed through 
 
 You can customize it in the settings, and this will affect all modules (including the overlay)::
 
-- Key Signature: the key signature to display notes in, and for choosing the key in staff notation.
-- Accidentals (when in C Key): displays `flats` ♭ or `sharps` ♯
-- Staff Clef: the Clef to display in staff notation
-- Staff Transpose (in semitones): transcribes notes for transposing instruments
+- `Key Signature`: the key signature to display notes in, and for choosing the key in staff notation.
+- `Accidentals (when in C Key)`: displays `flats` ♭ or `sharps` ♯
+- `Staff Clef`: the Clef to display in staff notation
+- `Staff Transpose (in semitones)`: transcribes notes for transposing instruments
+
+## Chord Quiz
+
+[MIDI Jar - Chord Quiz example](https://user-images.githubusercontent.com/1231011/233844786-4f182b44-fcb8-4d24-b69d-532c6286f61e.mp4)
+
+You can train piano by using the Chord Quiz module.
+
+Each round of a game you will be prompted a chord that you must play, and will also see the next chord to play (to anticipate your finger movements).
+
+Your answer will be committed when you release all the keys, and can result to different score for the round:
+
+- `different`: You did not play the right chord - you will lose points
+- `subset`: You played some intervals of the chord - you will not gain all the points
+- `exact`: you played the chord that was asked
+- `superset`: you played additional interval that were not asked (and it is considered as a bonus)
+
+Any addition, repetition, or inversions of a chord will grant you additional points.
+
+You can choose which mode (algorithm) to play with:
+
+- `random`: All chords will be picked randomly, in a random key signature
+- `random in key`: All chords will be picked from the current key signature (in Notation settings), in the major scale + additions (melodic and harmonic alterations).
+
+And finally, to adapt your training, you can choose the difficulty, each levels adds new chords to the possible list:
+
+- `Very Easy`: minor, Major
+- `Easy`: sus4, 7no5, maj7, 7, 6, Mb5, m/ma7, m7, m6, dim, madd4, sus2, Maddb9
+- `Medium`: M7sus4, 7sus4, aug, M7b6, 7b13, 7b6, M7b5, 7b5, m#5, mb6M7, m7#5, mMaj7b6, oM7, m7b5, dim7, m7add11, sus24, Madd9, madd9, alt7, M7b9, 7b9, mb6b9
+- `Hard`: maj7#5, 7#5, 7add6, maj#4, 7#11, M6#11, o7M7, 4, 7#9, 9no5, maj9, 9, 6/9, mM9, m9, m69, m9b5, b9sus, 11b9, 7b9b13
+- `Very Hard`: M7#5sus4, 7#5sus4, 7#11b13, +add#9, 7#9b13, M9sus4, 11, 9sus4, M#5add9, 9b13, M7add13, M9b5, 9b5, m9#5, mMaj9b6, m11, 7sus4b9b13, 7#5b9, 13b9, 7b9#11, 7b9#9
+- `All Chords`: the rest of the dictionary
+
+If the game mode is too annoying, you can turn off the scoring, the reactions, and choose to display or not the asked intervals, but have in mind that the gamification is only for fun, there is no persistent scoreboard or high score, it's only a tool to help exploration.
+
+Hopefully in the future, this module will be able to have an "Intelligent" mode capable of generating random chord progressions with key changes.
 
 ## What then ?
 
@@ -271,10 +316,10 @@ npm run package
 - [x] HTTP/WS overlay for OBS (v1)
 - [x] Display Standard notation
 - [x] Circle of Fifths
+- [x] Chords Quiz
 - [ ] Tonnetz chart
 - [ ] More Keyboard themes
 - [ ] Virtual Keyboard (use pc keyboard as a MIDI device)
-- [ ] Chords Quiz
 - [ ] Visualizations / Vertical scrolling notes
 - [ ] Soundboard
 - [ ] MIDI recording (playback/backup)
