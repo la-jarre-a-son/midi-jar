@@ -179,6 +179,21 @@ const ChordDisplaySettings: React.FC<Props> = ({ className }) => {
               disabled={useInternal}
             />
           </FormField>
+
+          <FormField
+            fieldId="chord_display_settings:display-intervals"
+            label="Display Intervals"
+          >
+            <Toggle
+              id="chord_display_settings:display-intervals"
+              onChange={(value) =>
+                updateNamespaceSettings('displayIntervals', value)
+              }
+              value={namespaceSettings.displayIntervals}
+              successIcon="save"
+              disabled={useInternal}
+            />
+          </FormField>
         </section>
 
         <section

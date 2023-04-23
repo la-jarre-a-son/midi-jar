@@ -61,9 +61,8 @@ const ChordDisplay: React.FC<Props> = ({
     displayKeyNames,
     displayDegrees,
     displayTonic,
+    displayIntervals,
   } = namespaceSettings;
-
-  const displayIntervals = false;
 
   const {
     midiNotes,
