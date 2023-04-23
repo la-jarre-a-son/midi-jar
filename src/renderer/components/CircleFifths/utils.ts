@@ -625,7 +625,7 @@ export const isNotePressed = (note: string, notes?: string[]) => {
  * @returns {number} - the key index
  */
 export const getCurrentKey = (alteration: number) =>
-  alteration < 0 ? alteration + 12 : alteration;
+  alteration < 0 ? (alteration % 12) + 12 : alteration % 12;
 
 /**
  * Returns true if the section key name is currently selected
