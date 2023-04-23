@@ -2,6 +2,8 @@ import { Note, Chord, ChordType } from '@tonaljs/tonal';
 import { Chord as TChord } from '@tonaljs/chord';
 import { isEqual, isSubsetOf, isSupersetOf } from '@tonaljs/pcset';
 
+import { ChordQuizSettings, NotationSettings } from 'main/types';
+
 import {
   randomPick,
   getKeySignature,
@@ -10,6 +12,7 @@ import {
   NOTE_NAMES,
   levenshtein,
   getChordDegrees,
+  stringRotate,
 } from 'renderer/helpers';
 
 export enum STATUSES {
@@ -19,6 +22,9 @@ export enum STATUSES {
   equal = 2,
   superset = 3,
 }
+
+export type Parameters = Pick<NotationSettings, 'key' | 'accidentals'> &
+  ChordQuizSettings;
 
 export type Game = {
   score: number;
@@ -35,8 +41,7 @@ export type GameState = {
   score: number;
 };
 
-export type GameMode = 'random';
-export const GAME_LENGTH = 16;
+const MAJOR_SCALE_CHROMA = '101011010101';
 
 const SCORE_DIFFERENT = -1000;
 const SCORE_COMPLEXITY = 500; // Bonus per evaluated complexity
@@ -82,6 +87,26 @@ export function calculateComplexity(intervals: string[]) {
       (INTERVAL_COMPLEXITY[interval as keyof typeof INTERVAL_COMPLEXITY] ?? 1)
     );
   }, 0);
+}
+
+/**
+ * Returns all chords from dictionary, grouped by their calculated complexity;
+ *
+ * @returns {Object}
+ */
+export function getDictionaryChordsByComplexity() {
+  return ChordType.all()
+    .filter((chord) => chord.intervals.length > 2)
+    .map((c) => ({
+      ...c,
+      complexity: calculateComplexity(c.intervals),
+    }))
+    .reduce((acc, c) => {
+      const complexity = Math.min(COMPLEXITY_MAX, c.complexity);
+      acc[complexity] = acc[complexity] ?? [];
+      acc[complexity].push(c.aliases[0]);
+      return acc;
+    }, {} as Record<number, string[]>);
 }
 
 /**
@@ -229,23 +254,75 @@ export function getRandomChord(
 }
 
 /**
+ * Picks a random chord in a key signature, with given complexity
+ *
+ * @param keySignature
+ * @param chordComplexity
+ * @returns
+ */
+export function getRandomChordInKey(
+  keySignature: KeySignatureConfig,
+  chordComplexity: number
+) {
+  let chordTypes: ReturnType<typeof ChordType.all> = [];
+  let tonic;
+
+  while (!chordTypes.length) {
+    tonic = randomPick(keySignature.scale);
+    const chroma = Note.chroma(tonic) ?? 0;
+    const scaleChroma = stringRotate(
+      MAJOR_SCALE_CHROMA,
+      chroma - keySignature.alteration
+    );
+    const isInKey = isSubsetOf(scaleChroma);
+
+    chordTypes = ChordType.all().filter(
+      (chord) =>
+        chord.intervals.length > 2 &&
+        Math.min(COMPLEXITY_MAX, calculateComplexity(chord.intervals)) <=
+          chordComplexity &&
+        isInKey(chord.chroma)
+    );
+  }
+
+  const type = randomPick(chordTypes);
+
+  return Chord.getChord(type.aliases[0], tonic);
+}
+
+/**
  * Generates a new game depending on game settings
  *
  * @param mode - the game mode
  * @returns
  */
-export function generateGame(mode: GameMode) {
-  if (mode === 'random') {
+export function generateGame(parameters: Parameters) {
+  if (parameters.mode === 'random') {
     const keySignature = getRandomKeySignature();
     const game = {
-      chords: Array(GAME_LENGTH)
+      chords: Array(parameters.gameLength)
         .fill(null)
-        .map(() => getRandomChord(keySignature, 1)),
+        .map(() => getRandomChord(keySignature, parameters.difficulty)),
       score: 0,
       played: [],
       succeeded: 0,
     };
 
+    return game;
+  }
+  if (parameters.mode === 'randomInKey') {
+    const keySignature = getKeySignature(
+      parameters.key,
+      parameters.accidentals === 'sharp'
+    );
+    const game = {
+      chords: Array(parameters.gameLength)
+        .fill(null)
+        .map(() => getRandomChordInKey(keySignature, parameters.difficulty)),
+      score: 0,
+      played: [],
+      succeeded: 0,
+    };
     return game;
   }
 

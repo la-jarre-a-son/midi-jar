@@ -11,18 +11,21 @@ type Props = {
   children: React.ReactNode;
   fieldId: string;
   hint?: React.ReactNode;
+  vertical?: boolean;
 };
 
 const defaultProps = {
   className: undefined,
   value: null,
   hint: undefined,
+  vertical: false,
 };
 
 /**
- * A group of buttons that can be toggled.
+ * A form field with a label, a hint, and some controls.
+ * Can be arranged horizontally (by default), or vertically
  *
- * @version 1.0.0
+ * @version 1.1.0
  * @author Rémi Jarasson
  */
 export const FormField: React.FC<Props> = ({
@@ -31,8 +34,9 @@ export const FormField: React.FC<Props> = ({
   label,
   fieldId,
   hint,
+  vertical,
 }) => (
-  <div className={cx('base', className)}>
+  <div className={cx('base', vertical && 'base--vertical', className)}>
     <div className={cx('label')}>
       <label htmlFor={fieldId} className={cx('name')}>
         {label}

@@ -77,6 +77,22 @@ const migrations: Migrations<StoreType> = {
 
     store.set('settings', settings);
   },
+  '1.3.0': (store) => {
+    store.set('version', '1.3.0');
+
+    const settings = store.get('settings');
+
+    settings.chordQuiz = {
+      mode: 'random' as const,
+      difficulty: 0,
+      gameLength: 16,
+      gamification: true,
+      displayReaction: true,
+      displayIntervals: true,
+    };
+
+    store.set('settings', settings);
+  },
 };
 
 export default migrations;

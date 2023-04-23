@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames/bind';
 
-import { defaults } from 'main/settings/schema';
-
 import { useSettings } from 'renderer/contexts/Settings';
 import useQuiz, { STATUSES, Game } from 'renderer/hooks/useQuiz';
 import ChordIntervals from 'renderer/components/ChordIntervals';
@@ -33,15 +31,17 @@ const defaultProps = {
 const ChordQuiz: React.FC<Props> = ({ className }) => {
   const { settings } = useSettings();
 
-  const quizSettings = settings?.chordQuiz ?? defaults.settings.chordQuiz;
-
-  const { mode } = quizSettings;
+  const quizSettings = settings.chordQuiz;
+  const notationSettings = settings.notation;
 
   const { chords, pitchClasses } = useNotes();
 
-  const { games, gameState } = useQuiz(pitchClasses, chords, {
-    mode,
-  });
+  const { games, gameState } = useQuiz(
+    pitchClasses,
+    chords,
+    quizSettings,
+    notationSettings
+  );
 
   const chordElements = useMemo(
     () =>
@@ -103,14 +103,18 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
   return (
     <div id="ChordQuiz" className={cx('base', className)}>
       <div className={cx('topContainer')}>
-        <div className={cx('reactionContainer')}>
-          <Reaction gameState={gameState} />
-        </div>
-        <GameList
-          className={cx('gameList')}
-          games={games}
-          gameIndex={gameState.gameIndex}
-        />
+        {quizSettings.displayReaction && (
+          <div className={cx('reactionContainer')}>
+            <Reaction gameState={gameState} />
+          </div>
+        )}
+        {quizSettings.gamification && (
+          <GameList
+            className={cx('gameList')}
+            games={games}
+            gameIndex={gameState.gameIndex}
+          />
+        )}
       </div>
 
       <div className={cx('chordContainer')}>
@@ -129,20 +133,25 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
         ))}
       </div>
 
-      <div className={cx('intervalsContainer')}>
-        <ChordIntervals
-          targets={games[gameState.gameIndex].chords[gameState.index].intervals}
-          intervals={gameState.status > 0 ? gameState.chord?.intervals : []}
-          pitchClasses={pitchClasses}
-          tonic={games[gameState.gameIndex].chords[gameState.index].tonic}
-        />
-      </div>
-
+      {quizSettings.displayIntervals && (
+        <div className={cx('intervalsContainer')}>
+          <ChordIntervals
+            targets={
+              games[gameState.gameIndex].chords[gameState.index].intervals
+            }
+            intervals={gameState.status > 0 ? gameState.chord?.intervals : []}
+            pitchClasses={pitchClasses}
+            tonic={games[gameState.gameIndex].chords[gameState.index].tonic}
+          />
+        </div>
+      )}
       <div className={cx('playedContainer')}>
         <div className={cx('progress')}>
           {gameState.index + 1} / {games[gameState.gameIndex].chords.length}
         </div>
-        <div className={cx('score')}>{gameState.score} pts</div>
+        {quizSettings.gamification && (
+          <div className={cx('score')}>{gameState.score} pts</div>
+        )}
         <div className={cx('playedChord')}>
           <ChordName chord={gameState.chord} />
         </div>

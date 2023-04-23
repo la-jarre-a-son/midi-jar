@@ -22,7 +22,12 @@ export type ChordDisplaySettings = {
 };
 
 export type ChordQuizSettings = {
-  mode: 'random';
+  mode: 'random' | 'randomInKey';
+  difficulty: 0 | 1 | 2 | 3 | 4 | 5;
+  gameLength: number;
+  gamification: boolean;
+  displayReaction: boolean;
+  displayIntervals: boolean;
 };
 
 export type CircleOfFifthsSettings = {

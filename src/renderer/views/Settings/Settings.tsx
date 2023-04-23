@@ -77,6 +77,15 @@ const Settings: React.FC<Props> = ({ className }) => (
         <Button
           className={cx('tab')}
           intent="transparent"
+          to="/settings/quiz"
+          title="Chord Quiz"
+        >
+          <Icon name="quiz" />
+          <span className={cx('label')}>Chord Quiz</span>
+        </Button>
+        <Button
+          className={cx('tab')}
+          intent="transparent"
           to="/settings/server"
           title="Server"
         >
