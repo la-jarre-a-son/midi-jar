@@ -4,7 +4,6 @@ import classnames from 'classnames/bind';
 import CircleFifths from 'renderer/components/CircleFifths';
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
-import { defaults } from 'main/settings/schema';
 import ChordName from 'renderer/components/ChordName';
 
 import styles from './CircleOfFifths.module.scss';
@@ -24,7 +23,7 @@ const defaultProps = {
 const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
   const { settings, updateSetting } = useSettings();
 
-  const key = settings?.notation.key || defaults.settings.notation.key;
+  const { key } = settings.notation;
   const { chords, pitchClasses, keySignature } = useNotes({
     key,
     midiChannel: 0,
@@ -39,7 +38,7 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
 
   if (!settings) return null;
 
-  const config = settings.circleOfFifths ?? defaults.settings.circleOfFifths;
+  const config = settings.circleOfFifths;
 
   return (
     <div className={cx('base')}>

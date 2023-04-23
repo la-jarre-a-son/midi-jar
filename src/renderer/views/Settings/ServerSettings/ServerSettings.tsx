@@ -71,7 +71,7 @@ const ServerSettings: React.FC<Props> = ({ className }) => {
             <Toggle
               id="server_settings:enabled"
               onChange={(value) => enable(!!value)}
-              value={settings?.server?.enabled}
+              value={settings.server.enabled}
               successIcon="save"
             />
           </FormField>
@@ -80,7 +80,7 @@ const ServerSettings: React.FC<Props> = ({ className }) => {
             <Input
               id="server_settings:port"
               onChange={(value) => updateSetting('server.port', Number(value))}
-              value={settings?.server?.port ?? null}
+              value={settings.server.port ?? null}
               type="number"
             />
           </FormField>

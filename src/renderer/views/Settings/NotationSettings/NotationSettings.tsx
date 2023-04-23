@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import { defaults } from 'main/settings/schema';
 import { useSettings } from 'renderer/contexts/Settings';
 
 import FormField from 'renderer/components/FormField';
@@ -41,7 +40,7 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
             <InputNote
               id="notation_settings:key"
               onChange={(value: string) => updateSetting('notation.key', value)}
-              value={settings?.notation.key ?? defaults.settings.notation.key}
+              value={settings.notation.key}
               type="text"
               learn
             />
@@ -55,12 +54,9 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
               id="notation_settings:accidentals"
               choices={fields.accidentals.choices}
               onChange={(value) => updateSetting('notation.accidentals', value)}
-              value={
-                settings?.notation.accidentals ??
-                defaults.settings.notation.accidentals
-              }
+              value={settings.notation.accidentals}
               successIcon="save"
-              disabled={settings?.notation.key !== 'C'}
+              disabled={settings.notation.key !== 'C'}
             />
           </FormField>
 
@@ -69,10 +65,7 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
               id="notation_settings:staff-clef"
               choices={fields.staffClef.choices}
               onChange={(value) => updateSetting('notation.staffClef', value)}
-              value={
-                settings?.notation.staffClef ??
-                defaults.settings.notation.staffClef
-              }
+              value={settings.notation.staffClef}
               successIcon="save"
             />
           </FormField>
@@ -89,10 +82,7 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
               }
               type="number"
               step="1"
-              value={
-                settings?.notation.staffTranspose ??
-                defaults.settings.notation.staffTranspose
-              }
+              value={settings.notation.staffTranspose}
             />
           </FormField>
         </section>
