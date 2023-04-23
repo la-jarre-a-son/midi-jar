@@ -1,6 +1,7 @@
 import { formatSharpsFlats } from './note';
 
-export const CHORD_NAME_REGEX = /^(([A-G])(b|#)?)([^/]+)(\/([A-G](b|#)?))?$/;
+export const CHORD_NAME_REGEX =
+  /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
 export const CHORD_TYPE_REGEX =
   /^([\d]{1,2}|(m|M|min|maj|mMaj)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
 
