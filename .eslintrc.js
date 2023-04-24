@@ -6,10 +6,14 @@ module.exports = {
     'import/no-unresolved': 'error',
     // Since React 17 and typescript 4.1 you can safely disable the rule
     'react/react-in-jsx-scope': 'off',
+    'import/extensions': 'off',
+    'import/no-import-module-exports': 'off',
+    'react/function-component-definition': 'off',
     'react/default-props-match-prop-types': 'off',
     'react/no-array-index-key': 'off',
     'react/jsx-props-no-spreading': 'off',
-    '@typescript-eslint/no-unused-vars': [
+    'react/jsx-filename-extension': 'off',
+    'no-unused-vars': [
       'warn', // or error
       {
         argsIgnorePattern: '^_',
