@@ -157,8 +157,7 @@ const createTray = () => {
     },
   ]);
 
-  tray.on('click', () => tray?.popUpContextMenu());
-
+  tray.on('click', () => openWindow());
   tray.setContextMenu(contextMenu);
   tray.setToolTip('MIDI Jar');
 };
