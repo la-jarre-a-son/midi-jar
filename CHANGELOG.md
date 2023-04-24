@@ -1,3 +1,18 @@
+# 1.3.0 (2023-05-04)
+
+## Features
+
+- **ChordQuiz:** Added a quiz module with customizable difficulty, modes, and game infos
+- **Chord Display:** Added intervals display
+
+## Fixes
+
+- **Circle of Fifths:** Ensure the current key is highlighted (can happen with strange key signatures)
+- **Music Notation:** Fixed parsing for notes with multiple alterations when using strange key signatures (like B## or Ebb)
+- **Settings:** Swapped default toggle order (N / Y instead of Y / N)
+- **Settings:** Fixed migrations and ensure settings are always defaulted
+- **misc**: Clicking the task icon opens window directly
+
 # 1.2.1 (2022-11-05)
 
 ## Fixes
