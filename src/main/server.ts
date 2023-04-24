@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'path';
 import os from 'os';
 import bodyParser from 'body-parser';
 import makeDebug from 'debug';
-import request from 'request';
 import { initWSServer } from './websockets';
 import { getSettings } from './settings';
 
@@ -38,12 +38,12 @@ class ServerError extends Error {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  /* Route everything to webpack */
-  app.get('*', (req, res) => {
-    const port = process.env.PORT || 1212;
-    const newurl = `http://localhost:${port}${req.url}`;
-    request(newurl, { headers: req.headers }).pipe(res);
-  });
+  app.use(
+    '*',
+    createProxyMiddleware({
+      target: `http://localhost:${process.env.PORT || 1212}`,
+    })
+  );
 } else {
   app.get('/renderer*', (_req, res) => res.redirect('/'));
   app.get('/main*', (_req, res) => res.redirect('/'));
