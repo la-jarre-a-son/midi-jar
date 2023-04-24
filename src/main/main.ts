@@ -20,7 +20,7 @@ import { startRefreshLoop } from './midi';
 import { bindWindowEvents } from './api';
 import { setStartupSetting, isHiddenStartupLaunch } from './settings';
 
-export default class AppUpdater {
+class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;

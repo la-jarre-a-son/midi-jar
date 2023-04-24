@@ -3,6 +3,7 @@
  */
 
 import webpack from 'webpack';
+import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
 import webpackPaths from './webpack.paths';
 import {
   version,
@@ -24,6 +25,9 @@ const configuration: webpack.Configuration = {
           options: {
             // Remove this line to enable type checking in webpack builds
             transpileOnly: true,
+            compilerOptions: {
+              module: 'esnext',
+            },
           },
         },
       },
@@ -44,6 +48,8 @@ const configuration: webpack.Configuration = {
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [webpackPaths.srcPath, 'node_modules'],
+    // There is no need to add aliases here, the paths in tsconfig get mirrored
+    plugins: [new TsconfigPathsPlugins()],
   },
 
   plugins: [
