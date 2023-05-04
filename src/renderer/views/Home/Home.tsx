@@ -42,6 +42,7 @@ const Home: React.FC<Props> = ({ className }) => (
         <li>Route MIDI messages between devices</li>
         <li>Display chords, notes and a piano as you play</li>
         <li>Integrate in OBS, or in your Web Browser</li>
+        <li>Learn with tools like Chord Quiz and Circle of Fifths</li>
       </ul>
       {window.os.isWindows ? (
         <p className={cx('loopMidi')}>
