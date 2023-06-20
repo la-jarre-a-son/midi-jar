@@ -11,7 +11,8 @@
 - **Music Notation:** Fixed parsing for notes with multiple alterations when using strange key signatures (like B## or Ebb)
 - **Settings:** Swapped default toggle order (N / Y instead of Y / N)
 - **Settings:** Fixed migrations and ensure settings are always defaulted
-- **misc**: Clicking the task icon opens window directly
+- **misc**: Double-clicking the task icon opens window directly
+- **macos**: Avoid MacOS Ventura to trigger notificatons at startup + start minimized
 
 # 1.2.1 (2022-11-05)
 
