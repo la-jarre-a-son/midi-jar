@@ -43,22 +43,40 @@ export function updateSetting(key: string, value: unknown) {
   store.set(`settings.${key}`, value);
 }
 
-export function setStartupSetting() {
+export function setStartupSetting(isInit = false) {
   const settings = getSettings();
   const loginItemSettings = app.getLoginItemSettings();
 
   if (app.isPackaged && settings.general) {
     if (
       !!settings.general?.launchAtStartup !== loginItemSettings.openAtLogin ||
-      !!settings.general?.startMinimized !== loginItemSettings.openAsHidden
-    )
+      // Since MacOS Ventura, startup item no longer have hidden setting, but generates a notification when called.
+      // So now, when initing the app, we ignore if the hidden settings changed.
+      (!isInit &&
+        !!settings.general?.startMinimized !== loginItemSettings.openAsHidden)
+    ) {
       app.setLoginItemSettings({
         openAtLogin: !!settings?.general?.launchAtStartup,
         openAsHidden: !!settings?.general?.startMinimized,
         args: settings?.general?.startMinimized ? ['--openAsHidden'] : [],
       });
+    }
   }
 }
+
+export const isHiddenStartupLaunch = () => {
+  const settings = getSettings();
+  const loginItemSettings = app.getLoginItemSettings();
+
+  if (
+    process.argv.indexOf('--openAsHidden') >= 0 ||
+    loginItemSettings.wasOpenedAsHidden ||
+    (!!settings?.general?.startMinimized && loginItemSettings.wasOpenedAtLogin)
+  )
+    return true;
+
+  return false;
+};
 
 export function onSettingsChange(
   callback: (newValue?: Settings, oldValue?: Settings) => void
