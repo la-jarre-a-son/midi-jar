@@ -18,7 +18,7 @@ import MenuBuilder from './menu';
 import { startServer } from './server';
 import { startRefreshLoop } from './midi';
 import { bindWindowEvents } from './api';
-import { setStartupSetting } from './settings';
+import { setStartupSetting, isHiddenStartupLaunch } from './settings';
 
 export default class AppUpdater {
   constructor() {
@@ -32,7 +32,7 @@ const singleInstance = app.requestSingleInstanceLock();
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 
-setStartupSetting();
+setStartupSetting(true);
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -128,10 +128,7 @@ const openWindow = () => {
 };
 
 const firstOpenWindow = () => {
-  if (
-    process.argv.indexOf('--openAsHidden') < 0 &&
-    !app.getLoginItemSettings().wasOpenedAsHidden
-  ) {
+  if (!isHiddenStartupLaunch()) {
     openWindow();
   } else {
     app.dock?.hide();
