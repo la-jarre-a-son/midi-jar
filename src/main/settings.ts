@@ -1,35 +1,8 @@
-import Store from 'electron-store';
 import { app } from 'electron';
 
-import { MidiRoute, MidiRouteRaw } from '../types/MidiRoute';
+import { Settings } from './types/Settings';
 
-import { StoreType, Settings } from '../types/Settings';
-import { schema, defaults } from './schema';
-import migrations from './migrations';
-
-import { version } from '../../../package.json';
-
-const store = new Store<StoreType>({
-  schema,
-  defaults,
-  migrations,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore: Electron Store supports projectVersion but it's not typed
-  projectVersion: version,
-});
-
-export function getMidiRoutes(): MidiRoute[] {
-  return ((store.get('midi.routes') as MidiRouteRaw[]) || []).map((route) =>
-    MidiRoute.fromStore(route)
-  );
-}
-
-export function setMidiRoutes(routes: MidiRoute[]) {
-  store.set(
-    'midi.routes',
-    routes.map((route) => route.toStore())
-  );
-}
+import { defaults, store } from './store';
 
 export function getSettings(): Settings {
   return store.get('settings');

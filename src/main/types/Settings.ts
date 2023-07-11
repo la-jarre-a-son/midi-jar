@@ -1,5 +1,3 @@
-import { MidiRouteRaw } from './MidiRoute';
-
 export type ChordDisplaySettings = {
   useInternal: boolean;
   skin: 'classic' | 'flat';
@@ -71,11 +69,4 @@ export type Settings = {
   circleOfFifths: CircleOfFifthsSettings;
   notation: NotationSettings;
   server: ServerSettings;
-};
-
-export type StoreType = {
-  midi: {
-    routes: MidiRouteRaw[];
-  };
-  settings: Settings;
 };

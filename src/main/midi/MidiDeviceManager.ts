@@ -1,16 +1,15 @@
 import makeDebug from 'debug';
 import { EventEmitter } from 'events';
 import midi from '@julusian/midi';
-import {
-  InternalOutput,
-  MidiInputDevice,
-  MidiOutputDevice,
-  MidiRoute,
-  MidiWire,
-  MidiMessage,
-  MidiInput,
-  MidiOutput,
-} from './types';
+
+import { MidiMessage } from '../types/Midi';
+import { InternalOutput } from './InternalOutput';
+import { MidiInputDevice } from './MidiInputDevice';
+import { MidiOutputDevice } from './MidiOutputDevice';
+import { MidiRoute } from './MidiRoute';
+import { MidiWire } from './MidiWire';
+import { MidiInput } from './MidiInput';
+import { MidiOutput } from './MidiOutput';
 
 const debug = makeDebug('app:midi');
 
@@ -19,7 +18,12 @@ const midiOut = new midi.Output();
 
 const IGNORE_RTMIDI_REGEX = /RtMidi/i;
 
-const INTERNAL_OUTPUTS = ['chord-display', 'chord-quiz', 'debugger'];
+const INTERNAL_OUTPUTS = [
+  'chord-display/internal',
+  'chord-display/overlay',
+  'chord-quiz',
+  'debugger',
+];
 
 export class MidiDeviceManager extends EventEmitter {
   inputs: Map<string, MidiInput>;
@@ -136,14 +140,22 @@ export class MidiDeviceManager extends EventEmitter {
     return input;
   }
 
-  getOrCreateOutput(name: string) {
+  getOrCreateOutput(name: string, type: MidiRoute['type']) {
     const output = this.outputs.get(name);
 
     if (!output) {
-      const newOutput = new MidiOutputDevice(name, false);
-      this.outputs.set(name, newOutput);
-
-      return newOutput;
+      switch (type) {
+        case 'internal': {
+          const newOutput = new InternalOutput(name);
+          this.outputs.set(name, newOutput);
+          return newOutput;
+        }
+        default: {
+          const newOutput = new MidiOutputDevice(name, false);
+          this.outputs.set(name, newOutput);
+          return newOutput;
+        }
+      }
     }
     return output;
   }
@@ -156,7 +168,7 @@ export class MidiDeviceManager extends EventEmitter {
       const route = routes[r];
       if (route.enabled) {
         const input = this.getOrCreateInput(route.input);
-        const output = this.getOrCreateOutput(route.output);
+        const output = this.getOrCreateOutput(route.output, route.type);
         const wire = new MidiWire(routes[r]);
         wire.plug(input, output);
         this.wires.push(wire);

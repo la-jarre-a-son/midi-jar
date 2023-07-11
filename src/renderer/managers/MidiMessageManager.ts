@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { MidiMessage } from 'main/types';
+import { MidiMessage } from 'main/types/Midi';
 
 export class MidiMessageEvent extends Event {
   message: MidiMessage;

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 
 import { Settings } from 'main/types/Settings';
-import { defaults } from 'main/settings/schema';
+import { defaults } from 'main/store/defaults';
 import { SettingsEvent } from 'renderer/managers/SettingsManager';
 import { mergeDeep } from 'renderer/helpers';
 

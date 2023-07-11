@@ -1,4 +1,4 @@
-import { ApiMidiRoute } from './api';
+import { ApiMidiRoute } from '../types/api';
 
 export interface MidiRouteRaw {
   input: string;

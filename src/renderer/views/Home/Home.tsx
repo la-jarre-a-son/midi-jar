@@ -51,12 +51,12 @@ const Home: React.FC = () => {
         <Grid size="md" gap="md">
           <Card outlined elevation={1}>
             <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
-              <CardThumbnailOverlay as={NavLink} to="/chords" interactive />
+              <CardThumbnailOverlay as={NavLink} to="/chords/internal" interactive />
               {overlayEnabled && (
                 <CardThumbnailItem position="top-left">
                   <Button
                     as="a"
-                    href={getOverlayUrl(state, '/chords')}
+                    href={getOverlayUrl(state, '/chords/internal')}
                     target="_blank"
                     aria-label="overlay"
                     icon
@@ -77,13 +77,50 @@ const Home: React.FC = () => {
                   icon
                   variant="ghost"
                   intent="neutral"
-                  to="/settings/chords"
+                  to="/settings/chords/internal"
                 >
                   <Icon name="settings" />
                 </NavButton>
               }
             >
-              Chord Display
+              Chord Display Internal
+            </CardHeader>
+          </Card>
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
+              <CardThumbnailOverlay as={NavLink} to="/chords/overlay" interactive />
+              {overlayEnabled && (
+                <CardThumbnailItem position="top-left">
+                  <Button
+                    as="a"
+                    href={getOverlayUrl(state, '/chords/overlay')}
+                    target="_blank"
+                    aria-label="overlay"
+                    icon
+                    intent="primary"
+                    variant="ghost"
+                    hoverIntent
+                  >
+                    <Icon name="overlay" />
+                  </Button>
+                </CardThumbnailItem>
+              )}
+            </CardThumbnail>
+            <CardHeader
+              left={<Icon name="music" />}
+              right={
+                <NavButton
+                  aria-label="edit"
+                  icon
+                  variant="ghost"
+                  intent="neutral"
+                  to="/settings/chords/overlay"
+                >
+                  <Icon name="settings" />
+                </NavButton>
+              }
+            >
+              Chord Display Overlay
             </CardHeader>
           </Card>
           <Card outlined elevation={1}>

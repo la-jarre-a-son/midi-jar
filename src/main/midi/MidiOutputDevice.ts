@@ -1,8 +1,8 @@
 import makeDebug from 'debug';
 import midi, { Output } from '@julusian/midi';
 
-import { MidiMessageHandler, MidiMessage } from './MidiMessage';
-import { ApiMidiOutput } from './api';
+import { MidiMessageHandler, MidiMessage } from '../types/Midi';
+import { ApiMidiOutput } from '../types/api';
 
 const debug = makeDebug('app:midi:MidiOutputDevice');
 

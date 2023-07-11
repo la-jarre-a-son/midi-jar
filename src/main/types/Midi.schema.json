@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "routes": {
+            "items": {
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "input": {
+                        "type": "string"
+                    },
+                    "output": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "internal",
+                            "physical"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "type": "object"
+}
+

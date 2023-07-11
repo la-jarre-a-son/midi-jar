@@ -36,10 +36,10 @@ const router = createHashRouter(
     >
       <Route index element={<Home />} />
       <Route
-        path="chords"
-        handle={{ title: 'Chord Display', icon: <Icon name="music" />, hasSettings: true }}
+        path="chords/internal"
+        handle={{ title: 'Chord Display Internal', icon: <Icon name="music" />, hasSettings: true }}
         element={
-          <MidiMessageManagerProvider namespace="chord-display" source="internal">
+          <MidiMessageManagerProvider namespace="chord-display/internal" source="internal">
             <ChordDisplay namespace="internal" />
             <DrawerOutlet aria-label="Chord Display Settings" placement="right" size="lg" />
           </MidiMessageManagerProvider>
@@ -51,6 +51,26 @@ const router = createHashRouter(
             <>
               <QuickChangeKeyToolbar />
               <ChordDisplayNamespaceSettings namespace="internal" />
+            </>
+          }
+        />
+      </Route>
+      <Route
+        path="chords/overlay"
+        handle={{ title: 'Chord Display Overlay', icon: <Icon name="music" />, hasSettings: true }}
+        element={
+          <MidiMessageManagerProvider namespace="chord-display/overlay" source="internal">
+            <ChordDisplay namespace="overlay" />
+            <DrawerOutlet aria-label="Chord Display Settings" placement="right" size="lg" />
+          </MidiMessageManagerProvider>
+        }
+      >
+        <Route
+          path="settings"
+          element={
+            <>
+              <QuickChangeKeyToolbar />
+              <ChordDisplayNamespaceSettings namespace="overlay" />
             </>
           }
         />
@@ -110,7 +130,7 @@ const router = createHashRouter(
         <Route
           path="notation"
           element={
-            <MidiMessageManagerProvider namespace="chord-display" source="internal">
+            <MidiMessageManagerProvider namespace="*" source="internal">
               <NotationSettings />
             </MidiMessageManagerProvider>
           }
@@ -122,7 +142,7 @@ const router = createHashRouter(
           <Route
             path=":namespace"
             element={
-              <MidiMessageManagerProvider namespace="chord-display" source="internal">
+              <MidiMessageManagerProvider namespace="*" source="internal">
                 <ChordDisplaySettings />
               </MidiMessageManagerProvider>
             }

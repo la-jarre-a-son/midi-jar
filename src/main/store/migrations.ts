@@ -1,8 +1,10 @@
 import { Migrations } from 'conf/dist/source/types';
-import { StoreType } from '../types/Settings';
+import Conf from 'conf';
+import { MidiRouteRaw } from '../midi/MidiRoute';
+import { StoreType } from '../types/Store';
 
 const migrations: Migrations<StoreType> = {
-  '1.0.0': (store) => {
+  '1.0.0': (store: Conf<StoreType>) => {
     store.set('version', '1.0.0');
     store.set('settings.chordDisplay', {
       internal: {
@@ -40,12 +42,12 @@ const migrations: Migrations<StoreType> = {
       },
     });
   },
-  '1.1.0': (store) => {
+  '1.1.0': (store: Conf<StoreType>) => {
     store.set('version', '1.1.0');
     store.set('settings.chordDisplay.internal.key', 'C');
     store.set('settings.chordDisplay.overlay.key', 'C');
   },
-  '1.2.0': (store) => {
+  '1.2.0': (store: Conf<StoreType>) => {
     store.set('version', '1.2.0');
 
     const settings = store.get('settings');
@@ -77,7 +79,7 @@ const migrations: Migrations<StoreType> = {
 
     store.set('settings', settings);
   },
-  '1.3.0': (store) => {
+  '1.3.0': (store: Conf<StoreType>) => {
     store.set('version', '1.3.0');
     store.set('settings.chordDisplay.internal.displayIntervals', false);
     store.set('settings.chordDisplay.overlay.displayIntervals', false);
@@ -94,6 +96,23 @@ const migrations: Migrations<StoreType> = {
     };
 
     store.set('settings', settings);
+  },
+  '1.3.1': (store: Conf<StoreType>) => {
+    const routes = store.get('midi.routes', []) as unknown as MidiRouteRaw[];
+
+    const newRoutes = routes.map((r: MidiRouteRaw) => {
+      if ((r.type as unknown as string) === 'websocket' && r.output === 'chord-display') {
+        return { ...r, type: 'internal', output: 'chord-display/overlay' };
+      }
+      if ((r.type as unknown as string) === 'internal' && r.output === 'chord-display') {
+        return { ...r, type: 'internal', output: 'chord-display/internal' };
+      }
+      return r;
+    });
+
+    store.set('version', '1.3.1');
+
+    store.set('midi.routes', newRoutes);
   },
 };
 

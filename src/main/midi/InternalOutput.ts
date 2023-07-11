@@ -1,7 +1,9 @@
 import makeDebug from 'debug';
 import { EventEmitter } from 'events';
-import { MidiMessageHandler, MidiMessage } from './MidiMessage';
-import { ApiMidiOutput } from './api';
+
+import { ApiMidiOutput } from '../types/api';
+import { MidiMessageHandler, MidiMessage } from '../types/Midi';
+
 import { broadcastRaw } from '../websockets';
 
 const debug = makeDebug('app:midi:InternalOutput');
@@ -17,19 +19,21 @@ export declare interface InternalOutput {
 export class InternalOutput extends EventEmitter {
   name: string;
 
+  namespace: string[];
+
   handlers: MidiMessageHandler[];
 
   constructor(name: string) {
     super();
     this.name = name;
-
+    this.namespace = name.split('/');
     this.handlers = [];
   }
 
   send(message: MidiMessage, timestamp: number, device: string) {
     process.nextTick(() => {
       this.emit('message', message, timestamp, device);
-      broadcastRaw(this.name, message);
+      broadcastRaw(this.namespace, message);
       for (let i = 0; i < this.handlers.length; i += 1) {
         this.handlers[i](message, timestamp, device);
       }

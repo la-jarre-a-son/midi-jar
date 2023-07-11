@@ -5,7 +5,7 @@ import * as midi from './midi';
 import { startServer, stopServer, getState as getServerState } from './server';
 
 import { ApiMidiRoute } from './types/api';
-import { MidiMessage, MidiInput, MidiOutput, MidiRoute, Settings } from './types';
+import { MidiMessage, Settings } from './types';
 import {
   getSettings,
   updateSetting,
@@ -82,25 +82,25 @@ ipcMain.on('midi:clearRoutes', () => {
 });
 
 ipcMain.on('midi:addRoute', (_event, route: ApiMidiRoute) => {
-  midi.addRoute(MidiRoute.fromApi(route));
+  midi.addRoute(route);
 });
 
 ipcMain.on('midi:deleteRoute', (_event, route: ApiMidiRoute) => {
-  midi.deleteRoute(MidiRoute.fromApi(route));
+  midi.deleteRoute(route);
 });
 
 ipcMain.on('midi:getInputs', (event) => {
-  const inputs = midi.getInputs().map((i: MidiInput) => i.toApi());
+  const inputs = midi.getInputs();
   event.reply('midi:inputs', inputs);
 });
 
 ipcMain.on('midi:getOutputs', (event) => {
-  const outputs = midi.getOutputs().map((o: MidiOutput) => o.toApi());
+  const outputs = midi.getOutputs();
   event.reply('midi:outputs', outputs);
 });
 
 ipcMain.on('midi:getWires', (event) => {
-  const wires = midi.getWires().map((i) => i.toApi());
+  const wires = midi.getWires();
   event.reply('midi:wires', wires);
 });
 
@@ -152,22 +152,23 @@ ipcMain.on('app:server:getState', (event) => {
 midi.manager.addListener('refreshed', () => {
   sendToAll(
     'midi:inputs',
-    midi.getInputs().map((i) => i.toApi())
+    midi.getInputs()
   );
   sendToAll(
     'midi:outputs',
-    midi.getOutputs().map((i) => i.toApi())
+    midi.getOutputs()
   );
   sendToAll(
     'midi:wires',
-    midi.getWires().map((i) => i.toApi())
+    midi.getWires()
   );
 });
 
 midi.manager.addListener(
   'midi',
   (namespace: string, message: MidiMessage, timestamp: number, device: string) => {
-    sendToAll(`${namespace}:message`, message, timestamp, device);
+    sendToAll(`midi:message:*`, message, timestamp, device);
+    sendToAll(`midi:message:${namespace}`, message, timestamp, device);
   }
 );
 

@@ -33,7 +33,7 @@ class WebsocketSettings extends SettingsManager {
     try {
       const [eventName, payload] = parseMessage(str);
 
-      if (eventName === 'app:settings') {
+      if (eventName === 'settings:get' || eventName === 'settings:update') {
         this.handleSettings(payload);
       }
     } catch (err) {
@@ -59,7 +59,7 @@ class WebsocketSettings extends SettingsManager {
   // eslint-disable-next-line class-methods-use-this
   public getSettings() {
     if (this.ws.OPEN) {
-      this.ws.send('app:settings:getSettings');
+      this.ws.send('settings:get');
     }
   }
 }

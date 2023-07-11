@@ -18,6 +18,7 @@ import MenuBuilder from './menu';
 import { startServer } from './server';
 import { startRefreshLoop } from './midi';
 import { bindWindowEvents } from './api';
+import { registerWebsocketSubscriptions } from './wsApi';
 import { setStartupSetting, isHiddenStartupLaunch } from './settings';
 
 class AppUpdater {
@@ -186,6 +187,7 @@ app
     console.error(err);
   })
   .then(() => {
+    registerWebsocketSubscriptions();
     startRefreshLoop();
     firstOpenWindow();
     createTray();

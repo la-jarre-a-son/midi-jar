@@ -1,8 +1,9 @@
 import makeDebug from 'debug';
-import { MidiMessage } from './MidiMessage';
-import { MidiRoute } from './MidiRoute';
 
-import { ApiMidiWire } from './api';
+import { MidiMessage } from '../types/Midi';
+import { ApiMidiWire } from '../types/api';
+
+import { MidiRoute } from './MidiRoute';
 import { MidiInput } from './MidiInput';
 import { MidiOutput } from './MidiOutput';
 
