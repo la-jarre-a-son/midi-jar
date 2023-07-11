@@ -2,7 +2,7 @@ import { useEffect, useReducer } from 'react';
 
 import { Chord as TChord } from '@tonaljs/chord';
 
-import { defaults } from 'main/settings/schema';
+import { defaults } from 'main/store/defaults';
 
 import { ChordQuizSettings, NotationSettings } from 'main/types';
 import { getGameState, GameState, Parameters, Game, STATUSES, generateGame } from './utils';

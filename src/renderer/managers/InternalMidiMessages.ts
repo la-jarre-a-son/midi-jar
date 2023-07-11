@@ -1,4 +1,4 @@
-import { MidiMessage } from 'main/types';
+import { MidiMessage } from 'main/types/Midi';
 import MidiMessageManager, { MidiMessageEvent } from './MidiMessageManager';
 
 class InternalMidiMessages extends MidiMessageManager {

@@ -1,0 +1,276 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "chordDisplay": {
+            "properties": {
+                "internal": {
+                    "properties": {
+                        "colorHighlight": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "colorNoteBlack": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "colorNoteWhite": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "displayAltChords": {
+                            "type": "boolean"
+                        },
+                        "displayChord": {
+                            "type": "boolean"
+                        },
+                        "displayDegrees": {
+                            "type": "boolean"
+                        },
+                        "displayIntervals": {
+                            "type": "boolean"
+                        },
+                        "displayKeyNames": {
+                            "type": "boolean"
+                        },
+                        "displayKeyboard": {
+                            "type": "boolean"
+                        },
+                        "displayNotation": {
+                            "type": "boolean"
+                        },
+                        "displayNotes": {
+                            "type": "boolean"
+                        },
+                        "displayTonic": {
+                            "type": "boolean"
+                        },
+                        "from": {
+                            "type": "string"
+                        },
+                        "skin": {
+                            "enum": [
+                                "classic",
+                                "flat"
+                            ],
+                            "type": "string"
+                        },
+                        "to": {
+                            "type": "string"
+                        },
+                        "useInternal": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                },
+                "overlay": {
+                    "properties": {
+                        "colorHighlight": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "colorNoteBlack": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "colorNoteWhite": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "displayAltChords": {
+                            "type": "boolean"
+                        },
+                        "displayChord": {
+                            "type": "boolean"
+                        },
+                        "displayDegrees": {
+                            "type": "boolean"
+                        },
+                        "displayIntervals": {
+                            "type": "boolean"
+                        },
+                        "displayKeyNames": {
+                            "type": "boolean"
+                        },
+                        "displayKeyboard": {
+                            "type": "boolean"
+                        },
+                        "displayNotation": {
+                            "type": "boolean"
+                        },
+                        "displayNotes": {
+                            "type": "boolean"
+                        },
+                        "displayTonic": {
+                            "type": "boolean"
+                        },
+                        "from": {
+                            "type": "string"
+                        },
+                        "skin": {
+                            "enum": [
+                                "classic",
+                                "flat"
+                            ],
+                            "type": "string"
+                        },
+                        "to": {
+                            "type": "string"
+                        },
+                        "useInternal": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "chordQuiz": {
+            "properties": {
+                "difficulty": {
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ],
+                    "type": "number"
+                },
+                "displayIntervals": {
+                    "type": "boolean"
+                },
+                "displayReaction": {
+                    "type": "boolean"
+                },
+                "gameLength": {
+                    "type": "number"
+                },
+                "gamification": {
+                    "type": "boolean"
+                },
+                "mode": {
+                    "enum": [
+                        "random",
+                        "randomInKey"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "circleOfFifths": {
+            "properties": {
+                "displayAlterations": {
+                    "type": "boolean"
+                },
+                "displayDegreeLabels": {
+                    "type": "boolean"
+                },
+                "displayDegrees": {
+                    "type": "boolean"
+                },
+                "displayDiminished": {
+                    "type": "boolean"
+                },
+                "displayDominants": {
+                    "type": "boolean"
+                },
+                "displayMajor": {
+                    "type": "boolean"
+                },
+                "displayMinor": {
+                    "type": "boolean"
+                },
+                "displayModes": {
+                    "type": "boolean"
+                },
+                "displaySuspended": {
+                    "type": "boolean"
+                },
+                "highlightInScale": {
+                    "type": "boolean"
+                },
+                "highlightSector": {
+                    "enum": [
+                        "chord",
+                        "notes"
+                    ],
+                    "type": "string"
+                },
+                "scale": {
+                    "enum": [
+                        "major",
+                        "minor"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "general": {
+            "properties": {
+                "launchAtStartup": {
+                    "type": "boolean"
+                },
+                "startMinimized": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "notation": {
+            "properties": {
+                "accidentals": {
+                    "enum": [
+                        "flat",
+                        "sharp"
+                    ],
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "staffClef": {
+                    "enum": [
+                        "bass",
+                        "both",
+                        "treble"
+                    ],
+                    "type": "string"
+                },
+                "staffTranspose": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "server": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "port": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "type": "object"
+}
+

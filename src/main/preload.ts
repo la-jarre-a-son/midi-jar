@@ -70,7 +70,7 @@ export const MidiApi = {
   onMidiMessage: (
     namespace: string,
     callback: (message: MidiMessage, timestamp: number, device: string) => void
-  ) => registerListener(`${namespace}:message`)(callback),
+  ) => registerListener(`midi:message:${namespace}`)(callback),
 };
 
 contextBridge.exposeInMainWorld('app', AppApi);

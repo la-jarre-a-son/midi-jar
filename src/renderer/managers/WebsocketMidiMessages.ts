@@ -1,5 +1,5 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { MidiMessage } from 'main/types';
+import { MidiMessage } from 'main/types/Midi';
 import MidiMessageManager, { MidiMessageEvent } from './MidiMessageManager';
 
 class WebsocketMidiMessages extends MidiMessageManager {

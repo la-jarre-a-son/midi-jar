@@ -24,9 +24,23 @@ export default function App() {
               <Route path="/">
                 <Route index element={<Home />} />
                 <Route
-                  path="chords"
+                  path="chords/internal"
                   element={
-                    <MidiMessageManagerProvider namespace="chord-display" source="websocket">
+                    <MidiMessageManagerProvider
+                      namespace="chord-display/internal"
+                      source="websocket"
+                    >
+                      <ChordDisplay namespace="overlay" />
+                    </MidiMessageManagerProvider>
+                  }
+                />
+                <Route
+                  path="chords/overlay"
+                  element={
+                    <MidiMessageManagerProvider
+                      namespace="chord-display/overlay"
+                      source="websocket"
+                    >
                       <ChordDisplay namespace="overlay" />
                     </MidiMessageManagerProvider>
                   }

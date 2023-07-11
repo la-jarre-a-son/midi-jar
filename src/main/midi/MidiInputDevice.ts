@@ -1,8 +1,9 @@
 import makeDebug from 'debug';
 import { EventEmitter } from 'events';
 import midi, { Input } from '@julusian/midi';
-import { MidiMessageHandler, MidiMessage } from './MidiMessage';
-import { ApiMidiInput } from './api';
+
+import { ApiMidiInput } from '../types/api';
+import { MidiMessageHandler, MidiMessage } from '../types/Midi';
 
 const debug = makeDebug('app:midi:MidiInputDevice');
 

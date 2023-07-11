@@ -29,10 +29,8 @@ const configuration: webpack.Configuration = {
     renderer: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
     overlay: [path.join(webpackPaths.srcOverlayPath, 'index.tsx')],
   },
-
   output: {
     path: webpackPaths.distPath,
-    publicPath: './',
     filename: '[name].js',
     library: {
       type: 'umd',
@@ -138,6 +136,7 @@ const configuration: webpack.Configuration = {
       filename: 'renderer.html',
       chunks: ['renderer'],
       template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      publicPath: './',
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
@@ -155,6 +154,7 @@ const configuration: webpack.Configuration = {
       filename: 'overlay.html',
       chunks: ['overlay'],
       template: path.join(webpackPaths.srcOverlayPath, 'index.ejs'),
+      publicPath: '/',
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
