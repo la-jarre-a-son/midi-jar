@@ -3,11 +3,7 @@ import classnames from 'classnames/bind';
 
 import { useSettings } from 'renderer/contexts/Settings';
 
-import Toolbar from 'renderer/components/Toolbar';
-import Button from 'renderer/components/Button';
-import Icon from 'renderer/components/Icon';
-import FormField from 'renderer/components/FormField';
-import Toggle from 'renderer/components/Toggle';
+import { Toolbar, Button, Icon, FormField, Toggle } from 'renderer/components';
 
 import { fields } from './constants';
 
@@ -44,9 +40,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-major"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayMajor', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayMajor', value)}
               value={settings.circleOfFifths.displayMajor}
               successIcon="save"
             />
@@ -59,9 +53,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-minor"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayMinor', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayMinor', value)}
               value={settings.circleOfFifths.displayMinor}
               successIcon="save"
             />
@@ -78,10 +70,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
               onChange={(value) => updateSetting('circleOfFifths.scale', value)}
               value={settings.circleOfFifths.scale}
               disabled={
-                !(
-                  settings.circleOfFifths.displayMajor &&
-                  settings.circleOfFifths.displayMinor
-                )
+                !(settings.circleOfFifths.displayMajor && settings.circleOfFifths.displayMinor)
               }
               successIcon="save"
             />
@@ -94,9 +83,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-diminished"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayDiminished', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayDiminished', value)}
               value={settings.circleOfFifths.displayDiminished}
               successIcon="save"
             />
@@ -109,9 +96,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-dominants"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayDominants', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayDominants', value)}
               value={settings.circleOfFifths.displayDominants}
               successIcon="save"
             />
@@ -124,9 +109,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-suspended"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displaySuspended', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displaySuspended', value)}
               value={settings.circleOfFifths.displaySuspended}
               successIcon="save"
             />
@@ -139,9 +122,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-alterations"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayAlterations', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayAlterations', value)}
               value={settings.circleOfFifths.displayAlterations}
               successIcon="save"
             />
@@ -154,9 +135,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-modes"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayModes', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayModes', value)}
               value={settings.circleOfFifths.displayModes}
               successIcon="save"
             />
@@ -169,9 +148,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-degrees"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayDegrees', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayDegrees', value)}
               value={settings.circleOfFifths.displayDegrees}
               successIcon="save"
             />
@@ -184,9 +161,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:display-degreeLabels"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.displayDegreeLabels', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.displayDegreeLabels', value)}
               value={settings.circleOfFifths.displayDegreeLabels}
               successIcon="save"
             />
@@ -200,9 +175,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
             <Toggle
               id="circle_of_fifths_settings:highlightSector"
               choices={fields.highlightSector.choices}
-              onChange={(value) =>
-                updateSetting('circleOfFifths.highlightSector', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.highlightSector', value)}
               value={settings.circleOfFifths.highlightSector}
               successIcon="save"
             />
@@ -215,9 +188,7 @@ const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="circle_of_fifths_settings:highlight-in-scale"
-              onChange={(value) =>
-                updateSetting('circleOfFifths.highlightInScale', value)
-              }
+              onChange={(value) => updateSetting('circleOfFifths.highlightInScale', value)}
               value={settings.circleOfFifths.highlightInScale}
               successIcon="save"
             />

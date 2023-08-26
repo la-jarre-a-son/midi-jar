@@ -1,6 +1,7 @@
 window.os = {
   isMac: true,
   isWindows: false,
+  platform: process.platform,
 };
 
 window.app = {

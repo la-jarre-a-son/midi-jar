@@ -3,45 +3,7 @@ import { Chord } from '@tonaljs/chord';
 
 import { range } from 'renderer/helpers';
 import { formatSharpsFlats } from 'renderer/helpers/note';
-
-// Types
-
-export type Section = {
-  enabled: boolean;
-  size: number;
-  start: number;
-  end: number;
-  middle: number;
-  align: number;
-};
-
-export type SectionType =
-  | 'alt'
-  | 'modes'
-  | 'degreesMajor'
-  | 'major'
-  | 'dom'
-  | 'degreesMinor'
-  | 'minor'
-  | 'dim'
-  | 'arrow';
-
-export type Sections = Record<SectionType, Section>;
-
-export type CircleOfFifthsConfig = {
-  scale?: 'major' | 'minor';
-  highlightSector?: 'chord' | 'notes';
-  highlightInScale?: boolean;
-  displayMajor?: boolean;
-  displayMinor?: boolean;
-  displayDominants?: boolean;
-  displaySuspended?: boolean;
-  displayDiminished?: boolean;
-  displayAlterations?: boolean;
-  displayModes?: boolean;
-  displayDegrees?: boolean;
-  displayDegreeLabels?: boolean;
-};
+import { CircleOfFifthsConfig, SectionType, Sections } from './types';
 
 // Constants
 
@@ -65,15 +27,13 @@ export const FIFTHS_DOMINANTS =
   'G/Bb/Db/E D/F/Ab/B A/C/Eb/F# E/G/Bb/C# B/D/F/G# F#/A/C/D# C#/E/G/A# Ab/Cb/D/F Eb/Gb/A/C Bb/Db/E/G F/Ab/Cb/D C/Eb/Gb/A'
     .split(' ')
     .map((v) => v.split('/'));
-export const FIFTHS_ALTERATIONS =
-  '• # ## ### #### 5#/7b 6#/6b 7#/5b bbbb bbb bb b'
-    .split(' ')
-    .map((v) => v.split('/'));
+export const FIFTHS_ALTERATIONS = '• # ## ### #### 5#/7b 6#/6b 7#/5b bbbb bbb bb b'
+  .split(' ')
+  .map((v) => v.split('/'));
 
-export const DEGREE_NAMES =
-  'tonic,supertonic,mediant,subdominant,dominant,submediant,leading tone'
-    .toUpperCase()
-    .split(',');
+export const DEGREE_NAMES = 'tonic,supertonic,mediant,subdominant,dominant,submediant,leading tone'
+  .toUpperCase()
+  .split(',');
 
 export const DEGREE_COLORS = [
   '#6F8CDD',
@@ -93,10 +53,9 @@ export const DEGREES_MINOR = 'i ii bIII iv v bVI bVII'.split(' ');
 
 export const MODE_OFFSETS = [0, 2, 4, -1, 1, 3, 5];
 
-export const MODE_NAMES =
-  'ionian dorian phrygian lydian mixolydian aeolian locrian'
-    .toUpperCase()
-    .split(' ');
+export const MODE_NAMES = 'ionian dorian phrygian lydian mixolydian aeolian locrian'
+  .toUpperCase()
+  .split(' ');
 
 const SECTIONS_TOTAL = 0.46;
 
@@ -204,10 +163,7 @@ const SECTIONS_ORDER_MINOR: (keyof typeof SECTIONS)[] = [
  * @param config - the display config
  * @returns
  */
-export const isSectionDisplayed = (
-  type: SectionType,
-  config?: CircleOfFifthsConfig
-) => {
+export const isSectionDisplayed = (type: SectionType, config?: CircleOfFifthsConfig) => {
   if (config) {
     if (type === 'alt' && !config.displayAlterations) return false;
     if (type === 'major' && !config.displayMajor) return false;
@@ -215,16 +171,8 @@ export const isSectionDisplayed = (
     if (type === 'dim' && !config.displayDiminished) return false;
     if (type === 'dom' && !config.displayDominants) return false;
     if (type === 'modes' && !config.displayModes) return false;
-    if (
-      type === 'degreesMajor' &&
-      !(config.displayDegrees && config.displayMajor)
-    )
-      return false;
-    if (
-      type === 'degreesMinor' &&
-      !(config.displayDegrees && config.displayMinor)
-    )
-      return false;
+    if (type === 'degreesMajor' && !(config.displayDegrees && config.displayMajor)) return false;
+    if (type === 'degreesMinor' && !(config.displayDegrees && config.displayMinor)) return false;
   }
 
   return true;
@@ -235,8 +183,7 @@ export const isSectionDisplayed = (
  * @returns
  */
 export const getSections = (config: CircleOfFifthsConfig = {}) => {
-  const order =
-    config.scale === 'minor' ? SECTIONS_ORDER_MINOR : SECTIONS_ORDER_MAJOR;
+  const order = config.scale === 'minor' ? SECTIONS_ORDER_MINOR : SECTIONS_ORDER_MAJOR;
 
   const sectionsObj = order.reduce(
     (obj, type: keyof typeof SECTIONS) => {
@@ -264,8 +211,7 @@ export const getSections = (config: CircleOfFifthsConfig = {}) => {
       sectionsObj.sections[type].start = start * SIZE;
       sectionsObj.sections[type].end = end * SIZE;
       sectionsObj.sections[type].middle =
-        sectionsObj.sections[type].end +
-        size * sectionsObj.sections[type].align * SIZE;
+        sectionsObj.sections[type].end + size * sectionsObj.sections[type].align * SIZE;
 
       start = end;
     }
@@ -284,19 +230,11 @@ export const getDegreePosition = (
     const label = DEGREES_MINOR[degree];
 
     if (config?.displayMinor) {
-      if (
-        offset - 2 === 0 &&
-        config?.displayDiminished &&
-        config?.highlightInScale
-      ) {
+      if (offset - 2 === 0 && config?.displayDiminished && config?.highlightInScale) {
         return ['dim', offset - 2, label];
       }
 
-      if (
-        (offset < -1 || offset > 1) &&
-        config?.displayMajor &&
-        config?.highlightInScale
-      ) {
+      if ((offset < -1 || offset > 1) && config?.displayMajor && config?.highlightInScale) {
         return ['major', offset + 3, label];
       }
 
@@ -313,19 +251,11 @@ export const getDegreePosition = (
     const label = DEGREES_MAJOR[degree];
 
     if (config?.displayMajor) {
-      if (
-        offset - 5 === 0 &&
-        config?.displayDiminished &&
-        config?.highlightInScale
-      ) {
+      if (offset - 5 === 0 && config?.displayDiminished && config?.highlightInScale) {
         return ['dim', offset - 5, label];
       }
 
-      if (
-        (offset < -1 || offset > 1) &&
-        config?.displayMinor &&
-        config?.highlightInScale
-      ) {
+      if ((offset < -1 || offset > 1) && config?.displayMinor && config?.highlightInScale) {
         return ['minor', offset - 3, label];
       }
 
@@ -345,12 +275,7 @@ export const getDegreePosition = (
  * @param a - angle
  * @returns [x, y]
  */
-export const polar = (
-  ox: number,
-  oy: number,
-  r: number,
-  a: number
-): [number, number] => {
+export const polar = (ox: number, oy: number, r: number, a: number): [number, number] => {
   const rad = (a - 0.25) * 2 * Math.PI;
   const x = ox + r * Math.cos(rad);
   const y = oy + r * Math.sin(rad);
@@ -373,13 +298,7 @@ export const cPolar = (ox: number, oy: number, r: number, a: number): string =>
  * @param a2 - end angle of the arc
  * @returns {string} - the svg path of the arc
  */
-export const drawArc = (
-  ox: number,
-  oy: number,
-  d: number,
-  a1: number,
-  a2: number
-) => `
+export const drawArc = (ox: number, oy: number, d: number, a1: number, a2: number) => `
   M ${cPolar(ox, oy, d, a1)}
   A ${d},${d} 0 ${a2 - a1 <= 0.5 ? 0 : 1} 1 ${cPolar(ox, oy, d, a2)}
 `;
@@ -471,10 +390,7 @@ export const isSusInScale = (
   )
     return true;
 
-  if (
-    (scale === 'major' && suspended === 'sus2') ||
-    (scale === 'minor' && suspended === 'sus4')
-  )
+  if ((scale === 'major' && suspended === 'sus2') || (scale === 'minor' && suspended === 'sus4'))
     return isInScale(current, value);
 
   return false;
@@ -498,9 +414,7 @@ export const isDiminished = (chord?: Chord | null, tonic?: string) =>
       isSameNote(tonic, chord?.notes[3])));
 
 export const isDominantChord = (chord?: Chord | null, tonic?: string) =>
-  chord &&
-  DOMINANT_CHORDS.includes(chord.aliases[0]) &&
-  (!tonic || isSameNote(chord.tonic, tonic));
+  chord && DOMINANT_CHORDS.includes(chord.aliases[0]) && (!tonic || isSameNote(chord.tonic, tonic));
 
 export const isMajorChord = (chord?: Chord | null, tonic?: string) =>
   chord &&
@@ -509,19 +423,13 @@ export const isMajorChord = (chord?: Chord | null, tonic?: string) =>
   (!tonic || isSameNote(chord.tonic, tonic));
 
 export const isMinorChord = (chord?: Chord | null, tonic?: string) =>
-  chord &&
-  chord.quality === 'Minor' &&
-  (!tonic || isSameNote(chord.tonic, tonic));
+  chord && chord.quality === 'Minor' && (!tonic || isSameNote(chord.tonic, tonic));
 
 export const isSus2Chord = (chord?: Chord | null, tonic?: string) =>
-  chord &&
-  chord.aliases[0].match(/sus2/) &&
-  (!tonic || isSameNote(tonic, chord.tonic));
+  chord && chord.aliases[0].match(/sus2/) && (!tonic || isSameNote(tonic, chord.tonic));
 
 export const isSus4Chord = (chord?: Chord | null, tonic?: string) =>
-  chord &&
-  chord.aliases[0].match(/sus24|sus4/) &&
-  (!tonic || isSameNote(tonic, chord.tonic));
+  chord && chord.aliases[0].match(/sus24|sus4/) && (!tonic || isSameNote(tonic, chord.tonic));
 
 export const isMinorAugmentedChord = (chord?: Chord | null, tonic?: string) =>
   chord &&
@@ -562,42 +470,36 @@ export const isChordPressed = (
   if (config.highlightSector !== 'chord') return false;
 
   if (
-    (section === 'dim' ||
-      (isMainSection(section, config) && !config.displayDiminished)) &&
+    (section === 'dim' || (isMainSection(section, config) && !config.displayDiminished)) &&
     isDiminished(chord, tonic)
   )
     return true;
 
   if (
-    (section === 'dom' ||
-      (isMainSection(section, config) && !config.displayDominants)) &&
+    (section === 'dom' || (isMainSection(section, config) && !config.displayDominants)) &&
     isDominantChord(chord, tonic)
   )
     return true;
 
   if (
-    (section === 'sus4' ||
-      (isMainSection(section, config) && !config.displaySuspended)) &&
+    (section === 'sus4' || (isMainSection(section, config) && !config.displaySuspended)) &&
     isSus4Chord(chord, tonic)
   )
     return true;
   if (
-    (section === 'sus2' ||
-      (isMainSection(section, config) && !config.displaySuspended)) &&
+    (section === 'sus2' || (isMainSection(section, config) && !config.displaySuspended)) &&
     isSus2Chord(chord, tonic)
   )
     return true;
 
   if (
-    (section === 'minor' ||
-      (isMainSection(section, config) && !config.displayMinor)) &&
+    (section === 'minor' || (isMainSection(section, config) && !config.displayMinor)) &&
     (isMinorChord(chord, tonic) || isMinorAugmentedChord(chord, tonic))
   )
     return true;
 
   if (
-    (section === 'major' ||
-      (isMainSection(section, config) && !config.displayMajor)) &&
+    (section === 'major' || (isMainSection(section, config) && !config.displayMajor)) &&
     (isMajorChord(chord, tonic) || isMajorAugmentedChord(chord, tonic))
   )
     return true;
@@ -635,11 +537,7 @@ export const getCurrentKey = (alteration: number) =>
  * @param alternative - the alternative to compare - defaults to 0
  * @returns
  */
-export const isKeySelected = (
-  fifthsIndex: number,
-  alternative = 0,
-  tonic?: string
-) => {
+export const isKeySelected = (fifthsIndex: number, alternative: number, tonic?: string) => {
   if (!tonic) return true;
 
   return FIFTHS_MAJOR[fifthsIndex][alternative] === tonic;

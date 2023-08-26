@@ -1,1 +1,3 @@
-export { default } from './Notation';
+export { default, Notation } from './Notation';
+
+export * from './types';

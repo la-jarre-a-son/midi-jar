@@ -1,20 +1,10 @@
 import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
-import {
-  KeySignatureConfig,
-  getNoteInKeySignature,
-} from 'renderer/helpers/note';
+import { KeySignatureConfig, getNoteInKeySignature } from 'renderer/helpers/note';
 
-import {
-  CX,
-  CY,
-  SUSPENDED_OFFSET,
-  polar,
-  cPolar,
-  Section,
-  formatLabel,
-} from '../utils';
+import { Section } from '../types';
+import { CX, CY, SUSPENDED_OFFSET, polar, cPolar, formatLabel } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
@@ -51,14 +41,14 @@ const SectionSusLabel: React.FC<SectionSusLabelProps> = ({
       textAnchor="middle"
       fontSize={fontSize}
       dy={0.33 * fontSize}
-      transform={`rotate(${
-        angle * 360 + (quality === 'sus4' ? -90 : +90)
-      }, ${cPolar(CX, CY, section.middle, angle)})`}
+      transform={`rotate(${angle * 360 + (quality === 'sus4' ? -90 : +90)}, ${cPolar(
+        CX,
+        CY,
+        section.middle,
+        angle
+      )})`}
     >
-      {formatLabel(
-        getNoteInKeySignature(labels[0], keySignature?.notes),
-        quality
-      )}
+      {formatLabel(getNoteInKeySignature(labels[0], keySignature?.notes), quality)}
     </text>
   );
 };

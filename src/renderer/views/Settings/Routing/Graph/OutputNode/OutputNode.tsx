@@ -4,7 +4,7 @@ import { NodeProps, Handle, Position } from 'react-flow-renderer';
 
 import { ApiMidiOutput } from 'main/types/api';
 
-import Icon from 'renderer/components/Icon';
+import { Icon } from 'renderer/components';
 
 import styles from './OutputNode.module.scss';
 

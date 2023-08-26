@@ -4,9 +4,7 @@ import InternalSettings from 'renderer/managers/InternalSettings';
 import SettingsManager from 'renderer/managers/SettingsManager';
 import WebsocketSettings from 'renderer/managers/WebsocketSettings';
 
-const SettingsManagerContext = React.createContext<
-  SettingsManager | null | undefined
->(undefined);
+const SettingsManagerContext = React.createContext<SettingsManager | null | undefined>(undefined);
 
 type Props = {
   source: 'internal' | 'websocket';
@@ -47,9 +45,7 @@ const SettingsManagerProvider: React.FC<Props> = ({ source, children }) => {
 export const useSettingsManager = () => {
   const context = useContext(SettingsManagerContext);
   if (context === undefined) {
-    throw new Error(
-      `useSettingsManager must be used within a SettingsManagerProvider`
-    );
+    throw new Error(`useSettingsManager must be used within a SettingsManagerProvider`);
   }
   return context;
 };

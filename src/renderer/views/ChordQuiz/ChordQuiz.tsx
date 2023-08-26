@@ -3,14 +3,13 @@ import classnames from 'classnames/bind';
 
 import { useSettings } from 'renderer/contexts/Settings';
 import useQuiz, { STATUSES, Game } from 'renderer/hooks/useQuiz';
-import ChordIntervals from 'renderer/components/ChordIntervals';
-import ChordName from 'renderer/components/ChordName';
-
 import useNotes from 'renderer/hooks/useNotes';
+import { ChordIntervals, ChordName } from 'renderer/components';
+
 import Reaction from './Reaction';
+import GameList from './GameList';
 
 import styles from './ChordQuiz.module.scss';
-import GameList from './GameList';
 
 const cx = classnames.bind(styles);
 
@@ -36,22 +35,13 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
 
   const { chords, pitchClasses } = useNotes();
 
-  const { games, gameState } = useQuiz(
-    pitchClasses,
-    chords,
-    quizSettings,
-    notationSettings
-  );
+  const { games, gameState } = useQuiz(pitchClasses, chords, quizSettings, notationSettings);
 
   const chordElements = useMemo(
     () =>
       [
-        ...(games[gameState.gameIndex]
-          ? games[gameState.gameIndex].chords
-          : []),
-        ...(games[gameState.gameIndex + 1]
-          ? games[gameState.gameIndex + 1].chords
-          : []),
+        ...(games[gameState.gameIndex] ? games[gameState.gameIndex].chords : []),
+        ...(games[gameState.gameIndex + 1] ? games[gameState.gameIndex + 1].chords : []),
       ].reduce(
         (acc, chord, index) => {
           let type = null;
@@ -109,11 +99,7 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
           </div>
         )}
         {quizSettings.gamification && (
-          <GameList
-            className={cx('gameList')}
-            games={games}
-            gameIndex={gameState.gameIndex}
-          />
+          <GameList className={cx('gameList')} games={games} gameIndex={gameState.gameIndex} />
         )}
       </div>
 
@@ -123,8 +109,7 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
             key={c.index}
             className={cx(
               'chord',
-              c.type === 'targetChord' &&
-                `status--${STATUSES[gameState.status]}`,
+              c.type === 'targetChord' && `status--${STATUSES[gameState.status]}`,
               c.type
             )}
           >
@@ -136,9 +121,7 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
       {quizSettings.displayIntervals && (
         <div className={cx('intervalsContainer')}>
           <ChordIntervals
-            targets={
-              games[gameState.gameIndex].chords[gameState.index].intervals
-            }
+            targets={games[gameState.gameIndex].chords[gameState.index].intervals}
             intervals={gameState.status > 0 ? gameState.chord?.intervals : []}
             pitchClasses={pitchClasses}
             tonic={games[gameState.gameIndex].chords[gameState.index].tonic}
@@ -149,9 +132,7 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
         <div className={cx('progress')}>
           {gameState.index + 1} / {games[gameState.gameIndex].chords.length}
         </div>
-        {quizSettings.gamification && (
-          <div className={cx('score')}>{gameState.score} pts</div>
-        )}
+        {quizSettings.gamification && <div className={cx('score')}>{gameState.score} pts</div>}
         <div className={cx('playedChord')}>
           <ChordName chord={gameState.chord} />
         </div>

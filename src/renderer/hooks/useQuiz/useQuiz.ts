@@ -5,14 +5,7 @@ import { Chord as TChord } from '@tonaljs/chord';
 import { defaults } from 'main/settings/schema';
 
 import { ChordQuizSettings, NotationSettings } from 'main/types';
-import {
-  getGameState,
-  GameState,
-  Parameters,
-  Game,
-  STATUSES,
-  generateGame,
-} from './utils';
+import { getGameState, GameState, Parameters, Game, STATUSES, generateGame } from './utils';
 
 enum QuizActionType {
   CHORD_PLAYED = 'CHORD_PLAYED',

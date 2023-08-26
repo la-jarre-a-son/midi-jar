@@ -5,13 +5,7 @@ import * as midi from './midi';
 import { startServer, stopServer, getState as getServerState } from './server';
 
 import { ApiMidiRoute } from './types/api';
-import {
-  MidiMessage,
-  MidiInput,
-  MidiOutput,
-  MidiRoute,
-  Settings,
-} from './types';
+import { MidiMessage, MidiInput, MidiOutput, MidiRoute, Settings } from './types';
 import {
   getSettings,
   updateSetting,
@@ -115,11 +109,11 @@ ipcMain.on('app:settings:getSettings', (event) => {
   event.reply('app:settings', settings);
 });
 
-ipcMain.handle('app:settings:updateSetting', (_event, key: any, value: any) => {
+ipcMain.handle('app:settings:updateSetting', (_event, key: string, value: unknown) => {
   updateSetting(key, value);
 });
 
-ipcMain.handle('app:settings:updateSettings', (_event, value: any) => {
+ipcMain.handle('app:settings:updateSettings', (_event, value: Settings) => {
   updateSettings(value);
 });
 
@@ -172,12 +166,7 @@ midi.manager.addListener('refreshed', () => {
 
 midi.manager.addListener(
   'midi',
-  (
-    namespace: string,
-    message: MidiMessage,
-    timestamp: number,
-    device: string
-  ) => {
+  (namespace: string, message: MidiMessage, timestamp: number, device: string) => {
     sendToAll(`${namespace}:message`, message, timestamp, device);
   }
 );

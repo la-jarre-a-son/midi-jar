@@ -16,13 +16,9 @@ export const INTERVALS = {
  * @returns {string}
  */
 export function isIncludedAs(interval: string, intervals: string[]) {
-  const simplified = intervals.map((i) =>
-    Interval.semitones(Interval.simplify(i))
-  );
+  const simplified = intervals.map((i) => Interval.semitones(Interval.simplify(i)));
 
-  const index = simplified.indexOf(
-    Interval.semitones(Interval.simplify(interval))
-  );
+  const index = simplified.indexOf(Interval.semitones(Interval.simplify(interval)));
 
   if (index < 0) return null;
 
@@ -37,10 +33,7 @@ export function isIncludedAs(interval: string, intervals: string[]) {
  * @param pitchClasses - the list of notes played
  * @returns number[12]
  */
-export function getPlayedIntervals(
-  tonic: string | null | undefined,
-  pitchClasses: string[]
-) {
+export function getPlayedIntervals(tonic: string | null | undefined, pitchClasses: string[]) {
   return pitchClasses.reduce((acc, pc) => {
     const semitones = tonic
       ? Interval.semitones(Interval.simplify(Interval.distance(tonic, pc)))

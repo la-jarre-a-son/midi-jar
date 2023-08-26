@@ -4,7 +4,7 @@ import { getBezierPath, EdgeProps } from 'react-flow-renderer';
 
 import { ApiMidiWire } from 'main/types/api';
 
-import Icon from 'renderer/components/Icon';
+import { Icon } from 'renderer/components';
 
 import styles from './Wire.module.scss';
 
@@ -49,12 +49,7 @@ const CustomEdge: React.FC<Props> = ({
 
   return (
     <>
-      <path
-        id={id}
-        style={style}
-        className={cx('react-flow__edge-path', 'path')}
-        d={edgePath}
-      />
+      <path id={id} style={style} className={cx('react-flow__edge-path', 'path')} d={edgePath} />
       <foreignObject
         width={FOREIGN_OBJECT_SIZE}
         height={FOREIGN_OBJECT_SIZE}

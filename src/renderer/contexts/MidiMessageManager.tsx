@@ -4,9 +4,9 @@ import InternalMidiMessages from 'renderer/managers/InternalMidiMessages';
 import MidiMessageManager from 'renderer/managers/MidiMessageManager';
 import WebsocketMidiMessages from 'renderer/managers/WebsocketMidiMessages';
 
-const MidiMessageManagerContext = React.createContext<
-  MidiMessageManager | null | undefined
->(undefined);
+const MidiMessageManagerContext = React.createContext<MidiMessageManager | null | undefined>(
+  undefined
+);
 
 type Props = {
   source: 'internal' | 'websocket';
@@ -14,11 +14,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const MidiMessageManagerProvider: React.FC<Props> = ({
-  source,
-  namespace,
-  children,
-}) => {
+const MidiMessageManagerProvider: React.FC<Props> = ({ source, namespace, children }) => {
   const [manager, setManager] = useState<MidiMessageManager | null>(null);
 
   useEffect(() => {
@@ -48,9 +44,7 @@ const MidiMessageManagerProvider: React.FC<Props> = ({
 export const useMidiMessageManager = () => {
   const context = useContext(MidiMessageManagerContext);
   if (context === undefined) {
-    throw new Error(
-      `useMidiMessageManager must be used within a MidiMessageManagerProvider`
-    );
+    throw new Error(`useMidiMessageManager must be used within a MidiMessageManagerProvider`);
   }
   return context;
 };

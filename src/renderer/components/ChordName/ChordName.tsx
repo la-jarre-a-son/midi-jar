@@ -1,29 +1,16 @@
 import React from 'react';
 import classnames from 'classnames/bind';
-import { Chord } from '@tonaljs/chord';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 import { tokenizeChord, tokenizeChordType } from 'renderer/helpers/chords';
+
+import { ChordNameProps } from './types';
 
 import styles from './ChordName.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-  chord?: Chord | null;
-  hideRoot?: boolean;
-  latinSharpsFlats?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  chord: null,
-  hideRoot: false,
-  latinSharpsFlats: undefined,
-};
-
-const ChordName: React.FC<Props> = ({
+export const ChordName: React.FC<ChordNameProps> = ({
   className,
   chord,
   hideRoot,
@@ -59,6 +46,11 @@ const ChordName: React.FC<Props> = ({
   );
 };
 
-ChordName.defaultProps = defaultProps;
+ChordName.defaultProps = {
+  className: undefined,
+  chord: null,
+  hideRoot: false,
+  latinSharpsFlats: undefined,
+};
 
 export default ChordName;

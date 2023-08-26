@@ -2,7 +2,9 @@ import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
 import { range } from 'renderer/helpers';
-import { Sections, CircleOfFifthsConfig, getDegreePosition } from '../utils';
+
+import { Sections, CircleOfFifthsConfig } from '../types';
+import { getDegreePosition } from '../utils';
 
 import DegreeLabel from './DegreeLabel';
 
@@ -16,11 +18,7 @@ type DegreeLabelsProps = {
   config?: CircleOfFifthsConfig;
 };
 
-const DegreeLabels: React.FC<DegreeLabelsProps> = ({
-  scale,
-  sections,
-  config,
-}) => {
+const DegreeLabels: React.FC<DegreeLabelsProps> = ({ scale, sections, config }) => {
   return (
     <g className={cx('degreeLabels')}>
       {range(0, 6).map((degree) => {
@@ -31,8 +29,7 @@ const DegreeLabels: React.FC<DegreeLabelsProps> = ({
         const [sectionType, offset, label] = position;
         const section = sections[sectionType];
         const displaySuspended =
-          (sectionType === 'major' || sectionType === 'minor') &&
-          config?.displaySuspended;
+          (sectionType === 'major' || sectionType === 'minor') && config?.displaySuspended;
 
         return (
           <DegreeLabel

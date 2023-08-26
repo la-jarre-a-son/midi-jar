@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 
 import { ServerState } from 'main/types';
 
@@ -13,8 +7,7 @@ interface ServerStateContextInterface {
   enable: (enabled: boolean) => Promise<void>;
 }
 
-const ServerStateContext =
-  React.createContext<ServerStateContextInterface | null>(null);
+const ServerStateContext = React.createContext<ServerStateContextInterface | null>(null);
 
 type Props = {
   children: React.ReactNode;
@@ -35,10 +28,7 @@ const ServerStateProvider: React.FC<Props> = ({ children }) => {
     [setState]
   );
 
-  const enable = useCallback(
-    (enabled: boolean) => window.app.server.enable(enabled),
-    []
-  );
+  const enable = useCallback((enabled: boolean) => window.app.server.enable(enabled), []);
 
   useEffect(() => {
     window.app.server.getState();
@@ -57,11 +47,7 @@ const ServerStateProvider: React.FC<Props> = ({ children }) => {
     [state, enable]
   );
 
-  return (
-    <ServerStateContext.Provider value={value}>
-      {children}
-    </ServerStateContext.Provider>
-  );
+  return <ServerStateContext.Provider value={value}>{children}</ServerStateContext.Provider>;
 };
 
 export const useServerState = () => {

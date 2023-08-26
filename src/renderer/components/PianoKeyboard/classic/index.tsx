@@ -54,22 +54,16 @@ const Keyboard: React.FC<KeyboardProps> = ({
   const fromProps = Note.get(Note.simplify(from) || defaultProps.from);
   const toProps = Note.get(Note.simplify(to) || defaultProps.to);
 
-  const noteStart = fromProps.alt
-    ? (fromProps.midi as number) - 1
-    : (fromProps.midi as number);
+  const noteStart = fromProps.alt ? (fromProps.midi as number) - 1 : (fromProps.midi as number);
 
-  const noteEnd = toProps.alt
-    ? (toProps.midi as number) + 1
-    : (toProps.midi as number);
+  const noteEnd = toProps.alt ? (toProps.midi as number) + 1 : (toProps.midi as number);
 
   const start = Math.min(noteStart, noteEnd);
   const end = Math.max(noteStart, noteEnd);
   const keyboard = range(start, end).reduce<KeyboardNotes>(
     (kb: KeyboardNotes, midi: number) => {
       const note = Note.fromMidi(midi);
-      const displayName = formatSharpsFlats(
-        getNoteInKeySignature(note, keySignature.notes)
-      );
+      const displayName = formatSharpsFlats(getNoteInKeySignature(note, keySignature.notes));
 
       const def: NoteDef = {
         displayName,
@@ -102,10 +96,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
   );
 
   return (
-    <svg
-      className={styles.keyboard}
-      viewBox={`0 0 ${keyboard.width} ${keyboard.height}`}
-    >
+    <svg className={styles.keyboard} viewBox={`0 0 ${keyboard.width} ${keyboard.height}`}>
       <SVGDefs
         colorNoteWhite={colorNoteWhite || defaultProps.colorNoteWhite}
         colorNoteBlack={colorNoteBlack || defaultProps.colorNoteBlack}

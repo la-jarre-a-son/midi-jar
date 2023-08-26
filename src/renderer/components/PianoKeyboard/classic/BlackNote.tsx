@@ -85,11 +85,7 @@ const BlackNote: React.FC<BlackNoteProps> = ({
         <circle
           className={styles.pianoTonic}
           cx={NOTE_BLACK_WIDTH / 2}
-          cy={
-            NOTE_BLACK_HEIGHT -
-            NOTE_BLACK_TONIC_BOTTOM_OFFSET -
-            NOTE_TONIC_RADIUS
-          }
+          cy={NOTE_BLACK_HEIGHT - NOTE_BLACK_TONIC_BOTTOM_OFFSET - NOTE_TONIC_RADIUS}
           r={NOTE_TONIC_RADIUS}
           style={{ fill: getContrastColor(color) }}
         />

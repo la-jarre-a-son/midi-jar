@@ -1,33 +1,13 @@
-import React, { ReactEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
+
+import { InputProps } from './types';
 
 import styles from './Input.module.scss';
 
 const cx = classNames.bind(styles);
 
-type InputProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'>;
-type Props = InputProps & {
-  className?: string;
-  left?: React.ReactNode;
-  right?: React.ReactNode;
-  id: string;
-  value: string | number | null;
-  onChange: (value: string) => unknown;
-  onKeyPress?: ReactEventHandler<HTMLInputElement>;
-  block?: boolean;
-  disabled?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  left: undefined,
-  right: undefined,
-  block: false,
-  disabled: false,
-  onKeyPress: undefined,
-};
-
-const Input: React.FC<Props> = ({
+export const Input: React.FC<InputProps> = ({
   className,
   id,
   left,
@@ -97,6 +77,13 @@ const Input: React.FC<Props> = ({
   );
 };
 
-Input.defaultProps = defaultProps;
+Input.defaultProps = {
+  className: undefined,
+  left: undefined,
+  right: undefined,
+  block: false,
+  disabled: false,
+  onKeyPress: undefined,
+};
 
 export default Input;

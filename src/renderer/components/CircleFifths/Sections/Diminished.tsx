@@ -4,16 +4,8 @@ import { Chord } from '@tonaljs/chord';
 
 import { KeySignatureConfig } from 'renderer/helpers/note';
 
-import {
-  CX,
-  CY,
-  polar,
-  drawSection,
-  isChordPressed,
-  Section,
-  CircleOfFifthsConfig,
-  isNotePressed,
-} from '../utils';
+import { Section, CircleOfFifthsConfig } from '../types';
+import { CX, CY, polar, drawSection, isChordPressed, isNotePressed } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
@@ -63,14 +55,7 @@ const SectionDiminished: React.FC<SectionDiminishedProps> = ({
     >
       <path
         className={cx('sector')}
-        d={drawSection(
-          CX,
-          CY,
-          section.start,
-          section.end,
-          (value - 0.5) / 12,
-          (value + 0.5) / 12
-        )}
+        d={drawSection(CX, CY, section.start, section.end, (value - 0.5) / 12, (value + 0.5) / 12)}
         strokeWidth="0.5"
       />
       <circle

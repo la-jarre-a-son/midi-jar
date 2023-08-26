@@ -5,10 +5,7 @@ import { Settings } from 'main/types/Settings';
 
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
-import ChordName from 'renderer/components/ChordName';
-import Notation from 'renderer/components/Notation';
-import PianoKeyboard from 'renderer/components/PianoKeyboard';
-import ChordIntervals from 'renderer/components/ChordIntervals';
+import { ChordName, Notation, PianoKeyboard, ChordIntervals } from 'renderer/components';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
@@ -32,10 +29,7 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const ChordDisplay: React.FC<Props> = ({
-  className,
-  namespace = 'internal',
-}) => {
+const ChordDisplay: React.FC<Props> = ({ className, namespace = 'internal' }) => {
   const { settings } = useSettings();
 
   const { key, accidentals, staffClef, staffTranspose } = settings.notation;
@@ -64,18 +58,12 @@ const ChordDisplay: React.FC<Props> = ({
     displayIntervals,
   } = namespaceSettings;
 
-  const {
-    midiNotes,
-    pitchClasses,
-    sustainedMidiNotes,
-    playedMidiNotes,
-    chords,
-    keySignature,
-  } = useNotes({
-    accidentals,
-    key,
-    midiChannel: 0,
-  });
+  const { midiNotes, pitchClasses, sustainedMidiNotes, playedMidiNotes, chords, keySignature } =
+    useNotes({
+      accidentals,
+      key,
+      midiChannel: 0,
+    });
 
   if (!settings) return null;
 
@@ -100,10 +88,7 @@ const ChordDisplay: React.FC<Props> = ({
           />
         )}
         {displayChord && (
-          <div
-            id="chord"
-            className={cx('chord', { 'chord--withNotation': displayNotation })}
-          >
+          <div id="chord" className={cx('chord', { 'chord--withNotation': displayNotation })}>
             <ChordName chord={chords[0]} />
           </div>
         )}

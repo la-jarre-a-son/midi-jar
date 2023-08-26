@@ -57,9 +57,7 @@ function abortHandshake(
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function send(client: ExtendedWebSocket, eventType: EventType, payload?: any) {
-  const data = eventType
-    .concat('#')
-    .concat(payload ? JSON.stringify(payload) : '');
+  const data = eventType.concat('#').concat(payload ? JSON.stringify(payload) : '');
 
   client.send(data);
 }
@@ -70,10 +68,7 @@ export async function broadcast(
   payload?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ) {
   wss.clients.forEach(function each(client: ExtendedWebSocket) {
-    if (
-      client.readyState === WebSocket.OPEN &&
-      client.namespace === namespace
-    ) {
+    if (client.readyState === WebSocket.OPEN && client.namespace === namespace) {
       send(client, eventType, payload);
     }
   });
@@ -82,10 +77,7 @@ export async function broadcast(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function broadcastRaw(namespace: string, data: any) {
   wss.clients.forEach(function each(client: ExtendedWebSocket) {
-    if (
-      client.readyState === WebSocket.OPEN &&
-      client.namespace === namespace
-    ) {
+    if (client.readyState === WebSocket.OPEN && client.namespace === namespace) {
       client.send(data);
     }
   });
@@ -123,17 +115,13 @@ function initHeartbeatLoop() {
   });
 }
 
-export async function initWSServer(
-  server: http.Server
-): Promise<WebSocket.Server> {
+export async function initWSServer(server: http.Server): Promise<WebSocket.Server> {
   wss.on('connection', (ws: ExtendedWebSocket) => {
     ws.isAlive = true;
 
     ws.on('message', (message) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      handleMessage(message, (eventType: EventType, payload?: any) =>
-        send(ws, eventType, payload)
-      );
+      handleMessage(message, (eventType: EventType, payload?: any) => send(ws, eventType, payload));
     });
 
     ws.on('pong', heartbeat);
@@ -146,16 +134,11 @@ export async function initWSServer(
       return abortHandshake(socket as Socket, 400, 'Unknown namespace');
     }
 
-    return wss.handleUpgrade(
-      request,
-      socket,
-      head,
-      (websocket: ExtendedWebSocket) => {
-        websocket.namespace = namespace;
+    return wss.handleUpgrade(request, socket, head, (websocket: ExtendedWebSocket) => {
+      websocket.namespace = namespace;
 
-        wss.emit('connection', websocket, request);
-      }
-    );
+      wss.emit('connection', websocket, request);
+    });
   });
 
   initHeartbeatLoop();

@@ -39,9 +39,7 @@ const GameList: React.FC<Props> = ({
     () =>
       games
         .map<IndexedGame>((game, index) => ({ ...game, index }))
-        .filter(
-          ({ index }) => index >= gameIndex - maxCount && index <= gameIndex
-        ),
+        .filter(({ index }) => index >= gameIndex - maxCount && index <= gameIndex),
     [games, gameIndex, maxCount]
   );
 

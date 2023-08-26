@@ -3,10 +3,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import { useMidiRouting } from 'renderer/contexts/MidiRouting';
-
-import Toolbar from 'renderer/components/Toolbar';
-import Button from 'renderer/components/Button';
-import Icon from 'renderer/components/Icon';
+import { Toolbar, Button, Icon } from 'renderer/components';
 
 import LatencyMonitor from './LatencyMonitor';
 import Graph from './Graph';
@@ -31,15 +28,8 @@ const defaultProps = {
  * @author Rémi Jarasson
  */
 const Routing: React.FC<Props> = ({ className }) => {
-  const {
-    inputs,
-    outputs,
-    wires,
-    refreshDevices,
-    addRoute,
-    deleteRoute,
-    clearRoutes,
-  } = useMidiRouting();
+  const { inputs, outputs, wires, refreshDevices, addRoute, deleteRoute, clearRoutes } =
+    useMidiRouting();
 
   return (
     <div className={cx('base', className)}>

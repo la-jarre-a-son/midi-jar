@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
+import { Section } from '../types';
 import {
   CX,
   CY,
@@ -10,7 +11,6 @@ import {
   DEGREES_MAJOR,
   DEGREE_OFFSETS_MAJOR,
   DEGREE_OFFSETS_MINOR,
-  Section,
   drawSection,
   drawArc,
 } from '../utils';
@@ -25,8 +25,7 @@ type DegreesProps = {
 };
 
 const Degrees: React.FC<DegreesProps> = ({ scale, section }) => {
-  const offsets =
-    scale === 'minor' ? DEGREE_OFFSETS_MINOR : DEGREE_OFFSETS_MAJOR;
+  const offsets = scale === 'minor' ? DEGREE_OFFSETS_MINOR : DEGREE_OFFSETS_MAJOR;
   const degrees = scale === 'minor' ? DEGREES_MINOR : DEGREES_MAJOR;
 
   const titleOffset = scale === 'minor' ? 2.5 : 5.5;
@@ -37,13 +36,7 @@ const Degrees: React.FC<DegreesProps> = ({ scale, section }) => {
         <path
           id={`degree_${scale}_title_followpath`}
           className={cx('followPath')}
-          d={drawArc(
-            CX,
-            CY,
-            section.middle,
-            titleOffset / 12,
-            (titleOffset + 5) / 12
-          )}
+          d={drawArc(CX, CY, section.middle, titleOffset / 12, (titleOffset + 5) / 12)}
         />
         <path
           className={cx('degreeSection')}
@@ -57,13 +50,8 @@ const Degrees: React.FC<DegreesProps> = ({ scale, section }) => {
           )}
         />
         <text fontSize="1.5" textAnchor="middle">
-          <textPath
-            href={`#degree_${scale}_title_followpath`}
-            startOffset="50%"
-          >
-            {scale === 'minor'
-              ? 'MINOR SCALE - AEOLIAN MODE'
-              : 'MAJOR SCALE - IONIAN MODE'}
+          <textPath href={`#degree_${scale}_title_followpath`} startOffset="50%">
+            {scale === 'minor' ? 'MINOR SCALE - AEOLIAN MODE' : 'MAJOR SCALE - IONIAN MODE'}
           </textPath>
         </text>
       </g>
@@ -73,13 +61,7 @@ const Degrees: React.FC<DegreesProps> = ({ scale, section }) => {
             <path
               id={`degree_${scale}_${index}_followpath`}
               className={cx('followPath')}
-              d={drawArc(
-                CX,
-                CY,
-                section.middle,
-                (offset - 0.5) / 12,
-                (offset + 0.5) / 12
-              )}
+              d={drawArc(CX, CY, section.middle, (offset - 0.5) / 12, (offset + 0.5) / 12)}
             />
             <path
               className={cx('degreeSection')}
@@ -94,10 +76,7 @@ const Degrees: React.FC<DegreesProps> = ({ scale, section }) => {
               fill={DEGREE_COLORS[index]}
             />
             <text fontSize="1.5" textAnchor="middle">
-              <textPath
-                href={`#degree_${scale}_${index}_followpath`}
-                startOffset="50%"
-              >
+              <textPath href={`#degree_${scale}_${index}_followpath`} startOffset="50%">
                 {`${degrees[index]} - ${DEGREE_NAMES[index]}`}
               </textPath>
             </text>

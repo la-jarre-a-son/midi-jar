@@ -7,8 +7,7 @@ export const NODES_WIDTH = 140;
 export const NODES_HEIGHT = 48;
 
 const getNodeInputId = (name: string) => `input:${name}`;
-const getNodeOutputId = (type: string, name: string) =>
-  `output:${type}:${name}`;
+const getNodeOutputId = (type: string, name: string) => `output:${type}:${name}`;
 const getEdgeId = (input: string, output: string, type: string) =>
   `${getNodeInputId(input)}->${getNodeOutputId(type, output)}`;
 
@@ -24,9 +23,7 @@ export const mapDevicesToNodes = (
       data: { label: input.name, input },
       position: {
         x: 0,
-        y:
-          NODE_VERTICAL_SPACING +
-          index * (NODES_HEIGHT + NODE_VERTICAL_SPACING),
+        y: NODE_VERTICAL_SPACING + index * (NODES_HEIGHT + NODE_VERTICAL_SPACING),
       },
       width: NODES_WIDTH,
       height: NODES_HEIGHT,
@@ -39,9 +36,7 @@ export const mapDevicesToNodes = (
       data: { label: output.name, output },
       position: {
         x: viewportWidth - NODES_WIDTH,
-        y:
-          NODE_VERTICAL_SPACING +
-          index * (NODES_HEIGHT + NODE_VERTICAL_SPACING),
+        y: NODE_VERTICAL_SPACING + index * (NODES_HEIGHT + NODE_VERTICAL_SPACING),
       },
       width: NODES_WIDTH,
       height: NODES_HEIGHT,

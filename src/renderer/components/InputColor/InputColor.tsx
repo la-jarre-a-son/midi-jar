@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames/bind';
 
-import Input from '../Input';
+import { Input } from '../Input';
+
+import { InputColorProps } from './types';
 
 import styles from './InputColor.module.scss';
 
@@ -9,21 +11,7 @@ const COLOR_CHARS = '0 1 2 3 4 5 6 7 8 9 a b c d e f'.split(' ');
 
 const cx = classNames.bind(styles);
 
-type InputProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'>;
-type Props = InputProps & {
-  className?: string;
-  id: string;
-  value: string | null;
-  onChange: (value: string) => unknown;
-  block?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  block: false,
-};
-
-const InputColor: React.FC<Props> = ({
+export const InputColor: React.FC<InputColorProps> = ({
   className,
   id,
   value,
@@ -86,6 +74,9 @@ const InputColor: React.FC<Props> = ({
   );
 };
 
-InputColor.defaultProps = defaultProps;
+InputColor.defaultProps = {
+  className: undefined,
+  block: false,
+};
 
 export default InputColor;

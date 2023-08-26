@@ -1,1 +1,3 @@
-export { default } from './ChordIntervals';
+export { default, ChordIntervals } from './ChordIntervals';
+
+export * from './types';

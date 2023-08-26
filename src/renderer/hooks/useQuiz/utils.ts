@@ -23,8 +23,7 @@ export enum STATUSES {
   superset = 3,
 }
 
-export type Parameters = Pick<NotationSettings, 'key' | 'accidentals'> &
-  ChordQuizSettings;
+export type Parameters = Pick<NotationSettings, 'key' | 'accidentals'> & ChordQuizSettings;
 
 export type Game = {
   score: number;
@@ -85,10 +84,7 @@ const INTERVAL_COMPLEXITY = {
  */
 export function calculateComplexity(intervals: string[]) {
   return intervals.reduce((complexity, interval) => {
-    return (
-      complexity +
-      (INTERVAL_COMPLEXITY[interval as keyof typeof INTERVAL_COMPLEXITY] ?? 1)
-    );
+    return complexity + (INTERVAL_COMPLEXITY[interval as keyof typeof INTERVAL_COMPLEXITY] ?? 1);
   }, 0);
 }
 
@@ -104,12 +100,15 @@ export function getDictionaryChordsByComplexity() {
       ...c,
       complexity: calculateComplexity(c.intervals),
     }))
-    .reduce((acc, c) => {
-      const complexity = Math.min(COMPLEXITY_MAX, c.complexity);
-      acc[complexity] = acc[complexity] ?? [];
-      acc[complexity].push(c.aliases[0]);
-      return acc;
-    }, {} as Record<number, string[]>);
+    .reduce(
+      (acc, c) => {
+        const complexity = Math.min(COMPLEXITY_MAX, c.complexity);
+        acc[complexity] = acc[complexity] ?? [];
+        acc[complexity].push(c.aliases[0]);
+        return acc;
+      },
+      {} as Record<number, string[]>
+    );
 }
 
 /**
@@ -161,10 +160,7 @@ export function getGameState(
 
   if (Note.chroma(played.tonic) === Note.chroma(target.tonic)) {
     const chordComplexity = calculateComplexity(target.intervals) + 1;
-    const chordLev = levenshtein(
-      played.intervals,
-      getChordDegrees(played, pitchClasses)
-    );
+    const chordLev = levenshtein(played.intervals, getChordDegrees(played, pitchClasses));
 
     const targetLev = levenshtein(target.intervals, played.intervals);
 
@@ -174,13 +170,7 @@ export function getGameState(
         index,
         status: STATUSES.superset,
         chord: played,
-        score: calculateScore(
-          chordComplexity,
-          chordLev,
-          0,
-          targetLev,
-          !!played.root
-        ),
+        score: calculateScore(chordComplexity, chordLev, 0, targetLev, !!played.root),
       };
     }
     if (isEqual(target.chroma, played.chroma))
@@ -198,13 +188,7 @@ export function getGameState(
         index,
         status: STATUSES.subset,
         chord: played,
-        score: calculateScore(
-          chordComplexity,
-          chordLev,
-          targetLev,
-          0,
-          !!played.root
-        ),
+        score: calculateScore(chordComplexity, chordLev, targetLev, 0, !!played.root),
       };
   }
 
@@ -235,23 +219,16 @@ export function getRandomKeySignature() {
  * @param chordComplexity
  * @returns
  */
-export function getRandomChord(
-  keySignature: KeySignatureConfig,
-  chordComplexity: number
-) {
+export function getRandomChord(keySignature: KeySignatureConfig, chordComplexity: number) {
   const chordTypes = ChordType.all().filter(
     (chord) =>
       chord.intervals.length > 2 &&
-      Math.min(COMPLEXITY_MAX, calculateComplexity(chord.intervals)) <=
-        chordComplexity
+      Math.min(COMPLEXITY_MAX, calculateComplexity(chord.intervals)) <= chordComplexity
   );
 
   const type = randomPick(chordTypes);
 
-  const tonic = getNoteInKeySignature(
-    randomPick(NOTE_NAMES),
-    keySignature.notes
-  );
+  const tonic = getNoteInKeySignature(randomPick(NOTE_NAMES), keySignature.notes);
 
   return Chord.getChord(type.aliases[0], tonic);
 }
@@ -263,10 +240,7 @@ export function getRandomChord(
  * @param chordComplexity
  * @returns
  */
-export function getRandomChordInKey(
-  keySignature: KeySignatureConfig,
-  chordComplexity: number
-) {
+export function getRandomChordInKey(keySignature: KeySignatureConfig, chordComplexity: number) {
   const keyChroma = Note.chroma(keySignature.tonic) ?? 0;
   let chordTypes: ReturnType<typeof ChordType.all> = [];
   let tonic;
@@ -281,8 +255,7 @@ export function getRandomChordInKey(
     chordTypes = ChordType.all().filter(
       (chord) =>
         chord.intervals.length > 2 &&
-        Math.min(COMPLEXITY_MAX, calculateComplexity(chord.intervals)) <=
-          chordComplexity &&
+        Math.min(COMPLEXITY_MAX, calculateComplexity(chord.intervals)) <= chordComplexity &&
         isInKey(chord.chroma)
     );
   }
@@ -338,10 +311,7 @@ export function generateGame(parameters: Parameters) {
     return game;
   }
   if (parameters.mode === 'randomInKey') {
-    const keySignature = getKeySignature(
-      parameters.key,
-      parameters.accidentals === 'sharp'
-    );
+    const keySignature = getKeySignature(parameters.key, parameters.accidentals === 'sharp');
     const game = {
       chords: generateChords(parameters.gameLength, () =>
         getRandomChordInKey(keySignature, parameters.difficulty)

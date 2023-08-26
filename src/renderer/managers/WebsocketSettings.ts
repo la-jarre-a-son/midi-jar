@@ -18,9 +18,7 @@ class WebsocketSettings extends SettingsManager {
   constructor() {
     super();
     this.isConnected = false;
-    this.ws = new ReconnectingWebSocket(
-      `ws://${window.location.host}/ws/settings`
-    );
+    this.ws = new ReconnectingWebSocket(`ws://${window.location.host}/ws/settings`);
 
     this.handleMessage.bind(this);
     this.handleOpen.bind(this);

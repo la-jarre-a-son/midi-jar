@@ -1,1 +1,3 @@
-export { default } from './ChordName';
+export { default, ChordName } from './ChordName';
+
+export * from './types';

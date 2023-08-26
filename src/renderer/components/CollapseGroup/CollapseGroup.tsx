@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import classnames from 'classnames/bind';
+
+import { Icon } from '../Icon';
+
+import { CollapseGroupProps } from './types';
+
 import styles from './CollapseGroup.module.scss';
-import Icon from '../Icon';
 
 const cx = classnames.bind(styles);
-
-type Props = {
-  className?: string;
-  header: React.ReactNode;
-  children?: React.ReactNode;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
 
 /**
  * A wrapper that collapse / open based on prop open
@@ -22,7 +15,7 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const CollapseGroup: React.FC<Props> = ({ className, header, children }) => {
+export const CollapseGroup: React.FC<CollapseGroupProps> = ({ className, header, children }) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -40,6 +33,9 @@ const CollapseGroup: React.FC<Props> = ({ className, header, children }) => {
   );
 };
 
-CollapseGroup.defaultProps = defaultProps;
+CollapseGroup.defaultProps = {
+  className: undefined,
+  children: undefined,
+};
 
 export default CollapseGroup;

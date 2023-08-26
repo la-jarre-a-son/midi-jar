@@ -4,6 +4,7 @@ import { Chord } from '@tonaljs/chord';
 
 import { KeySignatureConfig } from 'renderer/helpers/note';
 
+import { Section, CircleOfFifthsConfig } from '../types';
 import {
   CX,
   CY,
@@ -12,8 +13,6 @@ import {
   drawSection,
   isInScale,
   isChordPressed,
-  Section,
-  CircleOfFifthsConfig,
   isNotePressed,
   isMainSection,
 } from '../utils';

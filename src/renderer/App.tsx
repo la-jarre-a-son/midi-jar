@@ -1,9 +1,4 @@
-import {
-  HashRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.scss';
 
 import MidiMessageManagerProvider from './contexts/MidiMessageManager';
@@ -45,10 +40,7 @@ export default function App() {
                     <Route
                       path="chords"
                       element={
-                        <MidiMessageManagerProvider
-                          namespace="chord-display"
-                          source="internal"
-                        >
+                        <MidiMessageManagerProvider namespace="chord-display" source="internal">
                           <ChordDisplay namespace="internal" />
                         </MidiMessageManagerProvider>
                       }
@@ -56,10 +48,7 @@ export default function App() {
                     <Route
                       path="circle-of-fifths"
                       element={
-                        <MidiMessageManagerProvider
-                          namespace="chord-display"
-                          source="internal"
-                        >
+                        <MidiMessageManagerProvider namespace="chord-display" source="internal">
                           <CircleOfFifths />
                         </MidiMessageManagerProvider>
                       }
@@ -67,60 +56,39 @@ export default function App() {
                     <Route
                       path="quiz"
                       element={
-                        <MidiMessageManagerProvider
-                          namespace="chord-quiz"
-                          source="internal"
-                        >
+                        <MidiMessageManagerProvider namespace="chord-quiz" source="internal">
                           <ChordQuiz />
                         </MidiMessageManagerProvider>
                       }
                     />
                     <Route path="settings" element={<Settings />}>
-                      <Route
-                        index
-                        element={<Navigate to="general" replace />}
-                      />
+                      <Route index element={<Navigate to="general" replace />} />
                       <Route path="general" element={<GeneralSettings />} />
                       <Route path="routing" element={<Routing />} />
                       <Route
                         path="notation"
                         element={
-                          <MidiMessageManagerProvider
-                            namespace="chord-display"
-                            source="internal"
-                          >
+                          <MidiMessageManagerProvider namespace="chord-display" source="internal">
                             <NotationSettings />
                           </MidiMessageManagerProvider>
                         }
                       />
-                      <Route
-                        path="circle-of-fifths"
-                        element={<CircleOfFifthsSettings />}
-                      />
+                      <Route path="circle-of-fifths" element={<CircleOfFifthsSettings />} />
                       <Route path="quiz" element={<ChordQuizSettings />} />
                       <Route
                         path="debug"
                         element={
-                          <MidiMessageManagerProvider
-                            namespace="debugger"
-                            source="internal"
-                          >
+                          <MidiMessageManagerProvider namespace="debugger" source="internal">
                             <Debugger />
                           </MidiMessageManagerProvider>
                         }
                       />
                       <Route path="chords">
-                        <Route
-                          index
-                          element={<Navigate to="internal" replace />}
-                        />
+                        <Route index element={<Navigate to="internal" replace />} />
                         <Route
                           path=":namespace"
                           element={
-                            <MidiMessageManagerProvider
-                              namespace="chord-display"
-                              source="internal"
-                            >
+                            <MidiMessageManagerProvider namespace="chord-display" source="internal">
                               <ChordDisplaySettings />
                             </MidiMessageManagerProvider>
                           }

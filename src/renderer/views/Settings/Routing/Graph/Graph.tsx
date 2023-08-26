@@ -12,22 +12,13 @@ import ReactFlow, {
   OnMove,
 } from 'react-flow-renderer';
 
-import {
-  ApiMidiInput,
-  ApiMidiOutput,
-  ApiMidiWire,
-  ApiMidiRoute,
-} from 'main/types/api';
+import { ApiMidiInput, ApiMidiOutput, ApiMidiWire, ApiMidiRoute } from 'main/types/api';
 
 import InputNode from './InputNode';
 import OutputNode from './OutputNode';
 import Wire from './Wire';
 
-import {
-  NODE_VERTICAL_SPACING,
-  mapDevicesToNodes,
-  mapWiresToEdges,
-} from './utils';
+import { NODE_VERTICAL_SPACING, mapDevicesToNodes, mapWiresToEdges } from './utils';
 
 import styles from './Graph.module.scss';
 
@@ -93,8 +84,7 @@ const Routing: React.FC<Props> = ({
       const viewport = getViewport();
       if (containerRef.current) {
         const nodeRect = getRectOfNodes(currentNodes);
-        const viewportDimensions =
-          containerRef?.current.getBoundingClientRect();
+        const viewportDimensions = containerRef?.current.getBoundingClientRect();
 
         const canvasSize = {
           x: nodeRect.height + nodeRect.x,
@@ -148,8 +138,7 @@ const Routing: React.FC<Props> = ({
   useEffect(() => {
     const recalculate = () => {
       if (containerRef.current) {
-        const viewportWidth =
-          containerRef.current.getBoundingClientRect().width;
+        const viewportWidth = containerRef.current.getBoundingClientRect().width;
 
         const newNodes = mapDevicesToNodes(inputs, outputs, viewportWidth);
         setNodes(newNodes);

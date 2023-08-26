@@ -34,11 +34,14 @@ export const ICON_NAMES = [
   'settings',
   'trash',
   'window',
-];
+] as const;
 
-const ICONS = ICON_NAMES.reduce((obj, name: string) => {
+const ICONS = ICON_NAMES.reduce(
+  (obj, name: string) => {
   obj[name] = require(`./${name}.react.svg`).default; // eslint-disable-line
-  return obj;
-}, {} as { [key: string]: React.FC<React.SVGProps<SVGSVGElement>> });
+    return obj;
+  },
+  {} as { [key: string]: React.FC<React.SVGProps<SVGSVGElement>> }
+);
 
 export default ICONS;

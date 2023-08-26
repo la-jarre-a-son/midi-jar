@@ -1,25 +1,11 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 
+import { FormFieldProps } from './types';
+
 import styles from './FormField.module.scss';
 
 const cx = classNames.bind(styles);
-
-type Props = {
-  className?: string;
-  label: string;
-  children: React.ReactNode;
-  fieldId: string;
-  hint?: React.ReactNode;
-  vertical?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  value: null,
-  hint: undefined,
-  vertical: false,
-};
 
 /**
  * A form field with a label, a hint, and some controls.
@@ -28,7 +14,7 @@ const defaultProps = {
  * @version 1.1.0
  * @author Rémi Jarasson
  */
-export const FormField: React.FC<Props> = ({
+export const FormField: React.FC<FormFieldProps> = ({
   className,
   children,
   label,
@@ -48,6 +34,10 @@ export const FormField: React.FC<Props> = ({
   </div>
 );
 
-FormField.defaultProps = defaultProps;
+FormField.defaultProps = {
+  className: undefined,
+  hint: undefined,
+  vertical: false,
+};
 
 export default FormField;

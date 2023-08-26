@@ -2,34 +2,19 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import useEvent from 'renderer/hooks/useEvent';
-import Input from '../Input';
-import Button from '../Button';
-import ButtonGroup from '../ButtonGroup';
+
+import { Input } from '../Input';
+import { Button } from '../Button';
+import { ButtonGroup } from '../ButtonGroup';
+import { Icon } from '../Icon';
+
+import { InputNumberProps } from './types';
 
 import styles from './InputNumber.module.scss';
-import Icon from '../Icon';
 
 const cx = classNames.bind(styles);
 
-type InputProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'>;
-type Props = InputProps & {
-  className?: string;
-  id: string;
-  value: string | number | null;
-  onChange: (value: number) => unknown;
-  block?: boolean;
-  withOctave?: boolean;
-  learn?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  block: false,
-  withOctave: false,
-  learn: false,
-};
-
-const InputNumber: React.FC<Props> = ({
+export const InputNumber: React.FC<InputNumberProps> = ({
   className,
   id,
   value,
@@ -72,6 +57,11 @@ const InputNumber: React.FC<Props> = ({
   );
 };
 
-InputNumber.defaultProps = defaultProps;
+InputNumber.defaultProps = {
+  className: undefined,
+  block: false,
+  withOctave: false,
+  learn: false,
+};
 
 export default InputNumber;

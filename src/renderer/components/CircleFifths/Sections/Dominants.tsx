@@ -2,21 +2,10 @@ import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 import { Chord } from '@tonaljs/chord';
 
-import {
-  getNoteInKeySignature,
-  KeySignatureConfig,
-} from 'renderer/helpers/note';
+import { getNoteInKeySignature, KeySignatureConfig } from 'renderer/helpers/note';
 
-import {
-  CX,
-  CY,
-  drawArc,
-  drawSection,
-  Section,
-  CircleOfFifthsConfig,
-  isChordPressed,
-  formatLabel,
-} from '../utils';
+import { Section, CircleOfFifthsConfig } from '../types';
+import { CX, CY, drawArc, drawSection, isChordPressed, formatLabel } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
@@ -57,8 +46,7 @@ const SectionDominants: React.FC<SectionDominantsProps> = ({
             key={l}
             className={cx('dominant', {
               'dominant--active': isChordPressed(l, 'dom', chord, config),
-              'dominant--isInScale':
-                config?.highlightInScale && index === 0 && current === value,
+              'dominant--isInScale': config?.highlightInScale && index === 0 && current === value,
             })}
           >
             <path
@@ -68,25 +56,13 @@ const SectionDominants: React.FC<SectionDominantsProps> = ({
             />
             <path
               className={cx('sector')}
-              d={drawSection(
-                CX,
-                CY,
-                section.start,
-                section.end,
-                angleStart,
-                angleEnd
-              )}
+              d={drawSection(CX, CY, section.start, section.end, angleStart, angleEnd)}
               strokeWidth="0.5"
             />
             <text fontSize="2" textAnchor="middle">
-              <textPath
-                href={`#dominants_${value}_${index}_followpath`}
-                startOffset="50%"
-              >
+              <textPath href={`#dominants_${value}_${index}_followpath`} startOffset="50%">
                 {formatLabel(
-                  keySignature
-                    ? getNoteInKeySignature(l, keySignature.notes)
-                    : l,
+                  keySignature ? getNoteInKeySignature(l, keySignature.notes) : l,
                   'dom'
                 )}
               </textPath>

@@ -8,12 +8,7 @@ export class MidiMessageEvent extends Event {
 
   device: string;
 
-  constructor(
-    type: 'message',
-    message: MidiMessage,
-    timestamp: number,
-    device: string
-  ) {
+  constructor(type: 'message', message: MidiMessage, timestamp: number, device: string) {
     super(type);
     this.message = message;
     this.timestamp = timestamp;

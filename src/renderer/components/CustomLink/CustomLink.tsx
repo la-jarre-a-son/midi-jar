@@ -1,42 +1,9 @@
 import React, { useCallback } from 'react';
-import { To } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
-import './CustomLink.scss';
+import { CustomLinkTypes, CustomLinkProps } from './types';
 
-export type CustomLinkTypes = 'link' | 'button' | 'submit' | 'reset';
-
-export type Props = {
-  className?: string;
-  activeClassName?: string;
-  children?: React.ReactNode;
-  type?: CustomLinkTypes;
-  to?: To;
-  href?: string;
-  target?: string;
-  exact?: boolean;
-  disabled?: boolean;
-  title?: string;
-  onClick?: (
-    event:
-      | React.MouseEvent<HTMLAnchorElement>
-      | React.MouseEvent<HTMLButtonElement>
-  ) => unknown;
-};
-
-const defaultProps = {
-  className: undefined,
-  activeClassName: undefined,
-  children: undefined,
-  type: 'link' as CustomLinkTypes,
-  to: undefined,
-  href: undefined,
-  target: undefined,
-  title: undefined,
-  onClick: undefined,
-  exact: false,
-  disabled: false,
-};
+import './CustomLink.module.scss';
 
 /**
  * An inline component to display vector icons from svg with variant (normal/outline/flat).
@@ -44,7 +11,7 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const CustomLink: React.FC<Props> = ({
+export const CustomLink: React.FC<CustomLinkProps> = ({
   type,
   to: propsTo,
   exact,
@@ -60,11 +27,7 @@ const CustomLink: React.FC<Props> = ({
   const to = propsTo || propsHref;
 
   const handleClick = useCallback(
-    (
-      event:
-        | React.MouseEvent<HTMLButtonElement>
-        | React.MouseEvent<HTMLAnchorElement>
-    ) => {
+    (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLAnchorElement>) => {
       if (disabled) {
         event.preventDefault();
       }
@@ -153,6 +116,18 @@ const CustomLink: React.FC<Props> = ({
   );
 };
 
-CustomLink.defaultProps = defaultProps;
+CustomLink.defaultProps = {
+  className: undefined,
+  activeClassName: undefined,
+  children: undefined,
+  type: 'link' as CustomLinkTypes,
+  to: undefined,
+  href: undefined,
+  target: undefined,
+  title: undefined,
+  onClick: undefined,
+  exact: false,
+  disabled: false,
+};
 
 export default CustomLink;

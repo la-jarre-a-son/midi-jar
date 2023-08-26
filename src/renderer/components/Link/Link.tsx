@@ -1,21 +1,12 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import CustomLink, { Props as CustomLinkProps } from '../CustomLink';
+import { CustomLink } from '../CustomLink';
 
 import styles from './Link.module.scss';
+import { LinkProps } from './types';
 
 const cx = classnames.bind(styles);
-
-type Props = CustomLinkProps & {
-  className?: string;
-  children?: React.ReactNode;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
 
 /**
  * A wrapper that can contain button, and flex align them.
@@ -23,13 +14,16 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const Link: React.FC<Props> = ({ className, children, ...rest }) => (
+export const Link: React.FC<LinkProps> = ({ className, children, ...rest }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <CustomLink className={cx('base', className)} {...rest}>
     {children}
   </CustomLink>
 );
 
-Link.defaultProps = defaultProps;
+Link.defaultProps = {
+  className: undefined,
+  children: undefined,
+};
 
 export default Link;

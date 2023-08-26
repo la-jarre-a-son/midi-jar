@@ -2,12 +2,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import { useSettings } from 'renderer/contexts/Settings';
-
-import Toolbar from 'renderer/components/Toolbar';
-import Button from 'renderer/components/Button';
-import Icon from 'renderer/components/Icon';
-import FormField from 'renderer/components/FormField';
-import Toggle from 'renderer/components/Toggle';
+import { Toolbar, Button, Icon, FormField, Toggle } from 'renderer/components';
 
 import { chordsByComplexity, fields } from './constants';
 
@@ -97,9 +92,7 @@ const ChordQuizSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="chord_quiz_settings:gamification"
-              onChange={(value) =>
-                updateSetting('chordQuiz.gamification', value)
-              }
+              onChange={(value) => updateSetting('chordQuiz.gamification', value)}
               value={settings.chordQuiz.gamification}
               successIcon="save"
             />
@@ -112,9 +105,7 @@ const ChordQuizSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="chord_quiz_settings:display-reaction"
-              onChange={(value) =>
-                updateSetting('chordQuiz.displayReaction', value)
-              }
+              onChange={(value) => updateSetting('chordQuiz.displayReaction', value)}
               value={settings.chordQuiz.displayReaction}
               successIcon="save"
             />
@@ -127,9 +118,7 @@ const ChordQuizSettings: React.FC<Props> = ({ className }) => {
           >
             <Toggle
               id="chord_quiz_settings:display-intervals"
-              onChange={(value) =>
-                updateSetting('chordQuiz.displayIntervals', value)
-              }
+              onChange={(value) => updateSetting('chordQuiz.displayIntervals', value)}
               value={settings.chordQuiz.displayIntervals}
               successIcon="save"
             />

@@ -11,7 +11,7 @@ const debug = makeDebug('app:midi:MidiWire');
 export class MidiWire {
   route: MidiRoute;
 
-  connected: boolean = false;
+  connected = false;
 
   input: MidiInput | null = null;
 
