@@ -1,17 +1,15 @@
 import os from 'os';
 import { app, ipcMain, BrowserWindow, systemPreferences } from 'electron';
 
-import { MidiMessage } from 'midi';
 import * as midi from './midi';
 import { startServer, stopServer, getState as getServerState } from './server';
 
 import { ApiMidiRoute } from './types/api';
 import {
-  InternalOutput,
-  MidiInputDevice,
-  MidiOutputDevice,
+  MidiMessage,
+  MidiInput,
+  MidiOutput,
   MidiRoute,
-  WebsocketOutput,
   Settings,
 } from './types';
 import {
@@ -98,14 +96,12 @@ ipcMain.on('midi:deleteRoute', (_event, route: ApiMidiRoute) => {
 });
 
 ipcMain.on('midi:getInputs', (event) => {
-  const inputs = midi.getInputs().map((i: MidiInputDevice) => i.toApi());
+  const inputs = midi.getInputs().map((i: MidiInput) => i.toApi());
   event.reply('midi:inputs', inputs);
 });
 
 ipcMain.on('midi:getOutputs', (event) => {
-  const outputs = midi
-    .getOutputs()
-    .map((i: InternalOutput | WebsocketOutput | MidiOutputDevice) => i.toApi());
+  const outputs = midi.getOutputs().map((o: MidiOutput) => o.toApi());
   event.reply('midi:outputs', outputs);
 });
 
@@ -119,12 +115,10 @@ ipcMain.on('app:settings:getSettings', (event) => {
   event.reply('app:settings', settings);
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ipcMain.handle('app:settings:updateSetting', (_event, key: any, value: any) => {
   updateSetting(key, value);
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ipcMain.handle('app:settings:updateSettings', (_event, value: any) => {
   updateSettings(value);
 });
@@ -161,7 +155,7 @@ ipcMain.on('app:server:getState', (event) => {
   event.reply('app:server:state', getServerState());
 });
 
-midi.eventsEmitter.addListener('refreshed', () => {
+midi.manager.addListener('refreshed', () => {
   sendToAll(
     'midi:inputs',
     midi.getInputs().map((i) => i.toApi())
@@ -176,7 +170,7 @@ midi.eventsEmitter.addListener('refreshed', () => {
   );
 });
 
-midi.eventsEmitter.addListener(
+midi.manager.addListener(
   'midi',
   (
     namespace: string,
@@ -188,12 +182,9 @@ midi.eventsEmitter.addListener(
   }
 );
 
-midi.eventsEmitter.addListener(
-  'activity',
-  (latency: number, device: string) => {
-    sendToAll(`midi:activity`, latency, device);
-  }
-);
+midi.manager.addListener('activity', (latency: number, device: string) => {
+  sendToAll(`midi:activity`, latency, device);
+});
 
 // eslint-disable-next-line import/prefer-default-export
 export function bindWindowEvents(window: BrowserWindow) {
