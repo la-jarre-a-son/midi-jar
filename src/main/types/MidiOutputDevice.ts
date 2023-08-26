@@ -1,5 +1,5 @@
 import makeDebug from 'debug';
-import midi, { Output } from 'midi';
+import midi, { Output } from '@julusian/midi';
 
 import { MidiMessageHandler, MidiMessage } from './MidiMessage';
 import { ApiMidiOutput } from './api';
@@ -33,9 +33,18 @@ class MidiOutputDevice {
     for (let port = 0; port < this.output.getPortCount(); port += 1) {
       if (this.output.getPortName(port) === this.name) {
         debug(`Connecting to ${this.name} port ${port}`);
-        this.output.openPort(port);
-        this.port = port;
-        this.error = !this.output.isPortOpen();
+        try {
+          this.output.openPort(port);
+          this.port = port;
+          this.error = !this.output.isPortOpen();
+        } catch (err) {
+          debug(
+            `Cannot connect to ${this.name} port ${port}${
+              err instanceof Error && err.message ? `: ${err.message}` : ''
+            }`
+          );
+          this.error = true;
+        }
       }
     }
   }

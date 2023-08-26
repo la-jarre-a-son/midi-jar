@@ -1,6 +1,6 @@
 import os from 'os';
 import makeDebug from 'debug';
-import midi from 'midi';
+import midi from '@julusian/midi';
 import { EventEmitter } from 'events';
 import { getMidiRoutes, setMidiRoutes } from './settings';
 
