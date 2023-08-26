@@ -11,11 +11,14 @@ import {
   BarlineType,
 } from 'vexflow';
 
-import { formatSharpsFlats, KeySignatureConfig } from '../../helpers/note';
+import { formatSharpsFlats } from 'renderer/helpers/note';
 
+import { NotationProps } from './types';
 import { getTransposedNotes, getVoice } from './utils';
 
 import styles from './Notation.module.scss';
+
+const cx = classnames.bind(styles);
 
 const NOTATION_HEIGHT = 300;
 const STAVE_NOTE_WIDTH = 200;
@@ -23,26 +26,7 @@ const STAVE_TREBLE_Y = 70;
 const STAVE_BASS_Y = 130;
 const ALTERATION_WIDTH = 8;
 
-const cx = classnames.bind(styles);
-
-type Props = {
-  id?: string;
-  className?: string;
-  midiNotes?: number[];
-  keySignature: KeySignatureConfig;
-  staffClef?: 'both' | 'bass' | 'treble';
-  staffTranspose?: number;
-};
-
-const defaultProps = {
-  id: undefined,
-  className: undefined,
-  midiNotes: [],
-  staffClef: 'both' as const,
-  staffTranspose: 0,
-};
-
-const Notation: React.FC<Props> = ({
+export const Notation: React.FC<NotationProps> = ({
   id,
   className,
   midiNotes,
@@ -51,8 +35,7 @@ const Notation: React.FC<Props> = ({
   staffTranspose,
 }) => {
   const notes = useMemo(
-    () =>
-      getTransposedNotes(midiNotes ?? [], keySignature.notes, staffTranspose),
+    () => getTransposedNotes(midiNotes ?? [], keySignature.notes, staffTranspose),
     [midiNotes, keySignature, staffTranspose]
   );
 
@@ -65,8 +48,7 @@ const Notation: React.FC<Props> = ({
     }
 
     if (renderer.current) {
-      const keySignatureWidth =
-        ALTERATION_WIDTH * Math.abs(keySignature.alteration);
+      const keySignatureWidth = ALTERATION_WIDTH * Math.abs(keySignature.alteration);
       const staveWidth = STAVE_NOTE_WIDTH + keySignatureWidth;
       renderer.current.resize(staveWidth, NOTATION_HEIGHT);
 
@@ -139,13 +121,9 @@ const Notation: React.FC<Props> = ({
         );
         stave.addClef(staffClef);
         stave.addKeySignature(keySignature.tonic);
-        stave.setText(
-          `Key: ${formatSharpsFlats(keySignature.tonic)}`,
-          Modifier.Position.ABOVE,
-          {
-            justification: 0,
-          }
-        );
+        stave.setText(`Key: ${formatSharpsFlats(keySignature.tonic)}`, Modifier.Position.ABOVE, {
+          justification: 0,
+        });
         stave.setBegBarType(BarlineType.NONE);
         stave.setNoteStartX(60 + keySignatureWidth);
         stave.setContext(context).draw();
@@ -169,6 +147,12 @@ const Notation: React.FC<Props> = ({
   return <div id={id} ref={container} className={cx('base', className)} />;
 };
 
-Notation.defaultProps = defaultProps;
+Notation.defaultProps = {
+  id: undefined,
+  className: undefined,
+  midiNotes: [],
+  staffClef: 'both' as const,
+  staffTranspose: 0,
+};
 
 export default Notation;

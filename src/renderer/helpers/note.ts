@@ -8,24 +8,10 @@ export type KeySignatureConfig = {
   scale: string[];
 };
 
-export const NOTE_NAMES = [
-  'C',
-  'C#',
-  'D',
-  'D#',
-  'E',
-  'E#',
-  'F',
-  'F#',
-  'G',
-  'G#',
-  'A',
-  'A#',
-  'B',
-];
+export const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-const REGEX_FLAT = new RegExp(/b/, 'g');
-const REGEX_SHARP = new RegExp(/#/, 'g');
+const REGEX_FLAT = /b/g;
+const REGEX_SHARP = /#/g;
 
 const FLAT = '♭';
 const SHARP = '♯';
@@ -43,10 +29,7 @@ const getKeySignatureNotes = (scale: string[], useSharps = false) => {
   return range;
 };
 
-export const getKeySignature = (
-  note: string,
-  useSharps = false
-): KeySignatureConfig => {
+export const getKeySignature = (note: string, useSharps = false): KeySignatureConfig => {
   let majorKey = Key.majorKey(note);
   if (!majorKey.tonic) {
     majorKey = Key.majorKey('C');
@@ -54,23 +37,16 @@ export const getKeySignature = (
 
   if (majorKey.alteration > 7) {
     majorKey = Key.majorKey(
-      Note.transposeFifths(
-        majorKey.tonic,
-        ~~((majorKey.alteration + 12) / 12) * -12
-      )
+      Note.transposeFifths(majorKey.tonic, ~~((majorKey.alteration + 12) / 12) * -12)
     );
   }
   if (majorKey.alteration < -7) {
     majorKey = Key.majorKey(
-      Note.transposeFifths(
-        majorKey.tonic,
-        ~~((majorKey.alteration - 12) / 12) * -12
-      )
+      Note.transposeFifths(majorKey.tonic, ~~((majorKey.alteration - 12) / 12) * -12)
     );
   }
 
-  const sharps =
-    majorKey.alteration === 0 ? useSharps : majorKey.alteration > 0;
+  const sharps = majorKey.alteration === 0 ? useSharps : majorKey.alteration > 0;
   const scale = [...majorKey.scale];
   const notes = getKeySignatureNotes(scale, sharps);
 
@@ -82,10 +58,7 @@ export const getKeySignature = (
   };
 };
 
-export const getNoteInKeySignature = (
-  note: string,
-  keySignatureNotes?: string[]
-) => {
+export const getNoteInKeySignature = (note: string, keySignatureNotes?: string[]) => {
   const chroma = Note.chroma(note);
 
   if (chroma !== undefined && keySignatureNotes && keySignatureNotes[chroma]) {

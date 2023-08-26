@@ -1,1 +1,3 @@
-export { default, Props } from './CustomLink';
+export { default, CustomLink } from './CustomLink';
+
+export * from './types';

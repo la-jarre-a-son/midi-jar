@@ -1,16 +1,15 @@
 import React, { memo } from 'react';
 import classnames from 'classnames/bind';
 
+import { Section, CircleOfFifthsConfig } from '../types';
 import {
   CX,
   CY,
   DEGREE_COLORS,
   MODE_OFFSETS,
   MODE_NAMES,
-  Section,
   drawArc,
   drawLineSeparator,
-  CircleOfFifthsConfig,
 } from '../utils';
 
 import styles from '../CircleFifths.module.scss';

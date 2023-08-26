@@ -4,6 +4,7 @@ import { Chord } from '@tonaljs/chord';
 
 import { KeySignatureConfig } from 'renderer/helpers/note';
 
+import { Section, CircleOfFifthsConfig } from '../types';
 import {
   CX,
   CY,
@@ -13,8 +14,6 @@ import {
   drawSection,
   isSusInScale,
   isChordPressed,
-  Section,
-  CircleOfFifthsConfig,
 } from '../utils';
 
 import SectionSusLabel from './SusLabel';
@@ -47,8 +46,7 @@ const SectionSuspended: React.FC<SectionSuspendedProps> = ({
   config,
 }) => {
   const anchor = quality === 'sus2' ? 1 : -1;
-  const label =
-    sectionType === 'minor' ? FIFTHS_MINOR[value] : FIFTHS_MAJOR[value];
+  const label = sectionType === 'minor' ? FIFTHS_MINOR[value] : FIFTHS_MAJOR[value];
 
   const handleClick = useCallback(() => onClick(value), [value, onClick]);
 

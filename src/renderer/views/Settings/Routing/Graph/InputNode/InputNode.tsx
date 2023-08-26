@@ -6,7 +6,7 @@ import useMidiActivity from 'renderer/hooks/useMidiActivity';
 
 import { ApiMidiInput } from 'main/types/api';
 
-import Icon from 'renderer/components/Icon';
+import { Icon } from 'renderer/components';
 
 import styles from './InputNode.module.scss';
 
@@ -44,11 +44,7 @@ const InputNode: React.FC<Props> = ({ data }) => {
         isDisconnected: !data.input.connected,
       })}
     >
-      <Handle
-        className={cx('handle')}
-        type="source"
-        position={Position.Right}
-      />
+      <Handle className={cx('handle')} type="source" position={Position.Right} />
       <div className={cx('name')}>
         <Icon name="midi" /> {data.input.name}
       </div>

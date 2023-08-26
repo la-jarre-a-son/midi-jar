@@ -41,12 +41,7 @@ const SectionLabel: React.FC<SectionLabelProps> = ({
           fontSize={fontSize / 1.5}
           dy={-0.1 * fontSize}
           dx={-0.25 * fontSize}
-          transform={`rotate(${rotation}, ${cPolar(
-            CX,
-            CY,
-            radius,
-            value / 12
-          )})`}
+          transform={`rotate(${rotation}, ${cPolar(CX, CY, radius, value / 12)})`}
         >
           {formatLabel(labels[0], quality)}
         </text>
@@ -60,12 +55,7 @@ const SectionLabel: React.FC<SectionLabelProps> = ({
           fontSize={fontSize / 1.5}
           dy={0.6 * fontSize}
           dx={0.25 * fontSize}
-          transform={`rotate(${rotation}, ${cPolar(
-            CX,
-            CY,
-            radius,
-            value / 12
-          )})`}
+          transform={`rotate(${rotation}, ${cPolar(CX, CY, radius, value / 12)})`}
         >
           {formatLabel(labels[1], quality)}
         </text>

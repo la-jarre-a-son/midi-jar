@@ -1,24 +1,11 @@
 import React from 'react';
 import classnames from 'classnames/bind';
+
+import { ButtonGroupProps } from './types';
+
 import styles from './ButtonGroup.module.scss';
 
 const cx = classnames.bind(styles);
-
-type Props = {
-  className?: string;
-  children?: React.ReactNode;
-  fullWidth?: boolean;
-  balanced?: boolean;
-  vertical?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-  fullWidth: false,
-  balanced: false,
-  vertical: false,
-};
 
 /**
  * A wrapper that can contain button, and flex align them.
@@ -26,7 +13,7 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const ButtonGroup: React.FC<Props> = ({
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   className,
   children,
   fullWidth = false,
@@ -48,6 +35,12 @@ const ButtonGroup: React.FC<Props> = ({
   </div>
 );
 
-ButtonGroup.defaultProps = defaultProps;
+ButtonGroup.defaultProps = {
+  className: undefined,
+  children: undefined,
+  fullWidth: false,
+  balanced: false,
+  vertical: false,
+};
 
 export default ButtonGroup;

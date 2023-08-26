@@ -8,9 +8,7 @@ class InternalSettings extends SettingsManager {
     super();
     this.isConnected = true;
 
-    this.offListener = window.app.settings.onSettingsChange(
-      this.handleSettings.bind(this)
-    );
+    this.offListener = window.app.settings.onSettingsChange(this.handleSettings.bind(this));
 
     this.dispatchEvent(new Event('connected'));
   }

@@ -24,11 +24,7 @@ export class MidiRoute {
   }
 
   isSame(route: MidiRoute) {
-    return (
-      route.type === this.type &&
-      route.input === this.input &&
-      route.output === this.output
-    );
+    return route.type === this.type && route.input === this.input && route.output === this.output;
   }
 
   static fromStore(json: MidiRouteRaw) {

@@ -1,9 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function useMidiActivity(
-  filterDevice = '*',
-  onActivity?: () => void
-) {
+export default function useMidiActivity(filterDevice: '*' | string, onActivity?: () => void) {
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {

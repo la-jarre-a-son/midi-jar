@@ -32,10 +32,7 @@ export const highlightNotes = (
   }
 };
 
-export const fadeNotes = (
-  containerEl: HTMLDivElement,
-  className = 'active'
-) => {
+export const fadeNotes = (containerEl: HTMLDivElement, className = 'active') => {
   fade(containerEl, className);
 };
 

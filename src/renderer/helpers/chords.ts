@@ -1,8 +1,7 @@
 import { Note } from '@tonaljs/tonal';
 import { Chord as TChord } from '@tonaljs/chord';
 
-export const CHORD_NAME_REGEX =
-  /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
+export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
 export const CHORD_TYPE_REGEX =
   /^([\d]{1,2}(\/[\d]{1,2})?|(m|M|min|maj|mMaj|m\/ma)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
 
@@ -76,9 +75,7 @@ export const tokenizeChordType = (chordType: string): string[] => {
  */
 export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
   return pitchClasses.map((pc: string) => {
-    const i = chord.notes.findIndex(
-      (note) => Note.chroma(note) === Note.chroma(pc)
-    );
+    const i = chord.notes.findIndex((note) => Note.chroma(note) === Note.chroma(pc));
     if (i < 0) return '';
 
     return chord.intervals[i];

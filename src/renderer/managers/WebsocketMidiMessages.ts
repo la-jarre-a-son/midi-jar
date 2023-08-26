@@ -7,9 +7,7 @@ class WebsocketMidiMessages extends MidiMessageManager {
 
   constructor(namespace: string) {
     super(namespace);
-    this.ws = new ReconnectingWebSocket(
-      `ws://${window.location.host}/ws/${namespace}`
-    );
+    this.ws = new ReconnectingWebSocket(`ws://${window.location.host}/ws/${namespace}`);
     this.ws.binaryType = 'arraybuffer';
 
     this.handleMessage.bind(this);
@@ -21,9 +19,7 @@ class WebsocketMidiMessages extends MidiMessageManager {
 
   private handleMessage(event: MessageEvent) {
     const message = [...new Uint8Array(event.data)] as MidiMessage;
-    this.dispatchEvent(
-      new MidiMessageEvent('message', message, Date.now(), 'unknown')
-    );
+    this.dispatchEvent(new MidiMessageEvent('message', message, Date.now(), 'unknown'));
   }
 
   private handleOpen() {

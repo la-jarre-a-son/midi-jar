@@ -1,17 +1,6 @@
-import React, {
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-  useReducer,
-} from 'react';
+import React, { useContext, useEffect, useCallback, useMemo, useReducer } from 'react';
 
-import {
-  ApiMidiInput,
-  ApiMidiOutput,
-  ApiMidiWire,
-  ApiMidiRoute,
-} from 'main/types/api';
+import { ApiMidiInput, ApiMidiOutput, ApiMidiWire, ApiMidiRoute } from 'main/types/api';
 
 interface MidiRoutingContextInterface {
   inputs: ApiMidiInput[];
@@ -23,8 +12,7 @@ interface MidiRoutingContextInterface {
   deleteRoute: (route: ApiMidiRoute) => void;
 }
 
-const MidiRoutingContext =
-  React.createContext<MidiRoutingContextInterface | null>(null);
+const MidiRoutingContext = React.createContext<MidiRoutingContextInterface | null>(null);
 
 type InputsChangedAction = {
   type: 'INPUTS_CHANGED';
@@ -118,14 +106,8 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
 
   const refreshDevices = useCallback(() => window.midi.refreshDevices(), []);
   const clearRoutes = useCallback(() => window.midi.clearRoutes(), []);
-  const addRoute = useCallback(
-    (route: ApiMidiRoute) => window.midi.addRoute(route),
-    []
-  );
-  const deleteRoute = useCallback(
-    (route: ApiMidiRoute) => window.midi.deleteRoute(route),
-    []
-  );
+  const addRoute = useCallback((route: ApiMidiRoute) => window.midi.addRoute(route), []);
+  const deleteRoute = useCallback((route: ApiMidiRoute) => window.midi.deleteRoute(route), []);
 
   useEffect(() => {
     window.midi.getInputs();
@@ -153,11 +135,7 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
     [state, refreshDevices, addRoute, deleteRoute, clearRoutes]
   );
 
-  return (
-    <MidiRoutingContext.Provider value={value}>
-      {children}
-    </MidiRoutingContext.Provider>
-  );
+  return <MidiRoutingContext.Provider value={value}>{children}</MidiRoutingContext.Provider>;
 };
 
 export const useMidiRouting = () => {

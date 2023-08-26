@@ -2,9 +2,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import { useSettings } from 'renderer/contexts/Settings';
-
-import FormField from 'renderer/components/FormField';
-import Toggle from 'renderer/components/Toggle';
+import { FormField, Toggle } from 'renderer/components';
 
 import styles from './GeneralSettings.module.scss';
 
@@ -32,15 +30,10 @@ const GeneralSettings: React.FC<Props> = ({ className }) => {
     <div className={cx('base', className)}>
       <div className={cx('container')}>
         <section className={cx('group')}>
-          <FormField
-            fieldId="general_settings:launchAtStartup"
-            label="Launch At Startup"
-          >
+          <FormField fieldId="general_settings:launchAtStartup" label="Launch At Startup">
             <Toggle
               id="general_settings:launchAtStartup"
-              onChange={(value) =>
-                updateSetting('general.launchAtStartup', value)
-              }
+              onChange={(value) => updateSetting('general.launchAtStartup', value)}
               value={settings.general.launchAtStartup}
               successIcon="save"
             />
@@ -49,9 +42,7 @@ const GeneralSettings: React.FC<Props> = ({ className }) => {
           <FormField fieldId="general_settings:port" label="Start Minimized">
             <Toggle
               id="general_settings:startMinimized"
-              onChange={(value) =>
-                updateSetting('general.startMinimized', value)
-              }
+              onChange={(value) => updateSetting('general.startMinimized', value)}
               value={settings.general.startMinimized}
               successIcon="save"
             />

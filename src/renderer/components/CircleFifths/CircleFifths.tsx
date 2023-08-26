@@ -1,16 +1,8 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import classnames from 'classnames/bind';
+
 import { debounce } from 'renderer/helpers/debounce';
-
-import { Chord } from '@tonaljs/chord';
-
-import { getKeySignature, KeySignatureConfig } from 'renderer/helpers/note';
+import { getKeySignature } from 'renderer/helpers/note';
 
 import {
   SIZE,
@@ -24,7 +16,6 @@ import {
   FIFTHS_ALTERATIONS,
   getCurrentKey,
   getSections,
-  CircleOfFifthsConfig,
 } from './utils';
 
 import {
@@ -40,39 +31,22 @@ import {
   Arrow,
 } from './Sections';
 
+import { CircleFifthsProps } from './types';
 import styles from './CircleFifths.module.scss';
 
 const cx = classnames.bind(styles);
 
-export type Props = {
-  className?: string;
-  children?: React.ReactNode;
-  keySignature?: KeySignatureConfig;
-  chord?: Chord | null;
-  notes?: string[];
-  onChange?: (key: string) => unknown;
-  config?: CircleOfFifthsConfig;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-  onChange: undefined,
-  chord: undefined,
-  notes: undefined,
-  keySignature: getKeySignature('C'),
-  config: {
-    scale: 'major' as const,
-    displayMajor: true,
-    displayMinor: true,
-    displayDiminished: true,
-    displayDominants: true,
-    displaySuspended: true,
-    displayAlterations: true,
-    displayModes: true,
-    displayDegrees: true,
-    displayDegreeLabels: true,
-  },
+const defaultConfig = {
+  scale: 'major' as const,
+  displayMajor: true,
+  displayMinor: true,
+  displayDiminished: true,
+  displayDominants: true,
+  displaySuspended: true,
+  displayAlterations: true,
+  displayModes: true,
+  displayDegrees: true,
+  displayDegreeLabels: true,
 };
 
 /**
@@ -81,31 +55,26 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-const CircleFifths: React.FC<Props> = ({
+export const CircleFifths: React.FC<CircleFifthsProps> = ({
   keySignature,
   className,
   children,
   chord,
   notes,
   onChange,
-  config = defaultProps.config,
+  config = defaultConfig,
 }) => {
   const sections = useMemo(() => getSections(config), [config]);
   const ref = useRef<SVGSVGElement | null>(null);
   const [size, setSize] = useState<number | null>(null);
-  const [current, setCurrent] = useState<number>(
-    getCurrentKey(keySignature?.alteration || 0)
-  );
+  const [current, setCurrent] = useState<number>(getCurrentKey(keySignature?.alteration || 0));
 
   const [rotation, setRotation] = useState<number>(((current * 1) / 12) * 360);
   const [isRotating, setIsRotating] = useState<boolean>(false);
 
   const handleClick = (newValue: number) => {
     if (onChange) {
-      if (
-        FIFTHS_MAJOR[newValue].length > 1 &&
-        keySignature?.tonic === FIFTHS_MAJOR[newValue][0]
-      ) {
+      if (FIFTHS_MAJOR[newValue].length > 1 && keySignature?.tonic === FIFTHS_MAJOR[newValue][0]) {
         onChange(FIFTHS_MAJOR[newValue][1]);
       } else {
         onChange(FIFTHS_MAJOR[newValue][0]);
@@ -121,9 +90,7 @@ const CircleFifths: React.FC<Props> = ({
       if (diff < -6) diff += 12;
       if (diff > 6) diff -= 12;
 
-      setRotation(
-        (previousRotation) => previousRotation + ((diff * 1) / 12) * 360
-      );
+      setRotation((previousRotation) => previousRotation + ((diff * 1) / 12) * 360);
 
       if (diff) {
         setIsRotating(true);
@@ -134,12 +101,9 @@ const CircleFifths: React.FC<Props> = ({
   }, [keySignature]);
 
   // Avoids transition between other transform than rotation
-  const handleTransitionEnd = useCallback(
-    (e: React.TransitionEvent<SVGElement>) => {
-      if (e.currentTarget.nodeName === 'g') setIsRotating(false);
-    },
-    []
-  );
+  const handleTransitionEnd = useCallback((e: React.TransitionEvent<SVGElement>) => {
+    if (e.currentTarget.nodeName === 'g') setIsRotating(false);
+  }, []);
 
   const resize = useCallback(() => {
     if (ref) {
@@ -321,9 +285,7 @@ const CircleFifths: React.FC<Props> = ({
             {config.displayDegrees && config.displayMinor && (
               <Degrees scale="minor" section={sections.degreesMinor} />
             )}
-            {config.displayModes && (
-              <Modes section={sections.modes} config={config} />
-            )}
+            {config.displayModes && <Modes section={sections.modes} config={config} />}
             {config.displayDegreeLabels && (
               <DegreeLabels scale="major" sections={sections} config={config} />
             )}
@@ -339,6 +301,14 @@ const CircleFifths: React.FC<Props> = ({
   );
 };
 
-CircleFifths.defaultProps = defaultProps;
+CircleFifths.defaultProps = {
+  className: undefined,
+  children: undefined,
+  onChange: undefined,
+  chord: undefined,
+  notes: undefined,
+  keySignature: getKeySignature('C'),
+  config: defaultConfig,
+};
 
 export default CircleFifths;

@@ -4,9 +4,7 @@ import classnames from 'classnames/bind';
 import { useSettings } from 'renderer/contexts/Settings';
 import { useServerState } from 'renderer/contexts/ServerState';
 
-import FormField from 'renderer/components/FormField';
-import Toggle from 'renderer/components/Toggle';
-import Input from 'renderer/components/Input';
+import { FormField, Toggle, Input } from 'renderer/components';
 
 import styles from './ServerSettings.module.scss';
 
@@ -39,9 +37,7 @@ const ServerSettings: React.FC<Props> = ({ className }) => {
           isError: !!state.error,
         })}
       >
-        {!state.error &&
-          state.started &&
-          `Server is currently running on port ${state.port}`}
+        {!state.error && state.started && `Server is currently running on port ${state.port}`}
         {!state.error && !state.started && 'Server is currently stopped'}
         {state.error && `Server has errored: ${state.error}`}
         {state.started && !!state.addresses.length && (
@@ -64,10 +60,7 @@ const ServerSettings: React.FC<Props> = ({ className }) => {
       </div>
       <div className={cx('container')}>
         <section className={cx('group')}>
-          <FormField
-            fieldId="server_settings:enabled"
-            label="Enable HTTP &amp; WS server"
-          >
+          <FormField fieldId="server_settings:enabled" label="Enable HTTP &amp; WS server">
             <Toggle
               id="server_settings:enabled"
               onChange={(value) => enable(!!value)}

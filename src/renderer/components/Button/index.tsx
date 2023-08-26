@@ -1,7 +1,3 @@
-export {
-  default,
-  ButtonIntents,
-  ButtonTypes,
-  ButtonStatus,
-  Props,
-} from './Button';
+export { default, Button } from './Button';
+
+export * from './types';

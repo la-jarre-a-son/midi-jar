@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 
 interface WindowStateContextInterface {
   isMaximized: boolean;
@@ -17,8 +11,7 @@ interface WindowStateContextInterface {
   setAlwaysOnTop: (flag: boolean) => void;
 }
 
-const WindowStateContext =
-  React.createContext<WindowStateContextInterface | null>(null);
+const WindowStateContext = React.createContext<WindowStateContextInterface | null>(null);
 
 type Props = {
   children: React.ReactNode;
@@ -46,23 +39,14 @@ const WindowStateProvider: React.FC<Props> = ({ children }) => {
   const maximize = useCallback(() => window.app.maximize(), []);
   const unmaximize = useCallback(() => window.app.unmaximize(), []);
   const minimize = useCallback(() => window.app.minimize(), []);
-  const setAlwaysOnTop = useCallback(
-    (flag: boolean) => window.app.setAlwaysOnTop(flag),
-    []
-  );
+  const setAlwaysOnTop = useCallback((flag: boolean) => window.app.setAlwaysOnTop(flag), []);
   const close = useCallback(() => window.app.close(), []);
-  const titleBarDoubleClick = useCallback(
-    () => window.app.titleBarDoubleClick(),
-    []
-  );
+  const titleBarDoubleClick = useCallback(() => window.app.titleBarDoubleClick(), []);
 
   useEffect(() => {
     const offMaximize = window.app.on('maximize', onMaximize);
     const offUnmaximize = window.app.on('unmaximize', onUnmaximize);
-    const offAlwaysOnTop = window.app.on(
-      'always-on-top-changed',
-      onAlwaysOnTop
-    );
+    const offAlwaysOnTop = window.app.on('always-on-top-changed', onAlwaysOnTop);
 
     return () => {
       offMaximize();
@@ -94,11 +78,7 @@ const WindowStateProvider: React.FC<Props> = ({ children }) => {
     ]
   );
 
-  return (
-    <WindowStateContext.Provider value={value}>
-      {children}
-    </WindowStateContext.Provider>
-  );
+  return <WindowStateContext.Provider value={value}>{children}</WindowStateContext.Provider>;
 };
 
 export const useWindowState = () => {

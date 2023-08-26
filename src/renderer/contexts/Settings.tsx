@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 
 import { Settings } from 'main/types/Settings';
 import { defaults } from 'main/settings/schema';
@@ -20,9 +14,7 @@ interface SettingsContextInterface {
   resetSettings: (key: keyof Settings) => Promise<void>;
 }
 
-const SettingsContext = React.createContext<SettingsContextInterface | null>(
-  null
-);
+const SettingsContext = React.createContext<SettingsContextInterface | null>(null);
 
 type Props = {
   children: React.ReactNode;
@@ -43,8 +35,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
   );
 
   const updateSetting = useCallback(
-    (key: string, value: unknown) =>
-      window.app.settings.updateSetting(key, value),
+    (key: string, value: unknown) => window.app.settings.updateSetting(key, value),
     []
   );
 
@@ -53,10 +44,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
     []
   );
 
-  const resetSettings = useCallback(
-    (key: keyof Settings) => window.app.settings.reset(key),
-    []
-  );
+  const resetSettings = useCallback((key: keyof Settings) => window.app.settings.reset(key), []);
 
   useEffect(() => {
     if (manager) {
@@ -72,7 +60,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
       };
     }
 
-    return () => {};
+    return undefined;
   }, [manager, manager?.isConnected, onSettingsChange]);
 
   const value = useMemo(
@@ -86,9 +74,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
   );
 
   return (
-    <SettingsContext.Provider value={value}>
-      {inited ? children : null}
-    </SettingsContext.Provider>
+    <SettingsContext.Provider value={value}>{inited ? children : null}</SettingsContext.Provider>
   );
 };
 

@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import classnames from 'classnames/bind';
 
-import CircleFifths from 'renderer/components/CircleFifths';
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
-import ChordName from 'renderer/components/ChordName';
+import { CircleFifths, ChordName } from 'renderer/components';
 
 import styles from './CircleOfFifths.module.scss';
 

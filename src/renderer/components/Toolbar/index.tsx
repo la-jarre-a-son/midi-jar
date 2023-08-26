@@ -1,1 +1,3 @@
-export { default } from './Toolbar';
+export { default, Toolbar } from './Toolbar';
+
+export * from './types';

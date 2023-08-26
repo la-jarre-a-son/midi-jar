@@ -1,4 +1,4 @@
-/* eslint global-require: off, no-console: off, promise/always-return: off */
+/* eslint global-require: off, no-console: off, promise/always-return: off, @typescript-eslint/no-var-requires: off */
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -39,18 +39,14 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-const isDevelopment =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+const isDevelopment = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDevelopment) {
   require('electron-debug')({ showDevTools: false });
 }
 
 const installExtensions = () => {
-  const {
-    installExtension,
-    REACT_DEVELOPER_TOOLS,
-  } = require('electron-extension-installer');
+  const { installExtension, REACT_DEVELOPER_TOOLS } = require('electron-extension-installer');
 
   return installExtension(REACT_DEVELOPER_TOOLS, {
     loadExtensionOptions: {

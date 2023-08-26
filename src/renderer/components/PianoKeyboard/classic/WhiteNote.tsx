@@ -74,9 +74,7 @@ const WhiteNote: React.FC<WhiteNoteProps> = ({
       <circle
         className={styles.pianoTonic}
         cx={NOTE_WHITE_WIDTH / 2}
-        cy={
-          NOTE_WHITE_HEIGHT - NOTE_WHITE_TONIC_BOTTOM_OFFSET - NOTE_TONIC_RADIUS
-        }
+        cy={NOTE_WHITE_HEIGHT - NOTE_WHITE_TONIC_BOTTOM_OFFSET - NOTE_TONIC_RADIUS}
         r={NOTE_TONIC_RADIUS}
         style={{ fill: getContrastColor(color) }}
       />

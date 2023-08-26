@@ -1,31 +1,23 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import Button from 'renderer/components/Button';
-import Icon from 'renderer/components/Icon';
-
 import { useWindowState } from 'renderer/contexts/WindowState';
+import { Button } from 'renderer/components/Button';
+import { Icon } from 'renderer/components/Icon';
+
+import { TrafficLightButtonsProps } from './types';
+
 import styles from './TrafficLightButtons.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
+export const TrafficLightButtons: React.FC<TrafficLightButtonsProps> = ({ className }) => {
+  const { isMaximized, maximize, unmaximize, minimize, close } = useWindowState();
 
-const defaultProps = {
-  className: undefined,
-};
-
-const TrafficLightButtons: React.FC<Props> = ({ className }) => {
-  const { isMaximized, maximize, unmaximize, minimize, close } =
-    useWindowState();
-
-  const handleEvent =
-    (callback: () => void) => (event: React.MouseEvent<unknown>) => {
-      (event.currentTarget as HTMLButtonElement)?.blur();
-      callback();
-    };
+  const handleEvent = (callback: () => void) => (event: React.MouseEvent<unknown>) => {
+    (event.currentTarget as HTMLButtonElement)?.blur();
+    callback();
+  };
 
   return (
     <div className={cx('base', className)}>
@@ -73,6 +65,8 @@ const TrafficLightButtons: React.FC<Props> = ({ className }) => {
   );
 };
 
-TrafficLightButtons.defaultProps = defaultProps;
+TrafficLightButtons.defaultProps = {
+  className: undefined,
+};
 
 export default TrafficLightButtons;

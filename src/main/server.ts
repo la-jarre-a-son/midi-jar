@@ -1,3 +1,4 @@
+import { Server } from 'http';
 import express, { Request, Response, NextFunction } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'path';
@@ -12,7 +13,7 @@ type ServerState = {
   port: number | null;
   addresses: string[];
   error: string | null;
-  httpServer?: ReturnType<typeof app.listen>;
+  httpServer?: Server;
   wsServer?: Awaited<ReturnType<typeof initWSServer>>;
 };
 
@@ -53,18 +54,10 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-app.use(
-  (
-    err: ServerError | Error,
-    _req: Request,
-    res: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _next: NextFunction
-  ) => {
-    res.status(err instanceof ServerError ? err.status : 500);
-    res.send(`${__dirname}: ${err.message}`);
-  }
-);
+app.use((err: ServerError | Error, _req: Request, res: Response, _next: NextFunction): void => {
+  res.status(err instanceof ServerError ? err.status : 500);
+  res.send(`${__dirname}: ${err.message}`);
+});
 
 function initHttpServer(port: number): Promise<ReturnType<typeof app.listen>> {
   return new Promise((resolve, reject) => {
@@ -112,8 +105,8 @@ function closeHttpServer(): Promise<void> {
 export function getAddresses(): string[] {
   const nets = os.networkInterfaces();
 
-  const ips = Object.keys(nets).map((name) =>
-    nets[name]?.map((net) => (net.family === 'IPv4' ? net.address : null))
+  const ips = Object.keys(nets).map(
+    (name) => nets[name]?.map((net) => (net.family === 'IPv4' ? net.address : null))
   );
   ips.unshift(['localhost']);
 

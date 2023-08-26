@@ -13,20 +13,21 @@ const store = new Store<StoreType>({
   schema,
   defaults,
   migrations,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore: Electron Store supports projectVersion but it's not typed
   projectVersion: version,
 });
 
 export function getMidiRoutes(): MidiRoute[] {
   return ((store.get('midi.routes') as MidiRouteRaw[]) || []).map((route) =>
-    MidiRoute.fromStore(route),
+    MidiRoute.fromStore(route)
   );
 }
 
 export function setMidiRoutes(routes: MidiRoute[]) {
   store.set(
     'midi.routes',
-    routes.map((route) => route.toStore()),
+    routes.map((route) => route.toStore())
   );
 }
 
@@ -72,7 +73,7 @@ export const isHiddenStartupLaunch = () => {
 };
 
 export function onSettingsChange(
-  callback: (newValue?: Settings, oldValue?: Settings) => void,
+  callback: (newValue?: Settings, oldValue?: Settings) => void
 ): () => void {
   return store.onDidChange('settings', callback);
 }

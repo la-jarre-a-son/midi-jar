@@ -1,1 +1,3 @@
-export { default } from './InputColor';
+export { default, InputColor } from './InputColor';
+
+export * from './types';

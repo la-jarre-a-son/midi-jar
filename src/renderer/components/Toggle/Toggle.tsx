@@ -1,66 +1,26 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import Button, { ButtonIntents } from '../Button';
-import ButtonGroup from '../ButtonGroup';
-import Icon from '../Icon';
+import { Button } from '../Button';
+import { ButtonGroup } from '../ButtonGroup';
+import { Icon } from '../Icon';
 
 import styles from './Toggle.module.scss';
+import { ToggleProps } from './types';
 
 const cx = classNames.bind(styles);
-
-type ToggleValue = string | number | boolean | null;
-
-export interface ToggleChoice {
-  label: string | React.ReactNode;
-  value: ToggleValue;
-  intent?: ButtonIntents;
-}
-
-type Props = {
-  className?: string;
-  id: string;
-
-  /**
-   * Possible values
-   */
-  choices?: ToggleChoice[];
-  /**
-   * Current Value
-   */
-  value?: ToggleValue;
-  /**
-   * When toggle changes
-   */
-  onChange: (value: ToggleValue) => unknown;
-  /* Feedback icons */
-  successIcon?: string;
-  errorIcon?: string;
-  pendingIcon?: string;
-  disabled?: boolean;
-};
 
 const defaultChoices = [
   {
     label: <Icon name="cross" />,
-    intent: 'danger' as ButtonIntents,
+    intent: 'danger' as const,
     value: false,
   },
   {
     label: <Icon name="check" />,
     value: true,
-    intent: 'success' as ButtonIntents,
+    intent: 'success' as const,
   },
 ];
-
-const defaultProps = {
-  className: undefined,
-  choices: defaultChoices,
-  value: null,
-  successIcon: undefined,
-  errorIcon: undefined,
-  pendingIcon: undefined,
-  disabled: false,
-};
 
 /**
  * A group of buttons that can be toggled.
@@ -68,10 +28,10 @@ const defaultProps = {
  * @version 1.0.0
  * @author Rémi Jarasson
  */
-export const Toggle: React.FC<Props> = ({
+export const Toggle: React.FC<ToggleProps> = ({
   className,
   id,
-  choices,
+  choices = defaultChoices,
   value,
   disabled,
   onChange,
@@ -99,6 +59,14 @@ export const Toggle: React.FC<Props> = ({
   </ButtonGroup>
 );
 
-Toggle.defaultProps = defaultProps;
+Toggle.defaultProps = {
+  className: undefined,
+  choices: defaultChoices,
+  value: null,
+  successIcon: undefined,
+  errorIcon: undefined,
+  pendingIcon: undefined,
+  disabled: false,
+};
 
 export default Toggle;

@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-export default function useMidiLatency(
-  filterDevice = '*'
-): [number, number, () => void] {
+export default function useMidiLatency(filterDevice = '*'): [number, number, () => void] {
   const [currentLatency, setCurrentLatency] = useState<number>(0);
   const [highestLatency, setHighestLatency] = useState<number>(0);
   const highest = useRef<number>(0);

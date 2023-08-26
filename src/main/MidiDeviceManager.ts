@@ -42,10 +42,8 @@ export class MidiDeviceManager extends EventEmitter {
     // eslint-disable-next-line no-restricted-syntax
     for (const name of INTERNAL_OUTPUTS) {
       const output = new InternalOutput(name);
-      output.addListener(
-        'message',
-        (message: MidiMessage, timestamp: number, device: string) =>
-          this.emit('midi', output.name, message, timestamp, device)
+      output.addListener('message', (message: MidiMessage, timestamp: number, device: string) =>
+        this.emit('midi', output.name, message, timestamp, device)
       );
       this.outputs.set(name, output);
     }
@@ -103,10 +101,7 @@ export class MidiDeviceManager extends EventEmitter {
         outputs.push(name);
         const output = this.outputs.get(name);
         if (!output) {
-          this.outputs.set(
-            name,
-            new MidiOutputDevice(midiOut.getPortName(port), true)
-          );
+          this.outputs.set(name, new MidiOutputDevice(midiOut.getPortName(port), true));
           changed = true;
         } else if (output instanceof MidiOutputDevice && !output.connected) {
           output.connected = true;

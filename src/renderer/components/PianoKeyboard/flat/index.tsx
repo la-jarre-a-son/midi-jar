@@ -61,9 +61,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
   const keyboard = range(start, end).reduce<KeyboardNotes>(
     (kb: KeyboardNotes, midi: number) => {
       const note = Note.fromMidi(midi);
-      const displayName = formatSharpsFlats(
-        getNoteInKeySignature(note, keySignature.notes)
-      );
+      const displayName = formatSharpsFlats(getNoteInKeySignature(note, keySignature.notes));
 
       const noteDef = Note.get(note);
       const def: NoteDef = {
@@ -87,10 +85,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
   );
 
   return (
-    <svg
-      className={styles.keyboard}
-      viewBox={`0 0 ${keyboard.width} ${keyboard.height}`}
-    >
+    <svg className={styles.keyboard} viewBox={`0 0 ${keyboard.width} ${keyboard.height}`}>
       <Board
         notes={keyboard.notes}
         colorNoteWhite={colorNoteWhite || defaultProps.colorNoteWhite}

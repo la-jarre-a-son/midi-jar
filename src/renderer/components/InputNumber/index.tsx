@@ -1,1 +1,3 @@
-export { default } from './InputNumber';
+export { default, InputNumber } from './InputNumber';
+
+export * from './types';

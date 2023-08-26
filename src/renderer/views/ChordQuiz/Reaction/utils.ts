@@ -52,16 +52,12 @@ export const REACTIONS: { [key in STATUSES]?: string[] } = {
 /**
  * Returns true if the current game state should trigger a new reaction
  */
-export const shouldTriggerNewReaction = (
-  gameState: GameState,
-  reaction?: Reaction | null
-) => {
+export const shouldTriggerNewReaction = (gameState: GameState, reaction?: Reaction | null) => {
   return (
     gameState.status >= 0 &&
     (!reaction ||
       reaction.index !== gameState.index ||
       reaction.status < gameState.status ||
-      (reaction.status === gameState.status &&
-        reaction.score < gameState.score))
+      (reaction.status === gameState.status && reaction.score < gameState.score))
   );
 };

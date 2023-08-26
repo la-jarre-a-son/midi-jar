@@ -1,10 +1,4 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 import { resolveHtmlPath } from './util';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -24,8 +18,7 @@ export default class MenuBuilder {
   }
 
   buildMenu(): Menu {
-    const template =
-      process.platform === 'darwin' ? this.buildDarwinTemplate() : [];
+    const template = process.platform === 'darwin' ? this.buildDarwinTemplate() : [];
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
@@ -149,9 +142,7 @@ export default class MenuBuilder {
         {
           label: 'Report Bug',
           click() {
-            shell.openExternal(
-              'https://github.com/la-jarre-a-son/midi-jar/issues'
-            );
+            shell.openExternal('https://github.com/la-jarre-a-son/midi-jar/issues');
           },
         },
       ],

@@ -34,9 +34,7 @@ export function formatMidiMessage(m: MidiMessage) {
     if (m[0] === 0xf2) {
       return `${m[0]}:${MIDI_CMD[fCmd]} - position ${getMidiMultiWordValue(m)}`;
     }
-    return `${m[0]}:${MIDI_CMD[fCmd]}${note ? ` - ${note}` : ''}${
-      value ? ` - ${value}` : ''
-    }`;
+    return `${m[0]}:${MIDI_CMD[fCmd]}${note ? ` - ${note}` : ''}${value ? ` - ${value}` : ''}`;
   }
 
   return `channel ${ch} - ${cmd}:${MIDI_CMD[cmd]} - note ${note} - ${value} `;

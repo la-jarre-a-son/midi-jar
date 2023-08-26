@@ -36,9 +36,7 @@ const getChordInfo = (chord: string, keySignatureNotes: string[]) => {
 };
 
 const getChords = (notes: string[], keySignatureNotes: string[]) => {
-  const chords = Chord.detect(notes).map((n) =>
-    getChordInfo(n, keySignatureNotes)
-  );
+  const chords = Chord.detect(notes).map((n) => getChordInfo(n, keySignatureNotes));
 
   return chords;
 };
@@ -89,8 +87,7 @@ function reducer(state: State, action: Action): State {
 
   const { notes: keySignatureNotes } = state.keySignature;
 
-  const fromMidi = (m: number) =>
-    getNoteInKeySignature(Note.fromMidi(m), keySignatureNotes);
+  const fromMidi = (m: number) => getNoteInKeySignature(Note.fromMidi(m), keySignatureNotes);
 
   switch (type) {
     case ParametersActionTypes.KEY_SIGNATURE_CHANGED: {
@@ -112,9 +109,7 @@ function reducer(state: State, action: Action): State {
     case MidiActionTypes.NOTE_ON: {
       const { midi } = action;
       const playedMidiNotes = [...state.playedMidiNotes, midi];
-      const sustainedMidiNotes = state.sustainedMidiNotes.filter(
-        (m) => m !== midi
-      );
+      const sustainedMidiNotes = state.sustainedMidiNotes.filter((m) => m !== midi);
       const midiNotes = [...sustainedMidiNotes, ...playedMidiNotes];
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
@@ -228,8 +223,7 @@ export default function useNotes({
       }
 
       if (
-        (cmd === MIDI_CMD_NOTE_OFF ||
-          (cmd === MIDI_CMD_NOTE_ON && value === 0)) && // MIDI RUNNING MODE => ALWAYS NOTE_ON messages with velocity 0
+        (cmd === MIDI_CMD_NOTE_OFF || (cmd === MIDI_CMD_NOTE_ON && value === 0)) && // MIDI RUNNING MODE => ALWAYS NOTE_ON messages with velocity 0
         (midiChannel === MIDI_CHANNEL_ALL || midiChannel === ch)
       ) {
         dispatch({ type: MidiActionTypes.NOTE_OFF, midi });

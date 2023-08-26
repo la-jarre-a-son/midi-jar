@@ -3,14 +3,11 @@ import classnames from 'classnames/bind';
 
 import { MidiMessage } from 'main/types';
 
-import useMidiMessages from 'renderer/hooks/useMidiMessages';
-import Toolbar from 'renderer/components/Toolbar';
-import Button from 'renderer/components/Button';
-
-import Icon from 'renderer/components/Icon';
 import { getMidiCommand } from 'renderer/helpers';
-import { formatMidiMessage } from './utils';
+import useMidiMessages from 'renderer/hooks/useMidiMessages';
+import { Toolbar, Button, Icon } from 'renderer/components';
 
+import { formatMidiMessage } from './utils';
 import { MIDI_CMD, MIDI_CLOCK_CMD, MIDI_SYSEX_CMD } from './constants';
 
 import styles from './Debugger.module.scss';
@@ -91,10 +88,7 @@ const Debugger: React.FC<Props> = ({ className }) => {
   return (
     <div className={cx('base', className)}>
       <Toolbar className={cx('header')}>
-        <Button
-          onClick={toggleTimingClock}
-          intent={displayTimingClock ? 'primary' : 'default'}
-        >
+        <Button onClick={toggleTimingClock} intent={displayTimingClock ? 'primary' : 'default'}>
           <Icon name="clock" />
           MIDI Clock
         </Button>

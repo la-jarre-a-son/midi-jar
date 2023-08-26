@@ -1,55 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import { chroma as getChroma } from '@tonaljs/note';
-import { Chord } from '@tonaljs/chord';
 
-import { getKeySignature, KeySignatureConfig } from 'renderer/helpers/note';
-import {
-  fadeNotes,
-  highlightNotes,
-  fadeIntervals,
-  highlightInterval,
-} from './Utils';
+import { getKeySignature } from 'renderer/helpers/note';
+import { fadeNotes, highlightNotes, fadeIntervals, highlightInterval } from './Utils';
 
+import { PianoKeyboardProps } from './types';
 import ClassicPiano from './classic';
 import FlatPiano from './flat';
 
-type Props = {
-  id?: string;
-  className?: string;
-  skin?: 'classic' | 'flat';
-  from?: string;
-  to?: string;
-  keySignature?: KeySignatureConfig;
-  colorNoteWhite?: string;
-  colorNoteBlack?: string;
-  colorHighlight?: string;
-  displayKeyNames?: boolean;
-  displayDegrees?: boolean;
-  displayTonic?: boolean;
-  sustained?: number[];
-  midi?: number[];
-  chord?: Chord;
-};
-
-const defaultProps = {
-  id: undefined,
-  className: undefined,
-  skin: 'classic' as Props['skin'],
-  from: 'C2',
-  to: 'C7',
-  keySignature: getKeySignature('C'),
-  colorHighlight: '#315bce',
-  colorNoteWhite: '#ffffff',
-  colorNoteBlack: '#000000',
-  displayKeyNames: true,
-  displayDegrees: true,
-  displayTonic: true,
-  sustained: [],
-  midi: [],
-  chord: undefined,
-};
-
-const PianoKeyboard: React.FC<Props> = ({
+export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   id,
   className,
   skin,
@@ -130,6 +89,22 @@ const PianoKeyboard: React.FC<Props> = ({
   );
 };
 
-PianoKeyboard.defaultProps = defaultProps;
+PianoKeyboard.defaultProps = {
+  id: undefined,
+  className: undefined,
+  skin: 'classic' as PianoKeyboardProps['skin'],
+  from: 'C2',
+  to: 'C7',
+  keySignature: getKeySignature('C'),
+  colorHighlight: '#315bce',
+  colorNoteWhite: '#ffffff',
+  colorNoteBlack: '#000000',
+  displayKeyNames: true,
+  displayDegrees: true,
+  displayTonic: true,
+  sustained: [],
+  midi: [],
+  chord: undefined,
+};
 
 export default PianoKeyboard;

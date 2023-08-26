@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Button from 'renderer/components/Button';
-import ButtonGroup from 'renderer/components/ButtonGroup';
-import Icon from 'renderer/components/Icon';
+
 import MidiMessageManagerProvider from 'renderer/contexts/MidiMessageManager';
 import SettingsProvider from 'renderer/contexts/Settings';
 import SettingsManagerProvider from 'renderer/contexts/SettingsManager';
+import { Button, ButtonGroup, Icon } from 'renderer/components';
 import ChordDisplay from 'renderer/views/ChordDisplay';
 import CircleOfFifths from 'renderer/views/CircleOfFifths';
+
 import icon from '../../assets/icon.svg';
+
 import './App.scss';
 
 const Home = () => {
@@ -16,9 +17,8 @@ const Home = () => {
       <img className="Home-logo" src={icon} alt="" />
       <h1>MIDI Jar Overlay</h1>
       <p>
-        You can use this local website as a BrowserSource in OBS to integrate
-        MIDI Jar as an overlay, or load it on another device to use MIDI Jar
-        remotely.
+        You can use this local website as a BrowserSource in OBS to integrate MIDI Jar as an
+        overlay, or load it on another device to use MIDI Jar remotely.
       </p>
       <p>Settings can be edited directly through the main application.</p>
       <ButtonGroup vertical>
@@ -46,10 +46,7 @@ export default function App() {
               <Route
                 path="chords"
                 element={
-                  <MidiMessageManagerProvider
-                    namespace="chord-display"
-                    source="websocket"
-                  >
+                  <MidiMessageManagerProvider namespace="chord-display" source="websocket">
                     <ChordDisplay namespace="overlay" />
                   </MidiMessageManagerProvider>
                 }
@@ -57,10 +54,7 @@ export default function App() {
               <Route
                 path="circle-of-fifths"
                 element={
-                  <MidiMessageManagerProvider
-                    namespace="chord-display"
-                    source="websocket"
-                  >
+                  <MidiMessageManagerProvider namespace="chord-display" source="websocket">
                     <CircleOfFifths disableUpdate />
                   </MidiMessageManagerProvider>
                 }

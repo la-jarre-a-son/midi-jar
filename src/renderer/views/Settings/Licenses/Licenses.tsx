@@ -1,8 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import CollapseGroup from 'renderer/components/CollapseGroup';
-import Icon from 'renderer/components/Icon';
+import { CollapseGroup, Icon } from 'renderer/components';
 
 // eslint-disable-next-line
 import ThirdPartyLicenses from '../../../../../ThirdPartyLicenses.json';
@@ -36,8 +35,7 @@ const defaultProps = {
  * @author Rémi Jarasson
  */
 const Licenses: React.FC<Props> = ({ className }) => {
-  const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) =>
-    e.stopPropagation();
+  const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation();
 
   return (
     <div className={cx('base', className)}>

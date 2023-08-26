@@ -2,10 +2,12 @@ import React, { useCallback, useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 
 import { Note } from '@tonaljs/tonal';
-import Input from '../Input';
-import Button from '../Button';
-import ButtonGroup from '../ButtonGroup';
-import MidiLearn from '../MidiLearn';
+import { Input } from '../Input';
+import { Button } from '../Button';
+import { ButtonGroup } from '../ButtonGroup';
+import { MidiLearn } from '../MidiLearn';
+
+import { InputNoteProps } from './types';
 
 import styles from './InputNote.module.scss';
 
@@ -15,25 +17,7 @@ const NOTES = 'A B C D E F G'.split(' ');
 const ACCIDENTALS = '# b'.split(' ');
 const OCTAVES = '0 1 2 3 4 5 6 7 8 9'.split(' ');
 
-type InputProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'>;
-type Props = InputProps & {
-  className?: string;
-  id: string;
-  value: string | number | null;
-  onChange: (value: string) => unknown;
-  block?: boolean;
-  withOctave?: boolean;
-  learn?: boolean;
-};
-
-const defaultProps = {
-  className: undefined,
-  block: false,
-  withOctave: false,
-  learn: false,
-};
-
-const InputColor: React.FC<Props> = ({
+export const InputNote: React.FC<InputNoteProps> = ({
   className,
   id,
   value,
@@ -122,6 +106,11 @@ const InputColor: React.FC<Props> = ({
   );
 };
 
-InputColor.defaultProps = defaultProps;
+InputNote.defaultProps = {
+  className: undefined,
+  block: false,
+  withOctave: false,
+  learn: false,
+};
 
-export default InputColor;
+export default InputNote;

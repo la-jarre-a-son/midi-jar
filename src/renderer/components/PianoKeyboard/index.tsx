@@ -1,1 +1,3 @@
-export { default } from './PianoKeyboard';
+export { default, PianoKeyboard } from './PianoKeyboard';
+
+export * from './types';

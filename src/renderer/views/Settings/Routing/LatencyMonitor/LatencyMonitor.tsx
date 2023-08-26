@@ -28,10 +28,9 @@ const Routing: React.FC<Props> = ({ className }) => {
 
   return (
     <div className={cx('base', className)}>
-      <div
-        className={cx('current')}
-        title="average routing latency"
-      >{`${current.toFixed(3)}ms`}</div>
+      <div className={cx('current')} title="average routing latency">{`${current.toFixed(
+        3
+      )}ms`}</div>
       <button
         type="button"
         className={cx('highest')}

@@ -3,11 +3,8 @@ import classnames from 'classnames/bind';
 
 import { useSettings } from 'renderer/contexts/Settings';
 
-import FormField from 'renderer/components/FormField';
-import Toggle from 'renderer/components/Toggle';
-import InputNote from 'renderer/components/InputNote';
+import { FormField, Toggle, InputNote, InputNumber } from 'renderer/components';
 
-import InputNumber from 'renderer/components/InputNumber';
 import { fields } from './constants';
 
 import styles from './NotationSettings.module.scss';
@@ -46,10 +43,7 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
             />
           </FormField>
 
-          <FormField
-            fieldId="notation_settings:accidentals"
-            label="Accidentals (in C)"
-          >
+          <FormField fieldId="notation_settings:accidentals" label="Accidentals (in C)">
             <Toggle
               id="notation_settings:accidentals"
               choices={fields.accidentals.choices}
@@ -77,9 +71,7 @@ const NotationSettings: React.FC<Props> = ({ className }) => {
           >
             <InputNumber
               id="notation_settings:staff-transpose"
-              onChange={(value: number) =>
-                updateSetting('notation.staffTranspose', value)
-              }
+              onChange={(value: number) => updateSetting('notation.staffTranspose', value)}
               type="number"
               step="1"
               value={settings.notation.staffTranspose}

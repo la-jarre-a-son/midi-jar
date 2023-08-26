@@ -1,1 +1,3 @@
-export { default } from './CollapseGroup';
+export { default, CollapseGroup } from './CollapseGroup';
+
+export * from './types';

@@ -52,9 +52,7 @@ export function mergeDeep<T extends ObjectType, S extends ObjectType>(
     if (Array.isArray(targetValue) && Array.isArray(sourceValue))
       if (isMergingArrays) {
         t[key] = targetValue.map((x, i) =>
-          sourceValue.length <= i
-            ? x
-            : mergeDeep(x, sourceValue[i], isMergingArrays)
+          sourceValue.length <= i ? x : mergeDeep(x, sourceValue[i], isMergingArrays)
         );
         if (sourceValue.length > targetValue.length)
           t[key] = t[key].concat(sourceValue.slice(targetValue.length));

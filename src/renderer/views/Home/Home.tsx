@@ -1,9 +1,8 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import Link from 'renderer/components/Link';
-import Button from 'renderer/components/Button';
-import Icon from 'renderer/components/Icon';
+import { Link, Button, Icon } from 'renderer/components';
+
 import icon from '../../../../assets/icon.svg';
 
 import styles from './Home.module.scss';
@@ -50,10 +49,7 @@ const Home: React.FC<Props> = ({ className }) => (
             'NOTE: Standard MIDI drivers are exclusive on Windows. To use MIDI\
             Jar, I recommend using '
           }
-          <Link
-            to="https://www.tobias-erichsen.de/software/loopmidi.html"
-            target="_blank"
-          >
+          <Link to="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank">
             LoopMidi
           </Link>
           {

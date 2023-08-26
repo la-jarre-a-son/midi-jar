@@ -3,7 +3,8 @@ import classnames from 'classnames/bind';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
-import { CX, CY, drawArc, isKeySelected, Section } from '../utils';
+import { Section } from '../types';
+import { CX, CY, drawArc, isKeySelected } from '../utils';
 
 import styles from '../CircleFifths.module.scss';
 
@@ -30,13 +31,7 @@ const SectionAlteration: React.FC<SectionAlterationProps> = ({
     <path
       id={`alteration_${value}_followpath`}
       className={cx('followPath')}
-      d={drawArc(
-        CX,
-        CY,
-        section.middle,
-        (value - 0.5) / 12,
-        (value + 0.5) / 12
-      )}
+      d={drawArc(CX, CY, section.middle, (value - 0.5) / 12, (value + 0.5) / 12)}
     />
   );
 
@@ -81,11 +76,7 @@ const SectionAlteration: React.FC<SectionAlterationProps> = ({
       })}
     >
       {renderFollowPath}
-      <text
-        className={cx('alteration--selected')}
-        fontSize="3"
-        textAnchor="middle"
-      >
+      <text className={cx('alteration--selected')} fontSize="3" textAnchor="middle">
         <textPath href={`#alteration_${value}_followpath`} startOffset="50%">
           {formatSharpsFlats(labels[0])}
         </textPath>

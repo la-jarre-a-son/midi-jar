@@ -25,11 +25,7 @@ export const noteToVex = (note: string): VexNote | null => {
   return null;
 };
 
-export const getVoice = (
-  notes: string[],
-  clef: 'treble' | 'bass',
-  filterClef = true
-) => {
+export const getVoice = (notes: string[], clef: 'treble' | 'bass', filterClef = true) => {
   const voice = new Voice();
 
   const voiceNotes = notes
