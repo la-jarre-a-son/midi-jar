@@ -89,14 +89,14 @@ const Credits: React.FC<Props> = ({ className }) => {
             </td>
           </tr>
           <tr>
-            <td>node-midi</td>
+            <td>@julusian/midi</td>
             <td>
               A node.js wrapper for the RtMidi C++ library that provides
-              realtime MIDI I/O.
+              realtime MIDI I/O. Forked from @justinlatimer/node-midi.
             </td>
             <td>
               <a
-                href="https://github.com/justinlatimer/node-midi"
+                href="https://github.com/Julusian/node-midi"
                 target="_blank"
                 rel="noreferrer"
               >
