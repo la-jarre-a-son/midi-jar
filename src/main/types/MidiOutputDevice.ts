@@ -6,7 +6,7 @@ import { ApiMidiOutput } from './api';
 
 const debug = makeDebug('app:midi:MidiOutputDevice');
 
-class MidiOutputDevice {
+export class MidiOutputDevice {
   output: Output;
 
   name: string;

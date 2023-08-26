@@ -7,7 +7,7 @@ export type ApiMidiInput = {
 
 export type ApiMidiOutput = {
   name: string;
-  type: 'physical' | 'internal' | 'websocket';
+  type: 'physical' | 'internal';
   opened: boolean;
   connected: boolean;
   error: boolean;
@@ -16,7 +16,7 @@ export type ApiMidiOutput = {
 export type ApiMidiRoute = {
   input: string;
   output: string;
-  type: 'physical' | 'internal' | 'websocket';
+  type: 'physical' | 'internal';
   enabled: boolean;
 };
 

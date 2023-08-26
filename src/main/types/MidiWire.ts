@@ -1,23 +1,21 @@
 import makeDebug from 'debug';
-import { MidiMessage } from 'midi';
-import MidiInputDevice from './MidiInputDevice';
-import MidiOutputDevice from './MidiOutputDevice';
-import InternalOutput from './InternalOutput';
-import WebsocketOutput from './WebsocketOutput';
+import { MidiMessage } from './MidiMessage';
 import { MidiRoute } from './MidiRoute';
 
 import { ApiMidiWire } from './api';
+import { MidiInput } from './MidiInput';
+import { MidiOutput } from './MidiOutput';
 
 const debug = makeDebug('app:midi:MidiWire');
 
-class MidiWire {
+export class MidiWire {
   route: MidiRoute;
 
   connected: boolean = false;
 
-  input: MidiInputDevice | null = null;
+  input: MidiInput | null = null;
 
-  output: MidiOutputDevice | InternalOutput | WebsocketOutput | null = null;
+  output: MidiOutput | null = null;
 
   constructor(route: MidiRoute) {
     this.route = route;
@@ -26,52 +24,17 @@ class MidiWire {
     this.receive = this.receive.bind(this);
   }
 
-  plug(
-    inputs: MidiInputDevice[],
-    outputs: MidiOutputDevice[],
-    internalOutputs: InternalOutput[],
-    websocketOutputs: WebsocketOutput[]
-  ) {
-    if (this.route?.type === 'physical') {
-      this.input = inputs.find((i) => i.name === this.route.input) ?? null;
-      this.output = outputs.find((o) => o.name === this.route.output) ?? null;
+  plug(input: MidiInput, output: MidiOutput) {
+    this.input = input;
+    this.output = output;
 
-      if (
-        this.input &&
-        this.output &&
-        this.output instanceof MidiOutputDevice
-      ) {
-        debug(`Plug "${this.input.name}" to pyhsical "${this.output.name}"`);
-        this.input.register(this.send);
-        this.output.register(this.receive);
-        this.connected = true;
-      }
-    }
-
-    if (this.route?.type === 'internal') {
-      this.input = inputs.find((i) => i.name === this.route.input) ?? null;
-      this.output =
-        internalOutputs.find((o) => o.name === this.route.output) ?? null;
-
-      if (this.input && this.output) {
-        debug(`Plug "${this.input.name}" to internal "${this.output.name}"`);
-        this.input.register(this.send);
-        this.output.register(this.receive);
-        this.connected = true;
-      }
-    }
-
-    if (this.route?.type === 'websocket') {
-      this.input = inputs.find((i) => i.name === this.route.input) ?? null;
-      this.output =
-        websocketOutputs.find((o) => o.name === this.route.output) ?? null;
-
-      if (this.input && this.output) {
-        debug(`Plug "${this.input.name}" to websocket "${this.output.name}"`);
-        this.input.register(this.send);
-        this.output.register(this.receive);
-        this.connected = true;
-      }
+    if (this.input && this.output) {
+      debug(`Plug "${this.input.name}" to "${this.output.name}"`);
+      this.input.register(this.send);
+      this.output.register(this.receive);
+      this.connected = true;
+    } else {
+      this.connected = false;
     }
   }
 

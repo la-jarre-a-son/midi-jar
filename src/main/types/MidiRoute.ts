@@ -3,7 +3,7 @@ import { ApiMidiRoute } from './api';
 export interface MidiRouteRaw {
   input: string;
   output: string;
-  type: 'physical' | 'internal' | 'websocket';
+  type: 'physical' | 'internal';
   enabled: boolean;
 }
 
@@ -12,7 +12,7 @@ export class MidiRoute {
 
   output: string;
 
-  type: 'physical' | 'internal' | 'websocket';
+  type: 'physical' | 'internal';
 
   enabled: boolean;
 

@@ -6,7 +6,7 @@ import { ApiMidiInput } from './api';
 
 const debug = makeDebug('app:midi:MidiInputDevice');
 
-class MidiInputDevice extends EventEmitter {
+export class MidiInputDevice extends EventEmitter {
   input: Input;
 
   handlers: MidiMessageHandler[];

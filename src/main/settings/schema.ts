@@ -18,7 +18,7 @@ export const schema: Schema<StoreType> = {
             output: { type: 'string' },
             type: {
               type: 'string',
-              enum: ['physical', 'internal', 'websocket'],
+              enum: ['physical', 'internal'],
             },
             enabled: { type: 'boolean' },
           },
