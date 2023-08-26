@@ -12,7 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, Tray, Menu, nativeImage } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { resolveHtmlPath } from './util';
+import { resolveHtmlPath, getAssetPath } from './util';
 
 import MenuBuilder from './menu';
 import { startServer } from './server';
@@ -32,11 +32,7 @@ const singleInstance = app.requestSingleInstanceLock();
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 
-setStartupSetting(true);
-
-const RESOURCES_PATH = app.isPackaged
-  ? path.join(process.resourcesPath, 'assets')
-  : path.join(__dirname, '../../assets');
+setStartupSetting();
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -50,21 +46,17 @@ if (isDevelopment) {
   require('electron-debug')({ showDevTools: false });
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+const installExtensions = () => {
+  const {
+    installExtension,
+    REACT_DEVELOPER_TOOLS,
+  } = require('electron-extension-installer');
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
-
-const getAssetPath = (...paths: string[]): string => {
-  return path.join(RESOURCES_PATH, ...paths);
+  return installExtension(REACT_DEVELOPER_TOOLS, {
+    loadExtensionOptions: {
+      allowFileAccess: true,
+    },
+  });
 };
 
 const createWindow = async () => {

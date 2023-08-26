@@ -13,21 +13,20 @@ const store = new Store<StoreType>({
   schema,
   defaults,
   migrations,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore: Electron Store supports projectVersion but it's not typed
   projectVersion: version,
 });
 
 export function getMidiRoutes(): MidiRoute[] {
   return ((store.get('midi.routes') as MidiRouteRaw[]) || []).map((route) =>
-    MidiRoute.fromStore(route)
+    MidiRoute.fromStore(route),
   );
 }
 
 export function setMidiRoutes(routes: MidiRoute[]) {
   store.set(
     'midi.routes',
-    routes.map((route) => route.toStore())
+    routes.map((route) => route.toStore()),
   );
 }
 
@@ -43,18 +42,12 @@ export function updateSetting(key: string, value: unknown) {
   store.set(`settings.${key}`, value);
 }
 
-export function setStartupSetting(isInit = false) {
+export function setStartupSetting() {
   const settings = getSettings();
   const loginItemSettings = app.getLoginItemSettings();
 
   if (app.isPackaged && settings.general) {
-    if (
-      !!settings.general?.launchAtStartup !== loginItemSettings.openAtLogin ||
-      // Since MacOS Ventura, startup item no longer have hidden setting, but generates a notification when called.
-      // So now, when initing the app, we ignore if the hidden settings changed.
-      (!isInit &&
-        !!settings.general?.startMinimized !== loginItemSettings.openAsHidden)
-    ) {
+    if (!!settings.general?.launchAtStartup !== loginItemSettings.openAtLogin) {
       app.setLoginItemSettings({
         openAtLogin: !!settings?.general?.launchAtStartup,
         openAsHidden: !!settings?.general?.startMinimized,
@@ -79,7 +72,7 @@ export const isHiddenStartupLaunch = () => {
 };
 
 export function onSettingsChange(
-  callback: (newValue?: Settings, oldValue?: Settings) => void
+  callback: (newValue?: Settings, oldValue?: Settings) => void,
 ): () => void {
   return store.onDidChange('settings', callback);
 }
