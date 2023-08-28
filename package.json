@@ -110,44 +110,6 @@
     "overlay"
   ],
   "homepage": "https://github.com/la-jarre-a-son/midi-jar#readme",
-  "jest": {
-    "testEnvironment": "jsdom",
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    },
-    "transform": {
-      "\\.(ts|tsx|js|jsx)$": "ts-jest"
-    },
-    "transformIgnorePatterns":  ["/node_modules/(?!(@julusian)/)"],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "json"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "release/app/node_modules",
-      "src"
-    ],
-    "testMatch": [
-      "**/*.test.[jt]s?(x)"
-    ],
-    "testPathIgnorePatterns": [
-      "release/app/dist"
-    ],
-    "setupFiles": [
-      "./.erb/scripts/check-build-exists.ts"
-    ],
-    "setupFilesAfterEnv": [
-      "./src/__tests__/setup.ts"
-    ]
-  },
   "dependencies": {
     "@tonaljs/tonal": "^4.10.0",
     "body-parser": "^1.20.2",
