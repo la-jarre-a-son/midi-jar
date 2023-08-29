@@ -16,7 +16,7 @@ const configuration: webpack.Configuration = {
     rules: [
       {
         test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
+        include: [webpackPaths.srcPath, webpackPaths.yalcPath, webpackPaths.ljasUiSrcPath],
         use: {
           loader: 'ts-loader',
           options: {

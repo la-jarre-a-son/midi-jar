@@ -75,7 +75,6 @@ const configuration: webpack.Configuration = {
             loader: 'css-loader',
             options: {
               modules: {
-                auto: true,
                 localIdentRegExp: /[/\\]([^/\\]+?)(?:\.module)?\.[^./\\]+$/,
                 localIdentName: '[1]-[local]_[hash:base64:5]',
               },
@@ -83,11 +82,12 @@ const configuration: webpack.Configuration = {
               importLoaders: 1,
             },
           },
+          'resolve-url-loader',
           {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [webpackPaths.srcStylePath],
+                includePaths: [webpackPaths.srcStylePath, webpackPaths.ljasUiThemePath],
               },
             },
           },

@@ -49,19 +49,19 @@ const configuration: webpack.Configuration = {
             loader: 'css-loader',
             options: {
               modules: {
-                mode: 'local',
-                auto: true,
+                localIdentRegExp: /[/\\]([^/\\]+?)(?:\.module)?\.[^./\\]+$/,
                 localIdentName: '[hash:base64:8]',
               },
               sourceMap: true,
               importLoaders: 1,
             },
           },
+          'resolve-url-loader',
           {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [webpackPaths.srcStylePath],
+                includePaths: [webpackPaths.srcStylePath, webpackPaths.ljasUiThemePath],
               },
             },
           },
