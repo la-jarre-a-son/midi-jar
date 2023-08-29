@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import http from 'http';
 import makeDebug from 'debug';
 import { Socket } from 'net';
@@ -11,12 +11,12 @@ const debug = makeDebug('app:ws');
 
 const WS_NAMESPACES = ['settings', 'chord-display'];
 
-type ExtendedWebSocket = WebSocket.WebSocket & {
+type ExtendedWebSocket = WebSocket & {
   isAlive?: boolean;
   namespace?: string;
 };
 
-const wss = new WebSocket.Server({
+const wss = new WebSocketServer({
   noServer: true,
 });
 
@@ -115,7 +115,7 @@ function initHeartbeatLoop() {
   });
 }
 
-export async function initWSServer(server: http.Server): Promise<WebSocket.Server> {
+export async function initWSServer(server: http.Server): Promise<WebSocketServer> {
   wss.on('connection', (ws: ExtendedWebSocket) => {
     ws.isAlive = true;
 
