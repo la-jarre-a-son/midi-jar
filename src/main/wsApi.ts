@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { RawData } from 'ws';
 import makeDebug from 'debug';
 import { getSettings } from './settings';
 
@@ -6,7 +6,7 @@ const debug = makeDebug('app:ws:api');
 
 export type EventType = 'app:settings' | 'app:settings:getSettings';
 
-function parseMessage(message: WebSocket.RawData) {
+function parseMessage(message: RawData) {
   const str = message.toString();
   const index = str.indexOf('#');
   const eventType = index !== -1 ? str.slice(0, index) : str;
@@ -18,7 +18,7 @@ function parseMessage(message: WebSocket.RawData) {
 }
 
 export function handleMessage(
-  message: WebSocket.RawData,
+  message: RawData,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reply: (eventType: EventType, payload: any) => void
 ) {
