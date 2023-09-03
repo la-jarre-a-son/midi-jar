@@ -1,38 +1,14 @@
-@import 'variables';
-
-$View_SettingsDebugger_padding: $View_padding !default;
-$View_SettingsDebugger-output_border: solid $color-neutral-normal 1px !default;
-$View_SettingsDebugger-output_borderRadius: 3px !default;
-$View_SettingsDebugger-output_background: $color-neutral-dark !default;
-$View_SettingsDebugger-output_padding: $spacing-md !default;
-
-.base {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 .container {
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
-  padding: $View_SettingsDebugger_padding;
   overflow: hidden;
 }
 
 .output {
-  @include customScrollBar();
   user-select: text;
   flex-grow: 1;
   flex-shrink: 1;
   overflow: auto;
-  padding: $View_SettingsDebugger-output_padding;
-  border: $View_SettingsDebugger-output_border;
-  border-radius: $View_SettingsDebugger-output_borderRadius;
-  background: $View_SettingsDebugger-output_background;
   margin: 0;
-}
-
-.header {
-  justify-content: flex-end;
 }

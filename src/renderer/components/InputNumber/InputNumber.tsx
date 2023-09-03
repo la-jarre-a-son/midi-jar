@@ -3,9 +3,7 @@ import classNames from 'classnames/bind';
 
 import useEvent from 'renderer/hooks/useEvent';
 
-import { Input } from '../Input';
-import { Button } from '../Button';
-import { ButtonGroup } from '../ButtonGroup';
+import { Input, Button, InputGroup } from '@la-jarre-a-son/ui';
 import { Icon } from '../Icon';
 
 import { InputNumberProps } from './types';
@@ -16,10 +14,8 @@ const cx = classNames.bind(styles);
 
 export const InputNumber: React.FC<InputNumberProps> = ({
   className,
-  id,
   value,
   onChange,
-  block,
   step,
   ...rest
 }) => {
@@ -36,32 +32,27 @@ export const InputNumber: React.FC<InputNumberProps> = ({
   });
 
   return (
-    <ButtonGroup>
+    <InputGroup>
       <Input
         className={cx('base', className)}
-        id={id}
         value={value}
         onChange={handleChange}
-        block={block}
         type="number"
         step={step}
         {...rest}
       />
-      <Button className={cx('decrement')} onClick={decrement} intent="default">
+      <Button className={cx('decrement')} onClick={decrement} icon aria-label="decrement">
         <Icon name="minus" />
       </Button>
-      <Button className={cx('increment')} onClick={increment} intent="default">
+      <Button className={cx('increment')} onClick={increment} icon aria-label="increment">
         <Icon name="plus" />
       </Button>
-    </ButtonGroup>
+    </InputGroup>
   );
 };
 
 InputNumber.defaultProps = {
   className: undefined,
-  block: false,
-  withOctave: false,
-  learn: false,
 };
 
 export default InputNumber;

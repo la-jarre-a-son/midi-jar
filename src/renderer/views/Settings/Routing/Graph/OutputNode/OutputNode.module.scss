@@ -1,11 +1,11 @@
-@import 'variables';
+@import 'tokens';
 
 $Node-handle_size: 8px !default;
 $Node-handle_padding: 8px !default;
 $Node_boxShadow: none !default;
 
 .container {
-  @include hipsterBackground($color-neutral-dark);
+  background: $color-neutral-dark $gradient-interactive;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,7 +14,7 @@ $Node_boxShadow: none !default;
   box-shadow: $Node_boxShadow;
 
   &.isOpened.isPhysical {
-    @include hipsterBackground($color-success-dark);
+    background: $color-success-dark $gradient-interactive;
 
     .handle {
       color: $color-success-light;
@@ -26,7 +26,7 @@ $Node_boxShadow: none !default;
   }
 
   &.isInternal {
-    @include hipsterBackground($color-primary-dark);
+    background: $color-primary-dark $gradient-interactive;
 
     .handle {
       color: $color-primary-light;
@@ -38,7 +38,7 @@ $Node_boxShadow: none !default;
   }
 
   &.isWebsocket {
-    @include hipsterBackground($color-warning-dark);
+    background: $color-warning-dark $gradient-interactive;
 
     .handle {
       color: $color-warning-light;

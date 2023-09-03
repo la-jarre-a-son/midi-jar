@@ -1,7 +1,8 @@
-export type InputNumberProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'> & {
+import { InputProps } from '@la-jarre-a-son/ui';
+
+export type InputNumberProps = Omit<InputProps, 'onChange' | 'value'> & {
   className?: string;
-  id: string;
-  value: string | number | null;
+  value: string | number;
   onChange: (value: number) => unknown;
   block?: boolean;
   withOctave?: boolean;

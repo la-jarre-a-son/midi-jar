@@ -49,12 +49,6 @@ const defaultConfig = {
   displayDegreeLabels: true,
 };
 
-/**
- * An inline component to display vector icons from svg with variant (normal/outline/flat).
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
 export const CircleFifths: React.FC<CircleFifthsProps> = ({
   keySignature,
   className,

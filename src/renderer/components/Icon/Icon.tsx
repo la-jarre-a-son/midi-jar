@@ -8,12 +8,6 @@ import styles from './Icon.module.scss';
 
 const cx = classnames.bind(styles);
 
-/**
- * An inline component to display vector icons from svg with variant (normal/outline/flat).
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
 export const Icon: React.FC<IconProps> = ({ className, name, spin, hover }) => {
   const IconSvg = ICONS[name];
 

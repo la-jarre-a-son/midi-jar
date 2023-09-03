@@ -1,6 +1,6 @@
-@import 'variables';
+@import 'tokens';
 
-$View_ChordDisplay_padding: $View_padding !default;
+$View_ChordDisplay_padding: $space-lg !default;
 $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
 
 .base {

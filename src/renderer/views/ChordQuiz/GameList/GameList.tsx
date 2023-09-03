@@ -23,12 +23,6 @@ const defaultProps = {
   maxCount: 4,
 };
 
-/**
- * Chord Quiz List of Games
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
 const GameList: React.FC<Props> = ({
   className,
   games,

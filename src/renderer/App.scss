@@ -1,11 +1,25 @@
-@import 'main.scss';
+$ljas-ui-asset-path: 'assets';
+$font-path: '../assets/fonts';
 
-.BigIcon {
-  font-size: 200px;
-}
 
-.Hello {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@import './style/fonts.scss';
+@import '@la-jarre-a-son/ui/lib/theme/jar/tokens';
+@import '@la-jarre-a-son/ui/lib/style/normalize';
+@import '@la-jarre-a-son/ui/lib/theme/jar/global';
+@import '@la-jarre-a-son/ui/lib/theme/jar/fonts';
+@import '@la-jarre-a-son/ui/lib/theme/jar/dark';
+
+:global {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    user-select: none;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+
 }

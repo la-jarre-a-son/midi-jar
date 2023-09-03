@@ -1,11 +1,11 @@
-@import 'variables';
+@import 'tokens';
 
 $Node-handle_size: 8px !default;
 $Node-handle_padding: 8px !default;
 $Node_boxShadow: none !default;
 
 .container {
-  @include hipsterBackground($color-neutral-dark);
+  background: $color-neutral-dark $gradient-interactive;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,7 +14,7 @@ $Node_boxShadow: none !default;
   box-shadow: $Node_boxShadow;
 
   &.isOpened {
-    @include hipsterBackground($color-success-dark);
+    background: $color-success-dark $gradient-interactive;
 
     .handle {
       color: $color-success-normal;

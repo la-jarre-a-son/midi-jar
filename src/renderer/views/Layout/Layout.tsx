@@ -1,36 +1,25 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 import { Outlet } from 'react-router-dom';
+import { ModalContainer } from '@la-jarre-a-son/ui';
 
-import Menu from './Menu';
+import TopBar from './TopBar';
 
 import styles from './Layout.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-};
-
-/**
- * Main Application Layout
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const Layout: React.FC<Props> = ({ className }) => (
-  <div className={cx('base', className)}>
-    <Menu className={cx('menu', className)} />
-    <div className={cx('content', className)}>
-      <Outlet />
+const Layout: React.FC = () => (
+  <div className={cx('base')}>
+    <TopBar />
+    <div className={cx('modalContainer')}>
+      <ModalContainer>
+        <div className={cx('content')}>
+          <Outlet />
+        </div>
+      </ModalContainer>
     </div>
   </div>
 );
-
-Layout.defaultProps = defaultProps;
 
 export default Layout;

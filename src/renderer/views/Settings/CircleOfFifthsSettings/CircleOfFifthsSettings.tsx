@@ -1,210 +1,171 @@
 import React from 'react';
-import classnames from 'classnames/bind';
+import {
+  Button,
+  Container,
+  Switch,
+  FormField,
+  FormControlLabel,
+  Select,
+  Toolbar,
+} from '@la-jarre-a-son/ui';
 
 import { useSettings } from 'renderer/contexts/Settings';
 
-import { Toolbar, Button, Icon, FormField, Toggle } from 'renderer/components';
+import { Icon, ScrollContainer } from 'renderer/components';
 
 import { fields } from './constants';
 
-import styles from './CircleOfFifthsSettings.module.scss';
-
-const cx = classnames.bind(styles);
-
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
-
-/**
- *  CircleOfFifths settings page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const CircleOfFifthsSettings: React.FC<Props> = ({ className }) => {
+const CircleOfFifthsSettings: React.FC = () => {
   const { settings, updateSetting, resetSettings } = useSettings();
 
   return (
-    <div className={cx('base', className)}>
-      <div className={cx('container')}>
-        <div className={cx('group')}>
-          <FormField
-            fieldId="circle_of_fifths_settings:display-major"
+    <>
+      <ScrollContainer pad="md">
+        <Container size="md">
+          <FormControlLabel
             label="Display Major"
             hint="Enables the Majoy keys section of the circle"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-major"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayMajor', value)}
-              value={settings.circleOfFifths.displayMajor}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayMajor}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-minor"
+          <FormControlLabel
             label="Display Minor"
             hint="Enables the Minor keys section of the circle"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-minor"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayMinor', value)}
-              value={settings.circleOfFifths.displayMinor}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayMinor}
             />
-          </FormField>
+          </FormControlLabel>
 
           <FormField
-            fieldId="circle_of_fifths_settings:order"
             label="Main scale"
             hint="Choose what scale to put first (only if both major and minor are displayed)"
           >
-            <Toggle
-              id="circle_of_fifths_settings:scale"
-              choices={fields.scale.choices}
+            <Select
+              options={fields.scale.choices}
               onChange={(value) => updateSetting('circleOfFifths.scale', value)}
               value={settings.circleOfFifths.scale}
               disabled={
                 !(settings.circleOfFifths.displayMajor && settings.circleOfFifths.displayMinor)
               }
-              successIcon="save"
             />
           </FormField>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-diminished"
+          <FormControlLabel
             label="Display Diminished"
             hint="Enables the Diminished chords section of the circle"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-diminished"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayDiminished', value)}
-              value={settings.circleOfFifths.displayDiminished}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayDiminished}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-dominants"
+          <FormControlLabel
             label="Display Dominant Chords"
             hint="Adds a section in the circle with dominant chords: V7, bVII7, bII7, and III7"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-dominants"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayDominants', value)}
-              value={settings.circleOfFifths.displayDominants}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayDominants}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-suspended"
+          <FormControlLabel
             label="Display Suspended Chords"
             hint="Adds suspended chords between associated keys"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-suspended"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displaySuspended', value)}
-              value={settings.circleOfFifths.displaySuspended}
-              successIcon="save"
+              checked={settings.circleOfFifths.displaySuspended}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-alterations"
+          <FormControlLabel
             label="Display Alterations"
             hint="Adds the Key signature alterations"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-alterations"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayAlterations', value)}
-              value={settings.circleOfFifths.displayAlterations}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayAlterations}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-modes"
+          <FormControlLabel
             label="Display Modes"
             hint="Adds markers for each enharmonic mode in the underlying key"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-modes"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayModes', value)}
-              value={settings.circleOfFifths.displayModes}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayModes}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-degrees"
+          <FormControlLabel
             label="Display Degrees"
             hint="Adds a section above each key with its degree name"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-degrees"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayDegrees', value)}
-              value={settings.circleOfFifths.displayDegrees}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayDegrees}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:display-degreeLabels"
+          <FormControlLabel
             label="Display Degrees Labels"
             hint="Adds the degree names in the selected key. Left is in major key, right is in minor key"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:display-degreeLabels"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.displayDegreeLabels', value)}
-              value={settings.circleOfFifths.displayDegreeLabels}
-              successIcon="save"
+              checked={settings.circleOfFifths.displayDegreeLabels}
             />
-          </FormField>
+          </FormControlLabel>
 
           <FormField
-            fieldId="circle_of_fifths_settings:highlight-sector"
             label="Hightlight Sectors"
             hint="Enables sectors of the circle to be shown when played on chords or on notes"
           >
-            <Toggle
-              id="circle_of_fifths_settings:highlightSector"
-              choices={fields.highlightSector.choices}
+            <Select
+              options={fields.highlightSector.choices}
               onChange={(value) => updateSetting('circleOfFifths.highlightSector', value)}
               value={settings.circleOfFifths.highlightSector}
-              successIcon="save"
             />
           </FormField>
 
-          <FormField
-            fieldId="circle_of_fifths_settings:highlightInScale"
+          <FormControlLabel
             label="Highlight sectors in the key"
             hint="Shows differently the sectors in the current key scale"
+            reverse
           >
-            <Toggle
-              id="circle_of_fifths_settings:highlight-in-scale"
+            <Switch
               onChange={(value) => updateSetting('circleOfFifths.highlightInScale', value)}
-              value={settings.circleOfFifths.highlightInScale}
-              successIcon="save"
+              checked={settings.circleOfFifths.highlightInScale}
             />
-          </FormField>
-        </div>
-      </div>
-      <Toolbar bottom>
-        <Button onClick={() => resetSettings('circleOfFifths')}>
+          </FormControlLabel>
+        </Container>
+      </ScrollContainer>
+      <Toolbar elevation={2} placement="bottom">
+        <Button onClick={() => resetSettings('circleOfFifths')} intent="neutral">
           <Icon name="trash" />
           Reset to Defaults
         </Button>
       </Toolbar>
-    </div>
+    </>
   );
 };
-
-CircleOfFifthsSettings.defaultProps = defaultProps;
 
 export default CircleOfFifthsSettings;

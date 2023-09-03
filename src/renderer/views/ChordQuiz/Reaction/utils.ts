@@ -24,6 +24,7 @@ export const REACTIONS: { [key in STATUSES]?: string[] } = {
     'Wut ?',
     'Come on...',
     'Incorrect',
+    'Wrong',
     '👎',
   ],
   [STATUSES.subset]: [

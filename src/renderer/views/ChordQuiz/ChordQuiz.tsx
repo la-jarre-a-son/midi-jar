@@ -13,21 +13,7 @@ import styles from './ChordQuiz.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-};
-
-/**
- *  ChordQuiz page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const ChordQuiz: React.FC<Props> = ({ className }) => {
+const ChordQuiz: React.FC = () => {
   const { settings } = useSettings();
 
   const quizSettings = settings.chordQuiz;
@@ -85,13 +71,13 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
 
   if (!games.length)
     return (
-      <div id="ChordQuiz" className={cx('base', className)}>
+      <div id="ChordQuiz" className={cx('base')}>
         Game will start
       </div>
     );
 
   return (
-    <div id="ChordQuiz" className={cx('base', className)}>
+    <div id="ChordQuiz" className={cx('base')}>
       <div className={cx('topContainer')}>
         {quizSettings.displayReaction && (
           <div className={cx('reactionContainer')}>
@@ -140,7 +126,5 @@ const ChordQuiz: React.FC<Props> = ({ className }) => {
     </div>
   );
 };
-
-ChordQuiz.defaultProps = defaultProps;
 
 export default ChordQuiz;

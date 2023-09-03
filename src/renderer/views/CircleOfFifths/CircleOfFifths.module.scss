@@ -1,6 +1,6 @@
-@import 'variables';
+@import 'tokens';
 
-$View_CircleOfFifths_padding: $View_padding !default;
+$View_CircleOfFifths_padding: $space-lg !default;
 $View_CircleOfFifths_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
 
 .base {

@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import classnames from 'classnames/bind';
 
-import { CollapseGroup, Icon } from 'renderer/components';
+import {
+  Button,
+  Badge,
+  Box,
+  ListItem,
+  Collapse,
+  List,
+  Divider,
+  Stack,
+  StackSeparator,
+} from '@la-jarre-a-son/ui';
 
-// eslint-disable-next-line
+import { Icon } from 'renderer/components';
+
 import ThirdPartyLicenses from '../../../../../ThirdPartyLicenses.json';
 
 import styles from './Licenses.module.scss';
 
-type License = {
+type Package = {
   id: string;
   name: string;
   version: string;
@@ -19,57 +30,68 @@ type License = {
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
+const Licenses: React.FC = () => {
+  const [open, setOpen] = useState<string | null>(null);
 
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
-
-/**
- *  Licenses page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const Licenses: React.FC<Props> = ({ className }) => {
   const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation();
 
+  const handleClick = (id: string) => () => {
+    setOpen((p) => (p === id ? null : id));
+  };
+
   return (
-    <div className={cx('base', className)}>
-      <div className={cx('packages')}>
-        {(ThirdPartyLicenses as License[]).map((license: License) => (
-          <CollapseGroup
-            key={license.id}
-            header={
-              <div className={cx('licenseHeader')}>
-                <div className={cx('licenseName')}>{license.name}</div>
-                <div className={cx('licenseType')}>{license.license}</div>
-                <div className={cx('licenseVersion')}>{license.version}</div>
-                {license.url && (
-                  <a
-                    className={cx('licenseUrl')}
-                    href={license.url}
+    <Box as={List}>
+      {(ThirdPartyLicenses as Package[]).map((p: Package, i) => (
+        <Fragment key={p.name + p.version}>
+          {i > 0 && <Divider />}
+          <ListItem
+            interactive
+            as="button"
+            onClick={handleClick(p.name + p.version)}
+            right={
+              <>
+                {p.url && (
+                  <Button
+                    as="a"
+                    className={cx('packageUrl')}
+                    href={p.url}
                     target="_blank"
                     onClick={stopPropagation}
                     rel="noreferrer"
+                    size="sm"
+                    left={<Icon name="github" />}
                   >
-                    <Icon name="github" />
-                  </a>
+                    Github
+                  </Button>
                 )}
-              </div>
+                <span className={cx('itemHandle')}>
+                  {open === p.name + p.version ? (
+                    <Icon name="angle-up" />
+                  ) : (
+                    <Icon name="angle-down" />
+                  )}
+                </span>
+              </>
             }
           >
-            <pre className={cx('licenseText')}>{license.text}</pre>
-          </CollapseGroup>
-        ))}
-      </div>
-    </div>
+            <Stack gap="md" direction="horizontal" block>
+              <div className={cx('packageName')}>{p.name}</div>
+              <Badge className={cx('packageType')} size="sm">
+                {p.license}
+              </Badge>
+              <StackSeparator />
+              <div className={cx('packageVersion')}>{p.version}</div>
+            </Stack>
+          </ListItem>
+          <Collapse open={open === p.name + p.version}>
+            <Box as="pre" className={cx('packageText')} pad="md">
+              {p.text}
+            </Box>
+          </Collapse>
+        </Fragment>
+      ))}
+    </Box>
   );
 };
-
-Licenses.defaultProps = defaultProps;
 
 export default Licenses;

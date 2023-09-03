@@ -2,9 +2,7 @@ import React, { useCallback, useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 
 import { Note } from '@tonaljs/tonal';
-import { Input } from '../Input';
-import { Button } from '../Button';
-import { ButtonGroup } from '../ButtonGroup';
+import { Input, Button, InputGroup } from '@la-jarre-a-son/ui';
 import { MidiLearn } from '../MidiLearn';
 
 import { InputNoteProps } from './types';
@@ -19,10 +17,8 @@ const OCTAVES = '0 1 2 3 4 5 6 7 8 9'.split(' ');
 
 export const InputNote: React.FC<InputNoteProps> = ({
   className,
-  id,
   value,
   onChange,
-  block,
   withOctave,
   learn,
   ...rest
@@ -81,14 +77,12 @@ export const InputNote: React.FC<InputNoteProps> = ({
   );
 
   return (
-    <ButtonGroup>
+    <InputGroup>
       <Input
         className={cx('base', className)}
-        id={id}
-        value={value}
+        value={value ?? ''}
         onChange={onChange}
         onKeyPress={handleKeyPress}
-        block={block}
         type="text"
         {...rest}
       />
@@ -96,19 +90,18 @@ export const InputNote: React.FC<InputNoteProps> = ({
         <Button
           className={cx('learn')}
           onClick={toggleLearning}
-          intent={learning ? 'success' : 'default'}
+          intent={learning ? 'success' : 'neutral'}
         >
           {learning ? '...' : 'Learn'}
         </Button>
       ) : null}
       {learning ? <MidiLearn type="note" onLearn={handleLearn} /> : null}
-    </ButtonGroup>
+    </InputGroup>
   );
 };
 
 InputNote.defaultProps = {
   className: undefined,
-  block: false,
   withOctave: false,
   learn: false,
 };

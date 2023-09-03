@@ -10,16 +10,10 @@ import styles from './CircleOfFifths.module.scss';
 const cx = classnames.bind(styles);
 
 type Props = {
-  className?: string;
   disableUpdate?: boolean;
 };
 
-const defaultProps = {
-  className: undefined,
-  disableUpdate: false,
-};
-
-const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
+const CircleOfFifths: React.FC<Props> = ({ disableUpdate }) => {
   const { settings, updateSetting } = useSettings();
 
   const { key } = settings.notation;
@@ -42,7 +36,6 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
   return (
     <div className={cx('base')}>
       <CircleFifths
-        className={className}
         keySignature={keySignature}
         chord={chords[0]}
         notes={pitchClasses}
@@ -57,6 +50,8 @@ const CircleOfFifths: React.FC<Props> = ({ className, disableUpdate }) => {
   );
 };
 
-CircleOfFifths.defaultProps = defaultProps;
+CircleOfFifths.defaultProps = {
+  disableUpdate: false,
+};
 
 export default CircleOfFifths;
