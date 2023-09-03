@@ -42,12 +42,12 @@ const Licenses: React.FC = () => {
   return (
     <Box as={List}>
       {(ThirdPartyLicenses as Package[]).map((p: Package, i) => (
-        <Fragment key={p.name + p.version}>
+        <Fragment key={p.id}>
           {i > 0 && <Divider />}
           <ListItem
             interactive
             as="button"
-            onClick={handleClick(p.name + p.version)}
+            onClick={handleClick(p.id)}
             right={
               <>
                 {p.url && (
@@ -65,11 +65,7 @@ const Licenses: React.FC = () => {
                   </Button>
                 )}
                 <span className={cx('itemHandle')}>
-                  {open === p.name + p.version ? (
-                    <Icon name="angle-up" />
-                  ) : (
-                    <Icon name="angle-down" />
-                  )}
+                  {open === p.id ? <Icon name="angle-up" /> : <Icon name="angle-down" />}
                 </span>
               </>
             }
@@ -83,7 +79,7 @@ const Licenses: React.FC = () => {
               <div className={cx('packageVersion')}>{p.version}</div>
             </Stack>
           </ListItem>
-          <Collapse open={open === p.name + p.version}>
+          <Collapse open={open === p.id}>
             <Box as="pre" className={cx('packageText')} pad="md">
               {p.text}
             </Box>
