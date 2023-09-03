@@ -25,17 +25,11 @@ import styles from './Graph.module.scss';
 const cx = classnames.bind(styles);
 
 type Props = {
-  className?: string;
   inputs: ApiMidiInput[];
   outputs: ApiMidiOutput[];
   wires: ApiMidiWire[];
   onAddRoute: (route: ApiMidiRoute) => void;
   onDeleteRoute: (route: ApiMidiRoute) => void;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
 };
 
 const reactFlowDefaultProps = {
@@ -60,20 +54,7 @@ const edgeTypes = {
   wire: Wire,
 };
 
-/**
- * Routing settings page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const Routing: React.FC<Props> = ({
-  className,
-  inputs,
-  outputs,
-  wires,
-  onAddRoute,
-  onDeleteRoute,
-}) => {
+const Graph: React.FC<Props> = ({ inputs, outputs, wires, onAddRoute, onDeleteRoute }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -155,7 +136,7 @@ const Routing: React.FC<Props> = ({
   }, [inputs, outputs, wires, limitViewport, handleWireDelete]);
 
   return (
-    <div ref={containerRef} className={cx('base', className)}>
+    <div ref={containerRef} className={cx('base')}>
       <ReactFlow
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
@@ -169,13 +150,10 @@ const Routing: React.FC<Props> = ({
   );
 };
 
-const RoutingReactFlowProvided: React.FC<Props> = (props) => (
+const GraphReactFlowProvided: React.FC<Props> = (props) => (
   <ReactFlowProvider>
-    <Routing {...props} />
+    <Graph {...props} />
   </ReactFlowProvider>
 );
 
-RoutingReactFlowProvided.defaultProps = defaultProps;
-Routing.defaultProps = defaultProps;
-
-export default RoutingReactFlowProvided;
+export default GraphReactFlowProvided;

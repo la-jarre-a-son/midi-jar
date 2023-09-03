@@ -4,6 +4,7 @@ export const ICON_NAMES = [
   'angle-down',
   'angle-up',
   'bug',
+  'copyright',
   'check',
   'circle-of-fifths',
   'clock',

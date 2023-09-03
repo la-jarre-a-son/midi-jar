@@ -9,27 +9,16 @@ import { ChordName, Notation, PianoKeyboard, ChordIntervals } from 'renderer/com
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
 
+import { Outlet } from 'react-router-dom';
 import styles from './ChordDisplay.module.scss';
 
 const cx = classnames.bind(styles);
 
 type Props = {
-  className?: string;
   namespace?: keyof Settings['chordDisplay'];
 };
 
-const defaultProps = {
-  className: undefined,
-  namespace: 'internal' as const,
-};
-
-/**
- *  ChordDisplay page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const ChordDisplay: React.FC<Props> = ({ className, namespace = 'internal' }) => {
+const ChordDisplay: React.FC<Props> = ({ namespace = 'internal' }) => {
   const { settings } = useSettings();
 
   const { key, accidentals, staffClef, staffTranspose } = settings.notation;
@@ -68,7 +57,7 @@ const ChordDisplay: React.FC<Props> = ({ className, namespace = 'internal' }) =>
   if (!settings) return null;
 
   return (
-    <div id="chordDisplay" className={cx('base', className)}>
+    <div id="chordDisplay" className={cx('base')}>
       {displayAltChords && (
         <div id="alternativeChords" className={cx('alternativeChords')}>
           {chords.map((chord, index) =>
@@ -137,6 +126,8 @@ const ChordDisplay: React.FC<Props> = ({ className, namespace = 'internal' }) =>
   );
 };
 
-ChordDisplay.defaultProps = defaultProps;
+ChordDisplay.defaultProps = {
+  namespace: 'internal' as const,
+};
 
 export default ChordDisplay;

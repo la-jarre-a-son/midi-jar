@@ -1,28 +1,53 @@
-@import 'main.scss';
+$ljas-ui-asset-path: 'assets';
+$font-path: '../assets/fonts';
 
-body {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow-y: hidden;
-  margin: 0;
-  padding: 0;
-}
 
-#root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@import '../renderer/style/fonts.scss';
+@import '@la-jarre-a-son/ui/lib/theme/jar/tokens';
+@import '@la-jarre-a-son/ui/lib/style/normalize';
+@import '@la-jarre-a-son/ui/lib/theme/jar/global';
+@import '@la-jarre-a-son/ui/lib/theme/jar/fonts';
+@import '@la-jarre-a-son/ui/lib/theme/jar/dark';
 
-.Home {
-  text-align: center;
-  max-width: 480px;
-}
 
-.Home-logo {
-  width: 15vw;
-  height: auto;
+:global {
+  html,
+  body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Home {
+    text-align: center;
+    max-width: 480px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: $space-lg;
+    overflow: auto;
+
+    h1 {
+      font-weight: bold;
+    }
+  }
+
+  .Home-logo {
+    width: 15vw;
+    height: 15vw;
+  }
 }

@@ -1,4 +1,4 @@
-@import 'variables';
+@import 'tokens';
 
 .base {
   display: flex;
@@ -7,7 +7,7 @@
 }
 
 .interval {
-  @include buttonStyle($color-neutral-dark);
+  background: $color-neutral-dark $gradient-interactive;
 
   display: flex;
   flex-direction: column;
@@ -17,9 +17,10 @@
   width: 2.5em;
   font-size: 0.8em;
   height: 50%;
-  gap: 8px;
   background-color: $color-neutral-darker;
   transition: height 0.2s cubic-bezier(0.5, 0, 0.33, 3);
+  line-height: 1em;
+  gap: 0.5em
 }
 
 @for $i from 0 through 4 {

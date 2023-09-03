@@ -1,55 +1,43 @@
-@import 'variables';
-
-$View_Settings-navigation_padding: 0 !default;
+@import 'tokens';
 
 .base {
   height: 100%;
   display: flex;
 }
 
-.navigation {
-  @include customScrollBar();
+.sidebar {
   display: flex;
   flex-direction: column;
-  padding: $View_Settings-navigation_padding;
-  width: 200px;
-  box-shadow: inset -32px 0 32px -32px rgba($color-black, 0.6);
-  overflow: hidden;
-  background: $color-neutral-darker;
-  flex-shrink: 0;
-  flex-grow: 0;
-  overflow-y: auto;
-  margin-top: $spacing-lg;
 }
 
-.version {
-  padding: 4px;
+.navigation {
+  flex-grow: 1;
+  --Button_textAlign: left;
+}
+
+.footer {
+  flex-shrink: 0;
   margin-top: auto;
-  font-size: 12px;
+  justify-content: center;
+  font-size: 0.8em;
   color: $color-neutral-normal;
-  text-align: center;
-}
-
-.tabs {
-  width: 100%;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-}
-
-.tab {
-  text-align: left;
 }
 
 .content {
-  @include customScrollBar();
   flex-grow: 1;
-  overflow-y: auto;
+  flex-shrink: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-@media #{$breakpoint--small} {
-  .navigation {
-    width: 56px;
+.label {
+  flex-grow: 1;
+}
+
+@media #{$breakpoint-md} {
+  .sidebar {
+    --Sidebar_minSize: $size-md;
   }
 
   .label {

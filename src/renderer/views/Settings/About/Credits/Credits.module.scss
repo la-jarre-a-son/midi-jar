@@ -1,0 +1,38 @@
+@import 'tokens';
+
+.base {
+  margin: $space-md 0;
+}
+
+.table {
+  margin-bottom: auto;
+  border-collapse: collapse;
+
+  tr {
+    display: table-row;
+  }
+
+  td,
+  th {
+    padding: 4px;
+    border-bottom: 1px solid $color-neutral-dark;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+.name {
+  text-align: left;
+  word-break: keep-all;
+}
+
+.description {
+ text-transform: none;
+}
+
+.links {
+  text-align: center;
+  white-space: nowrap;
+}

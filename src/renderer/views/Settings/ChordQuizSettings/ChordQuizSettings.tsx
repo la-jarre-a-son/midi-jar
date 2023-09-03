@@ -1,8 +1,18 @@
 import React from 'react';
 import classnames from 'classnames/bind';
+import {
+  Button,
+  Container,
+  Switch,
+  FormField,
+  FormControlLabel,
+  Slider,
+  Select,
+  Toolbar,
+} from '@la-jarre-a-son/ui';
 
 import { useSettings } from 'renderer/contexts/Settings';
-import { Toolbar, Button, Icon, FormField, Toggle } from 'renderer/components';
+import { Icon, ScrollContainer } from 'renderer/components';
 
 import { chordsByComplexity, fields } from './constants';
 
@@ -10,55 +20,29 @@ import styles from './ChordQuizSettings.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
-
-/**
- *  ChordQuiz settings page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const ChordQuizSettings: React.FC<Props> = ({ className }) => {
+const ChordQuizSettings: React.FC = () => {
   const { settings, updateSetting, resetSettings } = useSettings();
 
   return (
-    <div className={cx('base', className)}>
-      <div className={cx('container')}>
-        <div className={cx('group')}>
-          <FormField
-            fieldId="chord_quiz_settings:mode"
-            label="Mode"
-            hint="Choose what alorithm is used to generate chords"
-            vertical
-          >
-            <Toggle
-              id="chord_quiz_settings:mode"
-              choices={fields.mode.choices}
+    <>
+      <ScrollContainer pad="md">
+        <Container size="md">
+          <FormField label="Mode" hint="Choose what alorithm is used to generate chords">
+            <Select
+              options={fields.mode.choices}
               onChange={(value) => updateSetting('chordQuiz.mode', value)}
               value={settings.chordQuiz.mode}
-              successIcon="save"
             />
           </FormField>
 
           <FormField
-            fieldId="chord_quiz_settings:difficulty"
             label="Difficulty"
             hint="An arbitrary complexity score is given to chords, the more intervals and alterations a chord has, the more it is complex."
-            vertical
           >
-            <Toggle
-              id="chord_quiz_settings:difficulty"
-              choices={fields.difficulty.choices}
-              onChange={(value) => updateSetting('chordQuiz.difficulty', value)}
-              value={settings.chordQuiz.difficulty}
-              successIcon="save"
+            <Select
+              options={fields.difficulty.choices}
+              onChange={(value: string) => updateSetting('chordQuiz.difficulty', Number(value))}
+              value={`${settings.chordQuiz.difficulty}`}
             />
           </FormField>
 
@@ -67,74 +51,69 @@ const ChordQuizSettings: React.FC<Props> = ({ className }) => {
               <span className={cx('previousLevel')}>Previous level +</span>
             )}
             {chordsByComplexity[settings.chordQuiz.difficulty]?.map((chord) => (
-              <span className={cx('chord')}>{chord}</span>
+              <span className={cx('chord')} key={chord}>
+                {chord}
+              </span>
             ))}
           </div>
 
           <FormField
-            fieldId="chord_quiz_settings:game_length"
             label="Game Length"
             hint="Number of chords to be generated for a single round (belonging to the same key signature)"
           >
-            <Toggle
-              id="chord_quiz_settings:gameLength"
-              choices={fields.gameLength.choices}
-              onChange={(value) => updateSetting('chordQuiz.gameLength', value)}
+            <Slider
               value={settings.chordQuiz.gameLength}
-              successIcon="save"
+              onChange={(value: number) => updateSetting('chordQuiz.gameLength', value)}
+              min={4}
+              max={32}
+              step={4}
+              marks={[4, 8, 16, 24, 32]}
+              valueText={`${settings.chordQuiz.gameLength}`}
             />
           </FormField>
 
-          <FormField
-            fieldId="chord_quiz_settings:gamification"
+          <FormControlLabel
             label="Gamification"
             hint="Gamifies the quiz by adding scores and game count (no persistence of scoreboard)"
+            reverse
           >
-            <Toggle
-              id="chord_quiz_settings:gamification"
+            <Switch
               onChange={(value) => updateSetting('chordQuiz.gamification', value)}
-              value={settings.chordQuiz.gamification}
-              successIcon="save"
+              checked={settings.chordQuiz.gamification}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="chord_quiz_settings:display-reaction"
+          <FormControlLabel
             label="Display Reaction"
             hint="Enables the textual reactions to success and fail"
+            reverse
           >
-            <Toggle
-              id="chord_quiz_settings:display-reaction"
+            <Switch
               onChange={(value) => updateSetting('chordQuiz.displayReaction', value)}
-              value={settings.chordQuiz.displayReaction}
-              successIcon="save"
+              checked={settings.chordQuiz.displayReaction}
             />
-          </FormField>
+          </FormControlLabel>
 
-          <FormField
-            fieldId="chord_quiz_settings:display-intervals"
+          <FormControlLabel
             label="Display Intervals"
             hint="Enables the list of intervals expected and currently played"
+            reverse
           >
-            <Toggle
-              id="chord_quiz_settings:display-intervals"
+            <Switch
               onChange={(value) => updateSetting('chordQuiz.displayIntervals', value)}
-              value={settings.chordQuiz.displayIntervals}
-              successIcon="save"
+              checked={settings.chordQuiz.displayIntervals}
             />
-          </FormField>
-        </div>
-      </div>
-      <Toolbar bottom>
-        <Button onClick={() => resetSettings('chordQuiz')}>
+          </FormControlLabel>
+        </Container>
+      </ScrollContainer>
+      <Toolbar elevation={2} placement="bottom">
+        <Button onClick={() => resetSettings('chordQuiz')} intent="neutral">
           <Icon name="trash" />
           Reset to Defaults
         </Button>
       </Toolbar>
-    </div>
+    </>
   );
 };
-
-ChordQuizSettings.defaultProps = defaultProps;
 
 export default ChordQuizSettings;

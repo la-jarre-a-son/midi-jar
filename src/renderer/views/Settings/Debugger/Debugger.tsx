@@ -1,11 +1,13 @@
 import React, { useRef, useCallback, useState } from 'react';
 import classnames from 'classnames/bind';
 
+import { Button, ToggleButton, Box, Toolbar } from '@la-jarre-a-son/ui';
+
 import { MidiMessage } from 'main/types';
 
 import { getMidiCommand } from 'renderer/helpers';
 import useMidiMessages from 'renderer/hooks/useMidiMessages';
-import { Toolbar, Button, Icon } from 'renderer/components';
+import { Icon } from 'renderer/components';
 
 import { formatMidiMessage } from './utils';
 import { MIDI_CMD, MIDI_CLOCK_CMD, MIDI_SYSEX_CMD } from './constants';
@@ -14,22 +16,7 @@ import styles from './Debugger.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
-
-/**
- *  Debugger settings page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const Debugger: React.FC<Props> = ({ className }) => {
+const Debugger: React.FC = () => {
   const [displayTimingClock, setDisplayTimingClock] = useState(false);
 
   const preElementRef = useRef<HTMLPreElement>(document.createElement('pre'));
@@ -86,26 +73,30 @@ const Debugger: React.FC<Props> = ({ className }) => {
   useMidiMessages(onMessages);
 
   return (
-    <div className={cx('base', className)}>
-      <Toolbar className={cx('header')}>
-        <Button onClick={toggleTimingClock} intent={displayTimingClock ? 'primary' : 'default'}>
+    <>
+      <Toolbar elevation={2}>
+        <ToggleButton onClick={toggleTimingClock} selected={displayTimingClock}>
           <Icon name="clock" />
           MIDI Clock
-        </Button>
+        </ToggleButton>
       </Toolbar>
-      <div className={cx('container')}>
-        <pre className={cx('output')} ref={preElementRef} />
-      </div>
-      <Toolbar bottom>
-        <Button onClick={clearMessages}>
-          <Icon name="trash" />
+      <Box pad="md" className={cx('container')}>
+        <Box
+          as="pre"
+          elevation={1}
+          pad="md"
+          className={cx('output')}
+          ref={preElementRef}
+          outlined
+        />
+      </Box>
+      <Toolbar elevation={2} placement="bottom">
+        <Button onClick={clearMessages} intent="neutral" left={<Icon name="trash" />}>
           Clear messages
         </Button>
       </Toolbar>
-    </div>
+    </>
   );
 };
-
-Debugger.defaultProps = defaultProps;
 
 export default Debugger;

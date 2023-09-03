@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames/bind';
 
-import { Input } from '../Input';
+import { Input } from '@la-jarre-a-son/ui';
 
 import { InputColorProps } from './types';
 
@@ -11,14 +11,7 @@ const COLOR_CHARS = '0 1 2 3 4 5 6 7 8 9 a b c d e f'.split(' ');
 
 const cx = classNames.bind(styles);
 
-export const InputColor: React.FC<InputColorProps> = ({
-  className,
-  id,
-  value,
-  onChange,
-  block,
-  ...rest
-}) => {
+export const InputColor: React.FC<InputColorProps> = ({ className, value, onChange, ...rest }) => {
   const handleKeyPress = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (!value && event.key === '#') return;
@@ -54,8 +47,7 @@ export const InputColor: React.FC<InputColorProps> = ({
   return (
     <Input
       className={cx('base', className)}
-      id={id}
-      value={value}
+      value={value ?? ''}
       onKeyPress={handleKeyPress}
       onChange={handleTextChange}
       left={
@@ -66,7 +58,6 @@ export const InputColor: React.FC<InputColorProps> = ({
           value={value ?? ''}
         />
       }
-      block={block}
       type="text"
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
@@ -76,7 +67,6 @@ export const InputColor: React.FC<InputColorProps> = ({
 
 InputColor.defaultProps = {
   className: undefined,
-  block: false,
 };
 
 export default InputColor;

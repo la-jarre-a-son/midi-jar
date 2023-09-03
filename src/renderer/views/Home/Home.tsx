@@ -1,84 +1,187 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames/bind';
+import { NavLink } from 'react-router-dom';
 
-import { Link, Button, Icon } from 'renderer/components';
+import {
+  Button,
+  Grid,
+  Card,
+  CardThumbnail,
+  CardThumbnailOverlay,
+  CardThumbnailItem,
+  CardHeader,
+  Container,
+  Modal,
+  ModalContent,
+  ModalHeader,
+} from '@la-jarre-a-son/ui';
 
-import icon from '../../../../assets/icon.svg';
+import { ServerState } from 'main/types';
 
+import { Icon, NavButton } from 'renderer/components';
+import About from 'renderer/views/Settings/About';
+import ThumbnaildChordDisplay from 'renderer/assets/thumbnails/chord-display.jpg';
+import ThumbnaildChordQuiz from 'renderer/assets/thumbnails/chord-quiz.jpg';
+import ThumbnaildCircleOfFifths from 'renderer/assets/thumbnails/circle-of-fifths.jpg';
+import ThumbnailRouting from 'renderer/assets/thumbnails/routing.jpg';
+import ThumbnailDebugger from 'renderer/assets/thumbnails/debugger.jpg';
+import { useServerState } from 'renderer/contexts/ServerState';
 import styles from './Home.module.scss';
+
+const getOverlayUrl = (state: ServerState, path: string) =>
+  `http://${state.addresses[0]}:${state.port}${path}`;
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  className?: string;
+let ModalShown = true;
+
+const Home: React.FC = () => {
+  const [modalOpen, setModalOpen] = useState(ModalShown);
+  const { state } = useServerState();
+  const overlayEnabled = state.started && !!state.addresses.length;
+
+  const closeAboutModalOpen = () => {
+    setModalOpen(false);
+    ModalShown = false;
+  };
+
+  return (
+    <>
+      <Container size="xl" className={cx('base')}>
+        <Grid size="md" gap="md">
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
+              <CardThumbnailOverlay as={NavLink} to="/chords" interactive />
+              {overlayEnabled && (
+                <CardThumbnailItem position="top-left">
+                  <Button
+                    as="a"
+                    href={getOverlayUrl(state, '/chords')}
+                    target="_blank"
+                    aria-label="overlay"
+                    icon
+                    intent="primary"
+                    variant="ghost"
+                    hoverIntent
+                  >
+                    <Icon name="overlay" />
+                  </Button>
+                </CardThumbnailItem>
+              )}
+            </CardThumbnail>
+            <CardHeader
+              left={<Icon name="music" />}
+              right={
+                <NavButton
+                  aria-label="edit"
+                  icon
+                  variant="ghost"
+                  intent="neutral"
+                  to="/settings/chords"
+                >
+                  <Icon name="settings" />
+                </NavButton>
+              }
+            >
+              Chord Display
+            </CardHeader>
+          </Card>
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Chord Quiz preview" src={ThumbnaildChordQuiz}>
+              <CardThumbnailOverlay as={NavLink} to="/quiz" interactive />
+              {overlayEnabled && (
+                <CardThumbnailItem position="top-left">
+                  <Button
+                    as="a"
+                    href={getOverlayUrl(state, '/quiz')}
+                    target="_blank"
+                    aria-label="overlay"
+                    icon
+                    intent="primary"
+                    variant="ghost"
+                    hoverIntent
+                  >
+                    <Icon name="overlay" />
+                  </Button>
+                </CardThumbnailItem>
+              )}
+            </CardThumbnail>
+            <CardHeader
+              left={<Icon name="quiz" />}
+              right={
+                <NavButton
+                  aria-label="edit"
+                  icon
+                  variant="ghost"
+                  intent="neutral"
+                  to="/settings/quiz"
+                >
+                  <Icon name="settings" />
+                </NavButton>
+              }
+            >
+              Chord Quiz
+            </CardHeader>
+          </Card>
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Circle of Fifths preview" src={ThumbnaildCircleOfFifths}>
+              <CardThumbnailOverlay as={NavLink} to="/circle-of-fifths" interactive />
+              {overlayEnabled && (
+                <CardThumbnailItem position="top-left">
+                  <Button
+                    as="a"
+                    href={getOverlayUrl(state, '/circle-of-fifths')}
+                    target="_blank"
+                    aria-label="overlay"
+                    icon
+                    intent="primary"
+                    variant="ghost"
+                    hoverIntent
+                  >
+                    <Icon name="overlay" />
+                  </Button>
+                </CardThumbnailItem>
+              )}
+            </CardThumbnail>
+            <CardHeader
+              left={<Icon name="circle-of-fifths" />}
+              right={
+                <NavButton
+                  aria-label="edit"
+                  icon
+                  variant="ghost"
+                  intent="neutral"
+                  to="/settings/circle-of-fifths"
+                >
+                  <Icon name="settings" />
+                </NavButton>
+              }
+            >
+              Circle of Fifths
+            </CardHeader>
+          </Card>
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Settings preview" src={ThumbnailRouting}>
+              <CardThumbnailOverlay as={NavLink} to="/settings/routing" interactive />
+            </CardThumbnail>
+            <CardHeader left={<Icon name="routing" />}>Routing</CardHeader>
+          </Card>
+          <Card outlined elevation={1}>
+            <CardThumbnail alt="Debugger preview" src={ThumbnailDebugger}>
+              <CardThumbnailOverlay as={NavLink} to="/settings/debug" interactive />
+            </CardThumbnail>
+            <CardHeader left={<Icon name="bug" />}>Debugger</CardHeader>
+          </Card>
+        </Grid>
+      </Container>
+      <Modal onClose={closeAboutModalOpen} open={modalOpen} size="lg">
+        <ModalHeader title="MIDI Jar" />
+        <ModalContent>
+          <About />
+        </ModalContent>
+      </Modal>
+    </>
+  );
 };
-
-const defaultProps = {
-  className: undefined,
-};
-
-/**
- *  Home page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const Home: React.FC<Props> = ({ className }) => (
-  <div className={cx('base', className)}>
-    <div className={cx('header')}>
-      <img className={cx('logo')} src={icon} alt="" />
-      <h1 className={cx('title')}>MIDI Jar</h1>
-      <div className={cx('subtitle')}>
-        by{' '}
-        <a href="https://ljas.fr" target="_blank" rel="noreferrer">
-          La Jarre à Son
-        </a>
-      </div>
-    </div>
-    <div className={cx('description')}>
-      <p>This application regroups a set of features around MIDI:</p>
-      <ul>
-        <li>Route MIDI messages between devices</li>
-        <li>Display chords, notes and a piano as you play</li>
-        <li>Integrate in OBS, or in your Web Browser</li>
-        <li>Learn with tools like Chord Quiz and Circle of Fifths</li>
-      </ul>
-      {window.os.isWindows ? (
-        <p className={cx('loopMidi')}>
-          {
-            'NOTE: Standard MIDI drivers are exclusive on Windows. To use MIDI\
-            Jar, I recommend using '
-          }
-          <Link to="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank">
-            LoopMidi
-          </Link>
-          {
-            ' by Tobias Erichsen to route your MIDI controller to a virtual device that can be connected to by other softwares like your DAW or standalone VST.'
-          }
-        </p>
-      ) : null}
-      <div className={cx('cta')}>
-        <Button intent="success" to="/settings">
-          <Icon name="midi" />
-          Start routing your Devices
-        </Button>
-      </div>
-      <p>
-        {
-          "I plan to add new modules, so don't hesitate to report any bugs, or \
-        request new features:"
-        }
-      </p>
-      <div className={cx('cta')}>
-        <Button to="https://github.com/la-jarre-a-son/midi-jar/issues">
-          <Icon name="github" />
-          Report Issues
-        </Button>
-      </div>
-    </div>
-  </div>
-);
-
-Home.defaultProps = defaultProps;
 
 export default Home;

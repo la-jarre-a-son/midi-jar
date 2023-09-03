@@ -1,88 +1,58 @@
 import React from 'react';
-import classnames from 'classnames/bind';
+import { Container, Select, Slider, FormControlLabel, FormField } from '@la-jarre-a-son/ui';
 
 import { useSettings } from 'renderer/contexts/Settings';
-
-import { FormField, Toggle, InputNote, InputNumber } from 'renderer/components';
+import { InputNote } from 'renderer/components';
 
 import { fields } from './constants';
 
-import styles from './NotationSettings.module.scss';
-
-const cx = classnames.bind(styles);
-
-type Props = {
-  className?: string;
-};
-
-const defaultProps = {
-  className: undefined,
-  children: undefined,
-};
-
-/**
- *  Music Notation settings page
- *
- * @version 1.0.0
- * @author Rémi Jarasson
- */
-const NotationSettings: React.FC<Props> = ({ className }) => {
+const NotationSettings: React.FC = () => {
   const { settings, updateSetting } = useSettings();
 
   return (
-    <div className={cx('base', className)}>
-      <div className={cx('container')}>
-        <section className={cx('group')}>
-          <FormField fieldId="notation_settings:key" label="Key Signature">
-            <InputNote
-              id="notation_settings:key"
-              onChange={(value: string) => updateSetting('notation.key', value)}
-              value={settings.notation.key}
-              type="text"
-              learn
-            />
-          </FormField>
+    <Container size="md">
+      <FormControlLabel label="Key Signature" reverse>
+        <InputNote
+          onChange={(value: string) => updateSetting('notation.key', value)}
+          value={settings.notation.key}
+          type="text"
+          learn
+        />
+      </FormControlLabel>
 
-          <FormField fieldId="notation_settings:accidentals" label="Accidentals (in C)">
-            <Toggle
-              id="notation_settings:accidentals"
-              choices={fields.accidentals.choices}
-              onChange={(value) => updateSetting('notation.accidentals', value)}
-              value={settings.notation.accidentals}
-              successIcon="save"
-              disabled={settings.notation.key !== 'C'}
-            />
-          </FormField>
+      <FormControlLabel label="Accidentals (in C)" reverse>
+        <Select
+          options={fields.accidentals.choices}
+          onChange={(value) => updateSetting('notation.accidentals', value)}
+          value={settings.notation.accidentals}
+          disabled={settings.notation.key !== 'C'}
+        />
+      </FormControlLabel>
 
-          <FormField fieldId="notation_settings:staff-clef" label="Staff Clef">
-            <Toggle
-              id="notation_settings:staff-clef"
-              choices={fields.staffClef.choices}
-              onChange={(value) => updateSetting('notation.staffClef', value)}
-              value={settings.notation.staffClef}
-              successIcon="save"
-            />
-          </FormField>
+      <FormControlLabel label="Staff Clef" reverse>
+        <Select
+          options={fields.staffClef.choices}
+          onChange={(value) => updateSetting('notation.staffClef', value)}
+          value={settings.notation.staffClef}
+        />
+      </FormControlLabel>
 
-          <FormField
-            fieldId="notation_settings:staff-transpose"
-            label="Staff Transpose (in semitones)"
-            hint="You can transpose the staff notes: +12 for an octave"
-          >
-            <InputNumber
-              id="notation_settings:staff-transpose"
-              onChange={(value: number) => updateSetting('notation.staffTranspose', value)}
-              type="number"
-              step="1"
-              value={settings.notation.staffTranspose}
-            />
-          </FormField>
-        </section>
-      </div>
-    </div>
+      <FormField
+        label="Staff Transpose (in semitones)"
+        hint="You can transpose the staff notes: +12 for an octave"
+      >
+        <Slider
+          value={settings.notation.staffTranspose}
+          onChange={(value: number) => updateSetting('notation.staffTranspose', value)}
+          min={-24}
+          max={24}
+          step={1}
+          marks={[-24, -12, 0, 12, 24]}
+          valueText={`${settings.notation.staffTranspose.toFixed()} st`}
+        />
+      </FormField>
+    </Container>
   );
 };
-
-NotationSettings.defaultProps = defaultProps;
 
 export default NotationSettings;

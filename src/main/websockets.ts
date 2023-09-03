@@ -9,7 +9,7 @@ import { handleMessage, EventType } from './wsApi';
 
 const debug = makeDebug('app:ws');
 
-const WS_NAMESPACES = ['settings', 'chord-display'];
+const WS_NAMESPACES = ['settings', 'chord-display', 'chord-quiz'];
 
 type ExtendedWebSocket = WebSocket & {
   isAlive?: boolean;

@@ -1,18 +1,20 @@
-@import 'variables';
+@import 'tokens';
 
-.base {
-  width: 110px;
+input.base {
+  width: 7ch;
   input {
     font-family: monospace;
   }
 }
 
-.color {
+input.color {
+  min-width: 0;
   width: 28px;
   height: 28px;
   padding: 0;
-  margin-right: 4px;
   flex-shrink: 0;
+  flex-grow: 0;
+  cursor: pointer;
 
   &::-webkit-color-swatch-wrapper {
     padding: 0;

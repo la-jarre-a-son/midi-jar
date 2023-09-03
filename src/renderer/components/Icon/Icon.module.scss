@@ -1,7 +1,4 @@
-@import 'variables';
-
-// Inherits button variables
-$Button_transition: 0.2s ease !default;
+@import 'tokens';
 
 @keyframes spin {
   0% {
@@ -27,7 +24,7 @@ $Button_transition: 0.2s ease !default;
   * {
     fill: currentColor !important;
     opacity: 1;
-    transition: fill $Button_transition, opacity $Button_transition;
+    transition: fill $transition_medium, opacity $transition_medium;
   }
 
   &--spin {

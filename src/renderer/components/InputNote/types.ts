@@ -1,9 +1,9 @@
-export type InputNoteProps = Omit<React.HTMLProps<HTMLInputElement>, 'onChange' | 'value'> & {
+import { InputProps } from '@la-jarre-a-son/ui';
+
+export type InputNoteProps = Omit<InputProps, 'onChange' | 'value'> & {
   className?: string;
-  id: string;
-  value: string | number | null;
+  value: string | null;
   onChange: (value: string) => unknown;
-  block?: boolean;
   withOctave?: boolean;
   learn?: boolean;
 };
