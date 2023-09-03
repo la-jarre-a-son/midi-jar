@@ -35,29 +35,61 @@ function sortById(a, b) {
   return a.id < b.id ? -1 : 1;
 }
 
-function outputLicenses(production) {
-  nlf.find({ directory: webpackPaths.rootPath, production }, (err, data) => {
-    const output = data
-      .map((license) => {
-        return {
-          id: license.id,
-          name: license.name,
-          version: license.version,
-          url: formatUrl(license.repository),
-          license: license.licenseSources.package.sources[0]
-            ? license.licenseSources.package.sources[0].license
-            : null,
-          text: license.licenseSources.license.sources[0]
-            ? license.licenseSources.license.sources[0].text
-            : null,
-        };
-      })
-      .filter((license) => license.name !== currentPackageName);
+function deduplicateSortedArray(arr, deduplicateBy = 'id') {
+  return arr.reduce((out, current) => {
+    if (out.length && current[deduplicateBy] === out[out.length - 1][deduplicateBy]) {
+      return out;
+    }
+    out.push(current);
+    return out;
+  }, []);
+}
 
-    output.sort(sortById);
+function getLicenses(directory, production) {
+  return new Promise((resolve, reject) => {
+    nlf.find({ directory, production }, (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
 
-    fs.writeFileSync(filename, JSON.stringify(output, null, 2));
+      resolve(
+        data
+          .map((license) => {
+            return {
+              id: license.id,
+              name: license.name,
+              version: license.version,
+              url: formatUrl(license.repository),
+              license: license.licenseSources.package.sources[0]
+                ? license.licenseSources.package.sources[0].license
+                : null,
+              text: license.licenseSources.license.sources[0]
+                ? license.licenseSources.license.sources[0].text
+                : null,
+            };
+          })
+          .filter((license) => license.name !== currentPackageName)
+      );
+    });
   });
+}
+
+function outputLicenses(production) {
+  Promise.all([
+    getLicenses(webpackPaths.rootPath, production),
+    getLicenses(webpackPaths.appPath, production),
+  ])
+    .then(([rootPackages, appPackages]) => {
+      const output = [].concat(rootPackages, appPackages);
+      output.sort(sortById);
+      const dedupOut = deduplicateSortedArray(output);
+
+      fs.writeFileSync(filename, JSON.stringify(dedupOut, null, 2));
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 outputLicenses(true);
