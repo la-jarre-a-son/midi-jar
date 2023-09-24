@@ -160,7 +160,7 @@ const CircleOfFifthsSettings: React.FC = () => {
       </ScrollContainer>
       <Toolbar elevation={2} placement="bottom">
         <Button onClick={() => resetSettings('circleOfFifths')} intent="neutral">
-          <Icon name="trash" />
+          <Icon name="reset" />
           Reset to Defaults
         </Button>
       </Toolbar>

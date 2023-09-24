@@ -4,14 +4,21 @@ export const defaults: StoreType = {
   midi: {
     routes: [],
   },
+  windowState: {
+    x: null,
+    y: null,
+    width: null,
+    height: null,
+    changelogDismissed: false,
+  },
   settings: {
     general: {
       launchAtStartup: false,
       startMinimized: false,
     },
-    chordDisplay: {
-      internal: {
-        useInternal: false,
+    chordDisplay: [
+      {
+        id: 'default',
         skin: 'classic' as const,
         from: 'C3',
         to: 'C5',
@@ -28,25 +35,7 @@ export const defaults: StoreType = {
         colorNoteWhite: '#ffffff',
         colorNoteBlack: '#000000',
       },
-      overlay: {
-        useInternal: true,
-        skin: 'classic' as const,
-        from: 'C3',
-        to: 'C5',
-        displayKeyboard: true,
-        displayNotes: true,
-        displayChord: true,
-        displayNotation: false,
-        displayAltChords: true,
-        displayTonic: true,
-        displayDegrees: true,
-        displayKeyNames: true,
-        displayIntervals: false,
-        colorHighlight: '#315bce',
-        colorNoteWhite: '#ffffff',
-        colorNoteBlack: '#000000',
-      },
-    },
+    ],
     chordQuiz: {
       mode: 'random' as const,
       difficulty: 0 as const,

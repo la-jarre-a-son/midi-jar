@@ -108,7 +108,7 @@ const ChordQuizSettings: React.FC = () => {
       </ScrollContainer>
       <Toolbar elevation={2} placement="bottom">
         <Button onClick={() => resetSettings('chordQuiz')} intent="neutral">
-          <Icon name="trash" />
+          <Icon name="reset" />
           Reset to Defaults
         </Button>
       </Toolbar>

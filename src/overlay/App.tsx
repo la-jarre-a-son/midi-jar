@@ -23,28 +23,7 @@ export default function App() {
             <Routes>
               <Route path="/">
                 <Route index element={<Home />} />
-                <Route
-                  path="chords/internal"
-                  element={
-                    <MidiMessageManagerProvider
-                      namespace="chord-display/internal"
-                      source="websocket"
-                    >
-                      <ChordDisplay namespace="overlay" />
-                    </MidiMessageManagerProvider>
-                  }
-                />
-                <Route
-                  path="chords/overlay"
-                  element={
-                    <MidiMessageManagerProvider
-                      namespace="chord-display/overlay"
-                      source="websocket"
-                    >
-                      <ChordDisplay namespace="overlay" />
-                    </MidiMessageManagerProvider>
-                  }
-                />
+                <Route path="chords/:moduleId" element={<ChordDisplay source="websocket" />} />
                 <Route
                   path="quiz"
                   element={
@@ -56,7 +35,7 @@ export default function App() {
                 <Route
                   path="circle-of-fifths"
                   element={
-                    <MidiMessageManagerProvider namespace="chord-display" source="websocket">
+                    <MidiMessageManagerProvider namespace="circle-of-fifths" source="websocket">
                       <CircleOfFifths disableUpdate />
                     </MidiMessageManagerProvider>
                   }

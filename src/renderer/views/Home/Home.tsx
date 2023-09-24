@@ -26,6 +26,7 @@ import ThumbnaildCircleOfFifths from 'renderer/assets/thumbnails/circle-of-fifth
 import ThumbnailRouting from 'renderer/assets/thumbnails/routing.jpg';
 import ThumbnailDebugger from 'renderer/assets/thumbnails/debugger.jpg';
 import { useServerState } from 'renderer/contexts/ServerState';
+import { useSettings } from 'renderer/contexts/Settings';
 import styles from './Home.module.scss';
 
 const getOverlayUrl = (state: ServerState, path: string) =>
@@ -36,6 +37,8 @@ const cx = classnames.bind(styles);
 let ModalShown = true;
 
 const Home: React.FC = () => {
+  const { settings } = useSettings();
+
   const [modalOpen, setModalOpen] = useState(ModalShown);
   const { state } = useServerState();
   const overlayEnabled = state.started && !!state.addresses.length;
@@ -49,80 +52,45 @@ const Home: React.FC = () => {
     <>
       <Container size="xl" className={cx('base')}>
         <Grid size="md" gap="md">
-          <Card outlined elevation={1}>
-            <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
-              <CardThumbnailOverlay as={NavLink} to="/chords/internal" interactive />
-              {overlayEnabled && (
-                <CardThumbnailItem position="top-left">
-                  <Button
-                    as="a"
-                    href={getOverlayUrl(state, '/chords/internal')}
-                    target="_blank"
-                    aria-label="overlay"
+          {settings.chordDisplay.map((module) => (
+            <Card key={`chord-display/${module.id}`} outlined elevation={1}>
+              <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
+                <CardThumbnailOverlay as={NavLink} to={`/chords/${module.id}`} interactive />
+                {overlayEnabled && (
+                  <CardThumbnailItem position="top-left">
+                    <Button
+                      as="a"
+                      href={getOverlayUrl(state, `/chords/${module.id}`)}
+                      target="_blank"
+                      aria-label="overlay"
+                      icon
+                      intent="primary"
+                      variant="ghost"
+                      hoverIntent
+                    >
+                      <Icon name="overlay" />
+                    </Button>
+                  </CardThumbnailItem>
+                )}
+              </CardThumbnail>
+              <CardHeader
+                left={<Icon name="music" />}
+                right={
+                  <NavButton
+                    aria-label="edit"
                     icon
-                    intent="primary"
                     variant="ghost"
-                    hoverIntent
+                    intent="neutral"
+                    to={`/settings/chords/${module.id}`}
                   >
-                    <Icon name="overlay" />
-                  </Button>
-                </CardThumbnailItem>
-              )}
-            </CardThumbnail>
-            <CardHeader
-              left={<Icon name="music" />}
-              right={
-                <NavButton
-                  aria-label="edit"
-                  icon
-                  variant="ghost"
-                  intent="neutral"
-                  to="/settings/chords/internal"
-                >
-                  <Icon name="settings" />
-                </NavButton>
-              }
-            >
-              Chord Display Internal
-            </CardHeader>
-          </Card>
-          <Card outlined elevation={1}>
-            <CardThumbnail alt="Chord Display preview" src={ThumbnaildChordDisplay}>
-              <CardThumbnailOverlay as={NavLink} to="/chords/overlay" interactive />
-              {overlayEnabled && (
-                <CardThumbnailItem position="top-left">
-                  <Button
-                    as="a"
-                    href={getOverlayUrl(state, '/chords/overlay')}
-                    target="_blank"
-                    aria-label="overlay"
-                    icon
-                    intent="primary"
-                    variant="ghost"
-                    hoverIntent
-                  >
-                    <Icon name="overlay" />
-                  </Button>
-                </CardThumbnailItem>
-              )}
-            </CardThumbnail>
-            <CardHeader
-              left={<Icon name="music" />}
-              right={
-                <NavButton
-                  aria-label="edit"
-                  icon
-                  variant="ghost"
-                  intent="neutral"
-                  to="/settings/chords/overlay"
-                >
-                  <Icon name="settings" />
-                </NavButton>
-              }
-            >
-              Chord Display Overlay
-            </CardHeader>
-          </Card>
+                    <Icon name="settings" />
+                  </NavButton>
+                }
+              >
+                Chord Display ({module.id})
+              </CardHeader>
+            </Card>
+          ))}
           <Card outlined elevation={1}>
             <CardThumbnail alt="Chord Quiz preview" src={ThumbnaildChordQuiz}>
               <CardThumbnailOverlay as={NavLink} to="/quiz" interactive />

@@ -1,4 +1,10 @@
-import { createHashRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
+import {
+  createHashRouter,
+  createRoutesFromElements,
+  Route,
+  Navigate,
+  Params,
+} from 'react-router-dom';
 
 import { DrawerOutlet, Icon } from 'renderer/components';
 import MidiMessageManagerProvider from './contexts/MidiMessageManager';
@@ -22,7 +28,7 @@ import Licenses from './views/Settings/Licenses';
 
 import packageJSON from '../../package.json';
 import icon from '../../assets/icon.svg';
-import ChordDisplayNamespaceSettings from './views/Settings/ChordDisplaySettings/ChordDisplayNamespaceSettings';
+import ChordDisplayNamespaceSettings from './views/Settings/ChordDisplaySettings/ChordDisplayModuleSettings';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -36,13 +42,16 @@ const router = createHashRouter(
     >
       <Route index element={<Home />} />
       <Route
-        path="chords/internal"
-        handle={{ title: 'Chord Display Internal', icon: <Icon name="music" />, hasSettings: true }}
+        path="chords/:moduleId"
+        handle={{
+          title: (params: Params) => `Chord Display (${params.moduleId})`,
+          icon: <Icon name="music" />,
+          hasSettings: true,
+        }}
         element={
-          <MidiMessageManagerProvider namespace="chord-display/internal" source="internal">
-            <ChordDisplay namespace="internal" />
+          <ChordDisplay source="internal">
             <DrawerOutlet aria-label="Chord Display Settings" placement="right" size="lg" />
-          </MidiMessageManagerProvider>
+          </ChordDisplay>
         }
       >
         <Route
@@ -50,27 +59,7 @@ const router = createHashRouter(
           element={
             <>
               <QuickChangeKeyToolbar />
-              <ChordDisplayNamespaceSettings namespace="internal" />
-            </>
-          }
-        />
-      </Route>
-      <Route
-        path="chords/overlay"
-        handle={{ title: 'Chord Display Overlay', icon: <Icon name="music" />, hasSettings: true }}
-        element={
-          <MidiMessageManagerProvider namespace="chord-display/overlay" source="internal">
-            <ChordDisplay namespace="overlay" />
-            <DrawerOutlet aria-label="Chord Display Settings" placement="right" size="lg" />
-          </MidiMessageManagerProvider>
-        }
-      >
-        <Route
-          path="settings"
-          element={
-            <>
-              <QuickChangeKeyToolbar />
-              <ChordDisplayNamespaceSettings namespace="overlay" />
+              <ChordDisplayNamespaceSettings parentPath="../.." />
             </>
           }
         />
@@ -83,7 +72,7 @@ const router = createHashRouter(
           hasSettings: true,
         }}
         element={
-          <MidiMessageManagerProvider namespace="chord-display" source="internal">
+          <MidiMessageManagerProvider namespace="circle-of-fifths" source="internal">
             <CircleOfFifths />
             <DrawerOutlet aria-label="Circle of fifths Settings" placement="right" size="lg" />
           </MidiMessageManagerProvider>
@@ -137,13 +126,12 @@ const router = createHashRouter(
         />
         <Route path="circle-of-fifths" element={<CircleOfFifthsSettings />} />
         <Route path="quiz" element={<ChordQuizSettings />} />
-        <Route path="chords">
-          <Route index element={<Navigate to="internal" replace />} />
+        <Route path="chords" element={<ChordDisplaySettings />}>
           <Route
-            path=":namespace"
+            path=":moduleId"
             element={
               <MidiMessageManagerProvider namespace="*" source="internal">
-                <ChordDisplaySettings />
+                <ChordDisplayNamespaceSettings parentPath=".." />
               </MidiMessageManagerProvider>
             }
           />

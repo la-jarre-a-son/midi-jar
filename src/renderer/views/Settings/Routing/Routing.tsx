@@ -3,7 +3,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import { useMidiRouting } from 'renderer/contexts/MidiRouting';
-import { Box, Toolbar, Button, ButtonGroup } from '@la-jarre-a-son/ui';
+import { Box, Toolbar, Button, StackSeparator } from '@la-jarre-a-son/ui';
 import { Icon } from 'renderer/components';
 
 import LatencyMonitor from './LatencyMonitor';
@@ -35,16 +35,15 @@ const Routing: React.FC = () => {
         />
       </Box>
       <Toolbar elevation={2} placement="bottom">
-        <ButtonGroup>
-          <Button onClick={refreshDevices} intent="neutral">
-            <Icon name="loading" />
-            Refresh devices
-          </Button>
-          <Button onClick={clearRoutes} intent="danger" hoverIntent>
-            <Icon name="trash" />
-            Clear all
-          </Button>
-        </ButtonGroup>
+        <Button onClick={refreshDevices} intent="neutral">
+          <Icon name="refresh" />
+          Refresh devices
+        </Button>
+        <StackSeparator />
+        <Button onClick={clearRoutes} intent="danger" hoverIntent>
+          <Icon name="trash" />
+          Clear all
+        </Button>
       </Toolbar>
     </div>
   );

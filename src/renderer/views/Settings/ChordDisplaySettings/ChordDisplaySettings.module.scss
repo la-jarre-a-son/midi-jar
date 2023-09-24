@@ -1,49 +1,9 @@
 @import 'tokens';
 
-.noSettings {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  width: 100%;
-}
-
 .header {
   justify-content: center;
 }
 
 .list {
   flex-grow: 1;
-}
-
-.group {
-  max-width: 480px;
-  margin: auto;
-  &--disabled {
-    opacity: 0.5;
-  }
-}
-
-.groupTitle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-transform: uppercase;
-  font-size: 16px;
-
-  &::before,
-  &::after {
-    content: ' ';
-    display: block;
-    border-top: 1px solid $color-neutral-normal;
-    flex-grow: 1;
-  }
-
-  &::before {
-    margin-right: 8px;
-  }
-  &::after {
-    margin-left: 8px;
-  }
 }

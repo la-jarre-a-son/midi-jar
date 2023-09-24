@@ -27,6 +27,41 @@ const About: React.FC = () => (
         </Link>
       </div>
     </div>
+    {window.os.isWindows ? (
+      <Box
+        as={Stack}
+        elevation={1}
+        pad="md"
+        className={cx('loopMidi')}
+        outlined
+        gap="md"
+        direction="vertical"
+      >
+        <p>
+          {
+            'NOTE: Standard MIDI drivers are exclusive on Windows. To use MIDI\
+            Jar, I recommend using '
+          }
+          <Link href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank">
+            LoopMidi
+          </Link>
+          {
+            ' by Tobias Erichsen to route your MIDI controller to a virtual device that can be connected to by other softwares like your DAW or standalone VST.'
+          }
+        </p>
+        <Stack justify="end">
+          <Button
+            as="a"
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.tobias-erichsen.de/software/loopmidi.html"
+          >
+            <Icon name="midi" />
+            Download LoopMIDI
+          </Button>
+        </Stack>
+      </Box>
+    ) : null}
     <h2 className={cx('title')}>Features</h2>
     <div className={cx('description')}>
       <p>This application regroups a set of features around MIDI:</p>
@@ -63,41 +98,6 @@ const About: React.FC = () => (
         </Button>
       </p>
     </div>
-    {window.os.isWindows ? (
-      <Box
-        as={Stack}
-        elevation={1}
-        pad="md"
-        className={cx('loopMidi')}
-        outlined
-        gap="md"
-        direction="vertical"
-      >
-        <p>
-          {
-            'NOTE: Standard MIDI drivers are exclusive on Windows. To use MIDI\
-            Jar, I recommend using '
-          }
-          <Link href="https://www.tobias-erichsen.de/software/loopmidi.html" target="_blank">
-            LoopMidi
-          </Link>
-          {
-            ' by Tobias Erichsen to route your MIDI controller to a virtual device that can be connected to by other softwares like your DAW or standalone VST.'
-          }
-        </p>
-        <Stack justify="end">
-          <Button
-            as="a"
-            target="_blank"
-            rel="noreferrer"
-            href="https://www.tobias-erichsen.de/software/loopmidi.html"
-          >
-            <Icon name="midi" />
-            Download LoopMIDI
-          </Button>
-        </Stack>
-      </Box>
-    ) : null}
     <h2 className={cx('title')}>Special mentions</h2>
     <div className={cx('description')}>
       <p>

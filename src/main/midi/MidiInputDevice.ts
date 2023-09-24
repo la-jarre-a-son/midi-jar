@@ -20,8 +20,6 @@ export class MidiInputDevice extends EventEmitter {
 
   port: number | null;
 
-  i = 0;
-
   constructor(name: string, connected: boolean) {
     super();
     this.name = name;

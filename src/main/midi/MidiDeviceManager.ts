@@ -10,6 +10,7 @@ import { MidiRoute } from './MidiRoute';
 import { MidiWire } from './MidiWire';
 import { MidiInput } from './MidiInput';
 import { MidiOutput } from './MidiOutput';
+import { getModuleOutputs, sortOutputsFn } from './utils';
 
 const debug = makeDebug('app:midi');
 
@@ -17,13 +18,6 @@ const midiIn = new midi.Input();
 const midiOut = new midi.Output();
 
 const IGNORE_RTMIDI_REGEX = /RtMidi/i;
-
-const INTERNAL_OUTPUTS = [
-  'chord-display/internal',
-  'chord-display/overlay',
-  'chord-quiz',
-  'debugger',
-];
 
 export class MidiDeviceManager extends EventEmitter {
   inputs: Map<string, MidiInput>;
@@ -38,25 +32,34 @@ export class MidiDeviceManager extends EventEmitter {
     this.inputs = new Map();
     this.outputs = new Map();
     this.wires = [];
-
-    this.createInternalOutputs();
-  }
-
-  createInternalOutputs() {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const name of INTERNAL_OUTPUTS) {
-      const output = new InternalOutput(name);
-      output.addListener('message', (message: MidiMessage, timestamp: number, device: string) =>
-        this.emit('midi', output.name, message, timestamp, device)
-      );
-      this.outputs.set(name, output);
-    }
   }
 
   refresh() {
     let changed = false;
+    changed = this.refreshInternalOutputs() || changed;
     changed = this.refreshInputs() || changed;
     changed = this.refreshOutputs() || changed;
+
+    return changed;
+  }
+
+  refreshInternalOutputs() {
+    let changed = false;
+    const internalOutputs = getModuleOutputs();
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const name of internalOutputs) {
+      if (!this.outputs.has(name)) {
+        const newOutput = new InternalOutput(name);
+        newOutput.addListener(
+          'message',
+          (message: MidiMessage, timestamp: number, device: string) =>
+            this.emit('midi', newOutput.name, message, timestamp, device)
+        );
+        this.outputs.set(name, newOutput);
+        changed = true;
+      }
+    }
 
     return changed;
   }
@@ -147,6 +150,11 @@ export class MidiDeviceManager extends EventEmitter {
       switch (type) {
         case 'internal': {
           const newOutput = new InternalOutput(name);
+          newOutput.addListener(
+            'message',
+            (message: MidiMessage, timestamp: number, device: string) =>
+              this.emit('midi', newOutput.name, message, timestamp, device)
+          );
           this.outputs.set(name, newOutput);
           return newOutput;
         }
@@ -189,7 +197,9 @@ export class MidiDeviceManager extends EventEmitter {
   }
 
   getOutputs() {
-    return Array.from(this.outputs.values());
+    const outputs = Array.from(this.outputs.values());
+    outputs.sort(sortOutputsFn);
+    return outputs;
   }
 
   getWires() {

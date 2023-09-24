@@ -1,7 +1,7 @@
 import React from 'react';
-import classnames from 'classnames/bind';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { useSettings } from 'renderer/contexts/Settings';
+import { useModuleSettings } from 'renderer/contexts/Settings';
 
 import {
   Container,
@@ -11,44 +11,27 @@ import {
   FormFieldset,
   FormControlLabel,
   Toolbar,
+  StackSeparator,
 } from '@la-jarre-a-son/ui';
 
 import { Icon, InputColor, InputNote, ScrollContainer } from 'renderer/components';
 
-import { Settings } from 'main/types/Settings';
-import { fields } from './constants';
-
-import styles from './ChordDisplaySettings.module.scss';
-
-const cx = classnames.bind(styles);
+import { fields } from './utils';
 
 type Props = {
-  namespace: string;
+  parentPath: string;
 };
 
-const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
-  const { settings, updateSetting, resetSettings } = useSettings();
+const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
+  const navigate = useNavigate();
+  const { moduleId } = useParams();
+  const { moduleSettings, updateModuleSetting, resetModuleSettings, deleteModule } =
+    useModuleSettings('chordDisplay', moduleId ?? '');
 
-  const namespaceSettings = namespace
-    ? settings.chordDisplay[namespace as keyof Settings['chordDisplay']]
-    : null;
-
-  if (!namespaceSettings) {
-    return (
-      <div className={cx('base')}>
-        <div className={cx('noSettings')}>
-          <p>No Settings found, there might be an error with your settings.</p>
-          <Button onClick={() => resetSettings('chordDisplay')}>
-            <Icon name="trash" />
-            Reset to Defaults
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  const updateNamespaceSettings = (setting: string, value: unknown) =>
-    updateSetting(`chordDisplay.${namespace}.${setting}`, value);
+  const handleDeleteModule = () => {
+    deleteModule();
+    navigate(parentPath);
+  };
 
   return (
     <>
@@ -61,8 +44,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayChord', value)}
-                checked={namespaceSettings.displayChord}
+                onChange={(value) => updateModuleSetting('displayChord', value)}
+                checked={moduleSettings.displayChord}
               />
             </FormControlLabel>
 
@@ -72,8 +55,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayAltChords', value)}
-                checked={namespaceSettings.displayAltChords}
+                onChange={(value) => updateModuleSetting('displayAltChords', value)}
+                checked={moduleSettings.displayAltChords}
               />
             </FormControlLabel>
           </FormFieldset>
@@ -85,8 +68,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayNotation', value)}
-                checked={namespaceSettings.displayNotation}
+                onChange={(value) => updateModuleSetting('displayNotation', value)}
+                checked={moduleSettings.displayNotation}
               />
             </FormControlLabel>
 
@@ -96,8 +79,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayNotes', value)}
-                checked={namespaceSettings.displayNotes}
+                onChange={(value) => updateModuleSetting('displayNotes', value)}
+                checked={moduleSettings.displayNotes}
               />
             </FormControlLabel>
 
@@ -107,8 +90,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayIntervals', value)}
-                checked={namespaceSettings.displayIntervals}
+                onChange={(value) => updateModuleSetting('displayIntervals', value)}
+                checked={moduleSettings.displayIntervals}
               />
             </FormControlLabel>
           </FormFieldset>
@@ -120,8 +103,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayKeyboard', value)}
-                checked={namespaceSettings.displayKeyboard}
+                onChange={(value) => updateModuleSetting('displayKeyboard', value)}
+                checked={moduleSettings.displayKeyboard}
               />
             </FormControlLabel>
 
@@ -131,16 +114,16 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Select
-                value={namespaceSettings.skin}
-                onChange={(value) => updateNamespaceSettings('skin', value)}
+                value={moduleSettings.skin}
+                onChange={(value) => updateModuleSetting('skin', value)}
                 options={fields.skin.choices}
               />
             </FormControlLabel>
 
             <FormControlLabel label="Keyboard Start" hint="First note of keyboard" reverse>
               <InputNote
-                onChange={(value) => updateNamespaceSettings('from', value)}
-                value={namespaceSettings.from}
+                onChange={(value) => updateModuleSetting('from', value)}
+                value={moduleSettings.from}
                 withOctave
                 learn
               />
@@ -148,8 +131,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
 
             <FormControlLabel label="Keyboard End" hint="Last note of keyboard" reverse>
               <InputNote
-                onChange={(value) => updateNamespaceSettings('to', value)}
-                value={namespaceSettings.to}
+                onChange={(value) => updateModuleSetting('to', value)}
+                value={moduleSettings.to}
                 withOctave
                 learn
               />
@@ -157,8 +140,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
 
             <FormControlLabel label="Display Key Names" hint="Adds the name of each key" reverse>
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayKeyNames', value)}
-                checked={namespaceSettings.displayKeyNames}
+                onChange={(value) => updateModuleSetting('displayKeyNames', value)}
+                checked={moduleSettings.displayKeyNames}
               />
             </FormControlLabel>
 
@@ -168,8 +151,8 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayTonic', value)}
-                checked={namespaceSettings.displayTonic}
+                onChange={(value) => updateModuleSetting('displayTonic', value)}
+                checked={moduleSettings.displayTonic}
               />
             </FormControlLabel>
 
@@ -179,42 +162,47 @@ const ChordDisplayNamespaceSettings: React.FC<Props> = ({ namespace }) => {
               reverse
             >
               <Switch
-                onChange={(value) => updateNamespaceSettings('displayDegrees', value)}
-                checked={namespaceSettings.displayDegrees}
+                onChange={(value) => updateModuleSetting('displayDegrees', value)}
+                checked={moduleSettings.displayDegrees}
               />
             </FormControlLabel>
 
             <FormControlLabel label="Color Black Keys" reverse>
               <InputColor
-                onChange={(value) => updateNamespaceSettings('colorNoteBlack', value)}
-                value={namespaceSettings.colorNoteBlack}
+                onChange={(value) => updateModuleSetting('colorNoteBlack', value)}
+                value={moduleSettings.colorNoteBlack}
               />
             </FormControlLabel>
 
             <FormControlLabel label="Color White Keys" reverse>
               <InputColor
-                onChange={(value) => updateNamespaceSettings('colorNoteWhite', value)}
-                value={namespaceSettings.colorNoteWhite}
+                onChange={(value) => updateModuleSetting('colorNoteWhite', value)}
+                value={moduleSettings.colorNoteWhite}
               />
             </FormControlLabel>
 
             <FormControlLabel label="Color Highlight" hint="Color of played keys" reverse>
               <InputColor
-                onChange={(value) => updateNamespaceSettings('colorHighlight', value)}
-                value={namespaceSettings.colorHighlight}
+                onChange={(value) => updateModuleSetting('colorHighlight', value)}
+                value={moduleSettings.colorHighlight}
               />
             </FormControlLabel>
           </FormFieldset>
         </Container>
       </ScrollContainer>
       <Toolbar elevation={2} placement="bottom">
-        <Button onClick={() => resetSettings('chordDisplay')} intent="neutral">
-          <Icon name="trash" />
+        <Button onClick={() => resetModuleSettings()} intent="neutral">
+          <Icon name="reset" />
           Reset to Defaults
+        </Button>
+        <StackSeparator />
+        <Button onClick={handleDeleteModule} intent="neutral">
+          <Icon name="trash" />
+          Delete
         </Button>
       </Toolbar>
     </>
   );
 };
 
-export default ChordDisplayNamespaceSettings;
+export default ChordDisplayModuleSettings;

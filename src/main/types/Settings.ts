@@ -1,5 +1,5 @@
 export type ChordDisplaySettings = {
-  useInternal: boolean;
+  id: string;
   skin: 'classic' | 'flat';
   from: string;
   to: string;
@@ -15,9 +15,6 @@ export type ChordDisplaySettings = {
   colorHighlight: string | null;
   colorNoteWhite: string | null;
   colorNoteBlack: string | null;
-  // removed
-  key?: never;
-  accidentals?: never;
 };
 
 export type ChordQuizSettings = {
@@ -61,10 +58,7 @@ export type Settings = {
     launchAtStartup: boolean;
     startMinimized: boolean;
   };
-  chordDisplay: {
-    internal: ChordDisplaySettings;
-    overlay?: ChordDisplaySettings;
-  };
+  chordDisplay: ChordDisplaySettings[];
   chordQuiz: ChordQuizSettings;
   circleOfFifths: CircleOfFifthsSettings;
   notation: NotationSettings;
