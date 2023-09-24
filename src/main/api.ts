@@ -150,18 +150,9 @@ ipcMain.on('app:server:getState', (event) => {
 });
 
 midi.manager.addListener('refreshed', () => {
-  sendToAll(
-    'midi:inputs',
-    midi.getInputs()
-  );
-  sendToAll(
-    'midi:outputs',
-    midi.getOutputs()
-  );
-  sendToAll(
-    'midi:wires',
-    midi.getWires()
-  );
+  sendToAll('midi:inputs', midi.getInputs());
+  sendToAll('midi:outputs', midi.getOutputs());
+  sendToAll('midi:wires', midi.getWires());
 });
 
 midi.manager.addListener(

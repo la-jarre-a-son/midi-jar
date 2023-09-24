@@ -21,6 +21,7 @@ export const Icon: React.FC<IconProps> = ({ className, name, spin, hover }) => {
           'base--spin': spin,
           'base--hover': !!hover,
         },
+        `icon--${name}`,
         className
       )}
     />

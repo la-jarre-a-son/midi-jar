@@ -2,141 +2,73 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
         "chordDisplay": {
-            "properties": {
-                "internal": {
-                    "properties": {
-                        "colorHighlight": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "colorNoteBlack": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "colorNoteWhite": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "displayAltChords": {
-                            "type": "boolean"
-                        },
-                        "displayChord": {
-                            "type": "boolean"
-                        },
-                        "displayDegrees": {
-                            "type": "boolean"
-                        },
-                        "displayIntervals": {
-                            "type": "boolean"
-                        },
-                        "displayKeyNames": {
-                            "type": "boolean"
-                        },
-                        "displayKeyboard": {
-                            "type": "boolean"
-                        },
-                        "displayNotation": {
-                            "type": "boolean"
-                        },
-                        "displayNotes": {
-                            "type": "boolean"
-                        },
-                        "displayTonic": {
-                            "type": "boolean"
-                        },
-                        "from": {
-                            "type": "string"
-                        },
-                        "skin": {
-                            "enum": [
-                                "classic",
-                                "flat"
-                            ],
-                            "type": "string"
-                        },
-                        "to": {
-                            "type": "string"
-                        },
-                        "useInternal": {
-                            "type": "boolean"
-                        }
+            "items": {
+                "properties": {
+                    "colorHighlight": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
                     },
-                    "type": "object"
+                    "colorNoteBlack": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "colorNoteWhite": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "displayAltChords": {
+                        "type": "boolean"
+                    },
+                    "displayChord": {
+                        "type": "boolean"
+                    },
+                    "displayDegrees": {
+                        "type": "boolean"
+                    },
+                    "displayIntervals": {
+                        "type": "boolean"
+                    },
+                    "displayKeyNames": {
+                        "type": "boolean"
+                    },
+                    "displayKeyboard": {
+                        "type": "boolean"
+                    },
+                    "displayNotation": {
+                        "type": "boolean"
+                    },
+                    "displayNotes": {
+                        "type": "boolean"
+                    },
+                    "displayTonic": {
+                        "type": "boolean"
+                    },
+                    "from": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "skin": {
+                        "enum": [
+                            "classic",
+                            "flat"
+                        ],
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "string"
+                    }
                 },
-                "overlay": {
-                    "properties": {
-                        "colorHighlight": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "colorNoteBlack": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "colorNoteWhite": {
-                            "type": [
-                                "null",
-                                "string"
-                            ]
-                        },
-                        "displayAltChords": {
-                            "type": "boolean"
-                        },
-                        "displayChord": {
-                            "type": "boolean"
-                        },
-                        "displayDegrees": {
-                            "type": "boolean"
-                        },
-                        "displayIntervals": {
-                            "type": "boolean"
-                        },
-                        "displayKeyNames": {
-                            "type": "boolean"
-                        },
-                        "displayKeyboard": {
-                            "type": "boolean"
-                        },
-                        "displayNotation": {
-                            "type": "boolean"
-                        },
-                        "displayNotes": {
-                            "type": "boolean"
-                        },
-                        "displayTonic": {
-                            "type": "boolean"
-                        },
-                        "from": {
-                            "type": "string"
-                        },
-                        "skin": {
-                            "enum": [
-                                "classic",
-                                "flat"
-                            ],
-                            "type": "string"
-                        },
-                        "to": {
-                            "type": "string"
-                        },
-                        "useInternal": {
-                            "type": "boolean"
-                        }
-                    },
-                    "type": "object"
-                }
+                "type": "object"
             },
-            "type": "object"
+            "type": "array"
         },
         "chordQuiz": {
             "properties": {

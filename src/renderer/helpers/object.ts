@@ -57,7 +57,8 @@ export function mergeDeep<T extends ObjectType, S extends ObjectType>(
         if (sourceValue.length > targetValue.length)
           t[key] = t[key].concat(sourceValue.slice(targetValue.length));
       } else {
-        t[key] = targetValue.concat(sourceValue);
+        // t[key] = targetValue.concat(sourceValue);
+        t[key] = sourceValue;
       }
     else if (isObject(targetValue) && isObject(sourceValue))
       t[key] = mergeDeep({ ...targetValue }, sourceValue, isMergingArrays);

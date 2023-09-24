@@ -16,6 +16,8 @@ interface SettingsContextInterface {
 
 const SettingsContext = React.createContext<SettingsContextInterface | null>(null);
 
+type ModuleName = 'chordDisplay';
+
 type Props = {
   children: React.ReactNode;
 };
@@ -84,6 +86,78 @@ export const useSettings = () => {
     throw new Error(`useSettings must be used within a SettingsProvider`);
   }
   return context;
+};
+
+export const useModuleSettings = <T extends ModuleName>(moduleName: T, moduleId: string) => {
+  const { settings, updateSetting } = useSettings();
+
+  const moduleIndex: number = useMemo(() => {
+    if (!settings || !moduleName || !moduleId) return -1;
+
+    const modulesSettings = settings[moduleName];
+
+    if (Array.isArray(modulesSettings)) {
+      return modulesSettings.findIndex((module) => module.id === moduleId);
+    }
+
+    return -1;
+  }, [moduleName, moduleId, settings]);
+
+  const moduleSettings =
+    moduleIndex > -1 ? settings[moduleName][moduleIndex] : defaults.settings[moduleName][0];
+
+  const updateModuleSetting = useCallback(
+    (setting: string, value: unknown) =>
+      moduleIndex > -1 ? updateSetting(`${moduleName}.${moduleIndex}.${setting}`, value) : null,
+    [moduleIndex, moduleName, updateSetting]
+  );
+
+  const updateModuleSettings = useCallback(
+    (value: Settings[T]) =>
+      moduleIndex > -1 ? updateSetting(`${moduleName}.${moduleIndex}`, value) : null,
+    [moduleIndex, moduleName, updateSetting]
+  );
+
+  const resetModuleSettings = useCallback(
+    () =>
+      moduleIndex > -1
+        ? updateSetting(`${moduleName}.${moduleIndex}`, {
+            ...defaults.settings[moduleName][0],
+            id: moduleId,
+          })
+        : null,
+    [moduleIndex, moduleName, moduleId, updateSetting]
+  );
+
+  const deleteModule = useCallback(
+    () =>
+      updateSetting(
+        moduleName,
+        settings[moduleName].filter((module) => module.id !== moduleId)
+      ),
+    [moduleName, moduleId, settings, updateSetting]
+  );
+
+  const value = useMemo(
+    () => ({
+      moduleSettings,
+      moduleIndex,
+      updateModuleSetting,
+      updateModuleSettings,
+      resetModuleSettings,
+      deleteModule,
+    }),
+    [
+      moduleIndex,
+      moduleSettings,
+      updateModuleSetting,
+      updateModuleSettings,
+      resetModuleSettings,
+      deleteModule,
+    ]
+  );
+
+  return value;
 };
 
 export default SettingsProvider;

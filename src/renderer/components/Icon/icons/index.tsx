@@ -29,6 +29,8 @@ export const ICON_NAMES = [
   'power',
   'plus',
   'quiz',
+  'refresh',
+  'reset',
   'routing',
   'save',
   'server',

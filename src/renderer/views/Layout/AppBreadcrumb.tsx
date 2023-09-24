@@ -7,13 +7,15 @@ import { NavLink, Params, useMatches } from 'react-router-dom';
 import { Icon } from 'renderer/components';
 import styles from './Layout.module.scss';
 
+type CallableTitle = (params: Params) => string;
+
 type MatchWithHandle = {
   id: string;
   pathname: string;
   params: Params<string>;
   data: unknown;
   handle: {
-    title?: string;
+    title?: string | CallableTitle;
     icon?: React.ReactNode;
     hasSettings?: boolean;
   };
@@ -21,16 +23,19 @@ type MatchWithHandle = {
 
 const cx = classnames.bind(styles);
 
+const getMatchTitle = (title: string | CallableTitle, params: Params) =>
+  typeof title === 'function' ? title(params) : title;
+
 const AppBreadcrumb: React.FC = () => {
   const matches = useMatches() as unknown as MatchWithHandle[];
   const crumbs = matches
-    .filter((match) => Boolean(match.handle?.title))
     .map((match) => ({
-      title: match.handle?.title,
+      title: getMatchTitle(match.handle?.title || '', match.params),
       icon: match.handle?.icon,
       path: match.pathname,
       hasSettings: !!match.handle?.hasSettings,
-    }));
+    }))
+    .filter((crumb) => Boolean(crumb.title));
 
   return (
     <Breadcrumb>
