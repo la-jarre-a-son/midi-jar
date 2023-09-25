@@ -119,6 +119,10 @@ const configuration: webpack.Configuration = {
           },
         ],
       },
+      {
+        test: /\.md$/,
+        use: 'raw-loader',
+      },
     ],
   },
   plugins: [

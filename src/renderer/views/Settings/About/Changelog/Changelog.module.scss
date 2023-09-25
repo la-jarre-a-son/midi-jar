@@ -1,0 +1,20 @@
+@import 'tokens';
+
+.base {
+  padding: $space-md;
+  width: 100%;
+  height: 320px;
+  overflow: auto;
+  font-size: 14px;
+
+  h1 {
+    font-size: 1.4em;
+    margin: $space-md 0;
+    font-weight: bold;
+  }
+
+  h2 {
+    margin: $space-md 0;
+    text-transform: uppercase;
+  }
+}
