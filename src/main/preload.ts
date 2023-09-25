@@ -3,6 +3,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { MidiMessage, ServerState, Settings } from './types';
 
 import { ApiMidiInput, ApiMidiOutput, ApiMidiRoute, ApiMidiWire } from './types/api';
+import { WindowState } from './types/WindowState';
 
 type AppEvent = 'maximize' | 'unmaximize' | 'always-on-top-changed';
 
@@ -19,15 +20,6 @@ const registerListener =
 
 export const AppApi = {
   quit: () => ipcRenderer.send('app:quit'),
-  close: () => ipcRenderer.send('app:close'),
-  minimize: () => ipcRenderer.send('app:minimize'),
-  maximize: () => ipcRenderer.send('app:maximize'),
-  unmaximize: () => ipcRenderer.send('app:unmaximize'),
-  setAlwaysOnTop: (flag: boolean) => ipcRenderer.send('app:setAlwaysOnTop', flag),
-  titleBarDoubleClick: () => ipcRenderer.send('app:titleBarDoubleClick'),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  on: (appEvent: AppEvent, callback: (...args: any[]) => void) =>
-    registerListener(`app:${appEvent}`)(callback),
   settings: {
     clear: () => ipcRenderer.send('app:settings:clear'),
     reset: (key: keyof Settings) => ipcRenderer.invoke('app:settings:reset', key),
@@ -43,6 +35,21 @@ export const AppApi = {
     getState: () => ipcRenderer.send('app:server:getState'),
     onStateChange: (callback: (state: ServerState) => void) =>
       registerListener('app:server:state')(callback),
+  },
+  window: {
+    close: () => ipcRenderer.send('app:window:close'),
+    minimize: () => ipcRenderer.send('app:window:minimize'),
+    maximize: () => ipcRenderer.send('app:window:maximize'),
+    unmaximize: () => ipcRenderer.send('app:window:unmaximize'),
+    setAlwaysOnTop: (flag: boolean) => ipcRenderer.send('app:window:setAlwaysOnTop', flag),
+    titleBarDoubleClick: () => ipcRenderer.send('app:window:titleBarDoubleClick'),
+    dismissChangelog: () => ipcRenderer.send('app:window:dismissChangelog'),
+    getState: () => ipcRenderer.send('app:window:getState'),
+    onStateChange: (callback: (state: WindowState) => void) =>
+      registerListener('app:window:state')(callback),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    on: (appEvent: AppEvent, callback: (...args: any[]) => void) =>
+      registerListener(`app:window:${appEvent}`)(callback),
   },
 };
 

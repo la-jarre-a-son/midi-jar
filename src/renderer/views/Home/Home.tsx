@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
 
@@ -27,6 +27,7 @@ import ThumbnailRouting from 'renderer/assets/thumbnails/routing.jpg';
 import ThumbnailDebugger from 'renderer/assets/thumbnails/debugger.jpg';
 import { useServerState } from 'renderer/contexts/ServerState';
 import { useSettings } from 'renderer/contexts/Settings';
+import { useWindowState } from 'renderer/contexts/WindowState';
 import styles from './Home.module.scss';
 
 const getOverlayUrl = (state: ServerState, path: string) =>
@@ -34,18 +35,14 @@ const getOverlayUrl = (state: ServerState, path: string) =>
 
 const cx = classnames.bind(styles);
 
-let ModalShown = true;
-
 const Home: React.FC = () => {
   const { settings } = useSettings();
-
-  const [modalOpen, setModalOpen] = useState(ModalShown);
+  const { isChangelogDismissed, dismissChangelog } = useWindowState();
   const { state } = useServerState();
   const overlayEnabled = state.started && !!state.addresses.length;
 
   const closeAboutModalOpen = () => {
-    setModalOpen(false);
-    ModalShown = false;
+    dismissChangelog();
   };
 
   return (
@@ -179,7 +176,7 @@ const Home: React.FC = () => {
           </Card>
         </Grid>
       </Container>
-      <Modal onClose={closeAboutModalOpen} open={modalOpen} size="lg">
+      <Modal onClose={closeAboutModalOpen} open={!isChangelogDismissed} size="lg">
         <ModalHeader title="MIDI Jar" />
         <ModalContent>
           <About />
