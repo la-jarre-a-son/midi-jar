@@ -14,6 +14,8 @@ import {
   resetSettings,
   clearSettings,
 } from './settings';
+import { dismissChangelog, getWindowState, onWindowStateChange } from './windowState';
+import { WindowState } from './types/WindowState';
 
 function sendToAll(channel: string, ...args: unknown[]) {
   const windows = BrowserWindow.getAllWindows();
@@ -26,28 +28,30 @@ ipcMain.on('app:quit', () => {
   app.quit();
 });
 
-ipcMain.on('app:close', (event) => {
+/* WINDOW */
+
+ipcMain.on('app:window:close', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   window?.close();
 });
 
-ipcMain.on('app:minimize', (event) => {
+ipcMain.on('app:window:minimize', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   window?.minimize();
 });
 
-ipcMain.on('app:maximize', (event) => {
+ipcMain.on('app:window:maximize', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   window?.maximize();
 });
 
-ipcMain.on('app:unmaximize', (event) => {
+ipcMain.on('app:window:unmaximize', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
 
   window?.unmaximize();
 });
 
-ipcMain.on('app:titleBarDoubleClick', (event) => {
+ipcMain.on('app:window:titleBarDoubleClick', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   if (window && os.platform() === 'darwin') {
     const doubleClickAction = systemPreferences.getUserDefault(
@@ -67,11 +71,35 @@ ipcMain.on('app:titleBarDoubleClick', (event) => {
   }
 });
 
-ipcMain.on('app:setAlwaysOnTop', (event, flag) => {
+ipcMain.on('app:window:setAlwaysOnTop', (event, flag) => {
   const window = BrowserWindow.fromWebContents(event.sender);
 
   window?.setAlwaysOnTop(flag, 'floating');
 });
+
+ipcMain.on('app:window:dismissChangelog', () => {
+  dismissChangelog();
+});
+
+ipcMain.on('app:window:getState', (event) => {
+  event.reply('app:window:state', getWindowState());
+});
+
+onWindowStateChange((state?: WindowState) => {
+  if (state) {
+    sendToAll('app:window:state', state);
+  }
+});
+
+export function bindWindowEvents(window: BrowserWindow) {
+  window.on('maximize', () => window.webContents.send('app:window:maximize'));
+  window.on('unmaximize', () => window.webContents.send('app:window:unmaximize'));
+  window.on('always-on-top-changed', (_event, isAlwaysOnTop) =>
+    window.webContents.send('app:window:always-on-top-changed', isAlwaysOnTop)
+  );
+}
+
+/* MIDI */
 
 ipcMain.on('midi:refreshDevices', () => {
   midi.refreshDevices(true);
@@ -109,6 +137,26 @@ ipcMain.on('app:settings:getSettings', (event) => {
   event.reply('app:settings', settings);
 });
 
+midi.manager.addListener('refreshed', () => {
+  sendToAll('midi:inputs', midi.getInputs());
+  sendToAll('midi:outputs', midi.getOutputs());
+  sendToAll('midi:wires', midi.getWires());
+});
+
+midi.manager.addListener(
+  'midi',
+  (namespace: string, message: MidiMessage, timestamp: number, device: string) => {
+    sendToAll(`midi:message:*`, message, timestamp, device);
+    sendToAll(`midi:message:${namespace}`, message, timestamp, device);
+  }
+);
+
+midi.manager.addListener('activity', (latency: number, device: string) => {
+  sendToAll(`midi:activity`, latency, device);
+});
+
+/* SETTINGS */
+
 ipcMain.handle('app:settings:updateSetting', (_event, key: string, value: unknown) => {
   updateSetting(key, value);
 });
@@ -131,6 +179,8 @@ onSettingsChange((settings?: Settings) => {
   }
 });
 
+/* SERVER */
+
 ipcMain.handle('app:server:enable', async (_event, enabled: boolean) => {
   try {
     await updateSetting('server.enabled', enabled);
@@ -148,30 +198,3 @@ ipcMain.handle('app:server:enable', async (_event, enabled: boolean) => {
 ipcMain.on('app:server:getState', (event) => {
   event.reply('app:server:state', getServerState());
 });
-
-midi.manager.addListener('refreshed', () => {
-  sendToAll('midi:inputs', midi.getInputs());
-  sendToAll('midi:outputs', midi.getOutputs());
-  sendToAll('midi:wires', midi.getWires());
-});
-
-midi.manager.addListener(
-  'midi',
-  (namespace: string, message: MidiMessage, timestamp: number, device: string) => {
-    sendToAll(`midi:message:*`, message, timestamp, device);
-    sendToAll(`midi:message:${namespace}`, message, timestamp, device);
-  }
-);
-
-midi.manager.addListener('activity', (latency: number, device: string) => {
-  sendToAll(`midi:activity`, latency, device);
-});
-
-// eslint-disable-next-line import/prefer-default-export
-export function bindWindowEvents(window: BrowserWindow) {
-  window.on('maximize', () => window.webContents.send('app:maximize'));
-  window.on('unmaximize', () => window.webContents.send('app:unmaximize'));
-  window.on('always-on-top-changed', (_event, isAlwaysOnTop) =>
-    window.webContents.send('app:always-on-top-changed', isAlwaysOnTop)
-  );
-}

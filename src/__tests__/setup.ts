@@ -6,13 +6,6 @@ window.os = {
 
 window.app = {
   quit: jest.fn(),
-  close: jest.fn(),
-  minimize: jest.fn(),
-  maximize: jest.fn(),
-  unmaximize: jest.fn(),
-  setAlwaysOnTop: jest.fn(),
-  titleBarDoubleClick: jest.fn(),
-  on: jest.fn().mockReturnValue(jest.fn()),
   settings: {
     clear: jest.fn(),
     reset: jest.fn(),
@@ -25,6 +18,18 @@ window.app = {
     enable: jest.fn(),
     getState: jest.fn(),
     onStateChange: jest.fn().mockReturnValue(jest.fn()),
+  },
+  window: {
+    close: jest.fn(),
+    minimize: jest.fn(),
+    maximize: jest.fn(),
+    unmaximize: jest.fn(),
+    setAlwaysOnTop: jest.fn(),
+    titleBarDoubleClick: jest.fn(),
+    dismissChangelog: jest.fn(),
+    getState: jest.fn(),
+    onStateChange: jest.fn().mockReturnValue(jest.fn()),
+    on: jest.fn().mockReturnValue(jest.fn()),
   },
 };
 

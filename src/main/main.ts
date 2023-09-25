@@ -20,6 +20,12 @@ import { startRefreshLoop } from './midi';
 import { bindWindowEvents } from './api';
 import { registerWebsocketSubscriptions } from './wsApi';
 import { setStartupSetting, isHiddenStartupLaunch } from './settings';
+import {
+  DEFAULT_WINDOW_MIN_HEIGHT,
+  DEFAULT_WINDOW_MIN_WIDTH,
+  getWindowBoundsOnDisplay,
+  saveWindowState,
+} from './windowState';
 
 class AppUpdater {
   constructor() {
@@ -61,12 +67,16 @@ const createWindow = async () => {
     await installExtensions();
   }
 
+  const winBounds = getWindowBoundsOnDisplay();
+
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
-    minWidth: 480,
-    minHeight: 260,
+    x: winBounds.x ?? undefined,
+    y: winBounds.y ?? undefined,
+    width: winBounds.width,
+    height: winBounds.height,
+    minWidth: DEFAULT_WINDOW_MIN_WIDTH,
+    minHeight: DEFAULT_WINDOW_MIN_HEIGHT,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -84,6 +94,12 @@ const createWindow = async () => {
       throw new Error('"mainWindow" is not defined');
     }
     mainWindow.show();
+  });
+
+  mainWindow.on('close', () => {
+    if (mainWindow) {
+      saveWindowState(mainWindow);
+    }
   });
 
   mainWindow.on('closed', () => {
