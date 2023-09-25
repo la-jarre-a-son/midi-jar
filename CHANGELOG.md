@@ -1,3 +1,20 @@
+# 1.4.0 (2023-09-25)
+
+## Features
+
+- **ui:** Rewrite UI entirely
+- **ui:** Added settings drawer for all modules
+- **Home:** new app launch page with startup changelog modal
+- **About:** added Changelog
+- **Chord Display:** multiple modules can be added
+- **window:** retain window position on close
+
+## Fixes
+
+- **chore:** Upgraded all dependencies and fix security warnings
+- **Midi:** Rewrite midi routing with @julusian/midi package
+- **Credits:** correctly list all licenses from dependencies
+
 # 1.3.0 (2023-05-04)
 
 ## Features
