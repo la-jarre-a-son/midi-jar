@@ -10,6 +10,7 @@ import Credits from './Credits';
 import { CREDIT_ITEMS } from './constants';
 
 import styles from './About.module.scss';
+import Changelog from './Changelog';
 
 const cx = classnames.bind(styles);
 
@@ -98,6 +99,8 @@ const About: React.FC = () => (
         </Button>
       </p>
     </div>
+    <h2 className={cx('title')}>Changelog</h2>
+    <Changelog />
     <h2 className={cx('title')}>Special mentions</h2>
     <div className={cx('description')}>
       <p>

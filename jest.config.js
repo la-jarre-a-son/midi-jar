@@ -1,0 +1,45 @@
+const esModules = [
+  '@la-jarre-a-son/ui',
+  'react-markdown',
+  'vfile',
+  'unist-.+',
+  'unified',
+  'bail',
+  'is-plain-obj',
+  'trough',
+  'remark-.+',
+  'mdast-util-.+',
+  'micromark',
+  'parse-entities',
+  'character-entities',
+  'property-information',
+  'comma-separated-tokens',
+  'hast-util-whitespace',
+  'remark-.+',
+  'space-separated-tokens',
+  'decode-named-character-reference',
+  'ccount',
+  'escape-string-regexp',
+  'markdown-table',
+  'trim-lines',
+].join('|');
+
+module.exports = {
+  testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    url: 'http://localhost/',
+  },
+  transform: { '\\.[jt]sx?$': 'babel-jest' },
+  moduleNameMapper: {
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$':
+      '<rootDir>/.erb/mocks/fileMock.js',
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+  },
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'md'],
+  moduleDirectories: ['node_modules', 'release/app/node_modules', 'src'],
+  testMatch: ['**/*.test.[jt]s?(x)'],
+  testPathIgnorePatterns: ['release/app/dist'],
+  setupFiles: ['./.erb/scripts/check-build-exists.ts'],
+  setupFilesAfterEnv: ['./src/__tests__/setup.ts'],
+  transformIgnorePatterns: [`node_modules/(?!${esModules})`],
+};
