@@ -1,4 +1,4 @@
-import { Note } from '@tonaljs/tonal';
+import { Note } from 'tonal';
 import { Chord } from '@tonaljs/chord';
 
 import { range } from 'renderer/helpers';

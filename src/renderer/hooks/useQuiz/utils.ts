@@ -1,4 +1,4 @@
-import { Note, Chord, ChordType } from '@tonaljs/tonal';
+import { Note, Chord, ChordType } from 'tonal';
 import { Chord as TChord } from '@tonaljs/chord';
 import { isEqual, isSubsetOf, isSupersetOf } from '@tonaljs/pcset';
 

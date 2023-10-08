@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer } from 'react';
-import { Note, Chord, Interval } from '@tonaljs/tonal';
+import { Note, Chord, Interval } from 'tonal';
 
 import { MidiMessage } from 'main/types';
 import {

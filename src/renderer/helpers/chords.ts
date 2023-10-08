@@ -1,4 +1,4 @@
-import { Note } from '@tonaljs/tonal';
+import { Note } from 'tonal';
 import { Chord as TChord } from '@tonaljs/chord';
 
 export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;

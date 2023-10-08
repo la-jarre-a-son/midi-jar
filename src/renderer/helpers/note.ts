@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { Key, Note, Range } from '@tonaljs/tonal';
+import { Key, Note, Range } from 'tonal';
 
 export type KeySignatureConfig = {
   alteration: number;

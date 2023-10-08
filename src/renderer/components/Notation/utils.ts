@@ -1,5 +1,5 @@
 import { Voice, StaveNote } from 'vexflow';
-import { Note } from '@tonaljs/tonal';
+import { Note } from 'tonal';
 import { getNoteInKeySignature } from 'renderer/helpers/note';
 
 const NOTE_REGEX = /([a-g])(b|#)?(\d+)/i;

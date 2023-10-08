@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 
-import { Note } from '@tonaljs/tonal';
+import { Note } from 'tonal';
 import { Input, Button, InputGroup } from '@la-jarre-a-son/ui';
 import { MidiLearn } from '../MidiLearn';
 
