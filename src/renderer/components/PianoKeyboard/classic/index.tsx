@@ -1,5 +1,5 @@
 import React from 'react';
-import { Note } from '@tonaljs/tonal';
+import { Note } from 'tonal';
 
 import { range } from 'renderer/helpers';
 import {
