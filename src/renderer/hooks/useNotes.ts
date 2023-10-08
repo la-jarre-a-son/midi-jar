@@ -36,7 +36,9 @@ const getChordInfo = (chord: string, keySignatureNotes: string[]) => {
 };
 
 const getChords = (notes: string[], keySignatureNotes: string[]) => {
-  const chords = Chord.detect(notes).map((n) => getChordInfo(n, keySignatureNotes));
+  const chords = Chord.detect(notes, { assumePerfectFifth: true }).map((n) =>
+    getChordInfo(n, keySignatureNotes)
+  );
 
   return chords;
 };
