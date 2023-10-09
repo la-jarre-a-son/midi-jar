@@ -1,5 +1,8 @@
 import { Note } from 'tonal';
+import * as ChordType from '@tonaljs/chord-type';
 import { Chord as TChord } from '@tonaljs/chord';
+
+import chordsData from './chords-data';
 
 export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
 export const CHORD_TYPE_REGEX =
@@ -81,3 +84,12 @@ export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
     return chord.intervals[i];
   });
 }
+
+export function overrideDictionary() {
+  ChordType.removeAll();
+  chordsData.forEach(([intervals, fullName, aliases]: string[]) =>
+    ChordType.add(intervals.split(' '), aliases.split(' '), fullName)
+  );
+}
+
+overrideDictionary();
