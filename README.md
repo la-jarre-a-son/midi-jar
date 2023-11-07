@@ -73,7 +73,7 @@ My tests had an `average additional latency < 0.2ms` but this can vary a lot wit
 
 Chord Display is a module of MIDI Jar for displaying a piano keyboard and the chords played.
 
-It uses the detect feature from [tonal](https://github.com/tonaljs/tonal).
+It is based on [tonal](https://github.com/tonaljs/tonal), but with a custom chord dictionary and a modified chord detection feature that allows omissions of intervals (depending on the dictionary).
 
 To use it, route your MIDI devices to the internal `chord-display` output.
 
@@ -101,11 +101,19 @@ Chord Display rendering is customizable in the Settings:
     - `key names` - name of the notes
     - `chord degrees` - degrees of each note of the detected chord
     - `tonic` - a little dot on the chord tonic
-- Enabling elements:
+- Customizing elements:
   - `chord` - the detected chord
-  - `notation` - the music notation of the played notes
-  - `piano` - a keyboard displaying your played notes
   - `alternative chords` - a list of other detected chord names if any
+  - `chord name` - full name of the chord
+  - `chord notation` - choose how chords are notated
+    - `long` - maj, min, dom, dim, aug
+    - `short` - M, m, dim, aug
+    - `symbol` - Δ, -, °, +
+  - `allow omissions` - detect chords with omitted intervals (like 5P, 9M and 11P)
+  - `highlight chord alterations` - display chord parts more distinctly
+  - `notation` - the staff notation of the played notes
+  - `notes` - the notes played in order
+  - `piano` - a keyboard displaying your played notes
   - `intervals` - a list of intervals that constitutes the chord
 
 ### Customize via CSS
@@ -120,7 +128,7 @@ Remove detected Chord:
 }
 ```
 
-Remove Bass Note / Slash chord / Compound chord notation:
+Remove Bass Note / Slash chord notation:
 
 ```css
 .chord-root {
@@ -150,7 +158,7 @@ Change display order:
 #keyboard {
   order: 1;
 }
-#chordDisplayContainer {
+#container {
   order: 2;
 }
 #notes {
@@ -180,7 +188,7 @@ Change chord size and placement:
   flex-direction: column-reverse;
 }
 
-#chordDisplayContainer {
+#container {
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -284,11 +292,11 @@ You can choose which mode (algorithm) to play with:
 
 And finally, to adapt your training, you can choose the difficulty, each levels adds new chords to the possible list:
 
-- `Very Easy`: minor, Major
-- `Easy`: sus4, 7no5, maj7, 7, 6, Mb5, m/ma7, m7, m6, dim, madd4, sus2, Maddb9
-- `Medium`: M7sus4, 7sus4, aug, M7b6, 7b13, 7b6, M7b5, 7b5, m#5, mb6M7, m7#5, mMaj7b6, oM7, m7b5, dim7, m7add11, sus24, Madd9, madd9, alt7, M7b9, 7b9, mb6b9
-- `Hard`: maj7#5, 7#5, 7add6, maj#4, 7#11, M6#11, o7M7, 4, 7#9, 9no5, maj9, 9, 6/9, mM9, m9, m69, m9b5, b9sus, 11b9, 7b9b13
-- `Very Hard`: M7#5sus4, 7#5sus4, 7#11b13, +add#9, 7#9b13, M9sus4, 11, 9sus4, M#5add9, 9b13, M7add13, M9b5, 9b5, m9#5, mMaj9b6, m11, 7sus4b9b13, 7#5b9, 13b9, 7b9#11, 7b9#9
+- `Very Easy`: maj, min
+- `Easy`: maj7, majadd2, majadd4, maj6, min7, min6, minadd9, minadd4, minmaj7, dom7, sus4, sus2
+- `Medium`: maj9, maj11, maj13, majaddb2, majadd#4, majaddb6, maj6/9, maj6add11, maj6/11, maj7add11, maj7add13, majb5, majb9, min9, min11, min13, minaddb2, min6/9, min7add11, minaddb6, min#5, minb9, minmaj9, minmaj11, minmaj13, minmaj7b9, minmaj7add11, dim, dim7, dom9, dom11, dom13, dom7add6, dom7add11, dom7b9, sus2sus4, sus2maj7, sus4maj7, dom7sus2, dom7sus4, dom9sus4, aug
+- `Hard`: maj6#11, maj7add#11, maj7addb13, maj7b5, maj#9, maj#11, maj11b9, minaddb6addb9, min7#5, minb11, min#11, min7#11, min11b13, minmaj7#5, minmaj7addb13, minmaj7b11, minmaj7#11, dimmaj7, dim7maj7, min7b5, dom7b5, dom7add#11, dom7addb13, dom7#9, dom11b9, dom13b9, sus2maj11, sus2maj7add13, sus4maj13, dom7sus4b9, dom13sus4, aug7, augmaj7, augaddb9, augadd9
+- `Very Hard`: maj6/9add#11, maj9b5, maj9#9, majb9#9, maj#11b9, maj11#9, maj13#11, min9#5, min11#5, min13#5, min11b11, minmaj9addb13, minmaj11addb13, minmaj9#11, minmaj11b11, min9b5, min7b5b9, min11b5, dom9b5, dom11b5, dom13b5, dom9#11, dom9addb13, dom7b9#9, dom7b9#11, dom7b9b13, dom11b13, dom13#9, dom13#11, dom11susb2, dom7sus4addb13, aug9, aug11, aug13, augmaj9, augadd#9, augmaj7b9, aug7b9, augsus4add7
 - `All Chords`: the rest of the dictionary
 
 If the game mode is too annoying, you can turn off the scoring, the reactions, and choose to display or not the asked intervals, but have in mind that the gamification is only for fun, there is no persistent scoreboard or high score, it's only a tool to help exploration.
@@ -339,6 +347,6 @@ If you discover unexpected Chord detection, please see [tonaljs/tonal issues](ht
 
 - [tonal](https://github.com/tonaljs/tonal): A functional music theory library for Javascript, that detects chords, and handles MIDI notes
 - [VexFlow](https://github.com/0xfe/vexflow): A JavaScript library for rendering music notation and guitar tablature.
-- [node-midi](https://github.com/justinlatimer/node-midi): A node.js wrapper for the RtMidi C++ library that provides realtime MIDI I/O.
+- [node-midi](https://github.com/justinlatimer/node-midi) / [@julusian/midi](https://github.com/Julusian/node-midi): A node.js wrapper for the RtMidi C++ library that provides realtime MIDI I/O.
 - [React Flow](https://github.com/wbkd/react-flow): Highly customizable library for building interactive node-based UIs, editors, flow charts and diagrams. It allows MIDI Jar to have understandable MIDI routing with nodes and draggable edges.
 - [React Electron Boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate): A Foundation for Scalable Cross-Platform Apps in Electron, the base boilerplate for MIDI Jar.
