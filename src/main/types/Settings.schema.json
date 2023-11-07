@@ -4,6 +4,17 @@
         "chordDisplay": {
             "items": {
                 "properties": {
+                    "allowOmissions": {
+                        "type": "boolean"
+                    },
+                    "chordNotation": {
+                        "enum": [
+                            "long",
+                            "short",
+                            "symbol"
+                        ],
+                        "type": "string"
+                    },
                     "colorHighlight": {
                         "type": [
                             "null",
@@ -40,6 +51,9 @@
                     "displayKeyboard": {
                         "type": "boolean"
                     },
+                    "displayName": {
+                        "type": "boolean"
+                    },
                     "displayNotation": {
                         "type": "boolean"
                     },
@@ -51,6 +65,9 @@
                     },
                     "from": {
                         "type": "string"
+                    },
+                    "highlightAlterations": {
+                        "type": "boolean"
                     },
                     "id": {
                         "type": "string"
