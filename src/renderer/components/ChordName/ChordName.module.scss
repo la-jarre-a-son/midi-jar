@@ -1,3 +1,5 @@
+@import 'tokens';
+
 .base {
   display: inline-flex;
   align-items: flex-end;
@@ -6,25 +8,40 @@
   vertical-align: bottom;
 }
 
+.name {
+  font-size: 0.9em;
+  line-height: 1.5em;
+}
+
 .tonic {
   font-weight: bold;
 }
 
-.name {
-  font-size: 0.8em;
-  line-height: 1.5em;
-}
-
 .quality {
-  margin: 0 0.1em;
+  margin: 0.05em;
   font-weight: bold;
   font-style: italic;
 }
 
 .extension {
-  margin-left: 0.1em;
+  margin: 0 0.05em;
   vertical-align: super;
   font-style: italic;
+  font-size: 0.8em;
+}
+
+.--highlighted {
+  .quality {
+
+    background: $color-danger-normal;
+    border-radius: 0.1em;
+  }
+
+  .extension {
+
+    background: $color-primary-normal;
+    border-radius: 0.1em;
+  }
 }
 
 .root {

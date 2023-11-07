@@ -13,6 +13,7 @@ import {
   levenshtein,
   getChordDegrees,
   stringRotate,
+  removeIntervalWildcards,
 } from 'renderer/helpers';
 
 export enum STATUSES {
@@ -55,25 +56,30 @@ const SCORE_ROOT = -250; // Malus for not playing the tonic as the root note
 const COMPLEXITY_MAX = 5;
 const INTERVAL_COMPLEXITY = {
   '1P': 0,
+  '2m': 2,
+  '2M': 1,
   '3m': 0,
   '3M': 0,
   '4P': 1,
+  '4A': 2,
+  '5d': 2,
   '5P': 0,
-  '5d': 1,
   '5A': 2,
-  '6m': 1, // same as 5A
+  '6m': 2, // same as 5A
   '6M': 1,
+  '7d': 0, // consider dim7 chords easier
   '7M': 1,
   '7m': 1,
   '9d': 2,
   '9m': 1,
-  '9M': 2,
+  '9M': 1,
   '9A': 2,
-  '10m': 1, // same as 9A
+  '10m': 2, // same as 9A
+  '11d': 2,
   '11P': 1,
   '11A': 2,
-  '13m': 1,
-  '13M': 2,
+  '13m': 2,
+  '13M': 1,
 };
 
 /**
@@ -84,6 +90,7 @@ const INTERVAL_COMPLEXITY = {
  */
 export function calculateComplexity(intervals: string[]) {
   return intervals.reduce((complexity, interval) => {
+    if (interval.endsWith('*')) return complexity;
     return complexity + (INTERVAL_COMPLEXITY[interval as keyof typeof INTERVAL_COMPLEXITY] ?? 1);
   }, 0);
 }
@@ -159,10 +166,12 @@ export function getGameState(
     return { gameIndex, index, status: STATUSES.none, chord: null, score: 0 };
 
   if (Note.chroma(played.tonic) === Note.chroma(target.tonic)) {
-    const chordComplexity = calculateComplexity(target.intervals) + 1;
-    const chordLev = levenshtein(played.intervals, getChordDegrees(played, pitchClasses));
+    const targetIntervals = removeIntervalWildcards(target.intervals);
+    const playedIntervals = removeIntervalWildcards(played.intervals);
+    const chordComplexity = calculateComplexity(targetIntervals) + 1;
+    const chordLev = levenshtein(playedIntervals, getChordDegrees(played, pitchClasses));
 
-    const targetLev = levenshtein(target.intervals, played.intervals);
+    const targetLev = levenshtein(targetIntervals, playedIntervals);
 
     if (isSupersetOf(target.chroma)(played.chroma)) {
       return {

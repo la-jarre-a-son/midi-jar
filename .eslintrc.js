@@ -76,4 +76,21 @@ module.exports = {
     'promise/always-return': 'off',
     'no-restricted-exports': 'off',
   },
+  overrides: [
+    {
+      files: ['chords-data.ts'],
+      rules: {
+        'prettier/prettier': [
+          'error',
+          {
+            printWidth: 1000,
+            tabWidth: 2,
+            bracketSpacing: true,
+            singleQuote: true,
+            trailingComma: 'es5',
+          },
+        ],
+      },
+    },
+  ],
 };
