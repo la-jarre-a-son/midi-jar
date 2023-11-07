@@ -26,6 +26,8 @@ export type ChordQuizSettings = {
   difficulty: 0 | 1 | 2 | 3 | 4 | 5;
   gameLength: number;
   gamification: boolean;
+  chordNotation: 'long' | 'short' | 'symbol';
+  displayName: boolean;
   displayReaction: boolean;
   displayIntervals: boolean;
 };
