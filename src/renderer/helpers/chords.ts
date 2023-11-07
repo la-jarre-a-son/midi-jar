@@ -5,43 +5,18 @@ import { Chord as TChord } from '@tonaljs/chord';
 import chordsData from './chords-data';
 
 export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
-export const CHORD_TYPE_REGEX =
-  /^([\d]{1,2}(\/[\d]{1,2})?|(m|M|min|maj|mMaj|m\/ma)[\d]{1,2}|(b|#)[\d]{1,2}|\+|add(b|#)?[\d]{1,2}|maj|m|alt7|aug|dim|sus24|sus2|sus4|oM7|o7|o|no[\d]{1,2})/;
 
-const CHORD_PART_ALIASES = {
-  M: [''],
-  M6: ['maj', '6'],
-  M7: ['maj', '7'],
-  maj7: ['maj', '7'],
-  M9: ['maj', '9'],
-  maj9: ['maj', '9'],
-  M11: ['maj', '11'],
-  maj11: ['maj', '11'],
-  M13: ['maj', '13'],
-  maj13: ['maj', '13'],
-  'm/ma7': ['m', 'M7'], // strange notation...
-  mMaj7: ['m', 'M7'],
-  mMaj9: ['m', 'M9'],
-  69: ['', '69'],
-  m6: ['m', '6'],
-  m7: ['m', '7'],
-  m9: ['m', '9'],
-  m11: ['m', '11'],
-  m13: ['m', '13'],
-  m69: ['m', '69'],
-  '+': ['aug'],
-  o: ['', 'o'],
-  o7: ['', 'o7'],
-  oM7: ['', 'oM7'],
-};
+export const CHORD_TYPE_SPECIALCASE_TOKEN = '6/9|6/11|6/13|no[0-9]{1,2}|quartal';
+export const CHORD_TYPE_QUALITY_TOKEN =
+  '(min|maj|Maj|m/maj?|mM|M|m|-|\\+|aug|dim|dom|sus|o|Δ|^|°|ø|q)(6/9|6/11|6/13|[0-9]{1,2})?';
 
-const aliasChordPart = (part: string) => {
-  return CHORD_PART_ALIASES[part as keyof typeof CHORD_PART_ALIASES] ?? [part];
-};
+export const CHORD_TYPE_ALTERATIONS_TOKEN = '(add)?(b|#)?[0-9]{1,2}';
 
+export const CHORD_TYPE_REGEX = new RegExp(
+  `^(${CHORD_TYPE_SPECIALCASE_TOKEN}|${CHORD_TYPE_ALTERATIONS_TOKEN}|${CHORD_TYPE_QUALITY_TOKEN})`
+);
 export const tokenizeChord = (chordName: string): string[] => {
   const match = chordName.match(CHORD_NAME_REGEX);
-
   if (match) {
     const key = match[1];
     const type = match[4];
@@ -56,9 +31,14 @@ export const tokenizeChord = (chordName: string): string[] => {
 export const tokenizeChordType = (chordType: string): string[] => {
   let remains = chordType;
   const tokens = [];
+  if (remains.startsWith('o') || remains.startsWith('ø') || remains.startsWith('add')) {
+    // trick to put diminished as super
+    tokens.push('');
+  }
   while (remains.length) {
-    const match = remains.match(CHORD_TYPE_REGEX);
-    if (match) {
+    const match: RegExpMatchArray | null = remains.match(CHORD_TYPE_REGEX);
+
+    if (match && match[1].length) {
       tokens.push(match[1]);
       remains = remains.substring(match[1].length);
     } else {
@@ -66,9 +46,13 @@ export const tokenizeChordType = (chordType: string): string[] => {
       remains = remains.substring(1);
     }
   }
-  const [first, ...rest] = tokens;
-  return [...aliasChordPart(first), ...rest];
+
+  return tokens;
 };
+
+export function formatQuality(quality: string) {
+  return quality ? quality.replace(/-/g, '−') : '';
+}
 
 /**
  * Maps a list of pitch classes to the note degrees of a chord.
@@ -81,8 +65,12 @@ export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
     const i = chord.notes.findIndex((note) => Note.chroma(note) === Note.chroma(pc));
     if (i < 0) return '';
 
-    return chord.intervals[i];
+    return chord.intervals[i].replace('*', '');
   });
+}
+
+export function removeIntervalWildcards(intervals: string[]) {
+  return intervals.map((interval) => interval.replace('*', ''));
 }
 
 export function overrideDictionary() {
