@@ -59,11 +59,13 @@ export type ServerSettings = {
   port: number;
 };
 
+export type GeneralSettings = {
+  launchAtStartup: boolean;
+  startMinimized: boolean;
+};
+
 export type Settings = {
-  general: {
-    launchAtStartup: boolean;
-    startMinimized: boolean;
-  };
+  general: GeneralSettings;
   chordDisplay: ChordDisplaySettings[];
   chordQuiz: ChordQuizSettings;
   circleOfFifths: CircleOfFifthsSettings;

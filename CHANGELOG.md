@@ -1,3 +1,15 @@
+# 1.5.0 (2023-11-07)
+
+## Features
+
+- **Chords:** Custom chord dictionary with detect omissions and 3 chord notations
+- **Settings:** allow chord omissions & change chord notation
+- **Chord Display:**: display chord full name & highlight alterations
+
+## Fixes
+
+- **chore:** Upgraded tonal to v5
+
 # 1.4.0 (2023-09-25)
 
 ## Features
