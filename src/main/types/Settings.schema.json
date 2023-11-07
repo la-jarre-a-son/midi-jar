@@ -89,6 +89,14 @@
         },
         "chordQuiz": {
             "properties": {
+                "chordNotation": {
+                    "enum": [
+                        "long",
+                        "short",
+                        "symbol"
+                    ],
+                    "type": "string"
+                },
                 "difficulty": {
                     "enum": [
                         0,
@@ -101,6 +109,9 @@
                     "type": "number"
                 },
                 "displayIntervals": {
+                    "type": "boolean"
+                },
+                "displayName": {
                     "type": "boolean"
                 },
                 "displayReaction": {

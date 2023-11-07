@@ -45,6 +45,8 @@ export const defaults: StoreType = {
       difficulty: 0 as const,
       gameLength: 16,
       gamification: true,
+      chordNotation: 'short',
+      displayName: true,
       displayReaction: true,
       displayIntervals: true,
     },

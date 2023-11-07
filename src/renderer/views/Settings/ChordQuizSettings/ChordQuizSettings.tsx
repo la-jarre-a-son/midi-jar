@@ -84,6 +84,18 @@ const ChordQuizSettings: React.FC = () => {
           </FormControlLabel>
 
           <FormControlLabel
+            label="Chord Notation"
+            hint="Choose the notation chords are displayed in"
+            reverse
+          >
+            <Select
+              value={settings.chordQuiz.chordNotation}
+              onChange={(value) => updateSetting('chordQuiz.chordNotation', value)}
+              options={fields.chordNotation.choices}
+            />
+          </FormControlLabel>
+
+          <FormControlLabel
             label="Display Reaction"
             hint="Enables the textual reactions to success and fail"
             reverse
@@ -91,6 +103,17 @@ const ChordQuizSettings: React.FC = () => {
             <Switch
               onChange={(value) => updateSetting('chordQuiz.displayReaction', value)}
               checked={settings.chordQuiz.displayReaction}
+            />
+          </FormControlLabel>
+
+          <FormControlLabel
+            label="Display Chord Name"
+            hint="Display the name of target chord in full text"
+            reverse
+          >
+            <Switch
+              onChange={(value) => updateSetting('chordQuiz.displayName', value)}
+              checked={settings.chordQuiz.displayName}
             />
           </FormControlLabel>
 

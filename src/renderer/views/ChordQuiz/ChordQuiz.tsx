@@ -99,11 +99,15 @@ const ChordQuiz: React.FC = () => {
               c.type
             )}
           >
-            <ChordName chord={c.chord} />
+            <ChordName chord={c.chord} notation={quizSettings.chordNotation} />
           </div>
         ))}
       </div>
-
+      {quizSettings.displayName && (
+        <div className={cx('chordName')}>
+          {games[gameState.gameIndex].chords[gameState.index].name}
+        </div>
+      )}
       {quizSettings.displayIntervals && (
         <div className={cx('intervalsContainer')}>
           <ChordIntervals
@@ -120,7 +124,7 @@ const ChordQuiz: React.FC = () => {
         </div>
         {quizSettings.gamification && <div className={cx('score')}>{gameState.score} pts</div>}
         <div className={cx('playedChord')}>
-          <ChordName chord={gameState.chord} />
+          <ChordName chord={gameState.chord} notation={quizSettings.chordNotation} />
         </div>
       </div>
     </div>

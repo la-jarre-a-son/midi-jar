@@ -151,6 +151,10 @@ $View_ChordQuiz_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   font-weight: bold;
 }
 
+.chordName {
+  font-size: min(3vh, 3vw);
+}
+
 /** Played Section **/
 
 .score {
