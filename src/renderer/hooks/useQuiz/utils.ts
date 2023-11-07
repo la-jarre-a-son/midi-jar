@@ -118,6 +118,20 @@ export function getDictionaryChordsByComplexity() {
     );
 }
 
+// (function consoleLogChordDifficulty() {
+//   const dict = getDictionaryChordsByComplexity();
+
+//   console.log(
+//     [
+//       `- \`Very Easy\`: ${dict[0].join(', ')}`,
+//       `- \`Easy\`: ${dict[1].join(', ')}`,
+//       `- \`Medium\`: ${dict[2].join(', ')}`,
+//       `- \`Hard\`: ${dict[3].join(', ')}`,
+//       `- \`Very Hard\`: ${dict[4].join(', ')}`,
+//     ].join('\n')
+//   );
+// })();
+
 /**
  * Calculates a score depending on the detected play
  *
