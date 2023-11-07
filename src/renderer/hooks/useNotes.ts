@@ -13,6 +13,8 @@ import {
   tokenizeChord,
 } from 'renderer/helpers';
 
+import { detect } from 'renderer/helpers/chord-detect';
+
 import useMidiMessage from './useMidiMessage';
 
 const MIDI_CMD_NOTE_OFF = 0x80;
@@ -35,10 +37,8 @@ const getChordInfo = (chord: string, keySignatureNotes: string[]) => {
   return null;
 };
 
-const getChords = (notes: string[], keySignatureNotes: string[]) => {
-  const chords = Chord.detect(notes, { assumePerfectFifth: true }).map((n) =>
-    getChordInfo(n, keySignatureNotes)
-  );
+const getChords = (notes: string[], keySignatureNotes: string[], allowOmissions: boolean) => {
+  const chords = detect(notes, { allowOmissions }).map((n) => getChordInfo(n, keySignatureNotes));
 
   return chords;
 };
@@ -49,6 +49,7 @@ interface Parameters {
   accidentals: 'flat' | 'sharp';
   key: string;
   midiChannel: number;
+  allowOmissions: boolean;
 }
 
 enum MidiActionTypes {
@@ -65,7 +66,9 @@ interface MidiAction {
 
 enum ParametersActionTypes {
   KEY_SIGNATURE_CHANGED = 'KEY_SIGNATURE_CHANGED',
+  ALLOW_OMISSIONS_CHANGED = 'ALLOW_OMISSIONS_CHANGED',
 }
+
 interface ParametersAction {
   type: ParametersActionTypes;
   value: unknown;
@@ -82,6 +85,7 @@ interface State {
   chords: ReturnType<typeof getChords>;
   sustained: boolean;
   keySignature: KeySignatureConfig;
+  allowOmissions: boolean;
 }
 
 function reducer(state: State, action: Action): State {
@@ -98,7 +102,7 @@ function reducer(state: State, action: Action): State {
         getNoteInKeySignature(Note.fromMidi(m), keySignature.notes)
       );
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignature.notes);
+      const chords = getChords(notes, keySignature.notes, state.allowOmissions);
 
       return {
         ...state,
@@ -106,6 +110,16 @@ function reducer(state: State, action: Action): State {
         pitchClasses,
         chords,
         keySignature,
+      };
+    }
+    case ParametersActionTypes.ALLOW_OMISSIONS_CHANGED: {
+      const allowOmissions = action.value as typeof state.allowOmissions;
+      const chords = getChords(state.notes, keySignatureNotes, allowOmissions);
+
+      return {
+        ...state,
+        allowOmissions,
+        chords,
       };
     }
     case MidiActionTypes.NOTE_ON: {
@@ -116,7 +130,7 @@ function reducer(state: State, action: Action): State {
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignatureNotes);
+      const chords = getChords(notes, keySignatureNotes, state.allowOmissions);
 
       return {
         ...state,
@@ -138,7 +152,7 @@ function reducer(state: State, action: Action): State {
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignatureNotes);
+      const chords = getChords(notes, keySignatureNotes, state.allowOmissions);
 
       return {
         ...state,
@@ -164,7 +178,7 @@ function reducer(state: State, action: Action): State {
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignatureNotes);
+      const chords = getChords(notes, keySignatureNotes, state.allowOmissions);
       return {
         ...state,
         sustained: false,
@@ -190,16 +204,19 @@ const defaultState: State = {
   chords: [],
   sustained: false,
   keySignature: getKeySignature('C'),
+  allowOmissions: false,
 };
 
 export default function useNotes({
   accidentals = 'flat',
   key = 'C',
   midiChannel = MIDI_CHANNEL_ALL,
+  allowOmissions = false,
 }: Partial<Parameters> = {}) {
   const [state, dispatch] = useReducer(reducer, {
     ...defaultState,
     keySignature: getKeySignature(key, accidentals === 'sharp'),
+    allowOmissions,
   });
 
   useEffect(() => {
@@ -208,6 +225,13 @@ export default function useNotes({
       value: getKeySignature(key, accidentals === 'sharp'),
     });
   }, [accidentals, key]);
+
+  useEffect(() => {
+    dispatch({
+      type: ParametersActionTypes.ALLOW_OMISSIONS_CHANGED,
+      value: allowOmissions,
+    });
+  }, [allowOmissions]);
 
   const onMidiMessage = useCallback(
     (message: MidiMessage) => {
