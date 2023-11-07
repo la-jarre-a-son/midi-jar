@@ -36,15 +36,30 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   }
 }
 
-.chord {
+.display {
+  position: relative;
+  z-index: 2;
   display: flex;
-  font-size: 10vw;
-  overflow: hidden;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
   align-items: center;
   justify-content: center;
+  height: 100%;
   text-shadow: $View_ChordDisplay_textShadow;
+}
+
+.chord {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 10vw;
+  overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
 
   &--withNotation {
     font-size: 8vw;
@@ -53,13 +68,23 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
 
 .alternativeChords {
   position: absolute;
+  z-index: 1;
   top: 0;
   right: 0;
-  padding: 6px;
-  font-size: 24px;
+  padding: 1vw;
+  font-size: 4vh;
   display: flex;
   flex-direction: column;
   text-shadow: $View_ChordDisplay_textShadow;
+}
+
+.name {
+  font-size: 3vh;
+  line-height: 2vh;
+  height: 6vh;
+  padding: 0 5vw;
+  word-wrap: break-word;
+  text-align: center;
 }
 
 .notes {

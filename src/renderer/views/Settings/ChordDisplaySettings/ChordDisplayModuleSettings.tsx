@@ -59,9 +59,54 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                 checked={moduleSettings.displayAltChords}
               />
             </FormControlLabel>
+
+            <FormControlLabel
+              label="Display Chord Name"
+              hint="Display the name of chord in full text"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('displayName', value)}
+                checked={moduleSettings.displayName}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel
+              label="Chord Notation"
+              hint="Choose the notation chords are displayed in"
+              reverse
+            >
+              <Select
+                value={moduleSettings.chordNotation}
+                onChange={(value) => updateModuleSetting('chordNotation', value)}
+                options={fields.chordNotation.choices}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel
+              label="Highlight Chord Alterations"
+              hint="Displays chord parts more clearly to ease reading"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('highlightAlterations', value)}
+                checked={moduleSettings.highlightAlterations}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel
+              label="Allow omissions"
+              hint="Detects chords with omitted intervals"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('allowOmissions', value)}
+                checked={moduleSettings.allowOmissions}
+              />
+            </FormControlLabel>
           </FormFieldset>
 
-          <FormFieldset label="Notation">
+          <FormFieldset label="Additional Info">
             <FormControlLabel
               label="Display Notation"
               hint="Enables the standard notation staff (configure staff in Settings/Music Notation)"
@@ -74,17 +119,6 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
             </FormControlLabel>
 
             <FormControlLabel
-              label="Display Notes"
-              hint="Displays the notes in the played order"
-              reverse
-            >
-              <Switch
-                onChange={(value) => updateModuleSetting('displayNotes', value)}
-                checked={moduleSettings.displayNotes}
-              />
-            </FormControlLabel>
-
-            <FormControlLabel
               label="Display Intervals"
               hint="Adds a 12 cells table with the intervals detected in the chord"
               reverse
@@ -92,6 +126,17 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
               <Switch
                 onChange={(value) => updateModuleSetting('displayIntervals', value)}
                 checked={moduleSettings.displayIntervals}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel
+              label="Display Notes"
+              hint="Displays the notes in the played order"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('displayNotes', value)}
+                checked={moduleSettings.displayNotes}
               />
             </FormControlLabel>
           </FormFieldset>

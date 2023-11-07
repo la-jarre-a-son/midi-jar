@@ -25,6 +25,7 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
       accidentals,
       key,
       midiChannel: 0,
+      allowOmissions: moduleSettings.allowOmissions,
     });
 
   if (!settings || !moduleSettings) return null;
@@ -33,12 +34,15 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
     skin,
     from,
     to,
+    chordNotation,
+    highlightAlterations,
     colorHighlight,
     colorNoteWhite,
     colorNoteBlack,
     displayKeyboard,
     displayNotes,
     displayChord,
+    displayName,
     displayNotation,
     displayAltChords,
     displayKeyNames,
@@ -52,11 +56,18 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
       {displayAltChords && (
         <div id="alternativeChords" className={cx('alternativeChords')}>
           {chords.map((chord, index) =>
-            index > 0 ? <ChordName key={index} chord={chord} /> : null
+            index > 0 ? (
+              <ChordName
+                key={index}
+                chord={chord}
+                notation={chordNotation}
+                highlightAlterations={highlightAlterations}
+              />
+            ) : null
           )}
         </div>
       )}
-      <div id="chordDisplayContainer" className={cx('container')}>
+      <div id="container" className={cx('container')}>
         {displayNotation && (
           <Notation
             id="notation"
@@ -67,21 +78,32 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
             staffTranspose={staffTranspose}
           />
         )}
-        {displayChord && (
-          <div id="chord" className={cx('chord', { 'chord--withNotation': displayNotation })}>
-            <ChordName chord={chords[0]} />
-          </div>
-        )}
-      </div>
-      {displayIntervals && (
-        <div id="intervals" className={cx('intervals')}>
-          <ChordIntervals
-            intervals={chords[0]?.intervals}
-            pitchClasses={pitchClasses}
-            tonic={chords[0]?.tonic}
-          />
+        <div id="display" className={cx('display')}>
+          {displayChord && (
+            <div id="chord" className={cx('chord', { 'chord--withNotation': displayNotation })}>
+              <ChordName
+                chord={chords[0]}
+                notation={chordNotation}
+                highlightAlterations={highlightAlterations}
+              />
+            </div>
+          )}
+          {displayName && (
+            <div id="name" className={cx('name')}>
+              {chords[0] && chords[0].name}
+            </div>
+          )}
+          {displayIntervals && (
+            <div id="intervals" className={cx('intervals')}>
+              <ChordIntervals
+                intervals={chords[0]?.intervals}
+                pitchClasses={pitchClasses}
+                tonic={chords[0]?.tonic}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
       {displayNotes && (
         <div id="notes" className={cx('notes')}>
           {pitchClasses.map((note, index) => (

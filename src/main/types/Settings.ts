@@ -3,9 +3,13 @@ export type ChordDisplaySettings = {
   skin: 'classic' | 'flat';
   from: string;
   to: string;
+  chordNotation: 'long' | 'short' | 'symbol';
+  allowOmissions: boolean;
+  highlightAlterations: boolean;
   displayKeyboard: boolean;
   displayNotes: boolean;
   displayChord: boolean;
+  displayName: boolean;
   displayNotation: boolean;
   displayAltChords: boolean;
   displayTonic: boolean;
