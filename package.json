@@ -71,9 +71,14 @@
     },
     "linux": {
       "target": [
-        "AppImage"
+        "AppImage",
+        "flatpak"
       ],
-      "category": "Development"
+      "category": "Audio"
+    },
+    "flatpak": {
+      "runtimeVersion": "22.08",
+      "baseVersion": "22.08"
     },
     "directories": {
       "app": "release/app",
@@ -170,7 +175,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "detect-port": "^1.5.1",
     "electron": "^24.8.3",
-    "electron-builder": "^24.6.4",
+    "electron-builder": "^24.9.1",
     "electron-extension-installer": "^1.2.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.50.0",

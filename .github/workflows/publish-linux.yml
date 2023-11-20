@@ -17,6 +17,11 @@ jobs:
       - name: Install libasound2-dev
         run: sudo apt-get install -y libasound2-dev
 
+      - name: Install Flatpak dependencies
+        run: |
+          sudo apt-get install -y flatpak flatpak-builder elfutils
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
       - name: Checkout git repo
         uses: actions/checkout@v2
 
