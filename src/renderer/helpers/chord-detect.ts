@@ -4,6 +4,9 @@ import { all, ChordType } from '@tonaljs/chord-type';
 import { note } from '@tonaljs/core';
 import { modes, chroma as pcsetChroma } from '@tonaljs/pcset';
 
+const DETECT_INVERSION_SCORE = 0.5;
+const DETECT_OMISSION_SCORE = 0.75;
+
 interface FoundChord {
   readonly weight: number;
   readonly name: string;
@@ -70,25 +73,24 @@ function findMatches(
     chordTypes.forEach((chordType) => {
       const chordName = chordType.aliases[0];
       const baseNote = noteName(index);
-      const isInversion = index !== tonicChroma;
       const modeWithOmissions = withOmissions(mode, chordType.omissionChroma);
+      const isInversion = index !== tonicChroma;
+      const hasOmissions = mode !== modeWithOmissions;
 
-      if (isInversion) {
-        if (mode !== modeWithOmissions) {
-          found.push({
-            weight: 0.5 * weight,
-            name: `${baseNote}${chordName}/${tonic}`,
-          });
-        } else {
-          found.push({
-            weight: 0.5 * 0.75 * weight,
-            name: `${baseNote}${chordName}/${tonic}`,
-          });
-        }
-      } else if (mode !== modeWithOmissions) {
-        found.push({ weight: 0.75 * weight, name: `${baseNote}${chordName}` });
+      if (isInversion && hasOmissions) {
+        found.push({
+          weight: DETECT_INVERSION_SCORE * DETECT_OMISSION_SCORE * weight,
+          name: `${baseNote}${chordName}/${tonic}`,
+        });
+      } else if (isInversion) {
+        found.push({
+          weight: DETECT_INVERSION_SCORE * weight,
+          name: `${baseNote}${chordName}/${tonic}`,
+        });
+      } else if (hasOmissions) {
+        found.push({ weight: DETECT_OMISSION_SCORE * weight, name: `${baseNote}${chordName}` });
       } else {
-        found.push({ weight: 1 * weight, name: `${baseNote}${chordName}` });
+        found.push({ weight, name: `${baseNote}${chordName}` });
       }
     });
   });
