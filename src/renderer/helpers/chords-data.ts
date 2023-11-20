@@ -16,7 +16,7 @@ const CHORDS: string[][] = [
 
   // ==Major==
   // '''Normal'''
-  ['1P 3M 5P', 'major', 'maj M '],
+  ['1P 3M 5P', 'major', '   maj M'],
   ['1P 3M 5P* 7M', 'major seventh', 'maj7 M7 Δ7 Δ'],
   ['1P 3M 5P* 7M 9M', 'major ninth', 'maj9 M9 Δ9'],
   ['1P 3M 5P* 7M 9M* 11M', 'major eleventh', 'maj11 M11 Δ11'],
@@ -156,7 +156,7 @@ const CHORDS: string[][] = [
 
   ['1P 3M 5P* 7m 9m 11A', 'dominant flat ninth sharp eleventh', 'dom7b9#11 7b9#11 7b9#11 7b5b9 7b9b5'],
   ['1P 3M 5P* 7m 9m 13m', 'dominant flat ninth added flat thirteenth', 'dom7b9b13 7b9b13'],
-  ['1P 3M 5P* 7m 9m 11A 13m', 'dominant flat ninth sharp eleventh flat thirteenth', ' dom7b9#11b13 7b9#11b13 7#11b9b13 dom7#11b9b13 7b5b9b13'],
+  ['1P 3M 5P* 7m 9m 11A 13m', 'dominant flat ninth sharp eleventh flat thirteenth', 'dom7b9#11b13 7b9#11b13 7#11b9b13 dom7#11b9b13 7b5b9b13'],
   ['1P 3M 5P* 7m 9A 11A', 'dominant sharp ninth sharp eleventh', 'dom7#9#11 7#9#11 7b5#9 7#9b5 dom7#9addb5'], // same as m7b11#11
   ['1P 3M 5P* 7m 9A 13m', 'dominant sharp ninth flat thirteenth', 'dom7#9b13 7#9b13'],
   ['1P 3M 5P* 7m 11A 13m', 'dominant seventh sharp eleventh flat thirteenth', 'dom7#11b13 7#11b13 7#11b13 7b5b13'],
