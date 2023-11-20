@@ -9,7 +9,10 @@ export const defaults: StoreType = {
     y: null,
     width: null,
     height: null,
-    changelogDismissed: false,
+    maximized: false,
+    alwaysOnTop: false,
+    changelogDismissed: true,
+    path: '/',
   },
   settings: {
     general: {

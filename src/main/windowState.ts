@@ -1,6 +1,7 @@
 import { screen, BrowserWindow, Rectangle } from 'electron';
 import { store, defaults } from './store';
 import { WindowState } from './types/WindowState';
+import { getURLHash } from './util';
 
 export const DEFAULT_WINDOW_WIDTH = 1024;
 export const DEFAULT_WINDOW_HEIGHT = 768;
@@ -47,11 +48,23 @@ export function saveWindowState(window: BrowserWindow) {
 
   const { x, y, height, width } = window.getNormalBounds();
 
-  store.set('windowState', { ...previousState, x, y, width, height });
+  const path = getURLHash(window.webContents.getURL());
+  const maximized = window.isMaximized();
+  const alwaysOnTop = window.isAlwaysOnTop();
+
+  store.set('windowState', { ...previousState, x, y, width, height, maximized, alwaysOnTop, path });
 }
 
 export function dismissChangelog() {
   return store.set('windowState.changelogDismissed', true);
+}
+
+export function setAlwaysOnTop(flag: boolean) {
+  return store.set('windowState.alwaysOnTop', flag);
+}
+
+export function setMaximized(maximized: boolean) {
+  return store.set('windowState.maximized', maximized);
 }
 
 export function onWindowStateChange(
