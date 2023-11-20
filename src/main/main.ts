@@ -24,6 +24,7 @@ import {
   DEFAULT_WINDOW_MIN_HEIGHT,
   DEFAULT_WINDOW_MIN_WIDTH,
   getWindowBoundsOnDisplay,
+  getWindowState,
   saveWindowState,
 } from './windowState';
 
@@ -67,6 +68,8 @@ const createWindow = async () => {
     await installExtensions();
   }
 
+  const windowState = getWindowState();
+
   const winBounds = getWindowBoundsOnDisplay();
 
   mainWindow = new BrowserWindow({
@@ -87,13 +90,21 @@ const createWindow = async () => {
     trafficLightPosition: { x: 10, y: 14 },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('renderer.html'));
+  mainWindow.loadURL(resolveHtmlPath('renderer.html', windowState.path));
   mainWindow.setMenu(null);
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
     mainWindow.show();
+
+    if (windowState.maximized) {
+      mainWindow.maximize();
+    }
+
+    if (windowState.alwaysOnTop) {
+      mainWindow.setAlwaysOnTop(true, 'floating');
+    }
   });
 
   mainWindow.on('close', () => {

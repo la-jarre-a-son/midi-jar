@@ -14,7 +14,13 @@ import {
   resetSettings,
   clearSettings,
 } from './settings';
-import { dismissChangelog, getWindowState, onWindowStateChange } from './windowState';
+import {
+  setAlwaysOnTop,
+  setMaximized,
+  dismissChangelog,
+  getWindowState,
+  onWindowStateChange,
+} from './windowState';
 import { WindowState } from './types/WindowState';
 
 function sendToAll(channel: string, ...args: unknown[]) {
@@ -43,12 +49,14 @@ ipcMain.on('app:window:minimize', (event) => {
 ipcMain.on('app:window:maximize', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   window?.maximize();
+  setMaximized(true);
 });
 
 ipcMain.on('app:window:unmaximize', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
 
   window?.unmaximize();
+  setMaximized(false);
 });
 
 ipcMain.on('app:window:titleBarDoubleClick', (event) => {
@@ -92,11 +100,15 @@ onWindowStateChange((state?: WindowState) => {
 });
 
 export function bindWindowEvents(window: BrowserWindow) {
-  window.on('maximize', () => window.webContents.send('app:window:maximize'));
-  window.on('unmaximize', () => window.webContents.send('app:window:unmaximize'));
-  window.on('always-on-top-changed', (_event, isAlwaysOnTop) =>
-    window.webContents.send('app:window:always-on-top-changed', isAlwaysOnTop)
-  );
+  window.on('maximize', () => {
+    setMaximized(true);
+  });
+  window.on('unmaximize', () => {
+    setMaximized(false);
+  });
+  window.on('always-on-top-changed', (_event, isAlwaysOnTop) => {
+    setAlwaysOnTop(isAlwaysOnTop);
+  });
 }
 
 /* MIDI */

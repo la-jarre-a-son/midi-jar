@@ -14,10 +14,10 @@ import styles from './Layout.module.scss';
 const cx = classnames.bind(styles);
 
 const TopBar: React.FC = () => {
-  const { titleBarDoubleClick, isAlwaysOnTop, setAlwaysOnTop } = useWindowState();
+  const { windowState, titleBarDoubleClick, setAlwaysOnTop } = useWindowState();
 
   const toggleAlwaysOnTop = () => {
-    setAlwaysOnTop(!isAlwaysOnTop);
+    setAlwaysOnTop(!windowState.alwaysOnTop);
   };
 
   return (
@@ -35,7 +35,7 @@ const TopBar: React.FC = () => {
         <ToggleButton
           selectedIntent="warning"
           onClick={toggleAlwaysOnTop}
-          selected={isAlwaysOnTop}
+          selected={windowState.alwaysOnTop}
           aria-label="Always on Top"
           icon
         >

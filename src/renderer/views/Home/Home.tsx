@@ -37,7 +37,7 @@ const cx = classnames.bind(styles);
 
 const Home: React.FC = () => {
   const { settings } = useSettings();
-  const { isChangelogDismissed, dismissChangelog } = useWindowState();
+  const { windowState, dismissChangelog } = useWindowState();
   const { state } = useServerState();
   const overlayEnabled = state.started && !!state.addresses.length;
 
@@ -176,7 +176,7 @@ const Home: React.FC = () => {
           </Card>
         </Grid>
       </Container>
-      <Modal onClose={closeAboutModalOpen} open={!isChangelogDismissed} size="lg">
+      <Modal onClose={closeAboutModalOpen} open={!windowState.changelogDismissed} size="lg">
         <ModalHeader title="MIDI Jar" />
         <ModalContent>
           <About />

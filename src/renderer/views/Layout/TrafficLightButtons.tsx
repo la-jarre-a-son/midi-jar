@@ -14,7 +14,7 @@ const defaultProps = {
 };
 
 const TrafficLightButtons: React.FC<Props> = ({ className }) => {
-  const { isMaximized, maximize, unmaximize, minimize, close } = useWindowState();
+  const { windowState, maximize, unmaximize, minimize, close } = useWindowState();
 
   const handleEvent = (callback: () => void) => (event: React.MouseEvent<unknown>) => {
     (event.currentTarget as HTMLButtonElement)?.blur();
@@ -32,7 +32,7 @@ const TrafficLightButtons: React.FC<Props> = ({ className }) => {
       >
         <Icon name="minimize" />
       </Button>
-      {isMaximized ? (
+      {windowState.maximized ? (
         <Button
           aria-label="Unmaximize"
           onClick={handleEvent(unmaximize)}
