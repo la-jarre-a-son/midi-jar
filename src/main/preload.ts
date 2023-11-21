@@ -1,11 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-import { MidiMessage, ServerState, Settings } from './types';
+import { MidiMessage, ServerState, Settings, UpdateInfo } from './types';
 
 import { ApiMidiInput, ApiMidiOutput, ApiMidiRoute, ApiMidiWire } from './types/api';
 import { WindowState } from './types/WindowState';
-
-type AppEvent = 'maximize' | 'unmaximize' | 'always-on-top-changed';
 
 const registerListener =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,13 +41,14 @@ export const AppApi = {
     unmaximize: () => ipcRenderer.send('app:window:unmaximize'),
     setAlwaysOnTop: (flag: boolean) => ipcRenderer.send('app:window:setAlwaysOnTop', flag),
     titleBarDoubleClick: () => ipcRenderer.send('app:window:titleBarDoubleClick'),
+    checkUpdates: () => ipcRenderer.send('app:window:checkUpdates'),
+    dismissUpdate: (version: string) => ipcRenderer.send('app:window:dismissUpdate', version),
     dismissChangelog: () => ipcRenderer.send('app:window:dismissChangelog'),
     getState: () => ipcRenderer.send('app:window:getState'),
     onStateChange: (callback: (state: WindowState) => void) =>
       registerListener('app:window:state')(callback),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    on: (appEvent: AppEvent, callback: (...args: any[]) => void) =>
-      registerListener(`app:window:${appEvent}`)(callback),
+    onUpdateInfo: (callback: (info: UpdateInfo) => void) =>
+      registerListener('app:window:updateInfo')(callback),
   },
 };
 

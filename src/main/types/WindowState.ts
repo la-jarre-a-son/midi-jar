@@ -6,5 +6,6 @@ export type WindowState = {
   maximized: boolean;
   alwaysOnTop: boolean;
   changelogDismissed: boolean;
+  updateDismissed: string | null;
   path: string;
 };

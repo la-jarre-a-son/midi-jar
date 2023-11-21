@@ -59,6 +59,10 @@ export function dismissChangelog() {
   return store.set('windowState.changelogDismissed', true);
 }
 
+export function dismissUpdate(version: string) {
+  return store.set('windowState.updateDismissed', version);
+}
+
 export function setAlwaysOnTop(flag: boolean) {
   return store.set('windowState.alwaysOnTop', flag);
 }
