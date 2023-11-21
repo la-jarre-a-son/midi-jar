@@ -10,7 +10,9 @@ import {
   v1_3_0_Settings,
   v1_3_1_MidiRouteRaw,
   v1_4_0_Settings,
+  v1_4_0_WindowState,
   v1_5_0_Settings,
+  v1_5_1_WindowState,
 } from './legacy-types';
 
 const migrations: Migrations<StoreType> = {
@@ -218,6 +220,23 @@ const migrations: Migrations<StoreType> = {
     };
 
     store.set('settings', newSettings);
+  },
+  '1.5.1': (store: Conf<StoreType>) => {
+    store.set('version', '1.5.1');
+    store.set('windowState.changelogDismissed', false);
+
+    const windowState = store.get('windowState') as unknown as v1_4_0_WindowState;
+
+    const newWindowState: v1_5_1_WindowState = {
+      ...windowState,
+      maximized: false,
+      alwaysOnTop: false,
+      path: '/',
+      updateDismissed: null,
+      changelogDismissed: false,
+    };
+
+    store.set('windowState', newWindowState);
   },
 };
 

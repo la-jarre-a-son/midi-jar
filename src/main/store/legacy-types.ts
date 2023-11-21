@@ -177,3 +177,11 @@ export type v1_5_0_Settings = {
   circleOfFifths: v1_2_0_CircleOfFifthsSettings;
   notation: v1_2_0_NotationSettings;
 };
+
+/* v1.5.1 - window state with maximized, aot, path and updateDismissed */
+export type v1_5_1_WindowState = v1_4_0_WindowState & {
+  maximized: boolean;
+  alwaysOnTop: boolean;
+  path: string;
+  updateDismissed: string | null;
+};
