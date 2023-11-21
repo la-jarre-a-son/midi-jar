@@ -10,8 +10,6 @@
  */
 import path from 'path';
 import { app, BrowserWindow, shell, Tray, Menu, nativeImage } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
 import { resolveHtmlPath, getAssetPath } from './util';
 
 import MenuBuilder from './menu';
@@ -27,14 +25,6 @@ import {
   getWindowState,
   saveWindowState,
 } from './windowState';
-
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
 
 const singleInstance = app.requestSingleInstanceLock();
 let mainWindow: BrowserWindow | null = null;
@@ -127,10 +117,6 @@ const createWindow = async () => {
   });
 
   bindWindowEvents(mainWindow);
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
 };
 
 const openWindow = () => {
@@ -201,8 +187,8 @@ process.on('SIGTERM', () => {
   app.quit();
   process.exit(0);
 });
-// Start app windows
 
+// Start app windows
 if (!singleInstance) {
   app.quit();
 }

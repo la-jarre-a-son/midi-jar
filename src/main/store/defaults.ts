@@ -12,6 +12,7 @@ export const defaults: StoreType = {
     maximized: false,
     alwaysOnTop: false,
     changelogDismissed: true,
+    updateDismissed: null,
     path: '/',
   },
   settings: {

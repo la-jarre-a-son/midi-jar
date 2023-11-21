@@ -18,10 +18,12 @@ import {
   setAlwaysOnTop,
   setMaximized,
   dismissChangelog,
+  dismissUpdate,
   getWindowState,
   onWindowStateChange,
 } from './windowState';
 import { WindowState } from './types/WindowState';
+import { checkUpdates } from './update';
 
 function sendToAll(channel: string, ...args: unknown[]) {
   const windows = BrowserWindow.getAllWindows();
@@ -85,8 +87,24 @@ ipcMain.on('app:window:setAlwaysOnTop', (event, flag) => {
   window?.setAlwaysOnTop(flag, 'floating');
 });
 
+ipcMain.on('app:window:dismissUpdate', (event, version: string) => {
+  dismissUpdate(version);
+});
+
 ipcMain.on('app:window:dismissChangelog', () => {
   dismissChangelog();
+});
+
+ipcMain.on('app:window:checkUpdates', (event) => {
+  const { updateDismissed } = getWindowState();
+
+  checkUpdates(updateDismissed)
+    .then((updateInfo) => {
+      if (updateInfo) {
+        event.reply('app:window:updateInfo', updateInfo);
+      }
+    })
+    .catch(() => {});
 });
 
 ipcMain.on('app:window:getState', (event) => {
