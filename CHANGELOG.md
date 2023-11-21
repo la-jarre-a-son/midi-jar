@@ -1,3 +1,16 @@
+# 1.5.1 (2023-11-21)
+
+## Features
+- **window:** retain window maximized, aot and path
+
+## Fixes
+
+- **Chords:** correctly order chord inversion vs omissions on detect
+- **Chords:** remove M & maj notation for major chord
+- **chore:** Use a published fork of nlf
+- **chore:** Add flatpak build target
+- disable autoupdate and add an update modal
+
 # 1.5.0 (2023-11-07)
 
 ## Features

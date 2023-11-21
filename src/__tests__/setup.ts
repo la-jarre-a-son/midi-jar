@@ -26,10 +26,12 @@ window.app = {
     unmaximize: jest.fn(),
     setAlwaysOnTop: jest.fn(),
     titleBarDoubleClick: jest.fn(),
+    checkUpdates: jest.fn(),
+    dismissUpdate: jest.fn(),
     dismissChangelog: jest.fn(),
     getState: jest.fn(),
     onStateChange: jest.fn().mockReturnValue(jest.fn()),
-    on: jest.fn().mockReturnValue(jest.fn()),
+    onUpdateInfo: jest.fn().mockReturnValue(jest.fn()),
   },
 };
 
