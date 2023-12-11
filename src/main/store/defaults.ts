@@ -16,6 +16,7 @@ export const defaultKeyboardSettings: KeyboardSettings = {
   keyInfo: 'tonicAndInterval',
   fadeOutDuration: 0,
   textOpacity: 0.5,
+  displaySustained: true,
   sizes: {
     radius: 0.4,
     height: 6,
@@ -34,6 +35,7 @@ export const defaultChordDisplaySettings: ChordDisplaySettings = {
   id: 'default',
   chordNotation: 'short',
   allowOmissions: true,
+  useSustain: true,
   highlightAlterations: false,
   displayKeyboard: true,
   displayChord: true,

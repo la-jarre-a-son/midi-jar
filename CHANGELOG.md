@@ -2,6 +2,7 @@
 
 ## Features
 - **Chord Display:** Fully customizable Piano (sizes, colors and labels above keys)
+- **Chord Display:** disable sustain pedal for detection or display
 
 # 1.5.1 (2023-11-21)
 

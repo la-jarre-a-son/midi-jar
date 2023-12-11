@@ -7,6 +7,7 @@ export type KeyboardSettings = {
   keyInfo: 'none' | 'tonic' | 'interval' | 'tonicAndInterval';
   fadeOutDuration: number;
   textOpacity: number;
+  displaySustained: boolean;
   sizes: {
     radius: number;
     height: number;
@@ -25,6 +26,7 @@ export type ChordDisplaySettings = {
   id: string;
   chordNotation: 'long' | 'short' | 'symbol';
   allowOmissions: boolean;
+  useSustain: boolean;
   highlightAlterations: boolean;
   displayKeyboard: boolean;
   displayChord: boolean;

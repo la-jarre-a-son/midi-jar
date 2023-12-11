@@ -17,7 +17,11 @@ const CircleOfFifths: React.FC<Props> = ({ disableUpdate }) => {
   const { settings, updateSetting } = useSettings();
 
   const { key } = settings.notation;
-  const { chords, pitchClasses, keySignature } = useNotes({
+  const {
+    chords,
+    pitchClasses,
+    params: { keySignature },
+  } = useNotes({
     key,
     midiChannel: 0,
   });
