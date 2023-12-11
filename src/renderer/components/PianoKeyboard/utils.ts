@@ -8,6 +8,25 @@ import {
 } from 'renderer/helpers';
 import { Note } from 'tonal';
 
+function wrapMidiNotes(from: string, to: string, midiNotes: number[]): (number | null)[] {
+  const start = Note.midi(Note.simplify(from)) ?? 0;
+  const end = Note.midi(Note.simplify(to)) ?? 127;
+
+  return midiNotes.map((midi) => {
+    if (midi < start) {
+      const diff = 12 - ((start - midi) % 12);
+      return diff === 12 ? start : start + diff;
+    }
+
+    if (midi > end) {
+      const diff = 12 - ((midi - end) % 12);
+      return diff === 12 ? end : end - diff;
+    }
+
+    return null;
+  });
+}
+
 export const highlight = (
   containerEl: HTMLDivElement,
   type: 'midi' | 'chroma' | 'name',
@@ -39,6 +58,23 @@ export const highlightNotes = (
 ) => {
   for (let i = 0; i < midi.length; i += 1) {
     highlight(containerEl, 'midi', midi[i], className);
+  }
+};
+
+export const highlightWrapNotes = (
+  containerEl: HTMLDivElement,
+  from: string,
+  to: string,
+  midi: number[],
+  className = 'wrapped'
+) => {
+  const wrappedMidiNotes = wrapMidiNotes(from, to, midi);
+
+  for (let i = 0; i < wrappedMidiNotes.length; i += 1) {
+    const wrappedMidi = wrappedMidiNotes[i];
+    if (wrappedMidi !== null) {
+      highlight(containerEl, 'midi', wrappedMidi, className);
+    }
   }
 };
 
@@ -107,13 +143,13 @@ const highlightLabel = (containerEl: HTMLDivElement, midi: number, text: string)
 export const highlightLabels = (
   containerEl: HTMLDivElement,
   keySignature: KeySignatureConfig,
-  display: 'none' | 'pitchClass' | 'note' | 'interval',
+  keyboard: KeyboardSettings,
   midi?: number[],
   chord?: Chord
 ) => {
   if (!midi) return;
 
-  if (display === 'interval') {
+  if (keyboard.label === 'interval') {
     if (chord) {
       const intervals = getChordDegrees(
         chord,
@@ -128,16 +164,67 @@ export const highlightLabels = (
     for (let i = 0; i < midi.length; i += 1) {
       const note = Note.get(Note.fromMidi(midi[i]));
 
-      if (display === 'note') {
+      if (keyboard.label === 'note') {
         const displayName = formatSharpsFlats(getNoteInKeySignature(note.name, keySignature.notes));
 
         highlightLabel(containerEl, midi[i], displayName);
-      } else if (display === 'pitchClass') {
+      } else if (keyboard.label === 'pitchClass') {
         const displayName = formatSharpsFlats(
           getNoteInKeySignature(Note.pitchClass(note), keySignature.notes)
         );
 
         highlightLabel(containerEl, midi[i], displayName);
+      }
+    }
+  }
+};
+
+export const highlightWrapLabels = (
+  containerEl: HTMLDivElement,
+  keySignature: KeySignatureConfig,
+  keyboard: KeyboardSettings,
+  midi?: number[],
+  chord?: Chord
+) => {
+  if (!midi) return;
+
+  const wrappedMidiNotes = wrapMidiNotes(keyboard.from, keyboard.to, midi);
+
+  if (keyboard.label === 'interval') {
+    if (chord) {
+      const intervals = getChordDegrees(
+        chord,
+        wrappedMidiNotes.map((midiNote) =>
+          midiNote ? Note.pitchClass(Note.fromMidi(midiNote)) : ''
+        )
+      );
+
+      for (let i = 0; i < midi.length; i += 1) {
+        const wrappedMidiNote = wrappedMidiNotes[i];
+        if (wrappedMidiNote !== null) {
+          highlightLabel(containerEl, wrappedMidiNote, intervals[i]);
+        }
+      }
+    }
+  } else {
+    for (let i = 0; i < midi.length; i += 1) {
+      const wrappedMidiNote = wrappedMidiNotes[i];
+      if (wrappedMidiNote !== null) {
+        const note = Note.get(Note.fromMidi(midi[i]));
+
+        if (keyboard.label === 'note') {
+          const displayName = formatSharpsFlats(
+            getNoteInKeySignature(note.name, keySignature.notes)
+          );
+
+          highlightLabel(containerEl, wrappedMidiNote, displayName);
+        } else if (keyboard.label === 'pitchClass') {
+          const displayName = formatSharpsFlats(
+            getNoteInKeySignature(Note.pitchClass(note), keySignature.notes)
+          );
+
+          highlightLabel(containerEl, wrappedMidiNote, displayName);
+        }
       }
     }
   }

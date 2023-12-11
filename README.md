@@ -92,15 +92,19 @@ NOTE: Key signature that would have more than 7 alterations will be changed auto
 Chord Display rendering is customizable in the Settings:
 
 - Keyboard:
+  - Keyboard length: start & end note
+  - Wrap: display notes outside of keyboard with a different color
   - Theme:
     - `classic` - a classical looking piano
     - `flat` - a simplified version on a single row
-  - Keyboard size: start & end note
-  - Colors: blacks and whites, and pressed notes.
+  - Sizes: change skin specific display sizes.
+  - Colors: blacks and whites, played & sustained & wrapped notes.
   - Enabling some infos on the piano:
-    - `key names` - name of the notes
-    - `chord degrees` - degrees of each note of the detected chord
-    - `tonic` - a little dot on the chord tonic
+    - `key names` - name displayed on keys (none, only C, pitch class or note)
+    - `key info` - additional info display on keys (none, tonic dot, chord intervals)
+    - `label`- additional info display above played keys (none, pitch class, note, chord interval)
+  - Fade out duration: key disappear with a delay on release
+  - Sustained notes: can be disabled on display
 - Customizing elements:
   - `chord` - the detected chord
   - `alternative chords` - a list of other detected chord names if any
@@ -110,15 +114,20 @@ Chord Display rendering is customizable in the Settings:
     - `short` - M, m, dim, aug
     - `symbol` - Δ, -, °, +
   - `allow omissions` - detect chords with omitted intervals (like 5P, 9M and 11P)
+  - `use sustain` - should sustained notes be used in detection (also disables display of sustained notes)
   - `highlight chord alterations` - display chord parts more distinctly
   - `notation` - the staff notation of the played notes
-  - `notes` - the notes played in order
   - `piano` - a keyboard displaying your played notes
   - `intervals` - a list of intervals that constitutes the chord
 
 ### Customize via CSS
 
 OBS Browser Source let you inject any CSS in the page, so you can add any style to existing layout, like:
+
+Disable Background image:
+```css
+body { background: none !important; color: white; }
+```
 
 Remove detected Chord:
 

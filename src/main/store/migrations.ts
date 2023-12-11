@@ -277,6 +277,7 @@ const migrations: Migrations<StoreType> = {
           fadeOutDuration: 0,
           textOpacity: 0.5,
           displaySustained: true,
+          wrap: false,
           sizes: {
             radius: 0.4,
             height: chordDisplaySettings.skin === 'classic' ? 6 : 1.6,
@@ -287,6 +288,7 @@ const migrations: Migrations<StoreType> = {
             white: chordDisplaySettings.colorNoteWhite,
             black: chordDisplaySettings.colorNoteBlack,
             played: chordDisplaySettings.colorHighlight,
+            wrapped: chordDisplaySettings.colorHighlight,
             sustained: '#777777',
           },
         };

@@ -111,7 +111,7 @@ export function getDictionaryChordsByComplexity() {
       (acc, c) => {
         const complexity = Math.min(COMPLEXITY_MAX, c.complexity);
         acc[complexity] = acc[complexity] ?? [];
-        acc[complexity].push(c.aliases[0]);
+        acc[complexity].push(c.aliases[0] || 'maj');
         return acc;
       },
       {} as Record<number, string[]>

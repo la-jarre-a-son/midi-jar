@@ -17,6 +17,7 @@ export const defaultKeyboardSettings: KeyboardSettings = {
   fadeOutDuration: 0,
   textOpacity: 0.5,
   displaySustained: true,
+  wrap: false,
   sizes: {
     radius: 0.4,
     height: 6,
@@ -27,7 +28,8 @@ export const defaultKeyboardSettings: KeyboardSettings = {
     white: '#ffffff',
     black: '#000000',
     played: '#315bce',
-    sustained: '#777777',
+    wrapped: '#1d367b',
+    sustained: '#808080',
   },
 };
 

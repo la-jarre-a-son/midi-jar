@@ -27,8 +27,8 @@
 
 .note.black {
   .pianoKeyBackground {
-    fill: var(--PianoKeyboard-black_background, #000);
-    stroke: var(--PianoKeyboard-black_color, #fff);
+    fill: var(--PianoKeyboard-black_background, #000000);
+    stroke: var(--PianoKeyboard-black_color, #ffffff);
     transition: fill ease var(--PianoKeyboard-fadeOut_duration, 0s);
   }
 
@@ -40,25 +40,25 @@
 
   .pianoKeyName {
     font-size: 10px;
-    fill: var(--PianoKeyboard-black_color, #fff);
+    fill: var(--PianoKeyboard-black_color, #ffffff);
     opacity: var(--PianoKeyboard-text_opacity, 0.5);
   }
 
   .pianoTonic {
-    fill: var(--PianoKeyboard-black_color, #fff);
+    fill: var(--PianoKeyboard-black_color, #ffffff);
     opacity: 0;
   }
 
   .pianoInfo {
-    fill: var(--PianoKeyboard-black_color, #fff);
+    fill: var(--PianoKeyboard-black_color, #ffffff);
     opacity: var(--PianoKeyboard-text_opacity, 0.5);
   }
 }
 
 .note.white {
   .pianoKeyBackground {
-    fill: var(--PianoKeyboard-white_background, #fff);
-    stroke: var(--PianoKeyboard-white_color, #fff);
+    fill: var(--PianoKeyboard-white_background, #ffffff);
+    stroke: var(--PianoKeyboard-white_color, #ffffff);
     transition: fill ease var(--PianoKeyboard-fadeOut_duration, 0s);
   }
 
@@ -70,26 +70,48 @@
 
   .pianoKeyName {
     font-size: 12px;
-    fill: var(--PianoKeyboard-white_color, #000);
+    fill: var(--PianoKeyboard-white_color, #000000);
     opacity: var(--PianoKeyboard-text_opacity, 0.5);
   }
 
   .pianoTonic {
-    fill: var(--PianoKeyboard-white_color, #000);
+    fill: var(--PianoKeyboard-white_color, #000000);
     opacity: 0;
   }
 
   .pianoInfo {
-    fill: var(--PianoKeyboard-white_color, #000);
+    fill: var(--PianoKeyboard-white_color, #000000);
     opacity: var(--PianoKeyboard-text_opacity, 0.5);
   }
 }
 
-.note {
-  &:global(.played) {
+/* STATES */
+
+.note
+{
+  &:global(.tonic.played) .pianoTonic,
+  &:global(.info.played) .pianoInfo {
+    opacity: 1;
+  }
+
+  &:global(.wrapSustained),
+  &:global(.sustained) {
     .pianoKeyBackground {
-      fill: var(--PianoKeyboard-played_background, #f00);
-      stroke: var(--PianoKeyboard-played_color, #fff);
+      fill: var(--PianoKeyboard--sustained_background, #808080);
+      stroke: var(--PianoKeyboard--sustained_color, #ffffff);
+    }
+
+    .pianoKeyName,
+    .pianoInfo,
+    .pianoTonic {
+      fill: var(--PianoKeyboard--sustained_color, #ffffff);
+    }
+  }
+
+  &:global(.wrapPlayed) {
+    .pianoKeyBackground {
+      fill: var(--PianoKeyboard--wrapPlayed_background, #800000);
+      stroke: var(--PianoKeyboard--wrapPlayed_color, #ffffff);
       transition: fill ease 0s;
     }
 
@@ -102,26 +124,28 @@
     .pianoKeyName,
     .pianoInfo,
     .pianoTonic {
-      fill: var(--PianoKeyboard-played_color, #fff);
+      fill: var(--PianoKeyboard--wrapPlayed_color, #ffffff);
     }
   }
 
-  &:global(.sustained) {
+  &:global(.played)  {
     .pianoKeyBackground {
-      fill: var(--PianoKeyboard-sustained_background, #777);
-      stroke: var(--PianoKeyboard-sustained_color, #fff);
+      fill: var(--PianoKeyboard--played_background, #ff0000);
+      stroke: var(--PianoKeyboard--played_color, #ffffff);
+      transition: fill ease 0s;
+    }
+
+    .pianoKey {
+      fill: none;
+      opacity: 0;
+      transition: opacity ease 0s;
     }
 
     .pianoKeyName,
     .pianoInfo,
     .pianoTonic {
-      fill: var(--PianoKeyboard-sustained_color, #fff);
+      fill: var(--PianoKeyboard--played_color, #ffffff);
     }
-  }
-
-  &:global(.tonic.played) .pianoTonic,
-  &:global(.info.played) .pianoInfo {
-    opacity: 1;
   }
 }
 
