@@ -42,17 +42,23 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
     if (pianoRef.current) {
       fadeNotes(pianoRef.current, 'played');
       fadeNotes(pianoRef.current, 'sustained');
+
       if (played) {
         highlightNotes(pianoRef.current, played, 'played');
       }
-      if (sustained) {
+
+      if (sustained && keyboard.displaySustained) {
         highlightNotes(pianoRef.current, sustained, 'sustained');
       }
 
       fadeLabels(pianoRef.current);
 
       if (midi) {
-        highlightLabels(pianoRef.current, keySignature, keyboard.label, midi, chord);
+        if (keyboard.displaySustained) {
+          highlightLabels(pianoRef.current, keySignature, keyboard.label, midi, chord);
+        } else {
+          highlightLabels(pianoRef.current, keySignature, keyboard.label, played, chord);
+        }
       }
     }
   }, [played, sustained, midi, chord, keyboard, keySignature]);

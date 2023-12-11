@@ -18,13 +18,20 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
   const { moduleSettings } = useModuleSettings('chordDisplay', moduleId);
 
   const { key, accidentals, staffClef, staffTranspose } = settings.notation;
-  const { midiNotes, pitchClasses, sustainedMidiNotes, playedMidiNotes, chords, keySignature } =
-    useNotes({
-      accidentals,
-      key,
-      midiChannel: 0,
-      allowOmissions: moduleSettings.allowOmissions,
-    });
+  const {
+    midiNotes,
+    pitchClasses,
+    sustainedMidiNotes,
+    playedMidiNotes,
+    chords,
+    params: { keySignature },
+  } = useNotes({
+    accidentals,
+    key,
+    midiChannel: 0,
+    allowOmissions: moduleSettings.allowOmissions,
+    useSustain: moduleSettings.useSustain,
+  });
 
   if (!settings || !moduleSettings) return null;
 

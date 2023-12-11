@@ -106,6 +106,17 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                 checked={moduleSettings.allowOmissions}
               />
             </FormControlLabel>
+
+            <FormControlLabel
+              label="Use sustain pedal"
+              hint="Detects chords including sustained notes"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('useSustain', value)}
+                checked={moduleSettings.useSustain}
+              />
+            </FormControlLabel>
           </FormFieldset>
 
           <FormFieldset label="Additional Info">
@@ -162,7 +173,18 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
               />
             </FormControlLabel>
 
-            <FormControlLabel label="Key Names" hint="Choose what name to display on keys" reverse>
+            <FormControlLabel
+              label="Display Sustained Notes"
+              hint="Display notes still sustained (if use sustain is enabled)"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('keyboard.displaySustained', value)}
+                checked={moduleSettings.keyboard.displaySustained}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel label="Key Names" hint="Choose what names to display on keys" reverse>
               <Select
                 value={moduleSettings.keyboard.keyName}
                 onChange={(value) => updateModuleSetting('keyboard.keyName', value)}

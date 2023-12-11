@@ -70,6 +70,9 @@
                                 },
                                 "type": "object"
                             },
+                            "displaySustained": {
+                                "type": "boolean"
+                            },
                             "fadeOutDuration": {
                                 "type": "number"
                             },
@@ -135,6 +138,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "useSustain": {
+                        "type": "boolean"
                     }
                 },
                 "type": "object"

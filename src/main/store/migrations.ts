@@ -276,6 +276,7 @@ const migrations: Migrations<StoreType> = {
           keyInfo: keyboardInfo,
           fadeOutDuration: 0,
           textOpacity: 0.5,
+          displaySustained: true,
           sizes: {
             radius: 0.4,
             height: chordDisplaySettings.skin === 'classic' ? 6 : 1.6,
@@ -294,6 +295,7 @@ const migrations: Migrations<StoreType> = {
           id: chordDisplaySettings.id,
           chordNotation: chordDisplaySettings.chordNotation,
           allowOmissions: !!chordDisplaySettings.allowOmissions,
+          useSustain: true,
           highlightAlterations: !!chordDisplaySettings.highlightAlterations,
           displayKeyboard: !!chordDisplaySettings.displayKeyboard,
           displayChord: !!chordDisplaySettings.displayChord,
