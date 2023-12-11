@@ -174,6 +174,17 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
             </FormControlLabel>
 
             <FormControlLabel
+              label="Wrap Keyboard"
+              hint="Map notes outside of keyboard to closest octave"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('keyboard.wrap', value)}
+                checked={moduleSettings.keyboard.wrap}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel
               label="Display Sustained Notes"
               hint="Display notes still sustained (if use sustain is enabled)"
               reverse
@@ -312,6 +323,13 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
               <InputColor
                 onChange={(value) => updateModuleSetting('keyboard.colors.played', value)}
                 value={moduleSettings.keyboard.colors.played}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel label="Wrapped Keys" reverse>
+              <InputColor
+                onChange={(value) => updateModuleSetting('keyboard.colors.wrapped', value)}
+                value={moduleSettings.keyboard.colors.wrapped}
               />
             </FormControlLabel>
 

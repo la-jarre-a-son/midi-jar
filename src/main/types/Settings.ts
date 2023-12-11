@@ -8,6 +8,7 @@ export type KeyboardSettings = {
   fadeOutDuration: number;
   textOpacity: number;
   displaySustained: boolean;
+  wrap: boolean;
   sizes: {
     radius: number;
     height: number;
@@ -18,6 +19,7 @@ export type KeyboardSettings = {
     white: string | null;
     black: string | null;
     played: string | null;
+    wrapped: string | null;
     sustained: string | null;
   };
 };

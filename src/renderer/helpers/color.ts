@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 interface RGBColor {
   r: number;
   g: number;
@@ -26,6 +27,12 @@ export function colorHexToRGB(color: string): RGBColor {
   return colorHexToRGB('000000');
 }
 
+export function colorRGBToHex(rgb: RGBColor): string {
+  return `#${((1 << 24) | ((rgb.r * 255) << 16) | ((rgb.g * 255) << 8) | (rgb.b * 255))
+    .toString(16)
+    .slice(1)}`;
+}
+
 function getLuminance(color: string) {
   function normalize(value: number) {
     return value <= 0.03928
@@ -40,4 +47,24 @@ function getLuminance(color: string) {
 
 export function getContrastColor(color: string, darkColor = '#000000', lightColor = '#ffffff') {
   return getLuminance(color) < getLuminance('808080') ? lightColor : darkColor;
+}
+
+export function mixColor(colorA: string, colorB: string, factor = 0.5) {
+  const a = colorHexToRGB(colorA);
+  const b = colorHexToRGB(colorB);
+
+  if (factor <= 0) {
+    return colorA;
+  }
+  if (factor >= 1) {
+    return colorB;
+  }
+
+  const c = {
+    r: a.r * (1 - factor) + b.r * factor,
+    g: a.g * (1 - factor) + b.g * factor,
+    b: a.b * (1 - factor) + b.b * factor,
+  };
+
+  return colorRGBToHex(c);
 }

@@ -66,6 +66,12 @@
                                             "null",
                                             "string"
                                         ]
+                                    },
+                                    "wrapped": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -135,6 +141,9 @@
                             },
                             "to": {
                                 "type": "string"
+                            },
+                            "wrap": {
+                                "type": "boolean"
                             }
                         },
                         "type": "object"
