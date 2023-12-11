@@ -12,6 +12,8 @@ import {
   FormControlLabel,
   Toolbar,
   StackSeparator,
+  Slider,
+  FormField,
 } from '@la-jarre-a-son/ui';
 
 import { Icon, InputColor, InputNote, ScrollContainer } from 'renderer/components';
@@ -128,17 +130,6 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                 checked={moduleSettings.displayIntervals}
               />
             </FormControlLabel>
-
-            <FormControlLabel
-              label="Display Notes"
-              hint="Displays the notes in the played order"
-              reverse
-            >
-              <Switch
-                onChange={(value) => updateModuleSetting('displayNotes', value)}
-                checked={moduleSettings.displayNotes}
-              />
-            </FormControlLabel>
           </FormFieldset>
 
           <FormFieldset label="Keyboard">
@@ -153,83 +144,159 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
               />
             </FormControlLabel>
 
+            <FormControlLabel label="Note Start" hint="First note of keyboard" reverse>
+              <InputNote
+                onChange={(value) => updateModuleSetting('keyboard.from', value)}
+                value={moduleSettings.keyboard.from}
+                withOctave
+                learn
+              />
+            </FormControlLabel>
+
+            <FormControlLabel label="Note End" hint="Last note of keyboard" reverse>
+              <InputNote
+                onChange={(value) => updateModuleSetting('keyboard.to', value)}
+                value={moduleSettings.keyboard.to}
+                withOctave
+                learn
+              />
+            </FormControlLabel>
+
+            <FormControlLabel label="Key Names" hint="Choose what name to display on keys" reverse>
+              <Select
+                value={moduleSettings.keyboard.keyName}
+                onChange={(value) => updateModuleSetting('keyboard.keyName', value)}
+                options={fields.keyboard.keyName.choices}
+              />
+            </FormControlLabel>
+
             <FormControlLabel
-              label="Keyboard skin"
-              hint="Choose the appearance of the keyboard"
+              label="Played Key Info"
+              hint="Choose what played info to display on keys"
               reverse
             >
               <Select
-                value={moduleSettings.skin}
-                onChange={(value) => updateModuleSetting('skin', value)}
-                options={fields.skin.choices}
-              />
-            </FormControlLabel>
-
-            <FormControlLabel label="Keyboard Start" hint="First note of keyboard" reverse>
-              <InputNote
-                onChange={(value) => updateModuleSetting('from', value)}
-                value={moduleSettings.from}
-                withOctave
-                learn
-              />
-            </FormControlLabel>
-
-            <FormControlLabel label="Keyboard End" hint="Last note of keyboard" reverse>
-              <InputNote
-                onChange={(value) => updateModuleSetting('to', value)}
-                value={moduleSettings.to}
-                withOctave
-                learn
-              />
-            </FormControlLabel>
-
-            <FormControlLabel label="Display Key Names" hint="Adds the name of each key" reverse>
-              <Switch
-                onChange={(value) => updateModuleSetting('displayKeyNames', value)}
-                checked={moduleSettings.displayKeyNames}
+                value={moduleSettings.keyboard.keyInfo}
+                onChange={(value) => updateModuleSetting('keyboard.keyInfo', value)}
+                options={fields.keyboard.keyInfo.choices}
               />
             </FormControlLabel>
 
             <FormControlLabel
-              label="Display Tonic Dot"
-              hint="Adds a dot on the detected chord tonic"
+              label="Played Key Label"
+              hint="Choose what played info to display above keys"
               reverse
             >
-              <Switch
-                onChange={(value) => updateModuleSetting('displayTonic', value)}
-                checked={moduleSettings.displayTonic}
+              <Select
+                value={moduleSettings.keyboard.label}
+                onChange={(value) => updateModuleSetting('keyboard.label', value)}
+                options={fields.keyboard.label.choices}
               />
             </FormControlLabel>
 
-            <FormControlLabel
-              label="Display Chord Degrees"
-              hint="Adds the intervals detected in the chord"
-              reverse
-            >
-              <Switch
-                onChange={(value) => updateModuleSetting('displayDegrees', value)}
-                checked={moduleSettings.displayDegrees}
+            <FormField label="Fade out duration" hint="Played keys will fade out when released">
+              <Slider
+                value={moduleSettings.keyboard.fadeOutDuration}
+                onChange={(value: number) => updateModuleSetting('keyboard.fadeOutDuration', value)}
+                min={0}
+                max={1}
+                step={0.1}
+                valueText={`${moduleSettings.keyboard.fadeOutDuration.toFixed(1)}s`}
+              />
+            </FormField>
+          </FormFieldset>
+
+          <FormFieldset label="Keyboard Skin">
+            <FormControlLabel label="Skin" hint="Choose the appearance of the keyboard" reverse>
+              <Select
+                value={moduleSettings.keyboard.skin}
+                onChange={(value) => updateModuleSetting('keyboard.skin', value)}
+                options={fields.keyboard.skin.choices}
               />
             </FormControlLabel>
 
-            <FormControlLabel label="Color Black Keys" reverse>
+            <FormField label="Text Opacity" hint="Factor of the black keys width">
+              <Slider
+                value={moduleSettings.keyboard.textOpacity}
+                onChange={(value: number) => updateModuleSetting('keyboard.textOpacity', value)}
+                min={0}
+                max={1}
+                step={0.1}
+                valueText={`${moduleSettings.keyboard.textOpacity}`}
+              />
+            </FormField>
+
+            <FormField label="Key Height" hint="Factor of the black keys width">
+              <Slider
+                value={moduleSettings.keyboard.sizes.height}
+                onChange={(value: number) => updateModuleSetting('keyboard.sizes.height', value)}
+                min={1}
+                max={8}
+                step={0.1}
+                valueText={`${moduleSettings.keyboard.sizes.height}`}
+              />
+            </FormField>
+
+            {moduleSettings.keyboard.skin === 'classic' && (
+              <FormField label="Black Key Ratio" hint="Percentage of white keys height">
+                <Slider
+                  value={moduleSettings.keyboard.sizes.ratio}
+                  onChange={(value: number) => updateModuleSetting('keyboard.sizes.ratio', value)}
+                  min={0.1}
+                  max={0.9}
+                  step={0.05}
+                  valueText={`${Math.round(moduleSettings.keyboard.sizes.ratio * 100)}%`}
+                />
+              </FormField>
+            )}
+            {moduleSettings.keyboard.skin === 'classic' && (
+              <FormField label="Key Border Radius">
+                <Slider
+                  value={moduleSettings.keyboard.sizes.radius}
+                  onChange={(value: number) => updateModuleSetting('keyboard.sizes.radius', value)}
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  valueText={`${Math.round(moduleSettings.keyboard.sizes.radius * 100)}%`}
+                />
+              </FormField>
+            )}
+            {moduleSettings.keyboard.skin === 'classic' && (
+              <FormControlLabel label="Key Bevel" hint="Adds a bevel gradient to keys" reverse>
+                <Switch
+                  onChange={(value) => updateModuleSetting('keyboard.sizes.bevel', value)}
+                  checked={moduleSettings.keyboard.sizes.bevel}
+                />
+              </FormControlLabel>
+            )}
+          </FormFieldset>
+
+          <FormFieldset label="Keyboard Colors">
+            <FormControlLabel label="Black Keys" reverse>
               <InputColor
-                onChange={(value) => updateModuleSetting('colorNoteBlack', value)}
-                value={moduleSettings.colorNoteBlack}
+                onChange={(value) => updateModuleSetting('keyboard.colors.black', value)}
+                value={moduleSettings.keyboard.colors.black}
               />
             </FormControlLabel>
 
-            <FormControlLabel label="Color White Keys" reverse>
+            <FormControlLabel label="White Keys" reverse>
               <InputColor
-                onChange={(value) => updateModuleSetting('colorNoteWhite', value)}
-                value={moduleSettings.colorNoteWhite}
+                onChange={(value) => updateModuleSetting('keyboard.colors.white', value)}
+                value={moduleSettings.keyboard.colors.white}
               />
             </FormControlLabel>
 
-            <FormControlLabel label="Color Highlight" hint="Color of played keys" reverse>
+            <FormControlLabel label="Played Keys" reverse>
               <InputColor
-                onChange={(value) => updateModuleSetting('colorHighlight', value)}
-                value={moduleSettings.colorHighlight}
+                onChange={(value) => updateModuleSetting('keyboard.colors.played', value)}
+                value={moduleSettings.keyboard.colors.played}
+              />
+            </FormControlLabel>
+
+            <FormControlLabel label="Sustained Keys" reverse>
+              <InputColor
+                onChange={(value) => updateModuleSetting('keyboard.colors.sustained', value)}
+                value={moduleSettings.keyboard.colors.sustained}
               />
             </FormControlLabel>
           </FormFieldset>

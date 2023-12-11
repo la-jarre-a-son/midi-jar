@@ -1,3 +1,8 @@
+# 1.6.0 (2023-12-11)
+
+## Features
+- **Chord Display:** Fully customizable Piano (sizes, colors and labels above keys)
+
 # 1.5.1 (2023-11-21)
 
 ## Features

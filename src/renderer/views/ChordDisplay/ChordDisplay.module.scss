@@ -87,20 +87,28 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
   text-align: center;
 }
 
+
+
+.note {
+  margin: 0 0.25em;
+}
+
+.piano {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .notes {
-  height: 7vh;
   text-align: center;
-  padding: 2vh;
+
   font-size: 3vh;
   margin-top: 0;
   margin-bottom: 0;
   flex-grow: 0;
   flex-shrink: 0;
   text-shadow: $View_ChordDisplay_textShadow;
-}
-
-.note {
-  margin: 0 0.25em;
 }
 
 .keyboard {

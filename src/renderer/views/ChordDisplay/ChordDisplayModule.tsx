@@ -5,8 +5,6 @@ import { useModuleSettings, useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
 import { ChordName, Notation, PianoKeyboard, ChordIntervals } from 'renderer/components';
 
-import { formatSharpsFlats } from 'renderer/helpers/note';
-
 import styles from './ChordDisplay.module.scss';
 
 const cx = classnames.bind(styles);
@@ -31,24 +29,15 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
   if (!settings || !moduleSettings) return null;
 
   const {
-    skin,
-    from,
-    to,
     chordNotation,
     highlightAlterations,
-    colorHighlight,
-    colorNoteWhite,
-    colorNoteBlack,
     displayKeyboard,
-    displayNotes,
     displayChord,
     displayName,
     displayNotation,
     displayAltChords,
-    displayKeyNames,
-    displayDegrees,
-    displayTonic,
     displayIntervals,
+    keyboard,
   } = moduleSettings;
 
   return (
@@ -104,36 +93,22 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
           )}
         </div>
       </div>
-      {displayNotes && (
-        <div id="notes" className={cx('notes')}>
-          {pitchClasses.map((note, index) => (
-            <span key={index} className={cx('note')}>
-              {formatSharpsFlats(note)}
-            </span>
-          ))}
-        </div>
-      )}
       {displayKeyboard && (
-        <PianoKeyboard
-          id="keyboard"
-          className={cx('keyboard', {
-            'keyboard--withNotation': displayNotation,
-            'keyboard--withChord': displayChord,
-          })}
-          skin={skin}
-          sustained={sustainedMidiNotes}
-          midi={playedMidiNotes}
-          chord={chords[0] ?? undefined}
-          from={from}
-          to={to}
-          keySignature={keySignature}
-          colorHighlight={colorHighlight ?? undefined}
-          colorNoteWhite={colorNoteWhite ?? undefined}
-          colorNoteBlack={colorNoteBlack ?? undefined}
-          displayKeyNames={displayKeyNames}
-          displayDegrees={displayDegrees}
-          displayTonic={displayTonic}
-        />
+        <div className={cx('piano')}>
+          <PianoKeyboard
+            id="keyboard"
+            className={cx('keyboard', {
+              'keyboard--withNotation': displayNotation,
+              'keyboard--withChord': displayChord,
+            })}
+            sustained={sustainedMidiNotes}
+            played={playedMidiNotes}
+            midi={midiNotes}
+            chord={chords[0] ?? undefined}
+            keySignature={keySignature}
+            keyboard={keyboard}
+          />
+        </div>
       )}
     </div>
   );

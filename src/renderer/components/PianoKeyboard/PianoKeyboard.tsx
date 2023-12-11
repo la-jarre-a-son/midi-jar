@@ -1,27 +1,38 @@
 import React, { useRef, useEffect } from 'react';
-import { chroma as getChroma } from '@tonaljs/note';
+import { defaultKeyboardSettings } from 'main/store/defaults';
 
 import { getKeySignature } from 'renderer/helpers/note';
-import { fadeNotes, highlightNotes, fadeIntervals, highlightInterval } from './Utils';
+import { getContrastColor } from 'renderer/helpers';
+import {
+  fadeNotes,
+  highlightNotes,
+  fadeInfo,
+  highlightInfo,
+  highlightLabels,
+  fadeLabels,
+} from './utils';
 
 import { PianoKeyboardProps } from './types';
 import ClassicPiano from './classic';
 import FlatPiano from './flat';
 
+const defaultProps = {
+  id: undefined,
+  className: undefined,
+  keyboard: defaultKeyboardSettings,
+  keySignature: getKeySignature('C'),
+  sustained: [],
+  midi: [],
+  chord: undefined,
+};
+
 export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   id,
   className,
-  skin,
-  from,
-  to,
-  keySignature,
-  colorNoteWhite,
-  colorNoteBlack,
-  colorHighlight,
-  displayKeyNames,
-  displayDegrees,
-  displayTonic,
+  keyboard = defaultProps.keyboard,
+  keySignature = defaultProps.keySignature,
   sustained,
+  played,
   midi,
   chord,
 }) => {
@@ -29,82 +40,53 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
 
   useEffect(() => {
     if (pianoRef.current) {
-      fadeNotes(pianoRef.current);
+      fadeNotes(pianoRef.current, 'played');
       fadeNotes(pianoRef.current, 'sustained');
-      if (midi) {
-        highlightNotes(pianoRef.current, midi);
+      if (played) {
+        highlightNotes(pianoRef.current, played, 'played');
       }
       if (sustained) {
         highlightNotes(pianoRef.current, sustained, 'sustained');
       }
+
+      fadeLabels(pianoRef.current);
+
+      if (midi) {
+        highlightLabels(pianoRef.current, keySignature, keyboard.label, midi, chord);
+      }
     }
-  }, [midi, sustained]);
+  }, [played, sustained, midi, chord, keyboard, keySignature]);
 
   useEffect(() => {
     if (pianoRef.current) {
-      fadeIntervals(pianoRef.current);
-
-      if (chord && chord.intervals.length) {
-        for (let i = 0; i < chord.intervals.length; i += 1) {
-          highlightInterval(
-            pianoRef.current,
-            getChroma(chord.notes[i]) as number,
-            chord.intervals[i],
-            displayTonic
-          );
-        }
-      }
+      fadeInfo(pianoRef.current);
+      highlightInfo(pianoRef.current, keyboard.keyInfo, chord);
     }
-  }, [chord, displayTonic]);
+  }, [chord, keyboard]);
+
+  const style = {
+    '--PianoKeyboard-white_background': keyboard.colors.white,
+    '--PianoKeyboard-white_color': getContrastColor(keyboard.colors.white ?? '#ffffff'),
+    '--PianoKeyboard-black_background': keyboard.colors.black,
+    '--PianoKeyboard-black_color': getContrastColor(keyboard.colors.black ?? '#000000'),
+    '--PianoKeyboard-played_background': keyboard.colors.played,
+    '--PianoKeyboard-played_color': getContrastColor(keyboard.colors.played ?? '#ff0000'),
+    '--PianoKeyboard-sustained_background': keyboard.colors.sustained,
+    '--PianoKeyboard-sustained_color': getContrastColor(keyboard.colors.sustained ?? '#777777'),
+    '--PianoKeyboard-fadeOut_duration': `${keyboard.fadeOutDuration}s`,
+    '--PianoKeyboard-text_opacity': `${keyboard.textOpacity}`,
+  } as React.CSSProperties;
 
   return (
-    <div ref={pianoRef} id={id} className={className}>
-      {skin === 'classic' && (
-        <ClassicPiano
-          from={from}
-          to={to}
-          keySignature={keySignature}
-          colorHighlight={colorHighlight}
-          colorNoteWhite={colorNoteWhite}
-          colorNoteBlack={colorNoteBlack}
-          displayKeyNames={displayKeyNames}
-          displayDegrees={displayDegrees}
-          displayTonic={displayTonic}
-        />
+    <div ref={pianoRef} id={id} className={className} style={style}>
+      {keyboard.skin === 'classic' && (
+        <ClassicPiano keyboard={keyboard} keySignature={keySignature} />
       )}
-      {skin === 'flat' && (
-        <FlatPiano
-          from={from}
-          to={to}
-          keySignature={keySignature}
-          colorHighlight={colorHighlight}
-          colorNoteWhite={colorNoteWhite}
-          colorNoteBlack={colorNoteBlack}
-          displayKeyNames={displayKeyNames}
-          displayDegrees={displayDegrees}
-          displayTonic={displayTonic}
-        />
-      )}
+      {keyboard.skin === 'flat' && <FlatPiano keyboard={keyboard} keySignature={keySignature} />}
     </div>
   );
 };
 
-PianoKeyboard.defaultProps = {
-  id: undefined,
-  className: undefined,
-  skin: 'classic' as PianoKeyboardProps['skin'],
-  from: 'C2',
-  to: 'C7',
-  keySignature: getKeySignature('C'),
-  colorHighlight: '#315bce',
-  colorNoteWhite: '#ffffff',
-  colorNoteBlack: '#000000',
-  displayKeyNames: true,
-  displayDegrees: true,
-  displayTonic: true,
-  sustained: [],
-  midi: [],
-  chord: undefined,
-};
+PianoKeyboard.defaultProps = defaultProps;
 
 export default PianoKeyboard;

@@ -1,37 +1,62 @@
 import React from 'react';
+import { KeyboardSettings } from 'main/types';
+
 import { getContrastColor } from 'renderer/helpers/color';
 
+import { KeyboardSizes } from './constants';
+import { KeyboardKeys } from './types';
+
 type Props = {
-  colorNoteWhite: string;
-  colorNoteBlack: string;
+  keyboard: KeyboardSettings;
+  keys: KeyboardKeys;
+  sizes: KeyboardSizes;
 };
 
-const SVGDefs: React.FC<Props> = ({ colorNoteBlack, colorNoteWhite }) => (
+const SVGDefs: React.FC<Props> = ({ keyboard, keys, sizes }) => (
   <defs>
-    <filter id="insetKey">
-      <feOffset dx="3" dy="-7" />
-      <feGaussianBlur stdDeviation="4" result="offset-blur" />
-      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-      <feFlood floodColor="black" floodOpacity="0.4" result="color" />
-      <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-      <feComponentTransfer in="shadow" result="shadow">
-        <feFuncA type="linear" slope="5" />
-      </feComponentTransfer>
-      <feBlend mode="soft-light" in="shadow" in2="SourceGraphic" />
-    </filter>
     <linearGradient id="whiteKey" gradientTransform="rotate(90)">
-      <stop offset="0%" stopColor="#000000" stopOpacity="0.25" />
-      <stop offset="8%" stopColor={getContrastColor(colorNoteWhite)} stopOpacity="0.1" />
-      <stop offset="90%" stopColor={getContrastColor(colorNoteWhite)} stopOpacity="0" />
-      <stop offset="91%" stopColor={getContrastColor(colorNoteWhite)} stopOpacity="0.1" />
+      <stop offset="0%" stopColor="#000000" stopOpacity="0.2" />
+      <stop
+        offset={`${((sizes.WHITE_HEIGHT - sizes.WHITE_BEVEL - 2) / sizes.WHITE_HEIGHT) * 100}%`}
+        stopColor={getContrastColor(keyboard.colors.white ?? '#ffffff')}
+        stopOpacity="0"
+      />
+      <stop
+        offset={`${((sizes.WHITE_HEIGHT - sizes.WHITE_BEVEL) / sizes.WHITE_HEIGHT) * 100}%`}
+        stopColor={getContrastColor(keyboard.colors.white ?? '#ffffff')}
+        stopOpacity="0.1"
+      />
     </linearGradient>
     <linearGradient id="blackKey" gradientTransform="rotate(90)">
-      <stop offset="0%" stopColor={getContrastColor(colorNoteBlack)} stopOpacity="0" />
-      <stop offset="80%" stopColor={getContrastColor(colorNoteBlack)} stopOpacity="0.3" />
-      <stop offset="80%" stopColor="#ffffff" stopOpacity="0.7" />
-      <stop offset="85%" stopColor={getContrastColor(colorNoteBlack)} stopOpacity="0.15" />
-      <stop offset="91%" stopColor={getContrastColor(colorNoteBlack)} stopOpacity="0" />
+      <stop
+        offset="0%"
+        stopColor={getContrastColor(keyboard.colors.black ?? '#000000')}
+        stopOpacity="0"
+      />
+      <stop
+        offset={`${((sizes.BLACK_HEIGHT - sizes.BLACK_BEVEL) / sizes.BLACK_HEIGHT) * 100}%`}
+        stopColor={getContrastColor(keyboard.colors.black ?? '#000000')}
+        stopOpacity="0.2"
+      />
+      <stop
+        offset={`${((sizes.BLACK_HEIGHT - sizes.BLACK_BEVEL) / sizes.BLACK_HEIGHT) * 100}%`}
+        stopColor="#ffffff"
+        stopOpacity="0.5"
+      />
+      <stop
+        offset={`${((sizes.BLACK_HEIGHT - sizes.BLACK_BEVEL + 4) / sizes.BLACK_HEIGHT) * 100}%`}
+        stopColor={getContrastColor(keyboard.colors.black ?? '#000000')}
+        stopOpacity="0.1"
+      />
+      <stop
+        offset="100%"
+        stopColor={getContrastColor(keyboard.colors.black ?? '#000000')}
+        stopOpacity="0.0"
+      />
     </linearGradient>
+    <mask id="boardMask">
+      <rect x="0" y="0" width={keys.width} height={keys.height} fill="#ffffff" />
+    </mask>
   </defs>
 );
 

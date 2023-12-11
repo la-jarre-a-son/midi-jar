@@ -1,19 +1,13 @@
 import { Chord } from '@tonaljs/chord';
+import { KeyboardSettings } from 'main/types';
 import { KeySignatureConfig } from 'renderer/helpers';
 
 export type PianoKeyboardProps = {
   id?: string;
   className?: string;
-  skin?: 'classic' | 'flat';
-  from?: string;
-  to?: string;
+  keyboard?: KeyboardSettings;
   keySignature?: KeySignatureConfig;
-  colorNoteWhite?: string;
-  colorNoteBlack?: string;
-  colorHighlight?: string;
-  displayKeyNames?: boolean;
-  displayDegrees?: boolean;
-  displayTonic?: boolean;
+  played?: number[];
   sustained?: number[];
   midi?: number[];
   chord?: Chord;

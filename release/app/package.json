@@ -1,6 +1,6 @@
 {
   "name": "midi-jar",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "A MIDI tool box for displaying chords and notes, routing devices, and more",
   "license": "MIT",
   "author": {

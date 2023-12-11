@@ -11,8 +11,11 @@ import {
   v1_3_1_MidiRouteRaw,
   v1_4_0_Settings,
   v1_4_0_WindowState,
+  v1_5_0_ChordDisplaySettings,
   v1_5_0_Settings,
   v1_5_1_WindowState,
+  v1_6_0_ChordDisplaySettings,
+  v1_6_0_KeyboardSettings,
 } from './legacy-types';
 
 const migrations: Migrations<StoreType> = {
@@ -237,6 +240,73 @@ const migrations: Migrations<StoreType> = {
     };
 
     store.set('windowState', newWindowState);
+  },
+  '1.6.0': (store: Conf<StoreType>) => {
+    store.set('version', '1.6.0');
+    store.set('windowState.changelogDismissed', false);
+    store.set('windowState.updateDismissed', null);
+
+    const chordDisplay = store.get(
+      'settings.chordDisplay',
+      undefined
+    ) as unknown as v1_5_0_ChordDisplaySettings[];
+
+    const newChordDisplay = chordDisplay.map(
+      (chordDisplaySettings): v1_6_0_ChordDisplaySettings => {
+        let keyboardInfo: v1_6_0_KeyboardSettings['keyInfo'] = 'none';
+
+        if (chordDisplaySettings.displayDegrees && chordDisplaySettings.displayTonic) {
+          keyboardInfo = 'tonicAndInterval';
+        }
+
+        if (chordDisplaySettings.displayDegrees && !chordDisplaySettings.displayTonic) {
+          keyboardInfo = 'interval';
+        }
+
+        if (!chordDisplaySettings.displayDegrees && chordDisplaySettings.displayTonic) {
+          keyboardInfo = 'tonic';
+        }
+
+        const keyboardSettings: v1_6_0_KeyboardSettings = {
+          skin: chordDisplaySettings.skin,
+          from: chordDisplaySettings.from,
+          to: chordDisplaySettings.to,
+          label: chordDisplaySettings.displayNotes ? 'pitchClass' : 'none',
+          keyName: chordDisplaySettings.displayKeyNames ? 'note' : 'none',
+          keyInfo: keyboardInfo,
+          fadeOutDuration: 0,
+          textOpacity: 0.5,
+          sizes: {
+            radius: 0.4,
+            height: chordDisplaySettings.skin === 'classic' ? 6 : 1.6,
+            ratio: 0.6,
+            bevel: true,
+          },
+          colors: {
+            white: chordDisplaySettings.colorNoteWhite,
+            black: chordDisplaySettings.colorNoteBlack,
+            played: chordDisplaySettings.colorHighlight,
+            sustained: '#777777',
+          },
+        };
+
+        return {
+          id: chordDisplaySettings.id,
+          chordNotation: chordDisplaySettings.chordNotation,
+          allowOmissions: !!chordDisplaySettings.allowOmissions,
+          highlightAlterations: !!chordDisplaySettings.highlightAlterations,
+          displayKeyboard: !!chordDisplaySettings.displayKeyboard,
+          displayChord: !!chordDisplaySettings.displayChord,
+          displayName: !!chordDisplaySettings.displayName,
+          displayNotation: !!chordDisplaySettings.displayNotation,
+          displayAltChords: !!chordDisplaySettings.displayAltChords,
+          displayIntervals: !!chordDisplaySettings.displayIntervals,
+          keyboard: keyboardSettings,
+        };
+      }
+    );
+
+    store.set('settings.chordDisplay', newChordDisplay);
   },
 };
 
