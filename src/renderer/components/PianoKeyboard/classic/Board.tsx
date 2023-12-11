@@ -1,32 +1,26 @@
 import React from 'react';
 
-import { KeyboardNotes } from './types';
+import { KeyboardSettings } from 'main/types';
+import { KeyboardKeys } from './types';
 import WhiteNote from './WhiteNote';
 import BlackNote from './BlackNote';
 
 import styles from './classic.module.scss';
+import { KeyboardSizes } from './constants';
 
 type Props = {
-  keyboard: KeyboardNotes;
-  colorHighlight: string;
-  colorNoteWhite: string;
-  colorNoteBlack: string;
-  displayKeyNames: boolean;
-  displayDegrees: boolean;
-  displayTonic: boolean;
+  keys: KeyboardKeys;
+  sizes: KeyboardSizes;
+  keyboard: KeyboardSettings;
 };
 
-const Board: React.FC<Props> = ({
-  keyboard,
-  colorNoteWhite,
-  colorNoteBlack,
-  colorHighlight,
-  displayKeyNames,
-  displayDegrees,
-  displayTonic,
-}) => (
-  <g className={styles.board} transform="translate(0,0)">
-    {keyboard.whites.map(({ displayName, note, offset }) => (
+const Board: React.FC<Props> = ({ keys, keyboard, sizes }) => (
+  <g
+    className={styles.board}
+    transform={`translate(0,${keyboard.label === 'none' ? 0 : sizes.LABEL_HEIGHT})`}
+    mask="url(#boardMask)"
+  >
+    {keys.whites.map(({ displayName, note, offset }) => (
       <WhiteNote
         key={note.midi}
         name={note.name}
@@ -34,14 +28,11 @@ const Board: React.FC<Props> = ({
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}
-        color={colorNoteWhite}
-        colorHighlight={colorHighlight}
-        displayKeyNames={displayKeyNames}
-        displayDegrees={displayDegrees}
-        displayTonic={displayTonic}
+        keyName={keyboard.keyName}
+        sizes={sizes}
       />
     ))}
-    {keyboard.blacks.map(({ displayName, note, offset }) => (
+    {keys.blacks.map(({ displayName, note, offset }) => (
       <BlackNote
         key={note.midi}
         name={note.name}
@@ -49,11 +40,8 @@ const Board: React.FC<Props> = ({
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}
-        color={colorNoteBlack}
-        colorHighlight={colorHighlight}
-        displayKeyNames={displayKeyNames}
-        displayDegrees={displayDegrees}
-        displayTonic={displayTonic}
+        keyName={keyboard.keyName}
+        sizes={sizes}
       />
     ))}
   </g>

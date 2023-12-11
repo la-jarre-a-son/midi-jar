@@ -1,16 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { getContrastColor } from 'renderer/helpers/color';
-import {
-  NOTE_WHITE_WIDTH,
-  NOTE_WHITE_HEIGHT,
-  NOTE_RADIUS,
-  NOTE_TONIC_RADIUS,
-  NOTE_WHITE_TONIC_BOTTOM_OFFSET,
-  NOTE_WHITE_INTERVAL_BOTTOM_OFFSET,
-  NOTE_WHITE_NAME_BOTTOM_OFFSET,
-} from './constants';
+import { KeyboardSizes } from './constants';
 
 import styles from './classic.module.scss';
 
@@ -20,11 +11,8 @@ type WhiteNoteProps = {
   chroma: number;
   midi: number;
   offset: number;
-  color: string;
-  colorHighlight: string;
-  displayKeyNames: boolean;
-  displayDegrees: boolean;
-  displayTonic: boolean;
+  keyName: 'none' | 'octave' | 'pitchClass' | 'note';
+  sizes: KeyboardSizes;
 };
 
 const WhiteNote: React.FC<WhiteNoteProps> = ({
@@ -33,11 +21,8 @@ const WhiteNote: React.FC<WhiteNoteProps> = ({
   chroma,
   midi,
   offset,
-  color,
-  colorHighlight,
-  displayKeyNames,
-  displayDegrees,
-  displayTonic,
+  keyName,
+  sizes,
 }) => (
   <g
     className={classNames([
@@ -48,53 +33,45 @@ const WhiteNote: React.FC<WhiteNoteProps> = ({
       `midi-${midi}`,
     ])}
     transform={`translate(${offset},0)`}
-    style={{ color: colorHighlight }}
   >
     <rect
       className={styles.pianoKeyBackground}
-      width={NOTE_WHITE_WIDTH}
-      height={NOTE_WHITE_HEIGHT + NOTE_RADIUS}
+      width={sizes.WHITE_WIDTH}
+      height={sizes.WHITE_HEIGHT + sizes.RADIUS}
       x="0"
-      y={-NOTE_RADIUS}
-      rx={NOTE_RADIUS}
-      ry={NOTE_RADIUS}
-      style={{ fill: color, stroke: getContrastColor(color) }}
+      y={-sizes.RADIUS}
+      rx={sizes.RADIUS}
+      ry={sizes.RADIUS}
     />
     <rect
       className={styles.pianoKey}
-      width={NOTE_WHITE_WIDTH}
-      height={NOTE_WHITE_HEIGHT + NOTE_RADIUS}
+      width={sizes.WHITE_WIDTH}
+      height={sizes.WHITE_HEIGHT + sizes.RADIUS}
       x="0"
-      y={-NOTE_RADIUS}
-      rx={NOTE_RADIUS}
-      ry={NOTE_RADIUS}
+      y={-sizes.RADIUS}
+      rx={sizes.RADIUS}
+      ry={sizes.RADIUS}
     />
-
-    {displayTonic && (
-      <circle
-        className={styles.pianoTonic}
-        cx={NOTE_WHITE_WIDTH / 2}
-        cy={NOTE_WHITE_HEIGHT - NOTE_WHITE_TONIC_BOTTOM_OFFSET - NOTE_TONIC_RADIUS}
-        r={NOTE_TONIC_RADIUS}
-        style={{ fill: getContrastColor(color) }}
-      />
-    )}
-    {displayDegrees && (
-      <text
-        className={classNames([styles.pianoInterval, 'pianoInterval'])}
-        x={NOTE_WHITE_WIDTH / 2}
-        y={NOTE_WHITE_HEIGHT - NOTE_WHITE_INTERVAL_BOTTOM_OFFSET}
-        textAnchor="middle"
-        style={{ fill: getContrastColor(color) }}
-      />
-    )}
-    {displayKeyNames && (
+    <circle
+      className={styles.pianoTonic}
+      cx={sizes.WHITE_WIDTH / 2}
+      cy={sizes.WHITE_HEIGHT - sizes.WHITE_INFO_OFFSET}
+      r={sizes.TONIC_RADIUS}
+    />
+    <text
+      className={classNames([styles.pianoInfo, 'pianoInfo'])}
+      x={sizes.WHITE_WIDTH / 2}
+      y={sizes.WHITE_HEIGHT - sizes.WHITE_INFO_OFFSET}
+      textAnchor="middle"
+      alignmentBaseline="mathematical"
+    />
+    {keyName !== 'none' && (
       <text
         className={styles.pianoKeyName}
-        x={NOTE_WHITE_WIDTH / 2}
-        y={NOTE_WHITE_HEIGHT - NOTE_WHITE_NAME_BOTTOM_OFFSET}
+        x={sizes.WHITE_WIDTH / 2}
+        y={sizes.WHITE_HEIGHT - sizes.WHITE_NAME_OFFSET}
         textAnchor="middle"
-        style={{ fill: getContrastColor(color) }}
+        alignmentBaseline="baseline"
       >
         {displayName}
       </text>

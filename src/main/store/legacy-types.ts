@@ -185,3 +185,41 @@ export type v1_5_1_WindowState = v1_4_0_WindowState & {
   path: string;
   updateDismissed: string | null;
 };
+
+/* v1.6.0 - new keyboard */
+export type v1_6_0_KeyboardSettings = {
+  skin: 'classic' | 'flat';
+  from: string;
+  to: string;
+  label: 'none' | 'pitchClass' | 'note' | 'interval';
+  keyName: 'none' | 'octave' | 'pitchClass' | 'note';
+  keyInfo: 'none' | 'tonic' | 'interval' | 'tonicAndInterval';
+  fadeOutDuration: number;
+  textOpacity: number;
+  sizes: {
+    radius: number;
+    height: number;
+    ratio: number;
+    bevel: boolean;
+  };
+  colors: {
+    white: string | null;
+    black: string | null;
+    played: string | null;
+    sustained: string | null;
+  };
+};
+
+export type v1_6_0_ChordDisplaySettings = {
+  id: string;
+  chordNotation: 'long' | 'short' | 'symbol';
+  allowOmissions: boolean;
+  highlightAlterations: boolean;
+  displayKeyboard: boolean;
+  displayChord: boolean;
+  displayName: boolean;
+  displayNotation: boolean;
+  displayAltChords: boolean;
+  displayIntervals: boolean;
+  keyboard: v1_6_0_KeyboardSettings;
+};

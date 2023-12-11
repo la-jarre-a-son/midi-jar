@@ -15,37 +15,13 @@
                         ],
                         "type": "string"
                     },
-                    "colorHighlight": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "colorNoteBlack": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
-                    "colorNoteWhite": {
-                        "type": [
-                            "null",
-                            "string"
-                        ]
-                    },
                     "displayAltChords": {
                         "type": "boolean"
                     },
                     "displayChord": {
                         "type": "boolean"
                     },
-                    "displayDegrees": {
-                        "type": "boolean"
-                    },
                     "displayIntervals": {
-                        "type": "boolean"
-                    },
-                    "displayKeyNames": {
                         "type": "boolean"
                     },
                     "displayKeyboard": {
@@ -57,30 +33,108 @@
                     "displayNotation": {
                         "type": "boolean"
                     },
-                    "displayNotes": {
-                        "type": "boolean"
-                    },
-                    "displayTonic": {
-                        "type": "boolean"
-                    },
-                    "from": {
-                        "type": "string"
-                    },
                     "highlightAlterations": {
                         "type": "boolean"
                     },
                     "id": {
                         "type": "string"
                     },
-                    "skin": {
-                        "enum": [
-                            "classic",
-                            "flat"
-                        ],
-                        "type": "string"
-                    },
-                    "to": {
-                        "type": "string"
+                    "keyboard": {
+                        "properties": {
+                            "colors": {
+                                "properties": {
+                                    "black": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
+                                    },
+                                    "played": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
+                                    },
+                                    "sustained": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
+                                    },
+                                    "white": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "fadeOutDuration": {
+                                "type": "number"
+                            },
+                            "from": {
+                                "type": "string"
+                            },
+                            "keyInfo": {
+                                "enum": [
+                                    "interval",
+                                    "none",
+                                    "tonic",
+                                    "tonicAndInterval"
+                                ],
+                                "type": "string"
+                            },
+                            "keyName": {
+                                "enum": [
+                                    "none",
+                                    "note",
+                                    "octave",
+                                    "pitchClass"
+                                ],
+                                "type": "string"
+                            },
+                            "label": {
+                                "enum": [
+                                    "interval",
+                                    "none",
+                                    "note",
+                                    "pitchClass"
+                                ],
+                                "type": "string"
+                            },
+                            "sizes": {
+                                "properties": {
+                                    "bevel": {
+                                        "type": "boolean"
+                                    },
+                                    "height": {
+                                        "type": "number"
+                                    },
+                                    "radius": {
+                                        "type": "number"
+                                    },
+                                    "ratio": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "skin": {
+                                "enum": [
+                                    "classic",
+                                    "flat"
+                                ],
+                                "type": "string"
+                            },
+                            "textOpacity": {
+                                "type": "number"
+                            },
+                            "to": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"

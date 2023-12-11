@@ -11,18 +11,6 @@ export class FieldError extends Error {
 }
 
 export const fields = {
-  skin: {
-    choices: [
-      {
-        value: 'classic',
-        label: 'Classic',
-      },
-      {
-        value: 'flat',
-        label: 'Flat',
-      },
-    ],
-  },
   chordNotation: {
     choices: [
       {
@@ -38,6 +26,44 @@ export const fields = {
         label: 'Symbol (-, Δ, +, °...)',
       },
     ],
+  },
+  keyboard: {
+    skin: {
+      choices: [
+        {
+          value: 'classic',
+          label: 'Classic',
+        },
+        {
+          value: 'flat',
+          label: 'Flat',
+        },
+      ],
+    },
+    keyName: {
+      choices: [
+        { value: 'none', label: 'None' },
+        { value: 'octave', label: 'Only C' },
+        { value: 'pitchClass', label: 'Pitch Class' },
+        { value: 'note', label: 'Note' },
+      ],
+    },
+    keyInfo: {
+      choices: [
+        { value: 'none', label: 'None' },
+        { value: 'tonic', label: 'Tonic Dot' },
+        { value: 'interval', label: 'Chord Intervals' },
+        { value: 'tonicAndInterval', label: 'Tonic Dot + Intervals' },
+      ],
+    },
+    label: {
+      choices: [
+        { value: 'none', label: 'None' },
+        { value: 'pitchClass', label: 'Pitch Class' },
+        { value: 'note', label: 'Note' },
+        { value: 'interval', label: 'Interval' },
+      ],
+    },
   },
 };
 

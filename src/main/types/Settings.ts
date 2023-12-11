@@ -1,24 +1,38 @@
-export type ChordDisplaySettings = {
-  id: string;
+export type KeyboardSettings = {
   skin: 'classic' | 'flat';
   from: string;
   to: string;
+  label: 'none' | 'pitchClass' | 'note' | 'interval';
+  keyName: 'none' | 'octave' | 'pitchClass' | 'note';
+  keyInfo: 'none' | 'tonic' | 'interval' | 'tonicAndInterval';
+  fadeOutDuration: number;
+  textOpacity: number;
+  sizes: {
+    radius: number;
+    height: number;
+    ratio: number;
+    bevel: boolean;
+  };
+  colors: {
+    white: string | null;
+    black: string | null;
+    played: string | null;
+    sustained: string | null;
+  };
+};
+
+export type ChordDisplaySettings = {
+  id: string;
   chordNotation: 'long' | 'short' | 'symbol';
   allowOmissions: boolean;
   highlightAlterations: boolean;
   displayKeyboard: boolean;
-  displayNotes: boolean;
   displayChord: boolean;
   displayName: boolean;
   displayNotation: boolean;
   displayAltChords: boolean;
-  displayTonic: boolean;
-  displayDegrees: boolean;
-  displayKeyNames: boolean;
   displayIntervals: boolean;
-  colorHighlight: string | null;
-  colorNoteWhite: string | null;
-  colorNoteBlack: string | null;
+  keyboard: KeyboardSettings;
 };
 
 export type ChordQuizSettings = {

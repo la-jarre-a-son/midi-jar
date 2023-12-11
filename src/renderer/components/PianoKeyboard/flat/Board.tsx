@@ -1,43 +1,34 @@
 import React from 'react';
 
+import { KeyboardSettings } from 'main/types';
+
 import { NoteDef } from './types';
 import Note from './Note';
 
 import styles from './flat.module.scss';
+import { KeyboardSizes } from './constants';
 
 type Props = {
+  keyboard: KeyboardSettings;
   notes: NoteDef[];
-  colorHighlight: string;
-  colorNoteWhite: string;
-  colorNoteBlack: string;
-  displayKeyNames: boolean;
-  displayDegrees: boolean;
-  displayTonic: boolean;
+  sizes: KeyboardSizes;
 };
 
-const Board: React.FC<Props> = ({
-  notes,
-  colorNoteWhite,
-  colorNoteBlack,
-  colorHighlight,
-  displayKeyNames,
-  displayDegrees,
-  displayTonic,
-}) => (
-  <g className={styles.board} transform="translate(0,0)">
+const Board: React.FC<Props> = ({ keyboard, notes, sizes }) => (
+  <g
+    className={styles.board}
+    transform={`translate(0,${keyboard.label === 'none' ? 0 : sizes.LABEL_HEIGHT})`}
+  >
     {notes.map(({ displayName, note, isBlack, offset }) => (
       <Note
         key={note.midi}
+        sizes={sizes}
         name={note.name}
         displayName={displayName}
         chroma={note.chroma as number}
         midi={note.midi as number}
         offset={offset}
-        color={isBlack ? colorNoteBlack : colorNoteWhite}
-        colorHighlight={colorHighlight}
-        displayKeyNames={displayKeyNames}
-        displayDegrees={displayDegrees}
-        displayTonic={displayTonic}
+        keyName={keyboard.keyName}
         isBlack={isBlack}
       />
     ))}
