@@ -1,4 +1,9 @@
-# 1.6.0 (2023-12-11)
+# 1.6.1 (2023-12-11)
+
+## Fixes
+- **Chord Display:** allow keyboard key height up to 16
+
+# 1.6.0 (2023-12-23)
 
 ## Features
 - **Chord Display:** Fully customizable Piano (sizes, colors and labels above keys)

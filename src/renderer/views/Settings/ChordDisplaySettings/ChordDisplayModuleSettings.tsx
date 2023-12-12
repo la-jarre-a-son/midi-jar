@@ -264,7 +264,7 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                 value={moduleSettings.keyboard.sizes.height}
                 onChange={(value: number) => updateModuleSetting('keyboard.sizes.height', value)}
                 min={1}
-                max={8}
+                max={16}
                 step={0.1}
                 valueText={`${moduleSettings.keyboard.sizes.height}`}
               />
@@ -277,8 +277,8 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                   onChange={(value: number) => updateModuleSetting('keyboard.sizes.ratio', value)}
                   min={0.1}
                   max={0.9}
-                  step={0.05}
-                  valueText={`${Math.round(moduleSettings.keyboard.sizes.ratio * 100)}%`}
+                  step={0.025}
+                  valueText={`${(moduleSettings.keyboard.sizes.ratio * 100).toFixed(1)}%`}
                 />
               </FormField>
             )}
