@@ -16,12 +16,12 @@ export function updateSetting(key: string, value: unknown) {
   store.set(`settings.${key}`, value);
 }
 
-export function setStartupSetting() {
+export function setStartupSetting(force = false) {
   const settings = getSettings();
   const loginItemSettings = app.getLoginItemSettings();
 
   if (app.isPackaged && settings.general) {
-    if (!!settings.general?.launchAtStartup !== loginItemSettings.openAtLogin) {
+    if (force || !!settings.general?.launchAtStartup !== loginItemSettings.openAtLogin) {
       app.setLoginItemSettings({
         openAtLogin: !!settings?.general?.launchAtStartup,
         openAsHidden: !!settings?.general?.startMinimized,
@@ -59,6 +59,13 @@ export function clearSettings() {
   return store.clear();
 }
 
-store.onDidChange('settings', () => {
-  setStartupSetting();
+store.onDidChange('settings', (newValue?: Settings, oldValue?: Settings) => {
+  if (
+    newValue &&
+    oldValue &&
+    (newValue.general?.launchAtStartup !== oldValue.general?.launchAtStartup ||
+      newValue.general?.startMinimized !== oldValue.general?.startMinimized)
+  ) {
+    setStartupSetting(true);
+  }
 });
