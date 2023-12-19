@@ -1,7 +1,7 @@
 import { KeyboardSettings } from 'main/types';
 
 export const BASE_SIZE = 24;
-export const LABEL_SIZE = 14;
+export const LABEL_SIZE = 20;
 export const INFO_SIZE = 12;
 
 export type KeyboardSizes = {
