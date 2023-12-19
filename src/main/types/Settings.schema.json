@@ -15,6 +15,9 @@
                         ],
                         "type": "string"
                     },
+                    "detectOnRelease": {
+                        "type": "boolean"
+                    },
                     "displayAltChords": {
                         "type": "boolean"
                     },

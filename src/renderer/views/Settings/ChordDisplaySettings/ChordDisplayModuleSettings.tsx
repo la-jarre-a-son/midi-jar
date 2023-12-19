@@ -117,6 +117,17 @@ const ChordDisplayModuleSettings: React.FC<Props> = ({ parentPath }) => {
                 checked={moduleSettings.useSustain}
               />
             </FormControlLabel>
+
+            <FormControlLabel
+              label="Detect on release"
+              hint="Refresh chord detection when releasing notes"
+              reverse
+            >
+              <Switch
+                onChange={(value) => updateModuleSetting('detectOnRelease', value)}
+                checked={moduleSettings.detectOnRelease}
+              />
+            </FormControlLabel>
           </FormFieldset>
 
           <FormFieldset label="Additional Info">

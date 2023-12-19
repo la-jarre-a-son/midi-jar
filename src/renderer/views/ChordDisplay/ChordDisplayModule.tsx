@@ -31,6 +31,7 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
     midiChannel: 0,
     allowOmissions: moduleSettings.allowOmissions,
     useSustain: moduleSettings.useSustain,
+    detectOnRelease: moduleSettings.detectOnRelease,
   });
 
   if (!settings || !moduleSettings) return null;

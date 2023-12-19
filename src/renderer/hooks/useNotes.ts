@@ -51,6 +51,7 @@ interface Parameters {
   midiChannel: number;
   allowOmissions: boolean;
   useSustain: boolean;
+  detectOnRelease: boolean;
 }
 
 enum MidiActionTypes {
@@ -69,6 +70,7 @@ enum ParametersActionTypes {
   KEY_SIGNATURE_CHANGED = 'KEY_SIGNATURE_CHANGED',
   ALLOW_OMISSIONS_CHANGED = 'ALLOW_OMISSIONS_CHANGED',
   USE_SUSTAIN_CHANGED = 'USE_SUSTAIN_CHANGED',
+  DETECT_ON_RELEASE_CHANGED = 'DETECT_ON_RELEASE_CHANGED',
 }
 
 interface ParametersAction {
@@ -83,6 +85,7 @@ interface State {
     keySignature: KeySignatureConfig;
     allowOmissions: boolean;
     useSustain: boolean;
+    detectOnRelease: boolean;
   };
   sustainedMidiNotes: number[];
   playedMidiNotes: number[];
@@ -196,7 +199,9 @@ function reducer(state: State, action: Action): State {
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignatureNotes, state.params.allowOmissions);
+      const chords = state.params.detectOnRelease
+        ? getChords(notes, keySignatureNotes, state.params.allowOmissions)
+        : state.chords;
 
       return {
         ...state,
@@ -230,7 +235,9 @@ function reducer(state: State, action: Action): State {
       midiNotes.sort(midiSortCompareFn);
       const notes = midiNotes.map(fromMidi);
       const pitchClasses = notes.map(Note.pitchClass);
-      const chords = getChords(notes, keySignatureNotes, state.params.allowOmissions);
+      const chords = state.params.detectOnRelease
+        ? getChords(notes, keySignatureNotes, state.params.allowOmissions)
+        : state.chords;
 
       return {
         ...state,
@@ -253,6 +260,7 @@ const defaultState: State = {
     keySignature: getKeySignature('C'),
     allowOmissions: false,
     useSustain: true,
+    detectOnRelease: true,
   },
   sustainedMidiNotes: [],
   playedMidiNotes: [],
@@ -269,6 +277,7 @@ export default function useNotes({
   midiChannel = MIDI_CHANNEL_ALL,
   allowOmissions = false,
   useSustain = true,
+  detectOnRelease = true,
 }: Partial<Parameters> = {}) {
   const [state, dispatch] = useReducer(reducer, {
     ...defaultState,
@@ -276,6 +285,7 @@ export default function useNotes({
       keySignature: getKeySignature(key, accidentals === 'sharp'),
       allowOmissions,
       useSustain,
+      detectOnRelease,
     },
   });
 
@@ -299,6 +309,13 @@ export default function useNotes({
       value: useSustain,
     });
   }, [useSustain]);
+
+  useEffect(() => {
+    dispatch({
+      type: ParametersActionTypes.DETECT_ON_RELEASE_CHANGED,
+      value: detectOnRelease,
+    });
+  }, [detectOnRelease]);
 
   const onMidiMessage = useCallback(
     (message: MidiMessage) => {

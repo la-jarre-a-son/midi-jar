@@ -29,6 +29,7 @@ export type ChordDisplaySettings = {
   chordNotation: 'long' | 'short' | 'symbol';
   allowOmissions: boolean;
   useSustain: boolean;
+  detectOnRelease: boolean;
   highlightAlterations: boolean;
   displayKeyboard: boolean;
   displayChord: boolean;
