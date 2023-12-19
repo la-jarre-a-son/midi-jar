@@ -19,6 +19,7 @@ import { Icon, NavButton } from 'renderer/components';
 
 import ThumbnaildChordDisplay from 'renderer/assets/thumbnails/chord-display.jpg';
 import ThumbnaildChordQuiz from 'renderer/assets/thumbnails/chord-quiz.jpg';
+import ThumbnaildChordDictionary from 'renderer/assets/thumbnails/chord-dictionary.jpg';
 import ThumbnaildCircleOfFifths from 'renderer/assets/thumbnails/circle-of-fifths.jpg';
 import ThumbnailRouting from 'renderer/assets/thumbnails/routing.jpg';
 import ThumbnailDebugger from 'renderer/assets/thumbnails/debugger.jpg';
@@ -151,6 +152,28 @@ const Home: React.FC = () => {
           >
             Circle of Fifths
           </CardHeader>
+        </Card>
+        <Card outlined elevation={1}>
+          <CardThumbnail alt="Chord Dictionary preview" src={ThumbnaildChordDictionary}>
+            <CardThumbnailOverlay as={NavLink} to="/dictionary" interactive />
+            {overlayEnabled && (
+              <CardThumbnailItem position="top-left">
+                <Button
+                  as="a"
+                  href={getOverlayUrl(state, '/dictionary')}
+                  target="_blank"
+                  aria-label="overlay"
+                  icon
+                  intent="primary"
+                  variant="ghost"
+                  hoverIntent
+                >
+                  <Icon name="overlay" />
+                </Button>
+              </CardThumbnailItem>
+            )}
+          </CardThumbnail>
+          <CardHeader left={<Icon name="dictionary" />}>Chord Dictionary</CardHeader>
         </Card>
         <Card outlined elevation={1}>
           <CardThumbnail alt="Settings preview" src={ThumbnailRouting}>

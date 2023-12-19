@@ -94,4 +94,8 @@ export function overrideDictionary() {
   );
 }
 
+export function getChordTypes() {
+  return ChordType.all();
+}
+
 overrideDictionary();

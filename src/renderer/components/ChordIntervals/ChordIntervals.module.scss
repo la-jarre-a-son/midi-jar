@@ -3,6 +3,7 @@
 .base {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 6em;
 }
 
@@ -35,7 +36,7 @@
 }
 
 .interval--active {
-  background-color: $color-success-normal;
+  background-color: $color-primary-normal;
 }
 
 .interval--played {

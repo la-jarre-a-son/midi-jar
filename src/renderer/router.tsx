@@ -29,6 +29,8 @@ import Licenses from './views/Settings/Licenses';
 import packageJSON from '../../package.json';
 import icon from '../../assets/icon.svg';
 import ChordDisplayNamespaceSettings from './views/Settings/ChordDisplaySettings/ChordDisplayModuleSettings';
+import ChordDictionary from './views/ChordDictionary';
+import ChordDictionaryDetail from './views/ChordDictionary/Detail';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -106,6 +108,31 @@ const router = createHashRouter(
               <ChordQuizSettings />
             </>
           }
+        />
+      </Route>
+      <Route
+        path="dictionary"
+        handle={{
+          title: 'Chord Dictionary',
+          icon: <Icon name="dictionary" />,
+          hasSettings: false,
+        }}
+        element={
+          <MidiMessageManagerProvider namespace="chord-dictionary" source="internal">
+            <ChordDictionary />
+          </MidiMessageManagerProvider>
+        }
+      >
+        <Route index element={<ChordDictionaryDetail />} />
+        <Route
+          path=":chordName"
+          handle={{
+            title: (params: Params) => (
+              <span style={{ textTransform: 'none' }}>{params.chordName}</span>
+            ),
+            icon: <Icon name="music" />,
+          }}
+          element={<ChordDictionaryDetail />}
         />
       </Route>
       <Route

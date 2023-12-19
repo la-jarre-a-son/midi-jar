@@ -1,0 +1,26 @@
+@import 'tokens';
+
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pitchbar {
+  --Sidebar_minSize: 48px;
+  --Button_textTransform: none;
+}
+
+.content {
+  height: 100%;
+}
+
+.chordbar {
+  --Sidebar_minSize: 200px;
+  --Button_textTransform: none;
+}
