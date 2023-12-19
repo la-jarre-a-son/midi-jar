@@ -4,6 +4,7 @@ import {
   KeySignatureConfig,
   formatSharpsFlats,
   getChordDegrees,
+  getChordNotes,
   getNoteInKeySignature,
 } from 'renderer/helpers';
 import { Note } from 'tonal';
@@ -158,6 +159,17 @@ export const highlightLabels = (
 
       for (let i = 0; i < midi.length; i += 1) {
         highlightLabel(containerEl, midi[i], intervals[i]);
+      }
+    }
+  } else if (keyboard.label === 'chordNote') {
+    if (chord) {
+      const notes = getChordNotes(
+        chord,
+        midi.map((midiNote) => Note.pitchClass(Note.fromMidi(midiNote)))
+      );
+
+      for (let i = 0; i < midi.length; i += 1) {
+        highlightLabel(containerEl, midi[i], formatSharpsFlats(notes[i]));
       }
     }
   } else {

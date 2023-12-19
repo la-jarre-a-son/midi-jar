@@ -61,7 +61,7 @@ const Home: React.FC = () => {
               )}
             </CardThumbnail>
             <CardHeader
-              left={<Icon name="music" />}
+              left={<Icon name="piano" />}
               right={
                 <NavButton
                   aria-label="edit"

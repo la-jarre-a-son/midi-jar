@@ -105,6 +105,7 @@
                             },
                             "label": {
                                 "enum": [
+                                    "chordNote",
                                     "interval",
                                     "none",
                                     "note",

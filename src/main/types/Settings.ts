@@ -2,7 +2,7 @@ export type KeyboardSettings = {
   skin: 'classic' | 'flat';
   from: string;
   to: string;
-  label: 'none' | 'pitchClass' | 'note' | 'interval';
+  label: 'none' | 'pitchClass' | 'note' | 'chordNote' | 'interval';
   keyName: 'none' | 'octave' | 'pitchClass' | 'note';
   keyInfo: 'none' | 'tonic' | 'interval' | 'tonicAndInterval';
   fadeOutDuration: number;

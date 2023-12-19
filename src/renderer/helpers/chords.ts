@@ -8,7 +8,7 @@ export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)
 
 export const CHORD_TYPE_SPECIALCASE_TOKEN = '6/9|6/11|6/13|no[0-9]{1,2}|quartal';
 export const CHORD_TYPE_QUALITY_TOKEN =
-  '(min|maj|Maj|m/maj?|mM|M|m|-|\\+|aug|dim|dom|sus|o|Δ|^|°|ø|q)(6/9|6/11|6/13|[0-9]{1,2})?';
+  '(min|maj|Maj|m/maj?|M|m|-|\\+|aug|dim|dom|sus|o|Δ|^|°|ø|q)(6/9|6/11|6/13|[0-9]{1,2})?';
 
 export const CHORD_TYPE_ALTERATIONS_TOKEN = '(add)?(b|#)?[0-9]{1,2}';
 
@@ -66,6 +66,20 @@ export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
     if (i < 0) return '';
 
     return chord.intervals[i].replace('*', '');
+  });
+}
+/**
+ * Maps a list of pitch classes to the note name in a chord.
+ * @param chord - the chord
+ * @param pitchClasses - the notes played
+ * @returns string[]
+ */
+export function getChordNotes(chord: TChord, pitchClasses: string[]) {
+  return pitchClasses.map((pc: string) => {
+    const i = chord.notes.findIndex((note) => Note.chroma(note) === Note.chroma(pc));
+    if (i < 0) return '';
+
+    return chord.notes[i];
   });
 }
 

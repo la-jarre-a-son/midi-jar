@@ -61,6 +61,7 @@ export const fields = {
         { value: 'none', label: 'None' },
         { value: 'pitchClass', label: 'Pitch Class' },
         { value: 'note', label: 'Note' },
+        { value: 'chordNote', label: 'Note in Chord' },
         { value: 'interval', label: 'Interval' },
       ],
     },
