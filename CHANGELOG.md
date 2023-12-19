@@ -1,3 +1,12 @@
+# 1.6.2 (2023-12-19)
+
+## Fixes
+- **Chord Display:** increase keyboard label font-size
+- **Chord Display:** added chordNote as a label (note name in chord with correct alteration instead of keysignature)
+- **chord-dictionary:** fix some issue in tonal chord dictionary
+- **Home:** correct card aspect ratio and chord-display icon
+- **Settings:** correctly reflect startup minimized option
+
 # 1.6.1 (2023-12-11)
 
 ## Fixes
