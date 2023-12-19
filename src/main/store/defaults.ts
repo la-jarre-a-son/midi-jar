@@ -38,6 +38,7 @@ export const defaultChordDisplaySettings: ChordDisplaySettings = {
   chordNotation: 'short',
   allowOmissions: true,
   useSustain: true,
+  detectOnRelease: true,
   highlightAlterations: false,
   displayKeyboard: true,
   displayChord: true,
