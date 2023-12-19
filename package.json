@@ -17,6 +17,7 @@
     "start:preload": "cross-env NODE_ENV=development DEBUG=app:* DEBUG_COLORS=true TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development DEBUG=app:* DEBUG_COLORS=true TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
     "test": "jest",
+    "types": "npm exec tsc",
     "schema": "concurrently \"npm run schema:settings\" \"npm run schema:sessions\" \"npm run schema:windowstate\"",
     "schema:settings": "typescript-json-schema --strictNullChecks --refs false \"src/main/types/Settings.ts\" Settings -o \"src/main/types/Settings.schema.json\"",
     "schema:sessions": "typescript-json-schema --strictNullChecks --refs false \"src/main/types/Midi.ts\" Midi -o \"src/main/types/Midi.schema.json\"",

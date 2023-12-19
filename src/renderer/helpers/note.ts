@@ -8,7 +8,7 @@ export type KeySignatureConfig = {
   scale: string[];
 };
 
-export const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+export const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const REGEX_FLAT = /b/g;
 const REGEX_SHARP = /#/g;

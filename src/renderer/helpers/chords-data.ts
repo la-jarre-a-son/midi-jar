@@ -12,7 +12,7 @@
  */
 const CHORDS: string[][] = [
   // ==Intervals==
-  ['1P 5P', 'fifth', '5'],
+  ['1P 5P', 'fifth', '5 5 5'],
 
   // ==Major==
   // '''Normal'''
@@ -36,7 +36,7 @@ const CHORDS: string[][] = [
   ['1P 3M 5P* 6M 9M 11A', 'sixth ninth added sharp eleventh', 'maj6/9add#11 6/9add#11 69#11'],
 
   ['1P 3M 5P* 7M 11P', 'major seventh added eleventh', 'maj7add11 M7add11 Δ7add11 Δadd11'],
-  ['1P 3M 5P* 7M 11A', 'major seventh added sharp eleventh', 'maj7add#11 M7add#11 Δadd#11 majadd#4 Δadd#4'],
+  ['1P 3M 5P* 7M 11A', 'major seventh added sharp eleventh', 'maj7add#11 M7add#11 Δadd#11 maj7add#4 M7add#4 Δadd#4'],
   ['1P 3M 5P* 7M 13M', 'major seventh added thirteenth', 'maj7add13 M7add13 Δ7add13'], // removed 9M
   ['1P 3M 5P* 7M 13m', 'major seventh added flat thirteenth', 'maj7addb13 M7addb13 Δ7addb13'],
 
