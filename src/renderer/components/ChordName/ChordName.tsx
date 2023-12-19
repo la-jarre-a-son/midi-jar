@@ -16,6 +16,25 @@ enum ALIAS_NOTATION {
   symbol = 2,
 }
 
+function getChordSymbol(chord: ChordNameProps['chord'], notation: ChordNameProps['notation']) {
+  if (!chord) {
+    return '';
+  }
+
+  if (typeof notation === 'string') {
+    if (chord.aliases[ALIAS_NOTATION[notation]] !== undefined) {
+      return chord.tonic + chord.aliases[ALIAS_NOTATION[notation]];
+    }
+  } else if (typeof notation === 'number' && chord.aliases[notation] !== undefined) {
+    return chord.tonic + chord.aliases[notation];
+  }
+
+  if (chord.aliases[ALIAS_NOTATION.short] !== undefined) {
+    return chord.tonic + chord.aliases[ALIAS_NOTATION.short];
+  }
+  return chord.symbol;
+}
+
 export const ChordName: React.FC<ChordNameProps> = ({
   className,
   chord,
@@ -26,13 +45,9 @@ export const ChordName: React.FC<ChordNameProps> = ({
 }) => {
   if (!chord) return null;
 
-  const symbol =
-    // eslint-disable-next-line no-nested-ternary
-    chord.aliases[ALIAS_NOTATION[notation]] !== undefined
-      ? chord.tonic + chord.aliases[ALIAS_NOTATION[notation]]
-      : chord.aliases[ALIAS_NOTATION.short] !== undefined
-      ? chord.tonic + chord.aliases[ALIAS_NOTATION.short]
-      : chord.symbol;
+  const symbol = getChordSymbol(chord, notation);
+
+  if (!symbol) return null;
 
   const [tonic, type] = tokenizeChord(symbol);
   const tokens = tokenizeChordType(type);

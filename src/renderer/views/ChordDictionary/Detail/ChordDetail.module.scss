@@ -1,0 +1,127 @@
+@import 'tokens';
+
+.base {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.chordName {
+  font-size: min(64px, 6vw);
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(#fff, 0.5);
+  margin: 0 0 8px;
+  padding: 0;
+  width: 100%;
+  user-select: all;
+}
+
+.title {
+  display: flex;
+  margin: $space-lg 0;
+  text-transform: uppercase;
+  width: 100%;
+  align-items: center;
+  gap: $space-md;
+
+  &::before, &::after {
+    content: " ";
+    flex-grow: 1;
+    flex-basis: 0;
+    border-bottom: 1px solid $color-neutral-normal;
+  }
+}
+
+.name {
+  user-select: all;
+  text-align: center;
+  font-size: min(24px, 4vw);
+}
+
+.intervals {
+  font-size: min(1em, 2vw);
+}
+
+.notation {
+  margin: auto;
+  width: 192px;
+  text-align: center;
+}
+
+.keyboard {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.list {
+  --List-item_textTransform: none;
+  --List-item_fontSize: 18px;
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+.column {
+  flex-basis: 320px;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.inversion {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 16px;
+}
+
+.inversionInfo {
+  flex-basis: 200px;
+  flex-grow: 0;
+}
+
+.inversionChord {
+  font-size: 24px;
+}
+
+.inversionInterval {
+  font-style: italic;
+}
+
+.inversionAltChord {
+  margin-top: 16px;
+}
+
+.inversionKeyboard {
+  flex-grow: 1;
+  flex-basis: 400px;
+}
+
+.inversionNotation {
+  width: 96px;
+  margin: auto;
+}
+
+.chordSet {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chordBadge {
+  --Badge_textTransform: none;
+  &:hover {
+    --Badge_background: #{$color-primary-normal};
+  }
+}

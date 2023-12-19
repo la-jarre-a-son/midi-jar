@@ -10,6 +10,7 @@ export const ICON_NAMES = [
   'clock',
   'controller',
   'cross',
+  'dictionary',
   'exclamation',
   'github',
   'heart',
