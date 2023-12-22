@@ -5,9 +5,9 @@ import { Badge, Container, Link, List, ListItem } from '@la-jarre-a-son/ui';
 
 import { defaultKeyboardSettings } from 'main/store/defaults';
 
-import { getKeySignature, getNoteInKeySignature } from 'renderer/helpers';
+import { getChordDegrees, getKeySignature, getNoteInKeySignature } from 'renderer/helpers';
 
-import { ChordIntervals, ChordName, Notation, PianoKeyboard } from 'renderer/components';
+import { ChordIntervals, ChordName, NavButton, Notation, PianoKeyboard } from 'renderer/components';
 import { KeyboardSettings } from 'main/types';
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
@@ -19,12 +19,13 @@ import {
   getSubsetChords,
   getSupersetChords,
 } from './utils';
+import { useChordDictionary } from '../ChordDictionaryProvider';
 
 const KEYBOARD_SETTINGS: KeyboardSettings = {
   ...defaultKeyboardSettings,
   skin: 'classic',
-  from: 'C4',
-  to: 'B6',
+  from: 'C3',
+  to: 'B5',
   label: 'chordNote',
   keyName: 'none',
   keyInfo: 'tonicAndInterval',
@@ -44,12 +45,13 @@ const NOTATION_LABELS = ['long', 'short', 'symbol'];
 const cx = classnames.bind(styles);
 
 const ChordDetail: React.FC = () => {
+  const { midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses } = useChordDictionary();
   const ref = useRef<HTMLDivElement>(null);
   const { chordName } = useParams();
   const navigate = useNavigate();
 
   const { settings } = useSettings();
-  const { key, accidentals } = settings.notation;
+  const { key, accidentals, staffClef, staffTranspose } = settings.notation;
   const keySignature = useMemo(
     () => getKeySignature(key, accidentals === 'sharp'),
     [key, accidentals]
@@ -79,6 +81,8 @@ const ChordDetail: React.FC = () => {
     navigate(`../${encodeURIComponent(name)}`);
   };
 
+  const playedIntervals = getChordDegrees(chord, pitchClasses ?? []);
+
   return (
     <Container ref={ref} className={cx('base')} size="xl">
       <h1 className={cx('chordName')}>
@@ -87,8 +91,10 @@ const ChordDetail: React.FC = () => {
       <div className={cx('name')}>{chord.name}</div>
       <PianoKeyboard
         className={cx('keyboard')}
-        played={midi}
-        midi={midi}
+        targets={midi}
+        played={playedMidiNotes}
+        sustained={sustainedMidiNotes}
+        midi={midiNotes}
         chord={chord}
         keyboard={KEYBOARD_SETTINGS}
       />
@@ -97,13 +103,21 @@ const ChordDetail: React.FC = () => {
           <h2 className={cx('title')}>Intervals</h2>
           <ChordIntervals
             className={cx('intervals')}
-            intervals={chord.intervals}
+            intervals={playedIntervals}
+            targets={chord.intervals}
+            pitchClasses={pitchClasses}
             tonic={chord.tonic}
           />
         </div>
         <div className={cx('column')}>
           <h2 className={cx('title')}>Notation</h2>
-          <Notation className={cx('notation')} midiNotes={midi} keySignature={keySignature} />
+          <Notation
+            className={cx('notation')}
+            midiNotes={midi}
+            keySignature={keySignature}
+            staffClef={staffClef}
+            staffTranspose={staffTranspose}
+          />
         </div>
       </div>
 
@@ -188,6 +202,8 @@ const ChordDetail: React.FC = () => {
               className={cx('inversionNotation')}
               midiNotes={inversionMidi}
               keySignature={keySignature}
+              staffClef={staffClef}
+              staffTranspose={staffTranspose}
             />
           </div>
         );
@@ -198,14 +214,17 @@ const ChordDetail: React.FC = () => {
             <h2 className={cx('title')}>Simplified</h2>
             <div className={cx('chordSet')}>
               {subsetChords.map((c, index) => (
-                <Badge
+                <NavButton
                   key={index}
-                  as={NavLink}
-                  className={cx('chordBadge')}
+                  className={cx('chordButton')}
+                  intent="primary"
+                  size="sm"
+                  hoverIntent
+                  rounded
                   to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
                 >
                   <ChordName chord={c} notation="long" />
-                </Badge>
+                </NavButton>
               ))}
             </div>
           </div>
@@ -215,14 +234,17 @@ const ChordDetail: React.FC = () => {
             <h2 className={cx('title')}>Extended</h2>
             <div className={cx('chordSet')}>
               {supersetChords.map((c, index) => (
-                <Badge
+                <NavButton
                   key={index}
-                  as={NavLink}
-                  className={cx('chordBadge')}
+                  className={cx('chordButton')}
+                  intent="primary"
+                  size="sm"
+                  hoverIntent
+                  rounded
                   to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
                 >
                   <ChordName chord={c} notation="long" />
-                </Badge>
+                </NavButton>
               ))}
             </div>
           </div>

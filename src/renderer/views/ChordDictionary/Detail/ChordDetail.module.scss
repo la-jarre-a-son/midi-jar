@@ -15,7 +15,6 @@
   margin: 0 0 8px;
   padding: 0;
   width: 100%;
-  user-select: all;
 }
 
 .title {
@@ -35,7 +34,6 @@
 }
 
 .name {
-  user-select: all;
   text-align: center;
   font-size: min(24px, 4vw);
 }
@@ -112,16 +110,12 @@
 }
 
 .chordSet {
-
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 4px;
 }
 
-.chordBadge {
-  --Badge_textTransform: none;
-  &:hover {
-    --Badge_background: #{$color-primary-normal};
-  }
+.chordButton {
+  --Button_textTransform: none;
 }

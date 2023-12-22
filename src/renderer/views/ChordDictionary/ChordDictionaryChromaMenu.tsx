@@ -20,29 +20,8 @@ type Props = {
 };
 
 const ChordDictionaryChromaMenu: React.FC<Props> = ({ keySignature, selected, onSelect }) => {
-  const ref = useRef<HTMLElement>();
-
-  useEffect(() => {
-    if (ref.current) {
-      const currentEl: HTMLElement | null = ref.current.querySelector('[aria-selected=true]');
-
-      if (currentEl) {
-        if (ref.current.scrollTop > currentEl.offsetTop) {
-          currentEl.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
-        }
-        if (
-          ref.current.scrollTop + ref.current.offsetHeight <
-          currentEl.offsetTop + currentEl.offsetHeight
-        ) {
-          currentEl.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
-        }
-      }
-    }
-  }, [selected]);
-
   return (
     <TabList
-      ref={ref}
       className={cx('chromanav')}
       aria-label="Chroma Navigation"
       direction="vertical"
