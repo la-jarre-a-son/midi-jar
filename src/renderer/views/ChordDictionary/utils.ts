@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { ChordType } from '@tonaljs/chord-type';
-import { containsInterval, getChordTypes } from 'renderer/helpers';
+import {
+  KeySignatureConfig,
+  containsInterval,
+  getChordTypes,
+  getChordsInKey,
+} from 'renderer/helpers';
 
 export type ChordItem = {
   type: 'item';
@@ -15,7 +20,7 @@ export type ChordGroup = {
 };
 
 export const groupValues = {
-  none: 'No group',
+  none: 'All Chords',
   quality: 'By Quality',
   intervals: 'By Intervals',
 };
@@ -33,7 +38,7 @@ const SORT_GROUP_NAMES = [
   'Suspended / No 3rd',
   'Diminished',
   'Augmented',
-  // IntervalGroups
+  // Interval Groups
   'No 3rd / Suspended',
   'Minor 3rd',
   'Major 3rd',
@@ -172,8 +177,13 @@ function getChordIntervals(chordType: ChordType) {
   return intervals;
 }
 
-export function getChordGroups(group: keyof typeof groupValues): (ChordGroup | ChordItem)[] {
-  const chordTypes = getChordTypes();
+export function getChordGroups(
+  group: keyof typeof groupValues,
+  keySignature: KeySignatureConfig,
+  chroma: number | null,
+  filterChordsInKey: boolean
+): (ChordGroup | ChordItem)[] {
+  const chordTypes = filterChordsInKey ? getChordsInKey(keySignature, chroma) : getChordTypes();
 
   if (group === 'none') {
     return chordTypes.map((chordType) => ({
@@ -209,74 +219,5 @@ export function getChordGroups(group: keyof typeof groupValues): (ChordGroup | C
     return Array.isArray(chordGroup) ? chordGroup : chordGroup.items;
   }
 
-  return [
-    {
-      type: 'group',
-      value: '1',
-      label: '1',
-      items: [
-        {
-          type: 'group',
-          value: 'A1',
-          label: 'A1',
-          items: [1, 2, 3, 4, 5].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-        {
-          type: 'group',
-          value: 'B1',
-          label: 'B1',
-          items: [6, 7, 8, 9, 10].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-        {
-          type: 'group',
-          value: 'C1',
-          label: 'C1',
-          items: [11, 12, 13, 14, 15].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-      ],
-    },
-    {
-      type: 'group',
-      value: '2',
-      label: '2',
-      items: [
-        {
-          type: 'group',
-          value: 'A2',
-          label: 'A2',
-          items: [16, 17, 18, 19, 20].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-        {
-          type: 'group',
-          value: 'B2',
-          label: 'B2',
-          items: [21, 22, 23, 24, 25].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-        {
-          type: 'group',
-          value: 'C2',
-          label: 'C2',
-          items: [26, 27, 28, 29, 30].map((index) => ({
-            type: 'item',
-            chordType: chordTypes[index],
-          })),
-        },
-      ],
-    },
-  ];
+  return [];
 }

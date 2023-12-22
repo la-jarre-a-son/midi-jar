@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import classnames from 'classnames/bind';
+import { Note } from 'tonal';
 import { Tab, TabList } from '@la-jarre-a-son/ui';
 
 import {
@@ -17,9 +18,15 @@ type Props = {
   keySignature: KeySignatureConfig;
   selected: number | null;
   onSelect: (chroma: number) => void;
+  filterChordsInKey: boolean;
 };
 
-const ChordDictionaryChromaMenu: React.FC<Props> = ({ keySignature, selected, onSelect }) => {
+const ChordDictionaryChromaMenu: React.FC<Props> = ({
+  keySignature,
+  selected,
+  onSelect,
+  filterChordsInKey,
+}) => {
   return (
     <TabList
       className={cx('chromanav')}
@@ -28,18 +35,22 @@ const ChordDictionaryChromaMenu: React.FC<Props> = ({ keySignature, selected, on
       variant="ghost"
       block
     >
-      {NOTE_NAMES.map((note, index) => (
-        <Tab
-          key={note}
-          className={cx('tab')}
-          onClick={() => onSelect(index)}
-          selected={selected === index}
-        >
-          <span className={cx('label')}>
-            {formatSharpsFlats(getNoteInKeySignature(note, keySignature.notes))}
-          </span>
-        </Tab>
-      ))}
+      {(filterChordsInKey ? keySignature.scale : NOTE_NAMES).map((note) => {
+        const chroma = Note.chroma(note) as number;
+
+        return (
+          <Tab
+            key={note}
+            className={cx('tab')}
+            onClick={() => onSelect(chroma)}
+            selected={selected === chroma}
+          >
+            <span className={cx('label')}>
+              {formatSharpsFlats(getNoteInKeySignature(note, keySignature.notes))}
+            </span>
+          </Tab>
+        );
+      })}
     </TabList>
   );
 };

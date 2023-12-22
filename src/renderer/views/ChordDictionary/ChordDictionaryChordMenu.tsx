@@ -1,21 +1,37 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import classnames from 'classnames/bind';
 import { Tab, TabList, TreeView, TreeViewItem } from '@la-jarre-a-son/ui';
 
-import styles from './ChordDictionary.module.scss';
+import { KeySignatureConfig } from 'renderer/helpers';
+
 import { ChordGroup, ChordItem, getChordGroups, groupValues } from './utils';
+
+import styles from './ChordDictionary.module.scss';
 
 const cx = classnames.bind(styles);
 
 type Props = {
+  keySignature: KeySignatureConfig;
   selected: string | null;
   onSelect: (note: string) => void;
   group: keyof typeof groupValues;
+  chroma: number | null;
+  filterChordsInKey: boolean;
 };
 
-const ChordDictionaryChordMenu: React.FC<Props> = ({ selected, onSelect, group }) => {
+const ChordDictionaryChordMenu: React.FC<Props> = ({
+  keySignature,
+  selected,
+  onSelect,
+  group,
+  chroma,
+  filterChordsInKey,
+}) => {
   const ref = useRef<HTMLElement>();
-  const groups = useMemo(() => getChordGroups(group), [group]);
+  const groups = useMemo(
+    () => getChordGroups(group, keySignature, chroma, filterChordsInKey),
+    [group, keySignature, chroma, filterChordsInKey]
+  );
 
   const renderTreeViewGroup = (c: ChordGroup | ChordItem) => {
     return c.type === 'item' ? (

@@ -1,25 +1,28 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { Chord, Note } from 'tonal';
 import { Badge, Container, Link, List, ListItem } from '@la-jarre-a-son/ui';
 
+import { KeyboardSettings } from 'main/types';
 import { defaultKeyboardSettings } from 'main/store/defaults';
 
-import { getChordDegrees, getKeySignature, getNoteInKeySignature } from 'renderer/helpers';
-
-import { ChordIntervals, ChordName, NavButton, Notation, PianoKeyboard } from 'renderer/components';
-import { KeyboardSettings } from 'main/types';
-
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSettings } from 'renderer/contexts/Settings';
-import styles from './ChordDetail.module.scss';
+import { getChordDegrees, getNoteInKeySignature } from 'renderer/helpers';
+import { ChordIntervals, ChordName, NavButton, Notation, PianoKeyboard } from 'renderer/components';
+
+import { useChordDictionary } from '../ChordDictionaryProvider';
+
 import {
   getAlternativeChords,
   getChordInversion,
   getSubsetChords,
   getSupersetChords,
 } from './utils';
-import { useChordDictionary } from '../ChordDictionaryProvider';
+
+import styles from './ChordDetail.module.scss';
+
+const cx = classnames.bind(styles);
 
 const KEYBOARD_SETTINGS: KeyboardSettings = {
   ...defaultKeyboardSettings,
@@ -42,20 +45,21 @@ const KEYBOARD_SETTINGS: KeyboardSettings = {
 
 const NOTATION_LABELS = ['long', 'short', 'symbol'];
 
-const cx = classnames.bind(styles);
-
 const ChordDetail: React.FC = () => {
-  const { midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses } = useChordDictionary();
+  const {
+    keySignature,
+    midiNotes,
+    playedMidiNotes,
+    sustainedMidiNotes,
+    pitchClasses,
+    filterChordsInKey,
+  } = useChordDictionary();
   const ref = useRef<HTMLDivElement>(null);
   const { chordName } = useParams();
   const navigate = useNavigate();
 
   const { settings } = useSettings();
-  const { key, accidentals, staffClef, staffTranspose } = settings.notation;
-  const keySignature = useMemo(
-    () => getKeySignature(key, accidentals === 'sharp'),
-    [key, accidentals]
-  );
+  const { staffClef, staffTranspose } = settings.notation;
 
   useEffect(() => {
     if (ref.current) {
@@ -76,7 +80,7 @@ const ChordDetail: React.FC = () => {
   const midi = getChordInversion(chord, 0);
   const alternativeChords = getAlternativeChords(chord, keySignature);
   const subsetChords = getSubsetChords(chord);
-  const supersetChords = getSupersetChords(chord);
+  const supersetChords = getSupersetChords(chord, keySignature, !!filterChordsInKey);
   const goToChordDetail = (name: string) => {
     navigate(`../${encodeURIComponent(name)}`);
   };

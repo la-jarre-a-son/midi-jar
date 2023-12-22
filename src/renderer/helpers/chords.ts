@@ -1,8 +1,11 @@
 import { Note } from 'tonal';
 import * as ChordType from '@tonaljs/chord-type';
 import { Chord as TChord } from '@tonaljs/chord';
+import { isSubsetOf } from '@tonaljs/pcset';
 
 import chordsData from './chords-data';
+import { stringRotate } from './string';
+import { KeySignatureConfig } from './note';
 
 export const CHORD_NAME_REGEX = /^(([A-G])([b]+|[#]+)?)(.*?)(\/([A-G]([b]+|[#]+)?))?$/;
 
@@ -11,6 +14,11 @@ export const CHORD_TYPE_QUALITY_TOKEN =
   '(min|maj|Maj|m/maj?|M|m|-|\\+|aug|dim|dom|sus|o|Δ|^|°|ø|q)(6/9|6/11|6/13|[0-9]{1,2})?';
 
 export const CHORD_TYPE_ALTERATIONS_TOKEN = '(add)?(b|#)?[0-9]{1,2}';
+
+// InKey chroma masks - allows borrowings from other scales
+const IN_KEY_SCALE_CHROMA = '101011010101'; // Major only
+// const IN_KEY_SCALE_CHROMA = '101011011101'; // Major + Harmonic
+// const IN_KEY_SCALE_CHROMA = '101011111101'; // Major + Melodic + Harmonic
 
 export const CHORD_TYPE_REGEX = new RegExp(
   `^(${CHORD_TYPE_SPECIALCASE_TOKEN}|${CHORD_TYPE_ALTERATIONS_TOKEN}|${CHORD_TYPE_QUALITY_TOKEN})`
@@ -82,6 +90,16 @@ export function getChordNotes(chord: TChord, pitchClasses: string[]) {
 
     return chord.notes[i];
   });
+}
+
+export function getChordsInKey(keySignature: KeySignatureConfig, chroma: number | null) {
+  if (chroma === null) return [];
+
+  const keyChroma = Note.chroma(keySignature.tonic) ?? 0;
+  const scaleChroma = stringRotate(IN_KEY_SCALE_CHROMA, chroma - keyChroma);
+  const isInKey = isSubsetOf(scaleChroma);
+
+  return ChordType.all().filter((chord) => isInKey(chord.chroma));
 }
 
 export function containsInterval(chord: ChordType.ChordType | TChord, interval: string) {
