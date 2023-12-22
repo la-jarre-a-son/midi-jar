@@ -5,21 +5,20 @@ import * as ChordType from '@tonaljs/chord-type';
 import { KeySignatureConfig, getNoteInKeySignature, tokenizeChord } from 'renderer/helpers';
 import { detect } from 'renderer/helpers/chord-detect';
 
-const midiC4 = Note.midi('C4') as number;
-
-export function getChordInversion(chord?: TChord, inversion = 0) {
+export function getChordInversion(chord?: TChord, inversion = 0, octave = 3) {
   if (!chord) return [];
 
   const midi: number[] = [];
+  const octaveMidi = Note.midi(`C${octave}`) as number;
 
   const notes = chord.notes
     .slice(inversion % chord.notes.length)
     .concat(chord.notes.slice(0, inversion % chord.notes.length));
 
   for (let n = 0; n < notes.length; n += 1) {
-    let newMidi = Note.midi(`${notes[n]}4`);
+    let newMidi = Note.midi(`${notes[n]}${octave}`);
     if (newMidi) {
-      while (newMidi < (midi.length ? midi[midi.length - 1] : midiC4)) {
+      while (newMidi < (midi.length ? midi[midi.length - 1] : octaveMidi)) {
         newMidi += 12;
       }
 
@@ -46,7 +45,7 @@ const getChordInfo = (chord: string, keySignatureNotes?: string[]): TChord | nul
 export function getAlternativeChords(chord?: TChord, keySignature?: KeySignatureConfig): TChord[] {
   if (!chord) return [];
 
-  const chords = detect(chord.notes, { allowOmissions: false })
+  const chords = detect(chord.notes, { allowOmissions: true })
     .map((c) => getChordInfo(c, keySignature?.notes))
     .filter((c) => c && c.symbol !== chord.symbol) as TChord[];
 

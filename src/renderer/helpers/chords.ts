@@ -68,6 +68,7 @@ export function getChordDegrees(chord: TChord, pitchClasses: string[]) {
     return chord.intervals[i].replace('*', '');
   });
 }
+
 /**
  * Maps a list of pitch classes to the note name in a chord.
  * @param chord - the chord
@@ -81,6 +82,10 @@ export function getChordNotes(chord: TChord, pitchClasses: string[]) {
 
     return chord.notes[i];
   });
+}
+
+export function containsInterval(chord: ChordType.ChordType | TChord, interval: string) {
+  return chord.intervals.some((i: string) => i.startsWith(interval));
 }
 
 export function removeIntervalWildcards(intervals: string[]) {

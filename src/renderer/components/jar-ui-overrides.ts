@@ -4,6 +4,7 @@ import {
   Switch,
   SelectTrigger,
   StateButton,
+  TreeViewItem,
 } from '@la-jarre-a-son/ui';
 import { Icon } from './Icon';
 
@@ -16,3 +17,5 @@ SelectTrigger.ICON_CLOSED = 'angle-down';
 StateButton.ICON_ERROR = 'cross';
 StateButton.ICON_SUCCESS = 'check';
 StateButton.ICON_PENDING = 'loading';
+TreeViewItem.ICON_OPEN = 'angle-up';
+TreeViewItem.ICON_CLOSED = 'angle-down';

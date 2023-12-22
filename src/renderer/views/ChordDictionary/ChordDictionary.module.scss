@@ -23,4 +23,23 @@
 .chordbar {
   --Sidebar_minSize: 200px;
   --Button_textTransform: none;
+  --Button--md_fontSize: 12px
+}
+
+.chordnav {
+  height: 100%;
+}
+
+.menuTrigger {
+  width: 248px;
+}
+
+.item {
+  --List-item_textTransform: none;
+}
+
+.item, .group {
+  margin-left: calc(var(--TreeView_depth) * var(--TreeView-item_depthIndent, 6px));
+  padding-left: 12px;
+  width: auto;
 }
