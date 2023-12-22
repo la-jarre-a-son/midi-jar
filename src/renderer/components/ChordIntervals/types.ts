@@ -4,4 +4,5 @@ export type ChordIntervalsProps = {
   targets?: string[];
   pitchClasses?: string[];
   tonic?: string | null;
+  quizMode?: boolean;
 };

@@ -22,6 +22,7 @@ const cx = classnames.bind(styles);
 
 const NOTATION_HEIGHT = 300;
 const STAVE_NOTE_WIDTH = 200;
+const STAVE_Y = 100;
 const STAVE_TREBLE_Y = 70;
 const STAVE_BASS_Y = 130;
 const ALTERATION_WIDTH = 8;
@@ -114,11 +115,7 @@ export const Notation: React.FC<NotationProps> = ({
           }
         }
       } else if (staffClef === 'bass' || staffClef === 'treble') {
-        const stave = new Stave(
-          0,
-          staffClef === 'bass' ? STAVE_BASS_Y : STAVE_TREBLE_Y,
-          staveWidth
-        );
+        const stave = new Stave(0, STAVE_Y, staveWidth);
         stave.addClef(staffClef);
         stave.addKeySignature(keySignature.tonic);
         stave.setText(`Key: ${formatSharpsFlats(keySignature.tonic)}`, Modifier.Position.ABOVE, {

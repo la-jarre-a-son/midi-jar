@@ -14,6 +14,7 @@ export const ChordIntervals: React.FC<ChordIntervalsProps> = ({
   targets,
   pitchClasses,
   tonic,
+  quizMode,
 }) => {
   const played = useMemo(
     () => getPlayedIntervals(tonic, pitchClasses || []),
@@ -21,7 +22,13 @@ export const ChordIntervals: React.FC<ChordIntervalsProps> = ({
   );
 
   return (
-    <div className={cx('base', { 'base--withTargets': targets && targets.length }, className)}>
+    <div
+      className={cx(
+        'base',
+        { 'base--quizMode': quizMode, 'base--withTargets': targets && targets.length },
+        className
+      )}
+    >
       {INTERVALS.BASE.map((i, index) => {
         const activeAs = intervals && isIncludedAs(i, intervals);
         const targetAs = targets && isIncludedAs(i, targets);
@@ -57,6 +64,7 @@ ChordIntervals.defaultProps = {
   targets: [],
   pitchClasses: [],
   tonic: null,
+  quizMode: false,
 };
 
 export default ChordIntervals;
