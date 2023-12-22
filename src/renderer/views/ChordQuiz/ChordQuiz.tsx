@@ -115,6 +115,7 @@ const ChordQuiz: React.FC = () => {
             intervals={gameState.status > 0 ? gameState.chord?.intervals : []}
             pitchClasses={pitchClasses}
             tonic={games[gameState.gameIndex].chords[gameState.index].tonic}
+            quizMode
           />
         </div>
       )}
