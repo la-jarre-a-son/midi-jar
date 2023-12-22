@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
-
 import {
   Button,
   ButtonGroup,
@@ -20,16 +19,19 @@ import {
 import { useSettings } from 'renderer/contexts/Settings';
 import { Icon } from 'renderer/components';
 
-import styles from './ChordDictionary.module.scss';
 import { groupValues } from './utils';
+
+import styles from './ChordDictionary.module.scss';
 
 const cx = classnames.bind(styles);
 
 type Props = {
-  interactive: 'play' | 'learn';
-  onChangeInteractive: (mode: 'play' | 'learn') => void;
+  interactive: 'play' | 'detect';
+  onChangeInteractive: (mode: 'play' | 'detect') => void;
   hideDisabled: boolean;
   onChangeHideDisabled: (hideDisabled: boolean) => void;
+  filterChordsInKey: boolean;
+  onChangeFilterChordsInKey: (filterChordsInKey: boolean) => void;
   group: keyof typeof groupValues;
   onChangeGroup: (group: keyof typeof groupValues) => void;
 };
@@ -37,9 +39,11 @@ type Props = {
 const ChordDictionaryToolbar: React.FC<Props> = ({
   interactive,
   hideDisabled,
+  filterChordsInKey,
   group,
   onChangeInteractive,
   onChangeHideDisabled,
+  onChangeFilterChordsInKey,
   onChangeGroup,
 }) => {
   const navigate = useNavigate();
@@ -47,6 +51,7 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
   const { settings, updateSetting } = useSettings();
 
   const toggleHideDisabled = () => onChangeHideDisabled(!hideDisabled);
+  const toggleFilterChordsInKey = () => onChangeFilterChordsInKey(!filterChordsInKey);
 
   const handleToggleInteractive = (mode: Props['interactive']) => () => onChangeInteractive(mode);
 
@@ -65,7 +70,7 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
       right={open ? <Icon name="angle-up" /> : <Icon name="angle-down" />}
       intent="neutral"
     >
-      {groupValues[group]}
+      {`${groupValues[group]}${filterChordsInKey ? ' (In Key)' : ''}`}
     </Button>
   );
 
@@ -82,12 +87,22 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
           <MenuItemCheckbox checked={hideDisabled} variant="switch" onClick={toggleHideDisabled}>
             Hide disabled chords
           </MenuItemCheckbox>
+          <MenuItemCheckbox
+            checked={filterChordsInKey}
+            variant="switch"
+            onClick={toggleFilterChordsInKey}
+          >
+            Only chords in key
+          </MenuItemCheckbox>
         </MenuGroup>
       </Menu>
       <StackSeparator />
       <ButtonGroup>
-        <ToggleButton onClick={handleToggleInteractive('learn')} selected={interactive === 'learn'}>
-          Learn
+        <ToggleButton
+          onClick={handleToggleInteractive('detect')}
+          selected={interactive === 'detect'}
+        >
+          Detect
         </ToggleButton>
         <ToggleButton onClick={handleToggleInteractive('play')} selected={interactive === 'play'}>
           Play

@@ -1,6 +1,10 @@
 import React, { useContext, useMemo } from 'react';
 
+import { KeySignatureConfig, getKeySignature } from 'renderer/helpers';
+
 interface ChordDictionaryContextInterface {
+  keySignature: KeySignatureConfig;
+  filterChordsInKey?: boolean;
   midiNotes?: number[];
   playedMidiNotes?: number[];
   sustainedMidiNotes?: number[];
@@ -11,34 +15,42 @@ const ChordDictionaryContext = React.createContext<ChordDictionaryContextInterfa
 
 type Props = {
   children: React.ReactNode;
+  keySignature?: KeySignatureConfig;
   midiNotes?: number[];
   playedMidiNotes?: number[];
   sustainedMidiNotes?: number[];
   pitchClasses?: string[];
+  filterChordsInKey?: boolean;
 };
 
 const defaultProps = {
+  keySignature: getKeySignature('C'),
   midiNotes: [],
   playedMidiNotes: [],
   sustainedMidiNotes: [],
   pitchClasses: [],
+  filterChordsInKey: false,
 };
 
 const ChordDictionaryProvider: React.FC<Props> = ({
   children,
+  keySignature = defaultProps.keySignature,
   midiNotes,
   playedMidiNotes,
   sustainedMidiNotes,
   pitchClasses,
+  filterChordsInKey,
 }) => {
   const value = useMemo(
     () => ({
+      keySignature,
       midiNotes,
       playedMidiNotes,
       sustainedMidiNotes,
       pitchClasses,
+      filterChordsInKey,
     }),
-    [midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses]
+    [keySignature, midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses, filterChordsInKey]
   );
 
   return (

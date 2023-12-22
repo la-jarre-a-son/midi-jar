@@ -39,8 +39,9 @@ const ChordDictionary: React.FC = () => {
     detectOnRelease: false,
   });
 
-  const [interactive, setInteractive] = useState<'play' | 'learn'>('play');
+  const [interactive, setInteractive] = useState<'play' | 'detect'>('play');
   const [hideDisabled, setHideDisabled] = useState<boolean>(true);
+  const [filterChordsInKey, setFilterChordsInKey] = useState<boolean>(false);
   const [group, setGroup] = useState<keyof typeof groupValues>('none');
 
   const navigate = useNavigate();
@@ -50,16 +51,25 @@ const ChordDictionary: React.FC = () => {
 
   const navigateToChord = useCallback(
     (tonic: string | null, type: string | null) => {
-      if (!tonic || type === null) return;
-      const name = encodeURIComponent(`${getNoteInKeySignature(tonic, keySignature.notes)}${type}`);
-      navigate(`./${name}`);
+      if (!tonic || type === null) {
+        navigate('./');
+      } else {
+        const name = encodeURIComponent(
+          `${getNoteInKeySignature(tonic, keySignature.notes)}${type}`
+        );
+        navigate(`./${name}`);
+      }
     },
     [navigate, keySignature]
   );
 
   const handleChromaChange = (newChroma: number) => {
     setChroma(newChroma);
-    navigateToChord(NOTE_NAMES[newChroma], chordType);
+    if (filterChordsInKey) {
+      navigateToChord(NOTE_NAMES[newChroma], null);
+    } else {
+      navigateToChord(NOTE_NAMES[newChroma], chordType);
+    }
   };
 
   const handleChordTypeChange = (newChordType: string) => {
@@ -68,7 +78,7 @@ const ChordDictionary: React.FC = () => {
   };
 
   useEffect(() => {
-    if (interactive === 'learn') {
+    if (interactive === 'detect') {
       if (chords[0] && chords[0].tonic) {
         navigateToChord(chords[0].tonic, chords[0].aliases[0] || 'maj');
       }
@@ -93,12 +103,16 @@ const ChordDictionary: React.FC = () => {
       playedMidiNotes={playedMidiNotes}
       sustainedMidiNotes={sustainedMidiNotes}
       pitchClasses={pitchClasses}
+      keySignature={keySignature}
+      filterChordsInKey={filterChordsInKey}
     >
       <ChordDictionaryToolbar
         interactive={interactive}
         onChangeInteractive={setInteractive}
         hideDisabled={hideDisabled}
         onChangeHideDisabled={setHideDisabled}
+        filterChordsInKey={filterChordsInKey}
+        onChangeFilterChordsInKey={setFilterChordsInKey}
         group={group}
         onChangeGroup={setGroup}
       />
@@ -109,6 +123,7 @@ const ChordDictionary: React.FC = () => {
             keySignature={keySignature}
             selected={chroma}
             onSelect={handleChromaChange}
+            filterChordsInKey={filterChordsInKey}
           />
         }
         sidebarProps={{ className: cx('pitchbar') }}
@@ -121,9 +136,12 @@ const ChordDictionary: React.FC = () => {
           className={cx('container')}
           sidebar={
             <ChordDictionaryChordMenu
+              keySignature={keySignature}
               selected={chordType}
               onSelect={handleChordTypeChange}
               group={group}
+              chroma={chroma}
+              filterChordsInKey={filterChordsInKey}
             />
           }
           sidebarProps={{ className: cx('chordbar') }}

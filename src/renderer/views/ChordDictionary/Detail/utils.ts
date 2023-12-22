@@ -2,7 +2,12 @@ import { Note, Chord, Interval } from 'tonal';
 import { Chord as TChord } from '@tonaljs/chord';
 import * as ChordType from '@tonaljs/chord-type';
 
-import { KeySignatureConfig, getNoteInKeySignature, tokenizeChord } from 'renderer/helpers';
+import {
+  KeySignatureConfig,
+  getChordsInKey,
+  getNoteInKeySignature,
+  tokenizeChord,
+} from 'renderer/helpers';
 import { detect } from 'renderer/helpers/chord-detect';
 
 export function getChordInversion(chord?: TChord, inversion = 0, octave = 3) {
@@ -66,10 +71,18 @@ export function getSubsetChords(chord?: TChord): TChord[] {
   return subset;
 }
 
-export function getSupersetChords(chord?: TChord): TChord[] {
+export function getSupersetChords(
+  chord: TChord,
+  keySignature: KeySignatureConfig,
+  filterChordsInKey: boolean
+): TChord[] {
   if (!chord || !chord.tonic) return [];
 
-  const superset = ChordType.all()
+  const superset = (
+    filterChordsInKey
+      ? getChordsInKey(keySignature, Note.chroma(chord.tonic) ?? null)
+      : ChordType.all()
+  )
     .filter((chordType) => {
       return (
         // eslint-disable-next-line no-bitwise
