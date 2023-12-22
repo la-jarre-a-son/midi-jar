@@ -1,5 +1,6 @@
 import React from 'react';
 import { Note } from 'tonal';
+import classnames from 'classnames/bind';
 
 import { KeyboardSettings } from 'main/types';
 import { defaultKeyboardSettings } from 'main/store/defaults';
@@ -19,19 +20,24 @@ import Labels from './Labels';
 
 import styles from './flat.module.scss';
 
+const cx = classnames.bind(styles);
+
 type KeyboardProps = {
   keyboard?: KeyboardSettings;
   keySignature?: KeySignatureConfig;
+  withTargets?: boolean;
 };
 
 const defaultProps = {
   keyboard: defaultKeyboardSettings,
   keySignature: getKeySignature('C'),
+  withTargets: false,
 };
 
 const Keyboard: React.FC<KeyboardProps> = ({
   keyboard = defaultProps.keyboard,
   keySignature = defaultProps.keySignature,
+  withTargets,
 }) => {
   const sizes = getKeyboardSizes(keyboard);
 
@@ -91,7 +97,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
 
   return (
     <svg
-      className={styles.keyboard}
+      className={cx('keyboard', { '--withTargets': withTargets })}
       viewBox={`0 0 ${keys.width} ${
         keyboard.label !== 'none' ? keys.height + sizes.LABEL_HEIGHT : keys.height
       }`}

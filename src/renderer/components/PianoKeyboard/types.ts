@@ -10,5 +10,7 @@ export type PianoKeyboardProps = {
   played?: number[];
   sustained?: number[];
   midi?: number[];
+  targets?: number[] | null;
+  exactTargets?: boolean;
   chord?: Chord;
 };

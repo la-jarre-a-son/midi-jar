@@ -245,3 +245,22 @@ export const highlightWrapLabels = (
 export const fadeLabels = (containerEl: HTMLDivElement) => {
   fade(containerEl, 'labelled');
 };
+
+export const highlightTargets = (containerEl: HTMLDivElement, targets: number[]) => {
+  if (!targets) return;
+
+  for (let n = 0; n < targets.length; n += 1) {
+    const chroma = Note.chroma(Note.fromMidi(targets[n]));
+
+    const elements = containerEl.querySelectorAll(`.chroma-${chroma}`);
+    if (elements && elements.length) {
+      for (let i = 0; i < elements.length; i += 1) {
+        elements[i].classList.add('target');
+      }
+    }
+  }
+};
+
+export const fadeTargets = (containerEl: HTMLDivElement) => {
+  fade(containerEl, 'target');
+};

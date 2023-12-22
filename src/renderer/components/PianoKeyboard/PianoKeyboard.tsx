@@ -12,6 +12,8 @@ import {
   highlightLabels,
   highlightWrapLabels,
   fadeLabels,
+  highlightTargets,
+  fadeTargets,
 } from './utils';
 
 import { PianoKeyboardProps } from './types';
@@ -23,8 +25,11 @@ const defaultProps = {
   className: undefined,
   keyboard: defaultKeyboardSettings,
   keySignature: getKeySignature('C'),
+  played: [],
   sustained: [],
   midi: [],
+  targets: null,
+  exactTargets: false,
   chord: undefined,
 };
 
@@ -36,6 +41,8 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   sustained,
   played,
   midi,
+  targets,
+  exactTargets,
   chord,
 }) => {
   const pianoRef = useRef<HTMLDivElement>(null);
@@ -46,6 +53,29 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
       fadeNotes(pianoRef.current, 'sustained');
       fadeNotes(pianoRef.current, 'wrapPlayed');
       fadeNotes(pianoRef.current, 'wrapSustained');
+      fadeNotes(pianoRef.current, 'exactTarget');
+      fadeNotes(pianoRef.current, 'wrapExactTarget');
+      fadeTargets(pianoRef.current);
+      fadeLabels(pianoRef.current);
+
+      if (targets) {
+        if (!exactTargets) {
+          highlightTargets(pianoRef.current, targets);
+        }
+        highlightNotes(pianoRef.current, targets, 'exactTarget');
+        highlightLabels(pianoRef.current, keySignature, keyboard, targets, chord);
+
+        if (keyboard.wrap) {
+          highlightWrapNotes(
+            pianoRef.current,
+            keyboard.from,
+            keyboard.to,
+            targets,
+            'wrapExactTarget'
+          );
+          highlightWrapLabels(pianoRef.current, keySignature, keyboard, targets, chord);
+        }
+      }
 
       if (played) {
         highlightNotes(pianoRef.current, played, 'played');
@@ -67,8 +97,6 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         }
       }
 
-      fadeLabels(pianoRef.current);
-
       if (midi) {
         if (keyboard.wrap) {
           if (keyboard.displaySustained) {
@@ -85,7 +113,7 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         }
       }
     }
-  }, [played, sustained, midi, chord, keyboard, keySignature]);
+  }, [played, sustained, midi, targets, chord, keyboard, keySignature, exactTargets]);
 
   useEffect(() => {
     if (pianoRef.current) {
@@ -116,9 +144,11 @@ export const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   return (
     <div ref={pianoRef} id={id} className={className} style={style}>
       {keyboard.skin === 'classic' && (
-        <ClassicPiano keyboard={keyboard} keySignature={keySignature} />
+        <ClassicPiano keyboard={keyboard} keySignature={keySignature} withTargets={!!targets} />
       )}
-      {keyboard.skin === 'flat' && <FlatPiano keyboard={keyboard} keySignature={keySignature} />}
+      {keyboard.skin === 'flat' && (
+        <FlatPiano keyboard={keyboard} keySignature={keySignature} withTargets={!!targets} />
+      )}
     </div>
   );
 };

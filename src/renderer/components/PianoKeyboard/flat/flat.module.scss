@@ -125,3 +125,108 @@
   transform: translateY(0);
   transition: transform ease 0s, opacity ease 0s;
 }
+
+// VARIANTS
+
+.--withTargets {
+  .white:global(.target) {
+    .pianoKey {
+      fill: $color-neutral-lighter;
+    }
+
+    .pianoKeyName,
+    .pianoInfo,
+    .pianoTonic {
+      fill: $color-neutral-dark;
+    }
+  }
+
+  .black:global(.target) {
+    .pianoKey {
+      fill: $color-neutral-normal;
+    }
+
+    .pianoKeyName,
+    .pianoInfo,
+    .pianoTonic {
+      fill: $color-white;
+    }
+  }
+
+  .note {
+    &:global(.exactTarget) {
+      .pianoKey {
+        fill: $color-primary-normal;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+
+    &:global(.exactWrapTarget) {
+      .pianoKey {
+        fill: $color-primary-dark;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+
+    &:global(.wrapPlayed)  {
+      .pianoKey {
+        fill: $color-danger-dark;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+
+    &:global(.played)  {
+      .pianoKey {
+        fill: $color-danger-normal;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+
+
+    &:global(.wrapTarget.wrapPlayed),
+    &:global(.target.wrapPlayed) {
+      .pianoKey {
+        fill: $color-success-dark;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+
+    &:global(.exactTarget.played),
+    &:global(.target.played) {
+      .pianoKey {
+        fill: $color-success-normal;
+      }
+
+      .pianoKeyName,
+      .pianoInfo,
+      .pianoTonic {
+        fill: $color-white;
+      }
+    }
+  }
+}
