@@ -106,6 +106,10 @@ export function containsInterval(chord: ChordType.ChordType | TChord, interval: 
   return chord.intervals.some((i: string) => i.startsWith(interval));
 }
 
+export function isSameChord(a: TChord, b: TChord) {
+  return a.symbol === b.symbol;
+}
+
 export function removeIntervalWildcards(intervals: string[]) {
   return intervals.map((interval) => interval.replace('*', ''));
 }
