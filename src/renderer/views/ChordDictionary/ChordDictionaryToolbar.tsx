@@ -20,6 +20,7 @@ import { useSettings } from 'renderer/contexts/Settings';
 import { Icon } from 'renderer/components';
 
 import { groupValues } from './utils';
+import { ChordSearch } from './ChordSearch';
 
 import styles from './ChordDictionary.module.scss';
 
@@ -74,6 +75,12 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
     </Button>
   );
 
+  const handleChordSelect = (chord: string | null) => {
+    if (chord) {
+      navigate(`./${encodeURIComponent(chord)}`);
+    }
+  };
+
   return (
     <Toolbar as={Stack} className={cx('header')} elevation={2}>
       <Menu className={cx('menu')} trigger={menuTrigger}>
@@ -97,6 +104,7 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
         </MenuGroup>
       </Menu>
       <StackSeparator />
+      <ChordSearch onSelect={handleChordSelect} />
       <ButtonGroup>
         <ToggleButton
           onClick={handleToggleInteractive('detect')}

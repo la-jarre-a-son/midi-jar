@@ -34,6 +34,7 @@ export const ICON_NAMES = [
   'reset',
   'routing',
   'save',
+  'search',
   'server',
   'settings',
   'trash',

@@ -33,6 +33,7 @@ export function getChordInversion(chord?: TChord, inversion = 0, octave = 3) {
 
   return midi;
 }
+
 const getChordInfo = (chord: string, keySignatureNotes?: string[]): TChord | null => {
   const [tonic, type, root] = tokenizeChord(chord);
   if (tonic) {

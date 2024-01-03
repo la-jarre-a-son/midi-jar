@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { Chord, Note } from 'tonal';
 import { SidebarContainer } from '@la-jarre-a-son/ui';
 
 import { useSettings } from 'renderer/contexts/Settings';
+import useNotes from 'renderer/hooks/useNotes';
 import { NOTE_NAMES, getNoteInKeySignature } from 'renderer/helpers';
 
-import useNotes from 'renderer/hooks/useNotes';
 import ChordDictionaryChromaMenu from './ChordDictionaryChromaMenu';
 import ChordDictionaryChordMenu from './ChordDictionaryChordMenu';
-
-import styles from './ChordDictionary.module.scss';
 import ChordDictionaryToolbar from './ChordDictionaryToolbar';
-
 import ChordDictionaryProvider from './ChordDictionaryProvider';
 import { groupValues } from './utils';
+
+import styles from './ChordDictionary.module.scss';
 
 const cx = classnames.bind(styles);
 
@@ -90,9 +89,6 @@ const ChordDictionary: React.FC = () => {
 
     if (chord && chord.tonic) {
       setChroma(Note.chroma(chord.tonic) ?? null);
-    }
-
-    if (chord && chord.tonic) {
       setChordType(chord.aliases[0] || 'maj');
     }
   }, [chordName]);

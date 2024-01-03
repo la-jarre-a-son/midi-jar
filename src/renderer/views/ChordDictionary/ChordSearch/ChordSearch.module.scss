@@ -1,0 +1,36 @@
+@import 'tokens';
+
+.trigger {
+  user-select: none;
+}
+
+.popover {
+  min-width: 240px;
+}
+.searchContainer {
+  padding: 12px;
+}
+
+.option {
+  --List-item_textTransform: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0;
+}
+
+.item, .empty {
+  --List-item_textTransform: none;
+}
+
+.resultMatch {
+  padding: 1px;
+  background-color: $color-success-normal;
+  border-radius: 3px 0  0 3px;
+}
+
+.resultRest {
+  padding: 1px;
+  font-style: italic;
+}
