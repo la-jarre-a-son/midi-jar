@@ -42,7 +42,7 @@ export const CREDIT_ITEMS: Credit[] = [
   },
   {
     name: 'Flaticon',
-    description: 'Most MIDI Jar icons are based on the Flaticon&apos;s &lt;uicons&gt; icon pack.',
+    description: "Most MIDI Jar icons are based on the Flaticon's <uicons> icon pack.",
     links: {
       website: 'https://www.flaticon.com/uicons',
     },

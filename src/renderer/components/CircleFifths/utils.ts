@@ -1,7 +1,7 @@
 import { Note } from 'tonal';
 import { Chord } from '@tonaljs/chord';
 
-import { range } from 'renderer/helpers';
+import { containsInterval, range } from 'renderer/helpers';
 import { formatSharpsFlats } from 'renderer/helpers/note';
 import { CircleOfFifthsConfig, SectionType, Sections } from './types';
 
@@ -399,8 +399,6 @@ export const isSusInScale = (
 export const isSameNote = (a?: string | null, b?: string | null) =>
   a && b && Note.chroma(a) === Note.chroma(b);
 
-const DOMINANT_CHORDS = ['7', '7no5', '9', '9no5', '7b9'];
-
 export const isDiminished = (chord?: Chord | null, tonic?: string) =>
   (chord &&
     chord.quality === 'Diminished' &&
@@ -414,7 +412,11 @@ export const isDiminished = (chord?: Chord | null, tonic?: string) =>
       isSameNote(tonic, chord?.notes[3])));
 
 export const isDominantChord = (chord?: Chord | null, tonic?: string) =>
-  chord && DOMINANT_CHORDS.includes(chord.aliases[0]) && (!tonic || isSameNote(chord.tonic, tonic));
+  chord &&
+  containsInterval(chord, '3M') &&
+  containsInterval(chord, '5P') &&
+  containsInterval(chord, '7m') &&
+  (!tonic || isSameNote(chord.tonic, tonic));
 
 export const isMajorChord = (chord?: Chord | null, tonic?: string) =>
   chord &&
