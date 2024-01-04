@@ -26,7 +26,7 @@ export type KeyboardSettings = {
 
 export type ChordDisplaySettings = {
   id: string;
-  chordNotation: 'long' | 'short' | 'symbol';
+  chordNotation: 'long' | 'short' | 'symbol' | 'preferred';
   allowOmissions: boolean;
   useSustain: boolean;
   detectOnRelease: boolean;
@@ -45,7 +45,7 @@ export type ChordQuizSettings = {
   difficulty: 0 | 1 | 2 | 3 | 4 | 5;
   gameLength: number;
   gamification: boolean;
-  chordNotation: 'long' | 'short' | 'symbol';
+  chordNotation: 'long' | 'short' | 'symbol' | 'preferred';
   displayName: boolean;
   displayReaction: boolean;
   displayIntervals: boolean;

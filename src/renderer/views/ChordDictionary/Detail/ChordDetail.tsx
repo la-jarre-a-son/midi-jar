@@ -3,14 +3,30 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { Chord, Note } from 'tonal';
-import { Badge, Container, Link, List, ListItem, Switch, Tooltip } from '@la-jarre-a-son/ui';
+import {
+  Badge,
+  Button,
+  Container,
+  Link,
+  List,
+  ListItem,
+  Switch,
+  Tooltip,
+} from '@la-jarre-a-son/ui';
 
 import { KeyboardSettings } from 'main/types';
 import { defaultKeyboardSettings } from 'main/store/defaults';
 
 import { useSettings } from 'renderer/contexts/Settings';
-import { getChordDegrees, getNoteInKeySignature } from 'renderer/helpers';
-import { ChordIntervals, ChordName, NavButton, Notation, PianoKeyboard } from 'renderer/components';
+import { ALIAS_NOTATION, getChordDegrees, getNoteInKeySignature } from 'renderer/helpers';
+import {
+  ChordIntervals,
+  ChordName,
+  Icon,
+  NavButton,
+  Notation,
+  PianoKeyboard,
+} from 'renderer/components';
 
 import { useChordDictionary } from '../ChordDictionaryProvider';
 
@@ -67,6 +83,13 @@ const ChordDetail: React.FC = () => {
     () => chord && settings.chordDictionary.disabled.includes(chord.aliases[0]),
     [chord, settings.chordDictionary.disabled]
   );
+  const preferredAlias = useMemo(() => {
+    if (!chord) return null;
+
+    const alias = settings.chordDictionary.aliases.find((a) => a[0] === chord.aliases[0]);
+
+    return alias ? alias[1] : null;
+  }, [chord, settings.chordDictionary.aliases]);
 
   if (!chordName) {
     return 'Select a chord or search';
@@ -109,13 +132,22 @@ const ChordDetail: React.FC = () => {
     updateSetting('chordDictionary.disabled', disabled);
   };
 
+  const toggleAlias = (isPreferred: boolean, alias: string) => {
+    const aliases = settings.chordDictionary.aliases.filter((a) => a[0] !== chord.aliases[0]);
+
+    if (!isPreferred) {
+      updateSetting('chordDictionary.aliases', [...aliases, [chord.aliases[0], alias]]);
+    } else {
+      updateSetting('chordDictionary.aliases', aliases);
+    }
+  };
+
   return (
     <Container ref={ref} className={cx('base')} size="xl">
       <h1 className={cx('header')}>
         <ChordName
           className={cx('chordName', isDisabled && 'chordName--isDisabled')}
           chord={chord}
-          notation="long"
         />
         <Tooltip title="Disable/enable chord" placement="left" describeAs="label" disablePortal>
           <label>
@@ -134,7 +166,7 @@ const ChordDetail: React.FC = () => {
         keyboard={KEYBOARD_SETTINGS}
       />
       <div className={cx('columns')}>
-        <div className={cx('column')}>
+        <section className={cx('column')}>
           <h2 className={cx('title')}>Intervals</h2>
           <ChordIntervals
             className={cx('intervals')}
@@ -143,8 +175,8 @@ const ChordDetail: React.FC = () => {
             pitchClasses={pitchClasses}
             tonic={chord.tonic}
           />
-        </div>
-        <div className={cx('column')}>
+        </section>
+        <section className={cx('column')}>
           <h2 className={cx('title')}>Notation</h2>
           <Notation
             className={cx('notation')}
@@ -153,31 +185,58 @@ const ChordDetail: React.FC = () => {
             staffClef={staffClef}
             staffTranspose={staffTranspose}
           />
-        </div>
+        </section>
       </div>
 
       <div className={cx('columns')}>
-        <div className={cx('column')}>
+        <section className={cx('column')}>
           <h2 className={cx('title')}>Aliases</h2>
           <List className={cx('list')}>
-            {chord.aliases.map((alias, index) => (
-              <ListItem
-                key={index}
-                left={
-                  index < NOTATION_LABELS.length && (
-                    <Badge intent="primary" size="sm">
-                      {NOTATION_LABELS[index]}
-                    </Badge>
-                  )
-                }
-              >
-                <ChordName chord={chord} notation={index} />
-              </ListItem>
-            ))}
+            {chord.aliases.map((alias, index) => {
+              const isPreferred = preferredAlias === alias;
+              const isDefault =
+                preferredAlias === null &&
+                index === ALIAS_NOTATION[settings.chordDictionary.defaultNotation || 0];
+
+              return (
+                <ListItem
+                  className={cx('alias', (isPreferred || isDefault) && 'alias--preferred')}
+                  key={index}
+                  left={
+                    index < NOTATION_LABELS.length && (
+                      <Badge intent="primary" size="sm">
+                        {NOTATION_LABELS[index]}
+                      </Badge>
+                    )
+                  }
+                  right={
+                    <Tooltip title={isPreferred ? 'Unset as preferred' : 'Set as preferred'}>
+                      <Button
+                        aria-label={
+                          isPreferred
+                            ? `Unset ${chord.aliases[index]} as preferred`
+                            : `Set ${chord.aliases[index]} as preferred`
+                        }
+                        icon
+                        rounded
+                        size="sm"
+                        variant={isPreferred ? 'filled' : 'ghost'}
+                        intent="warning"
+                        onClick={() => toggleAlias(isPreferred, chord.aliases[index])}
+                      >
+                        <Icon name={isPreferred || isDefault ? 'star-filled' : 'star'} />
+                      </Button>
+                    </Tooltip>
+                  }
+                >
+                  <ChordName chord={chord} notation={index} />
+                </ListItem>
+              );
+            })}
           </List>
-        </div>
+        </section>
         {!!alternativeChords.length && (
-          <div className={cx('column')}>
+          <section className={cx('column')}>
             <h2 className={cx('title')}>Other interpretations</h2>
             <List className={cx('list')}>
               {alternativeChords.map((altChord) => (
@@ -186,11 +245,11 @@ const ChordDetail: React.FC = () => {
                   interactive
                   onClick={() => goToChordDetail(`${altChord.tonic + altChord.aliases[0]}`)}
                 >
-                  <ChordName chord={altChord} notation="short" />
+                  <ChordName chord={altChord} />
                 </ListItem>
               ))}
             </List>
-          </div>
+          </section>
         )}
       </div>
       <h2 className={cx('title')}>Inversions</h2>
@@ -212,7 +271,7 @@ const ChordDetail: React.FC = () => {
         return (
           <div key={index} className={cx('inversion')}>
             <div className={cx('inversionInfo')}>
-              <ChordName className={cx('inversionChord')} chord={slashChord} notation="long" />
+              <ChordName className={cx('inversionChord')} chord={slashChord} />
               <div className={cx('inversionInterval')}>inversion on {interval}</div>
               {altChord && (
                 <div className={cx('inversionAltChord')}>
@@ -245,7 +304,7 @@ const ChordDetail: React.FC = () => {
       })}
       <div className={cx('columns')}>
         {!!subsetChords.length && (
-          <div className={cx('column')}>
+          <section className={cx('column')}>
             <h2 className={cx('title')}>Simplified</h2>
             <div className={cx('chordSet')}>
               {subsetChords.map((c, index) => (
@@ -258,14 +317,14 @@ const ChordDetail: React.FC = () => {
                   rounded
                   to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
                 >
-                  <ChordName chord={c} notation="long" />
+                  <ChordName chord={c} />
                 </NavButton>
               ))}
             </div>
-          </div>
+          </section>
         )}
         {!!supersetChords.length && (
-          <div className={cx('column')}>
+          <section className={cx('column')}>
             <h2 className={cx('title')}>Extended</h2>
             <div className={cx('chordSet')}>
               {supersetChords.map((c, index) => (
@@ -278,11 +337,11 @@ const ChordDetail: React.FC = () => {
                   rounded
                   to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
                 >
-                  <ChordName chord={c} notation="long" />
+                  <ChordName chord={c} />
                 </NavButton>
               ))}
             </div>
-          </div>
+          </section>
         )}
       </div>
     </Container>

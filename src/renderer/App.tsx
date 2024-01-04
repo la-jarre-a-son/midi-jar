@@ -10,6 +10,7 @@ import SettingsProvider from './contexts/Settings';
 import router from './router';
 
 import './App.scss';
+import ChordDictionaryProvider from './contexts/ChordDictionary';
 
 const App: React.FC = () => (
   <ThemeProvider theme="jar" variant="dark">
@@ -18,7 +19,9 @@ const App: React.FC = () => (
         <MidiRoutingProvider>
           <WindowStateProvider>
             <SettingsProvider>
-              <RouterProvider router={router} />
+              <ChordDictionaryProvider>
+                <RouterProvider router={router} />
+              </ChordDictionaryProvider>
             </SettingsProvider>
           </WindowStateProvider>
         </MidiRoutingProvider>

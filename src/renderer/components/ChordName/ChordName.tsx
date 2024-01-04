@@ -2,21 +2,24 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import { formatSharpsFlats } from 'renderer/helpers/note';
-import { tokenizeChord, tokenizeChordType, formatQuality } from 'renderer/helpers/chords';
+import {
+  tokenizeChord,
+  tokenizeChordType,
+  formatQuality,
+  ALIAS_NOTATION,
+} from 'renderer/helpers/chords';
 
+import { useChordDictionary } from 'renderer/contexts/ChordDictionary';
 import { ChordNameProps } from './types';
 
 import styles from './ChordName.module.scss';
 
 const cx = classnames.bind(styles);
 
-enum ALIAS_NOTATION {
-  long = 0,
-  short = 1,
-  symbol = 2,
-}
-
-function getChordSymbol(chord: ChordNameProps['chord'], notation: ChordNameProps['notation']) {
+function getChordSymbol(
+  chord: ChordNameProps['chord'],
+  notation: 'long' | 'short' | 'symbol' | number
+) {
   if (!chord) {
     return '';
   }
@@ -38,14 +41,21 @@ function getChordSymbol(chord: ChordNameProps['chord'], notation: ChordNameProps
 export const ChordName: React.FC<ChordNameProps> = ({
   className,
   chord,
-  notation = 'short',
+  notation = 'preferred',
   hideRoot,
   highlightAlterations,
   latinSharpsFlats,
 }) => {
+  const { aliases, defaultNotation } = useChordDictionary();
+
   if (!chord) return null;
 
-  const symbol = getChordSymbol(chord, notation);
+  const preferredAlias = aliases.get(chord.aliases[0]);
+
+  const symbol =
+    notation === 'preferred' && preferredAlias !== undefined
+      ? chord.tonic + preferredAlias
+      : getChordSymbol(chord, notation === 'preferred' ? defaultNotation : notation);
 
   if (!symbol) return null;
 
@@ -79,7 +89,7 @@ export const ChordName: React.FC<ChordNameProps> = ({
 ChordName.defaultProps = {
   className: undefined,
   chord: null,
-  notation: 'short',
+  notation: 'preferred',
   highlightAlterations: false,
   hideRoot: false,
   latinSharpsFlats: undefined,

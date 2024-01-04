@@ -105,7 +105,7 @@ const router = createHashRouter(
         />
       </Route>
       <Route
-        path="dictionary"
+        path="chord-dictionary"
         handle={{
           title: 'Chord Dictionary',
           icon: <Icon name="dictionary" />,

@@ -65,7 +65,7 @@ const Home: React.FC = () => {
               left={<Icon name="piano" />}
               right={
                 <NavButton
-                  aria-label="edit"
+                  aria-label="settings"
                   icon
                   variant="ghost"
                   intent="neutral"
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
             left={<Icon name="quiz" />}
             right={
               <NavButton
-                aria-label="edit"
+                aria-label="settings"
                 icon
                 variant="ghost"
                 intent="neutral"
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
             left={<Icon name="circle-of-fifths" />}
             right={
               <NavButton
-                aria-label="edit"
+                aria-label="settings"
                 icon
                 variant="ghost"
                 intent="neutral"
@@ -155,12 +155,12 @@ const Home: React.FC = () => {
         </Card>
         <Card outlined elevation={1}>
           <CardThumbnail alt="Chord Dictionary preview" src={ThumbnaildChordDictionary}>
-            <CardThumbnailOverlay as={NavLink} to="/dictionary" interactive />
+            <CardThumbnailOverlay as={NavLink} to="/chord-dictionary" interactive />
             {overlayEnabled && (
               <CardThumbnailItem position="top-left">
                 <Button
                   as="a"
-                  href={getOverlayUrl(state, '/dictionary')}
+                  href={getOverlayUrl(state, '/chord-dictionary')}
                   target="_blank"
                   aria-label="overlay"
                   icon
@@ -173,7 +173,22 @@ const Home: React.FC = () => {
               </CardThumbnailItem>
             )}
           </CardThumbnail>
-          <CardHeader left={<Icon name="dictionary" />}>Chord Dictionary</CardHeader>
+          <CardHeader
+            left={<Icon name="dictionary" />}
+            right={
+              <NavButton
+                aria-label="settings"
+                icon
+                variant="ghost"
+                intent="neutral"
+                to="/settings/chord-dictionary"
+              >
+                <Icon name="settings" />
+              </NavButton>
+            }
+          >
+            Chord Dictionary
+          </CardHeader>
         </Card>
         <Card outlined elevation={1}>
           <CardThumbnail alt="Settings preview" src={ThumbnailRouting}>

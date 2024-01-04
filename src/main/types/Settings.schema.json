@@ -66,6 +66,7 @@
                     "chordNotation": {
                         "enum": [
                             "long",
+                            "preferred",
                             "short",
                             "symbol"
                         ],
@@ -221,6 +222,7 @@
                 "chordNotation": {
                     "enum": [
                         "long",
+                        "preferred",
                         "short",
                         "symbol"
                     ],

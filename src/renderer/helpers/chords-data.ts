@@ -16,7 +16,7 @@ const CHORDS: string[][] = [
 
   // ==Major==
   // '''Normal'''
-  ['1P 3M 5P', 'major', '   maj M'],
+  ['1P 3M 5P', 'major', 'maj M '],
   ['1P 3M 5P* 7M', 'major seventh', 'maj7 M7 Δ7 Δ'],
   ['1P 3M 5P* 7M 9M', 'major ninth', 'maj9 M9 Δ9'],
   ['1P 3M 5P* 7M 9M* 11M', 'major eleventh', 'maj11 M11 Δ11'],

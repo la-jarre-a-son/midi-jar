@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames/bind';
 import {
   Container,
   FormControlLabel,
@@ -17,8 +18,12 @@ import {
 } from '@la-jarre-a-son/ui';
 
 import { useSettings } from 'renderer/contexts/Settings';
-import { Icon } from 'renderer/components';
+import { Icon, NavButton } from 'renderer/components';
 import { fields } from './constants';
+
+import styles from './ChordDictionarySettings.module.scss';
+
+const cx = classnames.bind(styles);
 
 const ChordDictionarySettings: React.FC = () => {
   const { settings, updateSetting } = useSettings();
@@ -104,16 +109,28 @@ const ChordDictionarySettings: React.FC = () => {
           <List>
             {settings.chordDictionary.disabled.map((disabledChord) => (
               <ListItem
+                className={cx('disabled')}
                 right={
-                  <Button
-                    intent="neutral"
-                    size="sm"
-                    icon
-                    aria-label="delete"
-                    onClick={() => deleteDisabled(disabledChord)}
-                  >
-                    <Icon name="trash" />
-                  </Button>
+                  <ButtonGroup>
+                    <NavButton
+                      intent="neutral"
+                      size="sm"
+                      icon
+                      aria-label="see in dictionary"
+                      to={`/chord-dictionary/${encodeURIComponent(`C${disabledChord}`)}`}
+                    >
+                      <Icon name="dictionary" />
+                    </NavButton>
+                    <Button
+                      intent="neutral"
+                      size="sm"
+                      icon
+                      aria-label="delete"
+                      onClick={() => deleteDisabled(disabledChord)}
+                    >
+                      <Icon name="trash" />
+                    </Button>
+                  </ButtonGroup>
                 }
               >
                 {disabledChord}
@@ -141,21 +158,38 @@ const ChordDictionarySettings: React.FC = () => {
           <List>
             {settings.chordDictionary.aliases.map(([chordType, alias]) => (
               <ListItem
+                className={cx('alias')}
                 key={chordType}
                 right={
-                  <Button
-                    intent="neutral"
-                    size="sm"
-                    icon
-                    aria-label="delete"
-                    onClick={() => deleteAlias(chordType)}
-                  >
-                    <Icon name="trash" />
-                  </Button>
+                  <ButtonGroup>
+                    <NavButton
+                      intent="neutral"
+                      size="sm"
+                      icon
+                      aria-label="see in dictionary"
+                      to={`/chord-dictionary/${encodeURIComponent(`C${chordType}`)}`}
+                    >
+                      <Icon name="dictionary" />
+                    </NavButton>
+                    <Button
+                      intent="neutral"
+                      size="sm"
+                      icon
+                      aria-label="delete"
+                      onClick={() => deleteAlias(chordType)}
+                    >
+                      <Icon name="trash" />
+                    </Button>
+                  </ButtonGroup>
                 }
               >
-                <span>{chordType}</span>=&gt;
-                <span>{alias}</span>
+                <div className={cx('alias-left')}>
+                  <span>{chordType}</span>
+                </div>
+                <Icon className={cx('alias-icon')} name="angle-right" />
+                <div className={cx('alias-right')}>
+                  <span>{alias}</span>
+                </div>
               </ListItem>
             ))}
             {!Object.keys(settings.chordDictionary.aliases).length && (

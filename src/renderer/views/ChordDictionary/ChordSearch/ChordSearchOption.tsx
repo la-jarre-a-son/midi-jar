@@ -13,7 +13,7 @@ const cx = bindClassNames(styles);
 export const ChordSearchOption = forwardRefWithAs<ChordSearchOptionProps, typeof ListItem>(
   (props, ref) => {
     const { chord, parts, onSelect, selected, className, ...otherProps } = props;
-    const value = chord.tonic + (chord.aliases[0] || 'maj');
+    const value = chord.tonic + chord.aliases[0];
 
     return (
       <SelectOption
