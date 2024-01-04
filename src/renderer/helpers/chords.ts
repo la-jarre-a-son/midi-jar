@@ -15,6 +15,12 @@ export const CHORD_TYPE_QUALITY_TOKEN =
 
 export const CHORD_TYPE_ALTERATIONS_TOKEN = '(add)?(b|#)?[0-9]{1,2}';
 
+export enum ALIAS_NOTATION {
+  long = 0,
+  short = 1,
+  symbol = 2,
+}
+
 // InKey chroma masks - allows borrowings from other scales
 const IN_KEY_SCALE_CHROMA = '101011010101'; // Major only
 // const IN_KEY_SCALE_CHROMA = '101011011101'; // Major + Harmonic

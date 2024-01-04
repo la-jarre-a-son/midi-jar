@@ -2,6 +2,8 @@ import React from 'react';
 
 export const ICON_NAMES = [
   'angle-down',
+  'angle-left',
+  'angle-right',
   'angle-up',
   'bug',
   'copyright',
@@ -38,6 +40,8 @@ export const ICON_NAMES = [
   'search',
   'server',
   'settings',
+  'star',
+  'star-filled',
   'trash',
   'visible',
   'window',

@@ -50,6 +50,12 @@
   font-size: min(24px, 4vw);
 }
 
+.alias {
+  &--preferred {
+    background-color: rgba($color-white, 0.07);
+  }
+}
+
 .intervals {
   font-size: min(1.15em, 1.75vw);
   justify-content: center;

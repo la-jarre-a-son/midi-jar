@@ -52,9 +52,9 @@ const ChordDictionaryChordMenu: React.FC<Props> = ({
       <TreeViewItem
         key={item.chordType.aliases[0]}
         className={cx('item', item.isDisabled && 'item--isDisabled')}
-        onClick={() => onSelect(item.chordType.aliases[0] || 'maj')}
-        title={item.chordType.aliases[0] || 'maj'}
-        current={selected === (item.chordType.aliases[0] || 'maj')}
+        onClick={() => onSelect(item.chordType.aliases[0])}
+        title={item.chordType.aliases[0]}
+        current={selected === item.chordType.aliases[0]}
         left={item.isDisabled ? <Icon name="hidden" /> : null}
       />
     ) : (

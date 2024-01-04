@@ -59,6 +59,7 @@ const ChordDictionary: React.FC = () => {
   const handleChromaChange = (newChroma: number) => {
     setChroma(newChroma);
     if (settings.chordDictionary.filterInKey) {
+      setChordType(null);
       navigateToChord(NOTE_NAMES[newChroma], null);
     } else {
       navigateToChord(NOTE_NAMES[newChroma], chordType);
@@ -73,7 +74,7 @@ const ChordDictionary: React.FC = () => {
   useEffect(() => {
     if (settings.chordDictionary.interactive === 'detect') {
       if (chords[0] && chords[0].tonic) {
-        navigateToChord(chords[0].tonic, chords[0].aliases[0] || 'maj');
+        navigateToChord(chords[0].tonic, chords[0].aliases[0]);
       }
     }
   }, [settings.chordDictionary.interactive, chords, navigateToChord]);
@@ -83,7 +84,7 @@ const ChordDictionary: React.FC = () => {
 
     if (chord && chord.tonic) {
       setChroma(Note.chroma(chord.tonic) ?? null);
-      setChordType(chord.aliases[0] || 'maj');
+      setChordType(chord.aliases[0]);
     }
   }, [chordName]);
 

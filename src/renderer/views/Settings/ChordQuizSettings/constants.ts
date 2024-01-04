@@ -55,6 +55,10 @@ export const fields = {
         value: 'symbol',
         label: 'Symbol (-, Δ, +, °...)',
       },
+      {
+        value: 'preferred',
+        label: 'Preferred (in dictionary)',
+      },
     ],
   },
 };

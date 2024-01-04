@@ -36,7 +36,7 @@ export const defaultKeyboardSettings: KeyboardSettings = {
 
 export const defaultChordDisplaySettings: ChordDisplaySettings = {
   id: 'default',
-  chordNotation: 'short',
+  chordNotation: 'preferred',
   allowOmissions: true,
   useSustain: true,
   detectOnRelease: true,
@@ -55,7 +55,7 @@ export const defaultChordQuizSettings: ChordQuizSettings = {
   difficulty: 0 as const,
   gameLength: 16,
   gamification: true,
-  chordNotation: 'short',
+  chordNotation: 'preferred',
   displayName: true,
   displayReaction: true,
   displayIntervals: true,
