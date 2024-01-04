@@ -27,7 +27,11 @@ import styles from './ChordDictionary.module.scss';
 
 const cx = classnames.bind(styles);
 
-const ChordDictionaryToolbar: React.FC = () => {
+type Props = {
+  disableUpdate?: boolean;
+};
+
+const ChordDictionaryToolbar: React.FC<Props> = ({ disableUpdate }) => {
   const navigate = useNavigate();
 
   const { settings, updateSetting } = useSettings();
@@ -69,48 +73,58 @@ const ChordDictionaryToolbar: React.FC = () => {
 
   return (
     <Toolbar as={Stack} className={cx('header')} elevation={2}>
-      <Menu className={cx('menu')} trigger={menuTrigger}>
-        <MenuGroup header="Group">
-          <MenuItemRadio {...bindSortAndFilter('none')}>{groupValues.none}</MenuItemRadio>
-          <MenuItemRadio {...bindSortAndFilter('quality')}>{groupValues.quality}</MenuItemRadio>
-          <MenuItemRadio {...bindSortAndFilter('intervals')}>{groupValues.intervals}</MenuItemRadio>
-        </MenuGroup>
-        <Divider />
-        <MenuGroup header="Filter">
-          <MenuItemCheckbox
-            checked={settings.chordDictionary.hideDisabled}
-            variant="switch"
-            onClick={toggleHideDisabled}
-          >
-            Hide disabled chords
-          </MenuItemCheckbox>
-          <MenuItemCheckbox
-            checked={settings.chordDictionary.filterInKey}
-            variant="switch"
-            onClick={toggleFilterInKey}
-          >
-            Only chords in key
-          </MenuItemCheckbox>
-        </MenuGroup>
-      </Menu>
+      {!disableUpdate && (
+        <Menu className={cx('menu')} trigger={menuTrigger}>
+          <MenuGroup header="Group">
+            <MenuItemRadio {...bindSortAndFilter('none')}>{groupValues.none}</MenuItemRadio>
+            <MenuItemRadio {...bindSortAndFilter('quality')}>{groupValues.quality}</MenuItemRadio>
+            <MenuItemRadio {...bindSortAndFilter('intervals')}>
+              {groupValues.intervals}
+            </MenuItemRadio>
+          </MenuGroup>
+          <Divider />
+          <MenuGroup header="Filter">
+            <MenuItemCheckbox
+              checked={settings.chordDictionary.hideDisabled}
+              variant="switch"
+              onClick={toggleHideDisabled}
+            >
+              Hide disabled chords
+            </MenuItemCheckbox>
+            <MenuItemCheckbox
+              checked={settings.chordDictionary.filterInKey}
+              variant="switch"
+              onClick={toggleFilterInKey}
+            >
+              Only chords in key
+            </MenuItemCheckbox>
+          </MenuGroup>
+        </Menu>
+      )}
       <StackSeparator />
       <ChordSearch onSelect={handleChordSelect} />
-      <ButtonGroup>
-        <ToggleButton
-          onClick={handleToggleInteractive('detect')}
-          selected={settings.chordDictionary.interactive === 'detect'}
-        >
-          Detect
-        </ToggleButton>
-        <ToggleButton
-          onClick={handleToggleInteractive('play')}
-          selected={settings.chordDictionary.interactive === 'play'}
-        >
-          Play
-        </ToggleButton>
-      </ButtonGroup>
+      {!disableUpdate && (
+        <ButtonGroup>
+          <ToggleButton
+            onClick={handleToggleInteractive('detect')}
+            selected={settings.chordDictionary.interactive === 'detect'}
+          >
+            Detect
+          </ToggleButton>
+          <ToggleButton
+            onClick={handleToggleInteractive('play')}
+            selected={settings.chordDictionary.interactive === 'play'}
+          >
+            Play
+          </ToggleButton>
+        </ButtonGroup>
+      )}
     </Toolbar>
   );
+};
+
+ChordDictionaryToolbar.defaultProps = {
+  disableUpdate: false,
 };
 
 export default ChordDictionaryToolbar;

@@ -45,3 +45,28 @@
   padding-left: 12px;
   width: auto;
 }
+
+@media print {
+  .container {
+    display: block !important;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    overflow: visible;
+
+    .content {
+      width: 100%;
+    }
+
+    section {
+      page-break-inside: avoid;
+    }
+  }
+
+  .header,
+  .pitchbar,
+  .chordbar {
+    display: none!important;
+  }
+
+}

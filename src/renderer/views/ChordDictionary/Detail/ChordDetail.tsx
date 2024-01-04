@@ -28,7 +28,7 @@ import {
   PianoKeyboard,
 } from 'renderer/components';
 
-import { useChordDictionary } from '../ChordDictionaryProvider';
+import { useChordDictionaryModule } from '../ChordDictionaryModuleProvider';
 
 import {
   getAlternativeChords,
@@ -36,6 +36,7 @@ import {
   getSubsetChords,
   getSupersetChords,
 } from './utils';
+import { EmptyChordDetail } from './EmptyChordDetail';
 
 import styles from './ChordDetail.module.scss';
 
@@ -63,8 +64,15 @@ const KEYBOARD_SETTINGS: KeyboardSettings = {
 const NOTATION_LABELS = ['long', 'short', 'symbol'];
 
 const ChordDetail: React.FC = () => {
-  const { keySignature, midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses } =
-    useChordDictionary();
+  const {
+    keySignature,
+    midiNotes,
+    playedMidiNotes,
+    sustainedMidiNotes,
+    pitchClasses,
+    disableUpdate,
+  } = useChordDictionaryModule();
+
   const ref = useRef<HTMLDivElement>(null);
   const { chordName } = useParams();
   const navigate = useNavigate();
@@ -92,11 +100,11 @@ const ChordDetail: React.FC = () => {
   }, [chord, settings.chordDictionary.aliases]);
 
   if (!chordName) {
-    return 'Select a chord or search';
+    return <EmptyChordDetail />;
   }
 
   if (!chord) {
-    return `Cannot find a chord named "${chordName}"`;
+    return <EmptyChordDetail chordName={chordName} />;
   }
 
   const midi = getChordInversion(chord, 0);
@@ -149,11 +157,13 @@ const ChordDetail: React.FC = () => {
           className={cx('chordName', isDisabled && 'chordName--isDisabled')}
           chord={chord}
         />
-        <Tooltip title="Disable/enable chord" placement="left" describeAs="label" disablePortal>
-          <label>
-            <Switch id="toggleChord" checked={!isDisabled} onChange={toggleDisabled} />
-          </label>
-        </Tooltip>
+        {!disableUpdate && (
+          <Tooltip title="Disable/enable chord" placement="left" describeAs="label" disablePortal>
+            <label>
+              <Switch id="toggleChord" checked={!isDisabled} onChange={toggleDisabled} />
+            </label>
+          </Tooltip>
+        )}
       </h1>
       <div className={cx('name')}>{chord.name}</div>
       <PianoKeyboard
@@ -210,23 +220,30 @@ const ChordDetail: React.FC = () => {
                     )
                   }
                   right={
-                    <Tooltip title={isPreferred ? 'Unset as preferred' : 'Set as preferred'}>
-                      <Button
-                        aria-label={
-                          isPreferred
-                            ? `Unset ${chord.aliases[index]} as preferred`
-                            : `Set ${chord.aliases[index]} as preferred`
-                        }
-                        icon
-                        rounded
-                        size="sm"
-                        variant={isPreferred ? 'filled' : 'ghost'}
-                        intent="warning"
-                        onClick={() => toggleAlias(isPreferred, chord.aliases[index])}
-                      >
-                        <Icon name={isPreferred || isDefault ? 'star-filled' : 'star'} />
-                      </Button>
-                    </Tooltip>
+                    disableUpdate ? (
+                      <Icon
+                        intent={isPreferred ? 'warning' : 'neutral'}
+                        name={isPreferred || isDefault ? 'star-filled' : 'star'}
+                      />
+                    ) : (
+                      <Tooltip title={isPreferred ? 'Unset as preferred' : 'Set as preferred'}>
+                        <Button
+                          aria-label={
+                            isPreferred
+                              ? `Unset ${chord.aliases[index]} as preferred`
+                              : `Set ${chord.aliases[index]} as preferred`
+                          }
+                          icon
+                          rounded
+                          size="sm"
+                          variant={isPreferred ? 'filled' : 'ghost'}
+                          intent="warning"
+                          onClick={() => toggleAlias(isPreferred, chord.aliases[index])}
+                        >
+                          <Icon name={isPreferred || isDefault ? 'star-filled' : 'star'} />
+                        </Button>
+                      </Tooltip>
+                    )
                   }
                 >
                   <ChordName chord={chord} notation={index} />
@@ -252,56 +269,60 @@ const ChordDetail: React.FC = () => {
           </section>
         )}
       </div>
-      <h2 className={cx('title')}>Inversions</h2>
-      {chord.intervals.map((_, index) => {
-        if (!index) return null;
+      <div className={cx('columns')}>
+        <section className={cx('column')}>
+          <h2 className={cx('title')}>Inversions</h2>
+          {chord.intervals.map((_, index) => {
+            if (!index) return null;
 
-        const interval = chord.intervals[index].replace('*', '');
-        const root = chord.notes[index];
-        const slashChord = { ...chord, root, rootDegree: index };
-        const inversionMidi = getChordInversion(chord, index);
-        const altChord = alternativeChords.find(
-          (c) => c.tonic && Note.chroma(c.tonic) === Note.chroma(root)
-        );
-        const altChordName =
-          altChord && altChord.tonic
-            ? getNoteInKeySignature(altChord.tonic, keySignature.notes) + altChord.aliases[0]
-            : '';
+            const interval = chord.intervals[index].replace('*', '');
+            const root = chord.notes[index];
+            const slashChord = { ...chord, root, rootDegree: index };
+            const inversionMidi = getChordInversion(chord, index);
+            const altChord = alternativeChords.find(
+              (c) => c.tonic && Note.chroma(c.tonic) === Note.chroma(root)
+            );
+            const altChordName =
+              altChord && altChord.tonic
+                ? getNoteInKeySignature(altChord.tonic, keySignature.notes) + altChord.aliases[0]
+                : '';
 
-        return (
-          <div key={index} className={cx('inversion')}>
-            <div className={cx('inversionInfo')}>
-              <ChordName className={cx('inversionChord')} chord={slashChord} />
-              <div className={cx('inversionInterval')}>inversion on {interval}</div>
-              {altChord && (
-                <div className={cx('inversionAltChord')}>
-                  {'see also '}
-                  <Link
-                    as={NavLink}
-                    to={`../${encodeURIComponent(altChord.tonic + altChord.aliases[0])}`}
-                  >
-                    {altChordName}
-                  </Link>
+            return (
+              <div key={index} className={cx('inversion')}>
+                <div className={cx('inversionInfo')}>
+                  <ChordName className={cx('inversionChord')} chord={slashChord} />
+                  <div className={cx('inversionInterval')}>inversion on {interval}</div>
+                  {altChord && (
+                    <div className={cx('inversionAltChord')}>
+                      {'see also '}
+                      <Link
+                        as={NavLink}
+                        to={`../${encodeURIComponent(altChord.tonic + altChord.aliases[0])}`}
+                      >
+                        {altChordName}
+                      </Link>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <PianoKeyboard
-              className={cx('inversionKeyboard')}
-              played={inversionMidi}
-              midi={inversionMidi}
-              chord={slashChord}
-              keyboard={KEYBOARD_SETTINGS}
-            />
-            <Notation
-              className={cx('inversionNotation')}
-              midiNotes={inversionMidi}
-              keySignature={keySignature}
-              staffClef={staffClef}
-              staffTranspose={staffTranspose}
-            />
-          </div>
-        );
-      })}
+                <PianoKeyboard
+                  className={cx('inversionKeyboard')}
+                  played={inversionMidi}
+                  midi={inversionMidi}
+                  chord={slashChord}
+                  keyboard={KEYBOARD_SETTINGS}
+                />
+                <Notation
+                  className={cx('inversionNotation')}
+                  midiNotes={inversionMidi}
+                  keySignature={keySignature}
+                  staffClef={staffClef}
+                  staffTranspose={staffTranspose}
+                />
+              </div>
+            );
+          })}
+        </section>
+      </div>
       <div className={cx('columns')}>
         {!!subsetChords.length && (
           <section className={cx('column')}>

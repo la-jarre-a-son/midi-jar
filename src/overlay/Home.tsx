@@ -15,6 +15,7 @@ import { Icon } from 'renderer/components';
 import ThumbnaildChordDisplay from 'renderer/assets/thumbnails/chord-display.jpg';
 import ThumbnaildChordQuiz from 'renderer/assets/thumbnails/chord-quiz.jpg';
 import ThumbnaildCircleOfFifths from 'renderer/assets/thumbnails/circle-of-fifths.jpg';
+import ThumbnaildChordDictionary from 'renderer/assets/thumbnails/chord-dictionary.jpg';
 import { useSettings } from 'renderer/contexts/Settings';
 
 const Home: React.FC = () => {
@@ -49,6 +50,12 @@ const Home: React.FC = () => {
             <CardThumbnailOverlay as={NavLink} to="/circle-of-fifths" interactive />
           </CardThumbnail>
           <CardHeader left={<Icon name="circle-of-fifths" />}>Circle of Fifths</CardHeader>
+        </Card>
+        <Card outlined elevation={1}>
+          <CardThumbnail alt="Chord Dictionary preview" src={ThumbnaildChordDictionary}>
+            <CardThumbnailOverlay as={NavLink} to="/chord-dictionary" interactive />
+          </CardThumbnail>
+          <CardHeader left={<Icon name="dictionary" />}>Chord Dictionary</CardHeader>
         </Card>
       </Grid>
     </Container>

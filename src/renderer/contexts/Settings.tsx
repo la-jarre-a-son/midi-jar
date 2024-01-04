@@ -9,9 +9,9 @@ import { useSettingsManager } from './SettingsManager';
 
 interface SettingsContextInterface {
   settings: Settings;
-  updateSetting: (key: string, value: unknown) => Promise<void>;
-  updateSettings: (value: Settings) => Promise<void>;
-  resetSettings: (key: keyof Settings) => Promise<void>;
+  updateSetting: (key: string, value: unknown) => Promise<unknown>;
+  updateSettings: (value: Settings) => Promise<unknown>;
+  resetSettings: (key: keyof Settings) => Promise<unknown>;
 }
 
 const SettingsContext = React.createContext<SettingsContextInterface | null>(null);
@@ -37,16 +37,24 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
   );
 
   const updateSetting = useCallback(
-    (key: string, value: unknown) => window.app.settings.updateSetting(key, value),
-    []
+    (key: string, value: unknown) =>
+      manager
+        ? manager.updateSetting(key, value)
+        : Promise.reject(new Error('no settings manager')),
+    [manager]
   );
 
   const updateSettings = useCallback(
-    (value: Settings) => window.app.settings.updateSettings(value),
-    []
+    (value: Settings) =>
+      manager ? manager.updateSettings(value) : Promise.reject(new Error('no settings manager')),
+    [manager]
   );
 
-  const resetSettings = useCallback((key: keyof Settings) => window.app.settings.reset(key), []);
+  const resetSettings = useCallback(
+    (key: keyof Settings) =>
+      manager ? manager.resetSettings(key) : Promise.reject(new Error('no settings manager')),
+    [manager]
+  );
 
   useEffect(() => {
     if (manager) {

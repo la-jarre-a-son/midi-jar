@@ -8,7 +8,7 @@ import styles from './Icon.module.scss';
 
 const cx = classnames.bind(styles);
 
-export const Icon: React.FC<IconProps> = ({ className, name, spin, hover }) => {
+export const Icon: React.FC<IconProps> = ({ className, name, intent, spin, hover }) => {
   const IconSvg = ICONS[name];
 
   if (!IconSvg) return null;
@@ -21,6 +21,7 @@ export const Icon: React.FC<IconProps> = ({ className, name, spin, hover }) => {
           'base--spin': spin,
           'base--hover': !!hover,
         },
+        intent && `base--${intent}`,
         `icon--${name}`,
         className
       )}
@@ -30,6 +31,7 @@ export const Icon: React.FC<IconProps> = ({ className, name, spin, hover }) => {
 
 Icon.defaultProps = {
   className: undefined,
+  intent: 'inherit',
   spin: false,
   hover: false,
 };
