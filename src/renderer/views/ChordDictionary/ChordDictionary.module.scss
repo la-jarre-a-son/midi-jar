@@ -22,8 +22,6 @@
 
 .chordbar {
   --Sidebar_minSize: 200px;
-  --Button_textTransform: none;
-  --Button--md_fontSize: 12px
 }
 
 .chordnav {
@@ -36,6 +34,10 @@
 
 .item {
   --List-item_textTransform: none;
+
+  &--isDisabled {
+    opacity: 0.5;
+  }
 }
 
 .item, .group {

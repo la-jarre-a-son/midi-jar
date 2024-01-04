@@ -7,9 +7,10 @@ import { Button, Stack, TabList, Toolbar } from '@la-jarre-a-son/ui';
 import { useSettings } from 'renderer/contexts/Settings';
 import { Icon, NavTab } from 'renderer/components';
 
-import styles from './ChordDisplaySettings.module.scss';
-import ChordDisplayAddModal from './ChordDisplayAddModal';
 import { addModule } from './utils';
+import ChordDisplayAddModal from './ChordDisplayAddModal';
+
+import styles from './ChordDisplaySettings.module.scss';
 
 const cx = classnames.bind(styles);
 

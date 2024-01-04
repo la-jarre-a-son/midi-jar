@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ChordType } from '@tonaljs/chord-type';
+import { ChordDictionarySettings } from 'main/types';
 import {
   KeySignatureConfig,
   containsInterval,
@@ -10,6 +11,7 @@ import {
 export type ChordItem = {
   type: 'item';
   chordType: ChordType;
+  isDisabled: boolean;
 };
 
 export type ChordGroup = {
@@ -19,8 +21,8 @@ export type ChordGroup = {
   items: (ChordGroup | ChordItem)[];
 };
 
-export const groupValues = {
-  none: 'All Chords',
+export const groupValues: Record<ChordDictionarySettings['groupBy'], string> = {
+  none: 'No Group',
   quality: 'By Quality',
   intervals: 'By Intervals',
 };
@@ -68,15 +70,20 @@ function sortItemsFn(a: ChordGroup | ChordItem, b: ChordGroup | ChordItem) {
 
 export function groupObjectToChordGroup(
   groups: GroupObject | ChordType[],
+  disabled: string[],
   currentKey = 'root'
 ): ChordGroup | ChordItem[] {
   if (Array.isArray(groups)) {
-    return groups.map((i) => ({ type: 'item', chordType: i }));
+    return groups.map((i) => ({
+      type: 'item',
+      chordType: i,
+      isDisabled: disabled.includes(i.aliases[0]),
+    }));
   }
 
   const items = Object.keys(groups).reduce(
     (i, key: string) => {
-      const group = groupObjectToChordGroup((groups as GroupObject)[key], key);
+      const group = groupObjectToChordGroup((groups as GroupObject)[key], disabled, key);
 
       if (Array.isArray(group)) {
         return i.concat(group);
@@ -178,43 +185,52 @@ function getChordIntervals(chordType: ChordType) {
 }
 
 export function getChordGroups(
-  group: keyof typeof groupValues,
+  groupBy: ChordDictionarySettings['groupBy'],
   keySignature: KeySignatureConfig,
   chroma: number | null,
+  disabled: ChordDictionarySettings['disabled'],
+  hideDisabled: boolean,
   filterChordsInKey: boolean
 ): (ChordGroup | ChordItem)[] {
   const chordTypes = filterChordsInKey ? getChordsInKey(keySignature, chroma) : getChordTypes();
 
-  if (group === 'none') {
-    return chordTypes.map((chordType) => ({
-      type: 'item',
-      chordType,
-    }));
+  if (groupBy === 'none') {
+    return chordTypes
+      .filter((ct) => (hideDisabled ? !disabled.includes(ct.aliases[0]) : true))
+      .map((chordType) => ({
+        type: 'item' as const,
+        chordType,
+        isDisabled: disabled.includes(chordType.aliases[0]),
+      }));
   }
 
-  if (group === 'quality') {
-    const groups = chordTypes.reduce<GroupObject | ChordType[]>((g, c) => {
-      const quality = getChordQuality(c);
+  if (groupBy === 'quality') {
+    const groups = chordTypes
+      .filter((ct) => (hideDisabled ? !disabled.includes(ct.aliases[0]) : true))
+      .reduce<GroupObject | ChordType[]>((g, c) => {
+        const quality = getChordQuality(c);
 
-      g = buildGroupObject(g, [quality], c);
+        g = buildGroupObject(g, [quality], c);
 
-      return g;
-    }, {} as GroupObject);
+        return g;
+      }, {} as GroupObject);
 
-    const chordGroup = groupObjectToChordGroup(groups);
+    const chordGroup = groupObjectToChordGroup(groups, disabled);
 
     return Array.isArray(chordGroup) ? chordGroup : chordGroup.items;
   }
-  if (group === 'intervals') {
-    const groups = chordTypes.reduce<GroupObject | ChordType[]>((g, c) => {
-      const intervals = getChordIntervals(c);
+  if (groupBy === 'intervals') {
+    const groups = chordTypes
+      .filter((ct) => (hideDisabled ? !disabled.includes(ct.aliases[0]) : true))
+      .reduce<GroupObject | ChordType[]>((g, c) => {
+        const intervals = getChordIntervals(c);
 
-      g = buildGroupObject(g, intervals, c);
+        g = buildGroupObject(g, intervals, c);
 
-      return g;
-    }, {} as GroupObject);
+        return g;
+      }, {} as GroupObject);
 
-    const chordGroup = groupObjectToChordGroup(groups);
+    const chordGroup = groupObjectToChordGroup(groups, disabled);
 
     return Array.isArray(chordGroup) ? chordGroup : chordGroup.items;
   }

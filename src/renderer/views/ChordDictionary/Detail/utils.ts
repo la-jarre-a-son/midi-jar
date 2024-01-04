@@ -48,20 +48,34 @@ const getChordInfo = (chord: string, keySignatureNotes?: string[]): TChord | nul
   return null;
 };
 
-export function getAlternativeChords(chord?: TChord, keySignature?: KeySignatureConfig): TChord[] {
+export function getAlternativeChords(
+  chord?: TChord,
+  keySignature?: KeySignatureConfig,
+  disabled: string[] = [],
+  hideDisabled = false
+): TChord[] {
   if (!chord) return [];
 
-  const chords = detect(chord.notes, { allowOmissions: true })
+  const chords = detect(chord.notes, {
+    allowOmissions: true,
+    disabledChords: hideDisabled ? disabled : [],
+  })
     .map((c) => getChordInfo(c, keySignature?.notes))
     .filter((c) => c && c.symbol !== chord.symbol) as TChord[];
 
   return chords;
 }
 
-export function getSubsetChords(chord?: TChord): TChord[] {
+export function getSubsetChords(
+  chord?: TChord,
+  disabled: string[] = [],
+  hideDisabled = false
+): TChord[] {
   if (!chord || !chord.tonic) return [];
   const subset = ChordType.all()
     .filter((chordType) => {
+      if (hideDisabled && disabled.includes(chordType.aliases[0])) return false;
+
       return (
         // eslint-disable-next-line no-bitwise
         chord.setNum !== chordType.setNum && (chord.setNum & chordType.setNum) === chordType.setNum
@@ -75,7 +89,9 @@ export function getSubsetChords(chord?: TChord): TChord[] {
 export function getSupersetChords(
   chord: TChord,
   keySignature: KeySignatureConfig,
-  filterChordsInKey: boolean
+  filterChordsInKey: boolean,
+  disabled: string[] = [],
+  hideDisabled = false
 ): TChord[] {
   if (!chord || !chord.tonic) return [];
 
@@ -85,6 +101,8 @@ export function getSupersetChords(
       : ChordType.all()
   )
     .filter((chordType) => {
+      if (hideDisabled && disabled.includes(chordType.aliases[0])) return false;
+
       return (
         // eslint-disable-next-line no-bitwise
         chord.setNum !== chordType.setNum && (chord.setNum & chordType.setNum) === chord.setNum

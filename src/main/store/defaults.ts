@@ -1,4 +1,5 @@
 import {
+  ChordDictionarySettings,
   ChordDisplaySettings,
   ChordQuizSettings,
   CircleOfFifthsSettings,
@@ -75,6 +76,16 @@ export const defaultCircleOfFifthsSettings: CircleOfFifthsSettings = {
   displayDegreeLabels: false,
 };
 
+export const defaultChordDictionarySettings: ChordDictionarySettings = {
+  interactive: 'play',
+  hideDisabled: false,
+  filterInKey: false,
+  groupBy: 'none',
+  defaultNotation: 'short',
+  disabled: [],
+  aliases: [['maj', '']],
+};
+
 export const defaultNotationSettings: NotationSettings = {
   key: 'C',
   accidentals: 'flat' as const,
@@ -105,6 +116,7 @@ export const defaults: StoreType = {
     chordDisplay: [defaultChordDisplaySettings],
     chordQuiz: defaultChordQuizSettings,
     circleOfFifths: defaultCircleOfFifthsSettings,
+    chordDictionary: defaultChordDictionarySettings,
     notation: defaultNotationSettings,
     server: {
       enabled: true,
