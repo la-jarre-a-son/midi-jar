@@ -24,6 +24,7 @@ const CircleOfFifths: React.FC<Props> = ({ disableUpdate }) => {
   } = useNotes({
     key,
     midiChannel: 0,
+    disabledChords: settings.chordDictionary.disabled,
   });
 
   const handleKeyChange = useCallback(

@@ -50,3 +50,33 @@
 .icon--loading {
   animation: spin 2s infinite linear;
 }
+
+// Intents
+
+.base--neutral {
+  color: $color-neutral-normal;
+}
+.base--primary {
+  color: $color-primary-normal;
+}
+.base--danger {
+  color: $color-danger-normal;
+}
+.base--warning {
+  color: $color-warning-normal;
+}
+.base--success {
+  color: $color-success-normal;
+}
+.base--default {
+  color: $color-white;
+}
+.base--subtle {
+  color: $color-neutral-lighter;
+}
+.base--contrast {
+  color: $color-neutral-darker;
+}
+.base--inherit {
+  color: currentColor;
+}

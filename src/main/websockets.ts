@@ -6,7 +6,13 @@ import { Socket } from 'net';
 
 const debug = makeDebug('app:ws');
 
-const WS_NAMESPACES = ['settings', 'chord-display', 'chord-quiz', 'circle-of-fifths'];
+const WS_NAMESPACES = [
+  'settings',
+  'chord-display',
+  'chord-quiz',
+  'circle-of-fifths',
+  'chord-dictionary',
+];
 
 export type WebsocketMessageReply = (eventType: string, payload: any) => void;
 

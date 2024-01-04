@@ -25,5 +25,17 @@ class InternalSettings extends SettingsManager {
   public getSettings() {
     window.app.settings.getSettings();
   }
+
+  public updateSetting(key: string, value: unknown) {
+    return window.app.settings.updateSetting(key, value);
+  }
+
+  public updateSettings(value: Settings) {
+    return window.app.settings.updateSettings(value);
+  }
+
+  public resetSettings(key: keyof Settings) {
+    return window.app.settings.reset(key);
+  }
 }
 export default InternalSettings;

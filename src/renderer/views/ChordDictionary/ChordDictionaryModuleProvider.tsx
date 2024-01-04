@@ -2,16 +2,18 @@ import React, { useContext, useMemo } from 'react';
 
 import { KeySignatureConfig, getKeySignature } from 'renderer/helpers';
 
-interface ChordDictionaryContextInterface {
+interface ChordDictionaryModuleContextInterface {
   keySignature: KeySignatureConfig;
   filterChordsInKey?: boolean;
   midiNotes?: number[];
   playedMidiNotes?: number[];
   sustainedMidiNotes?: number[];
   pitchClasses?: string[];
+  disableUpdate?: boolean;
 }
 
-const ChordDictionaryContext = React.createContext<ChordDictionaryContextInterface | null>(null);
+const ChordDictionaryModuleContext =
+  React.createContext<ChordDictionaryModuleContextInterface | null>(null);
 
 type Props = {
   children: React.ReactNode;
@@ -21,6 +23,7 @@ type Props = {
   sustainedMidiNotes?: number[];
   pitchClasses?: string[];
   filterChordsInKey?: boolean;
+  disableUpdate?: boolean;
 };
 
 const defaultProps = {
@@ -30,9 +33,10 @@ const defaultProps = {
   sustainedMidiNotes: [],
   pitchClasses: [],
   filterChordsInKey: false,
+  disableUpdate: false,
 };
 
-const ChordDictionaryProvider: React.FC<Props> = ({
+const ChordDictionaryModuleProvider: React.FC<Props> = ({
   children,
   keySignature = defaultProps.keySignature,
   midiNotes,
@@ -40,6 +44,7 @@ const ChordDictionaryProvider: React.FC<Props> = ({
   sustainedMidiNotes,
   pitchClasses,
   filterChordsInKey,
+  disableUpdate,
 }) => {
   const value = useMemo(
     () => ({
@@ -49,23 +54,34 @@ const ChordDictionaryProvider: React.FC<Props> = ({
       sustainedMidiNotes,
       pitchClasses,
       filterChordsInKey,
+      disableUpdate,
     }),
-    [keySignature, midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses, filterChordsInKey]
+    [
+      keySignature,
+      midiNotes,
+      playedMidiNotes,
+      sustainedMidiNotes,
+      pitchClasses,
+      filterChordsInKey,
+      disableUpdate,
+    ]
   );
 
   return (
-    <ChordDictionaryContext.Provider value={value}>{children}</ChordDictionaryContext.Provider>
+    <ChordDictionaryModuleContext.Provider value={value}>
+      {children}
+    </ChordDictionaryModuleContext.Provider>
   );
 };
 
-ChordDictionaryProvider.defaultProps = defaultProps;
+ChordDictionaryModuleProvider.defaultProps = defaultProps;
 
-export const useChordDictionary = () => {
-  const context = useContext(ChordDictionaryContext);
+export const useChordDictionaryModule = () => {
+  const context = useContext(ChordDictionaryModuleContext);
   if (!context) {
-    throw new Error(`useChordDictionary must be used within a ChordDictionaryProvider`);
+    throw new Error(`useChordDictionaryModule must be used within a ChordDictionaryModuleProvider`);
   }
   return context;
 };
 
-export default ChordDictionaryProvider;
+export default ChordDictionaryModuleProvider;

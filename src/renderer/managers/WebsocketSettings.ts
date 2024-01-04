@@ -62,5 +62,17 @@ class WebsocketSettings extends SettingsManager {
       this.ws.send('settings:get');
     }
   }
+
+  public updateSetting(_key: string, _value: unknown) {
+    return Promise.reject();
+  }
+
+  public updateSettings(_value: Settings) {
+    return Promise.reject();
+  }
+
+  public resetSettings(_key: keyof Settings) {
+    return Promise.reject();
+  }
 }
 export default WebsocketSettings;

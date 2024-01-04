@@ -7,6 +7,16 @@
   padding: 16px;
 }
 
+.empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-style: italic;
+}
+
 .header {
   display: flex;
   justify-content: center;
@@ -99,6 +109,7 @@
   flex-wrap: wrap;
   width: 100%;
   gap: 16px;
+  page-break-inside: avoid;
 }
 
 .inversionInfo {

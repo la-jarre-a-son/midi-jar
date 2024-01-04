@@ -34,6 +34,9 @@ interface SettingsManager extends EventTarget {
   ): void;
   dispose(): void;
   getSettings(): void;
+  updateSetting(key: string, value: unknown): Promise<unknown>;
+  updateSettings(value: Settings): Promise<unknown>;
+  resetSettings(key: keyof Settings): Promise<unknown>;
 }
 
 class SettingsManager extends EventTarget {}

@@ -26,6 +26,7 @@ $font-path: '../assets/fonts';
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
@@ -49,5 +50,22 @@ $font-path: '../assets/fonts';
   .Home-logo {
     width: 15vw;
     height: 15vw;
+  }
+}
+
+
+@media print {
+  html,
+  body {
+    position: relative;
+    height: auto;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    overflow: visible;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
