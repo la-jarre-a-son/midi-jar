@@ -19,6 +19,7 @@ import {
 import { useSettings } from 'renderer/contexts/Settings';
 import { Icon } from 'renderer/components';
 
+import { ChordDictionarySettings } from 'main/types';
 import { groupValues } from './utils';
 import { ChordSearch } from './ChordSearch';
 
@@ -26,39 +27,22 @@ import styles from './ChordDictionary.module.scss';
 
 const cx = classnames.bind(styles);
 
-type Props = {
-  interactive: 'play' | 'detect';
-  onChangeInteractive: (mode: 'play' | 'detect') => void;
-  hideDisabled: boolean;
-  onChangeHideDisabled: (hideDisabled: boolean) => void;
-  filterChordsInKey: boolean;
-  onChangeFilterChordsInKey: (filterChordsInKey: boolean) => void;
-  group: keyof typeof groupValues;
-  onChangeGroup: (group: keyof typeof groupValues) => void;
-};
-
-const ChordDictionaryToolbar: React.FC<Props> = ({
-  interactive,
-  hideDisabled,
-  filterChordsInKey,
-  group,
-  onChangeInteractive,
-  onChangeHideDisabled,
-  onChangeFilterChordsInKey,
-  onChangeGroup,
-}) => {
+const ChordDictionaryToolbar: React.FC = () => {
   const navigate = useNavigate();
 
   const { settings, updateSetting } = useSettings();
 
-  const toggleHideDisabled = () => onChangeHideDisabled(!hideDisabled);
-  const toggleFilterChordsInKey = () => onChangeFilterChordsInKey(!filterChordsInKey);
+  const toggleHideDisabled = () =>
+    updateSetting('chordDictionary.hideDisabled', !settings.chordDictionary.hideDisabled);
+  const toggleFilterInKey = () =>
+    updateSetting('chordDictionary.filterInKey', !settings.chordDictionary.filterInKey);
 
-  const handleToggleInteractive = (mode: Props['interactive']) => () => onChangeInteractive(mode);
+  const handleToggleInteractive = (interactive: ChordDictionarySettings['interactive']) => () =>
+    updateSetting('chordDictionary.interactive', interactive);
 
-  const bindSortAndFilter = (value: keyof typeof groupValues) => ({
-    onClick: () => onChangeGroup(value),
-    checked: group === value,
+  const bindSortAndFilter = (groupBy: ChordDictionarySettings['groupBy']) => ({
+    onClick: () => updateSetting('chordDictionary.groupBy', groupBy),
+    checked: settings.chordDictionary.groupBy === groupBy,
   });
 
   const menuTrigger: (internals: DropdownTriggerInternal) => React.ReactNode = ({
@@ -71,7 +55,9 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
       right={open ? <Icon name="angle-up" /> : <Icon name="angle-down" />}
       intent="neutral"
     >
-      {`${groupValues[group]}${filterChordsInKey ? ' (In Key)' : ''}`}
+      {`${groupValues[settings.chordDictionary.groupBy]}${
+        settings.chordDictionary.filterInKey ? ' (In Key)' : ''
+      }`}
     </Button>
   );
 
@@ -91,13 +77,17 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
         </MenuGroup>
         <Divider />
         <MenuGroup header="Filter">
-          <MenuItemCheckbox checked={hideDisabled} variant="switch" onClick={toggleHideDisabled}>
+          <MenuItemCheckbox
+            checked={settings.chordDictionary.hideDisabled}
+            variant="switch"
+            onClick={toggleHideDisabled}
+          >
             Hide disabled chords
           </MenuItemCheckbox>
           <MenuItemCheckbox
-            checked={filterChordsInKey}
+            checked={settings.chordDictionary.filterInKey}
             variant="switch"
-            onClick={toggleFilterChordsInKey}
+            onClick={toggleFilterInKey}
           >
             Only chords in key
           </MenuItemCheckbox>
@@ -108,11 +98,14 @@ const ChordDictionaryToolbar: React.FC<Props> = ({
       <ButtonGroup>
         <ToggleButton
           onClick={handleToggleInteractive('detect')}
-          selected={interactive === 'detect'}
+          selected={settings.chordDictionary.interactive === 'detect'}
         >
           Detect
         </ToggleButton>
-        <ToggleButton onClick={handleToggleInteractive('play')} selected={interactive === 'play'}>
+        <ToggleButton
+          onClick={handleToggleInteractive('play')}
+          selected={settings.chordDictionary.interactive === 'play'}
+        >
           Play
         </ToggleButton>
       </ButtonGroup>

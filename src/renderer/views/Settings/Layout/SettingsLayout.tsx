@@ -5,11 +5,11 @@ import { Outlet } from 'react-router-dom';
 import { SidebarContainer, TabList, Toolbar } from '@la-jarre-a-son/ui';
 import { NavTab, Icon } from 'renderer/components';
 
-import styles from './Settings.module.scss';
+import styles from './SettingsLayout.module.scss';
 
 const cx = classnames.bind(styles);
 
-const Settings: React.FC = () => (
+const SettingsLayout: React.FC = () => (
   <SidebarContainer
     className={cx('base')}
     sidebar={
@@ -43,6 +43,14 @@ const Settings: React.FC = () => (
             left={<Icon name="music" />}
           >
             <span className={cx('label')}>Music Notation</span>
+          </NavTab>
+          <NavTab
+            className={cx('tab')}
+            to="/settings/chord-dictionary"
+            title="Chord Dictionary"
+            left={<Icon name="dictionary" />}
+          >
+            <span className={cx('label')}>Chord Dictionary</span>
           </NavTab>
           <NavTab
             className={cx('tab')}
@@ -108,4 +116,4 @@ const Settings: React.FC = () => (
   </SidebarContainer>
 );
 
-export default Settings;
+export default SettingsLayout;

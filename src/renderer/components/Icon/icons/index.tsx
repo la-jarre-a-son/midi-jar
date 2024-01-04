@@ -14,6 +14,7 @@ export const ICON_NAMES = [
   'exclamation',
   'github',
   'heart',
+  'hidden',
   'info',
   'loading',
   'midi',
@@ -38,6 +39,7 @@ export const ICON_NAMES = [
   'server',
   'settings',
   'trash',
+  'visible',
   'window',
 ] as const;
 

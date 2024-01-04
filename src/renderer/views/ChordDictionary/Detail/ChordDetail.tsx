@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useEffect, useMemo, useRef } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { Chord, Note } from 'tonal';
-import { Badge, Container, Link, List, ListItem } from '@la-jarre-a-son/ui';
+import { Badge, Container, Link, List, ListItem, Switch, Tooltip } from '@la-jarre-a-son/ui';
 
 import { KeyboardSettings } from 'main/types';
 import { defaultKeyboardSettings } from 'main/store/defaults';
@@ -46,19 +47,13 @@ const KEYBOARD_SETTINGS: KeyboardSettings = {
 const NOTATION_LABELS = ['long', 'short', 'symbol'];
 
 const ChordDetail: React.FC = () => {
-  const {
-    keySignature,
-    midiNotes,
-    playedMidiNotes,
-    sustainedMidiNotes,
-    pitchClasses,
-    filterChordsInKey,
-  } = useChordDictionary();
+  const { keySignature, midiNotes, playedMidiNotes, sustainedMidiNotes, pitchClasses } =
+    useChordDictionary();
   const ref = useRef<HTMLDivElement>(null);
   const { chordName } = useParams();
   const navigate = useNavigate();
 
-  const { settings } = useSettings();
+  const { settings, updateSetting } = useSettings();
   const { staffClef, staffTranspose } = settings.notation;
 
   useEffect(() => {
@@ -67,30 +62,66 @@ const ChordDetail: React.FC = () => {
     }
   }, [chordName]);
 
+  const chord = useMemo(() => (chordName ? Chord.get(chordName) : null), [chordName]);
+  const isDisabled = useMemo(
+    () => chord && settings.chordDictionary.disabled.includes(chord.aliases[0]),
+    [chord, settings.chordDictionary.disabled]
+  );
+
   if (!chordName) {
     return 'Select a chord or search';
   }
-
-  const chord = chordName ? Chord.get(chordName) : null;
 
   if (!chord) {
     return `Cannot find a chord named "${chordName}"`;
   }
 
   const midi = getChordInversion(chord, 0);
-  const alternativeChords = getAlternativeChords(chord, keySignature);
-  const subsetChords = getSubsetChords(chord);
-  const supersetChords = getSupersetChords(chord, keySignature, !!filterChordsInKey);
+  const alternativeChords = getAlternativeChords(
+    chord,
+    keySignature,
+    settings.chordDictionary.disabled,
+    settings.chordDictionary.hideDisabled
+  );
+  const subsetChords = getSubsetChords(
+    chord,
+    settings.chordDictionary.disabled,
+    settings.chordDictionary.hideDisabled
+  );
+  const supersetChords = getSupersetChords(
+    chord,
+    keySignature,
+    settings.chordDictionary.filterInKey,
+    settings.chordDictionary.disabled,
+    settings.chordDictionary.hideDisabled
+  );
   const goToChordDetail = (name: string) => {
     navigate(`../${encodeURIComponent(name)}`);
   };
 
   const playedIntervals = getChordDegrees(chord, pitchClasses ?? []);
 
+  const toggleDisabled = (isEnabled: boolean) => {
+    const disabled = isEnabled
+      ? settings.chordDictionary.disabled.filter((c) => c !== chord.aliases[0])
+      : [...settings.chordDictionary.disabled, chord.aliases[0]];
+
+    updateSetting('chordDictionary.disabled', disabled);
+  };
+
   return (
     <Container ref={ref} className={cx('base')} size="xl">
-      <h1 className={cx('chordName')}>
-        <ChordName chord={chord} notation="long" />
+      <h1 className={cx('header')}>
+        <ChordName
+          className={cx('chordName', isDisabled && 'chordName--isDisabled')}
+          chord={chord}
+          notation="long"
+        />
+        <Tooltip title="Disable/enable chord" placement="left" describeAs="label" disablePortal>
+          <label>
+            <Switch id="toggleChord" checked={!isDisabled} onChange={toggleDisabled} />
+          </label>
+        </Tooltip>
       </h1>
       <div className={cx('name')}>{chord.name}</div>
       <PianoKeyboard

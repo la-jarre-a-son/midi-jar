@@ -6,6 +6,7 @@
 }
 
 .sidebar {
+  --Sidebar_minSize: 210px;
   display: flex;
   flex-direction: column;
 }

@@ -32,6 +32,7 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
     allowOmissions: moduleSettings.allowOmissions,
     useSustain: moduleSettings.useSustain,
     detectOnRelease: moduleSettings.detectOnRelease,
+    disabledChords: settings.chordDictionary.disabled,
   });
 
   if (!settings || !moduleSettings) return null;

@@ -47,6 +47,7 @@ function withOmissions(chroma: string, omissionChroma: string): string {
 
 type FindMatchesOptions = {
   allowOmissions: boolean;
+  disabledChords: string[];
 };
 function findMatches(
   notes: string[],
@@ -63,6 +64,10 @@ function findMatches(
   allModes.forEach((mode, index) => {
     // some chords could have the same chroma but different interval spelling
     const chordTypes = chordTypesWithOmissions.filter((chordType) => {
+      if (options.disabledChords && options.disabledChords.includes(chordType.aliases[0])) {
+        return false;
+      }
+
       if (options.allowOmissions) {
         const modeWithOmissions = withOmissions(mode, chordType.omissionChroma);
         return chordType.chroma === modeWithOmissions;
@@ -100,6 +105,7 @@ function findMatches(
 
 type DetectOptions = {
   allowOmissions: boolean;
+  disabledChords: string[];
 };
 export function detect(source: string[], options: Partial<DetectOptions> = {}): string[] {
   const notes = source.map((n) => note(n).pc).filter((x) => x);

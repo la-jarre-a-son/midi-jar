@@ -1,10 +1,13 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import classnames from 'classnames/bind';
-import { Tab, TabList, TreeView, TreeViewItem } from '@la-jarre-a-son/ui';
+import { TreeView, TreeViewItem } from '@la-jarre-a-son/ui';
+
+import { ChordDictionarySettings } from 'main/types';
 
 import { KeySignatureConfig } from 'renderer/helpers';
 
-import { ChordGroup, ChordItem, getChordGroups, groupValues } from './utils';
+import { Icon } from 'renderer/components';
+import { ChordGroup, ChordItem, getChordGroups } from './utils';
 
 import styles from './ChordDictionary.module.scss';
 
@@ -14,66 +17,59 @@ type Props = {
   keySignature: KeySignatureConfig;
   selected: string | null;
   onSelect: (note: string) => void;
-  group: keyof typeof groupValues;
+  groupBy: ChordDictionarySettings['groupBy'];
+  disabledChords: ChordDictionarySettings['disabled'];
   chroma: number | null;
   filterChordsInKey: boolean;
+  hideDisabled: boolean;
 };
 
 const ChordDictionaryChordMenu: React.FC<Props> = ({
   keySignature,
   selected,
   onSelect,
-  group,
   chroma,
+  groupBy,
+  disabledChords,
+  hideDisabled,
   filterChordsInKey,
 }) => {
-  const ref = useRef<HTMLElement>();
   const groups = useMemo(
-    () => getChordGroups(group, keySignature, chroma, filterChordsInKey),
-    [group, keySignature, chroma, filterChordsInKey]
+    () =>
+      getChordGroups(
+        groupBy,
+        keySignature,
+        chroma,
+        disabledChords,
+        hideDisabled,
+        filterChordsInKey
+      ),
+    [groupBy, disabledChords, hideDisabled, keySignature, chroma, filterChordsInKey]
   );
 
-  const renderTreeViewGroup = (c: ChordGroup | ChordItem) => {
-    return c.type === 'item' ? (
+  const renderTreeViewGroup = (item: ChordGroup | ChordItem) => {
+    return item.type === 'item' ? (
       <TreeViewItem
-        key={c.chordType.aliases[0]}
-        className={cx('item')}
-        onClick={() => onSelect(c.chordType.aliases[0] || 'maj')}
-        title={c.chordType.aliases[0] || 'maj'}
-        current={selected === (c.chordType.aliases[0] || 'maj')}
+        key={item.chordType.aliases[0]}
+        className={cx('item', item.isDisabled && 'item--isDisabled')}
+        onClick={() => onSelect(item.chordType.aliases[0] || 'maj')}
+        title={item.chordType.aliases[0] || 'maj'}
+        current={selected === (item.chordType.aliases[0] || 'maj')}
+        left={item.isDisabled ? <Icon name="hidden" /> : null}
       />
     ) : (
-      <TreeViewItem key={c.value} className={cx('group')} title={c.label}>
-        {c.items.map((item) => renderTreeViewGroup(item))}
+      <TreeViewItem key={item.value} className={cx('group')} title={item.label}>
+        {item.items.map((i) => renderTreeViewGroup(i))}
       </TreeViewItem>
     );
   };
 
-  return group === 'none' ? (
-    <TabList
-      ref={ref}
+  return (
+    <TreeView
       className={cx('chordnav')}
       aria-label="Chord Types Navigation"
-      direction="vertical"
-      variant="ghost"
-      block
+      sticky={groupBy !== 'none'}
     >
-      {groups.map(
-        (item) =>
-          item.type === 'item' && (
-            <Tab
-              key={item.chordType.aliases[0]}
-              className={cx('tab')}
-              selected={selected === (item.chordType.aliases[0] || 'maj')}
-              onClick={() => onSelect(item.chordType.aliases[0] || 'maj')}
-            >
-              <span className={cx('label')}>{item.chordType.aliases[0] || 'maj'}</span>
-            </Tab>
-          )
-      )}
-    </TabList>
-  ) : (
-    <TreeView className={cx('chordnav')} aria-label="Chord Types Navigation" sticky>
       {groups.map((item) => renderTreeViewGroup(item))}
     </TreeView>
   );

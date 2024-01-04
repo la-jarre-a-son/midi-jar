@@ -66,6 +66,16 @@ export type CircleOfFifthsSettings = {
   displayDegreeLabels: boolean;
 };
 
+export type ChordDictionarySettings = {
+  interactive: 'detect' | 'play';
+  hideDisabled: boolean;
+  filterInKey: boolean;
+  groupBy: 'none' | 'quality' | 'intervals';
+  defaultNotation: 'long' | 'short' | 'symbol';
+  disabled: string[];
+  aliases: Array<[key: string, value: string]>;
+};
+
 export type NotationSettings = {
   key: string;
   accidentals: 'flat' | 'sharp';
@@ -88,6 +98,7 @@ export type Settings = {
   chordDisplay: ChordDisplaySettings[];
   chordQuiz: ChordQuizSettings;
   circleOfFifths: CircleOfFifthsSettings;
+  chordDictionary: ChordDictionarySettings;
   notation: NotationSettings;
   server: ServerSettings;
 };
