@@ -5,7 +5,10 @@
             "type": "boolean"
         },
         "changelogDismissed": {
-            "type": "boolean"
+            "type": [
+                "null",
+                "string"
+            ]
         },
         "height": {
             "type": [

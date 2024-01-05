@@ -104,7 +104,7 @@ export const defaults: StoreType = {
     height: null,
     maximized: false,
     alwaysOnTop: false,
-    changelogDismissed: true,
+    changelogDismissed: '100.0.0', // hack: ensure changelog does not blink at startup
     updateDismissed: null,
     path: '/',
   },

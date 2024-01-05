@@ -227,3 +227,46 @@ export type v1_6_0_ChordDisplaySettings = {
   displayIntervals: boolean;
   keyboard: v1_6_0_KeyboardSettings;
 };
+
+export type v1_6_0_Settings = {
+  general: v1_0_0_GeneralSettings;
+  server: v1_0_0_ServerSettings;
+  chordDisplay: v1_6_0_ChordDisplaySettings[];
+  chordQuiz: v1_5_0_ChordQuizSettings;
+  circleOfFifths: v1_2_0_CircleOfFifthsSettings;
+  notation: v1_2_0_NotationSettings;
+};
+
+/* v1.7.0 - added chord dictionary, fix changelog dismissed */
+export type v1_7_0_ChordDisplaySettings = Omit<v1_6_0_ChordDisplaySettings, 'chordNotation'> & {
+  detectOnRelease: boolean;
+  chordNotation: 'long' | 'short' | 'symbol' | 'preferred';
+};
+
+export type v1_7_0_ChordQuizSettings = Omit<v1_5_0_ChordQuizSettings, 'chordNotation'> & {
+  chordNotation: 'long' | 'short' | 'symbol' | 'preferred';
+};
+
+export type v1_7_0_ChordDictionarySettings = {
+  interactive: 'detect' | 'play';
+  hideDisabled: boolean;
+  filterInKey: boolean;
+  groupBy: 'none' | 'quality' | 'intervals';
+  defaultNotation: 'long' | 'short' | 'symbol';
+  disabled: string[];
+  aliases: Array<[key: string, value: string]>;
+};
+
+export type v1_7_0_WindowState = v1_5_1_WindowState & {
+  changelogDismissed: string | null;
+};
+
+export type v1_7_0_Settings = {
+  general: v1_0_0_GeneralSettings;
+  server: v1_0_0_ServerSettings;
+  chordDisplay: v1_7_0_ChordDisplaySettings[];
+  chordQuiz: v1_7_0_ChordQuizSettings;
+  chordDictionary: v1_7_0_ChordDictionarySettings;
+  circleOfFifths: v1_2_0_CircleOfFifthsSettings;
+  notation: v1_2_0_NotationSettings;
+};

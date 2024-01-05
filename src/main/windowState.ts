@@ -1,7 +1,11 @@
 import { screen, BrowserWindow, Rectangle } from 'electron';
+import { lt, lte } from 'semver';
+
 import { store, defaults } from './store';
 import { WindowState } from './types/WindowState';
 import { getURLHash } from './util';
+
+import packageJson from '../../package.json';
 
 export const DEFAULT_WINDOW_WIDTH = 1024;
 export const DEFAULT_WINDOW_HEIGHT = 768;
@@ -18,7 +22,21 @@ function isWindowInDisplay(wB: Rectangle, dB: Rectangle) {
 }
 
 export function getWindowState() {
-  return store.get('windowState') ?? defaults.windowState;
+  const storedWindowState = store.get('windowState') ?? defaults.windowState;
+
+  return {
+    ...storedWindowState,
+    updateDismissed:
+      !storedWindowState.updateDismissed ||
+      lte(storedWindowState.updateDismissed, packageJson.version)
+        ? null
+        : storedWindowState.updateDismissed,
+    changelogDismissed:
+      !storedWindowState.changelogDismissed ||
+      lt(storedWindowState.changelogDismissed, packageJson.version)
+        ? null
+        : storedWindowState.changelogDismissed,
+  };
 }
 
 export function getWindowBoundsOnDisplay() {
@@ -56,7 +74,7 @@ export function saveWindowState(window: BrowserWindow) {
 }
 
 export function dismissChangelog() {
-  return store.set('windowState.changelogDismissed', true);
+  return store.set('windowState.changelogDismissed', packageJson.version);
 }
 
 export function dismissUpdate(version: string) {
