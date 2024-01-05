@@ -16,6 +16,9 @@ import {
   v1_5_1_WindowState,
   v1_6_0_ChordDisplaySettings,
   v1_6_0_KeyboardSettings,
+  v1_6_0_Settings,
+  v1_7_0_ChordDisplaySettings,
+  v1_7_0_Settings,
 } from './legacy-types';
 
 const migrations: Migrations<StoreType> = {
@@ -311,6 +314,40 @@ const migrations: Migrations<StoreType> = {
     );
 
     store.set('settings.chordDisplay', newChordDisplay);
+  },
+  '1.7.0': (store: Conf<StoreType>) => {
+    store.set('version', '1.7.0');
+    store.set('windowState.changelogDismissed', null);
+
+    const settings = store.get('settings') as unknown as v1_6_0_Settings;
+
+    const newSettings: v1_7_0_Settings = {
+      ...settings,
+      chordDisplay: settings.chordDisplay.map(
+        (chordDisplaySettings): v1_7_0_ChordDisplaySettings => ({
+          ...chordDisplaySettings,
+          detectOnRelease: true,
+          chordNotation: 'preferred',
+        })
+      ),
+      chordQuiz: {
+        ...settings.chordQuiz,
+        chordNotation: 'preferred',
+      },
+      chordDictionary: {
+        interactive: 'play',
+        hideDisabled: false,
+        filterInKey: false,
+        groupBy: 'none',
+        defaultNotation: settings.chordDisplay[0]
+          ? settings.chordDisplay[0].chordNotation
+          : 'short',
+        disabled: [],
+        aliases: [['maj', '']],
+      },
+    };
+
+    store.set('settings', newSettings);
   },
 };
 

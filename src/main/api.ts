@@ -113,7 +113,7 @@ ipcMain.on('app:window:getState', (event) => {
 
 onWindowStateChange((state?: WindowState) => {
   if (state) {
-    sendToAll('app:window:state', state);
+    sendToAll('app:window:state', getWindowState());
   }
 });
 

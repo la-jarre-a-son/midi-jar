@@ -1,3 +1,17 @@
+# 1.7.0 (2024-01-05)
+
+## Features
+- **ChordDictionary**: added a new module for displaying all available chords
+- **PianoKeyboard**: added target notes (for future use & dictionary)
+- **ChordDisplay**: detect on release option
+- **ChordDisplay**: added chord link to dictionary
+- **Layout**: added a bottom bar with key signature and latency
+
+## Fixes
+- **Notation**: adapt centering when single stave
+- **CircleOfFifths**: dominant sector not correclty detected
+
+
 # 1.6.2 (2023-12-19)
 
 ## Fixes
