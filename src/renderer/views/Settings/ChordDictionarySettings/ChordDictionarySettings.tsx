@@ -109,6 +109,7 @@ const ChordDictionarySettings: React.FC = () => {
           <List>
             {settings.chordDictionary.disabled.map((disabledChord) => (
               <ListItem
+                key={disabledChord}
                 className={cx('disabled')}
                 right={
                   <ButtonGroup>
