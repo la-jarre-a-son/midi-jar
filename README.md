@@ -1,10 +1,12 @@
-<img src="assets/icon.png" align="right" alt="MIDI Jar logo" />
+<img src="assets/icon.png" align="right" alt="MIDI Jar logo" width="192" height="192" />
 
 # [MIDI Jar](https://github.com/la-jarre-a-son/midi-jar)
 
 MIDI Jar is a tool box for musicians, learners, streamers, that want to route MIDI message between devices, and display a piano or monitor chords while playing, and integrate it on a video or on a Twitch stream with OBS.
 
-![MIDI Jar Chord Display example](assets/midi-jar-chord-display.png)
+
+
+
 
 ## Releases
 
@@ -47,6 +49,8 @@ MIDI Jar includes:
 
 ## Routing
 
+![MIDI Jar Routing Example](assets/midi-jar-routing.png)
+
 You can route MIDI between devices, or to internal and external modules of MIDI Jar, and MIDI messages will be routed when the application is running.
 
 This can be a simple alternative to replace complex softwares like **MIDI-OX** if you _just_ want to route messages from a device to another.
@@ -59,8 +63,6 @@ Windows Standard MIDI drivers are exclusive, only one software can be connected 
 
 You will be able to create multiple Virtual MIDI devices (loopbacks) and route MIDI messages to it. Plus, those virtual devices are non-exclusive, so multiple softwares can use them.
 
-![MIDI Jar Routing Example](assets/midi-jar-routing.png)
-
 ### Latency
 
 MIDI Jar may introduce latency to MIDI messages. I did my best to keep it as low as possible, in the Routing settings page you can see the latency that is introduced by your config: this is only the latency added to the existing latency, from when MIDI Jar receives a message, and forwarded it to other devices and modules.
@@ -70,6 +72,8 @@ Any other latency (due to USB, your device drivers or LoopMidi loopback) is not 
 My tests had an `average additional latency < 0.2ms` but this can vary a lot with PC configuration, routing, and CPU Usage, and some freezes could occur.
 
 ## Chord Display
+
+![MIDI Jar Chord Display example](assets/midi-jar-chord-display.png)
 
 Chord Display is a module of MIDI Jar for displaying a piano keyboard and the chords played.
 
@@ -229,13 +233,29 @@ Change chord size and placement:
 }
 ```
 
+## Chord Dictionary
+
+![MIDI Jar Chord Dictionary Example](assets/midi-jar-chord-dictionary.png)
+
+Chord Dictionary is a module of MIDI Jar for browsing the all the chords available in the software, that is a customized diectionary from [tonal](https://github.com/tonaljs/tonal).
+
+You can access it from the home view of MIDI Jar, or by clicking a chord name in a `chord-display` module.
+
+It also allows you to customize how the chords are displayed in all other modules that are using the `preferred` chord notation:
+* You can choose what chord alias to be displayed (instead of only the `long`, `short` or `symbol` flavours)
+* You can disable a chord type from being detected by the `chord-display` modules.
+
+This module can also be interactive, so you need to route your MIDI devices to the `chord-dictionary` output to let the dictionary work in two possible modes:
+* __DETECT__: browse the detected chord page automatically when playing. Notes that are not part the detected chord will be displayed in red, and correct intervals in green.
+* __PLAY__: disable automatic browsing, but still display correct and incorrect intervals towards the current displayed chord.
+
 ## Circle of Fifths
+
+![MIDI Jar Circle of Fifths Example](assets/midi-jar-circle-of-fifths.png)
 
 The Circle of Fifths is a music theory tool to help understanding and writing music.
 
 This modules let you choose easily the Key signature you are playing in, and displaying notes.
-
-![MIDI Jar Circle of Fifths Example](assets/midi-jar-circle-of-fifths.png)
 
 It will react (in green), at your choosing:
 
@@ -262,9 +282,9 @@ _NOTE: The Circle of Fifths is usually for displaying notes, not chords. But i f
 
 It enables integrating modules in an external web browser, or in an OBS Browser Source. For instance, you can integrate MIDI Jar in your Twitch stream, or load it on a different computer or phone for displaying chords while jamming, and even use it as a Desktop Wallpaper using [Lively Wallpaper](https://rocksdanister.github.io/lively/).
 
-Chord Display module has dedicated settings if you need a different rendering when using external access, and they are automatically synced when you change them.
+All MIDI Jar module can be accessed externally, and you can create as many `chord-display` modules as you want if, for instance, you want multiple keyboards, or customize their arrangement in OBS.
 
-To use it, route your MIDI devices to the overlay `chord-display` output.
+Currently, updating settings externally is not supported, but this is planned.
 
 ## Music Notation
 
@@ -279,7 +299,7 @@ You can customize it in the settings, and this will affect all modules (includin
 
 ## Chord Quiz
 
-[MIDI Jar - Chord Quiz example](https://user-images.githubusercontent.com/1231011/233844786-4f182b44-fcb8-4d24-b69d-532c6286f61e.mp4)
+![MIDI Jar Chord Quiz Example](assets/midi-jar-chord-quiz.png)
 
 You can train piano by using the Chord Quiz module.
 
@@ -312,6 +332,9 @@ If the game mode is too annoying, you can turn off the scoring, the reactions, a
 
 Hopefully in the future, this module will be able to have an "Intelligent" mode capable of generating random chord progressions with key changes.
 
+[MIDI Jar - Chord Quiz example](https://user-images.githubusercontent.com/1231011/233844786-4f182b44-fcb8-4d24-b69d-532c6286f61e.mp4)
+
+
 ## What then ?
 
 ### Build
@@ -334,6 +357,7 @@ npm run package
 - [x] Display Standard notation
 - [x] Circle of Fifths
 - [x] Chords Quiz
+- [x] Chord Dictionary
 - [ ] Tonnetz chart
 - [ ] More Keyboard themes
 - [ ] Virtual Keyboard (use pc keyboard as a MIDI device)
@@ -342,6 +366,7 @@ npm run package
 - [ ] MIDI recording (playback/backup)
 - [ ] Chromesthesia
 - [ ] Advanced Routing (split keyboard, filter, velocity/value remapping)
+- [ ] Update settings externally (HTTP/WS)
 
 ### Contribute / Bugs
 
