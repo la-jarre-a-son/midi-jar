@@ -9,13 +9,6 @@ $View_SettingsRouting_padding: $space-lg !default;
   overflow: hidden;
 }
 
-.latency {
-  padding: 0 $View_SettingsRouting_padding;
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-
 .container {
   flex-grow: 1;
   padding: 0 $View_SettingsRouting_padding;

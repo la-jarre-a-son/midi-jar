@@ -16,6 +16,7 @@ import About from 'renderer/views/Settings/About';
 import TopBar from './TopBar';
 
 import styles from './Layout.module.scss';
+import BottomBar from './BottomBar';
 
 const cx = classnames.bind(styles);
 
@@ -66,6 +67,7 @@ const Layout: React.FC = () => {
           )}
         </ModalContainer>
       </div>
+      <BottomBar />
     </div>
   );
 };

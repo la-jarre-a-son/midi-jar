@@ -6,7 +6,6 @@ import { useMidiRouting } from 'renderer/contexts/MidiRouting';
 import { Box, Toolbar, Button, StackSeparator } from '@la-jarre-a-son/ui';
 import { Icon } from 'renderer/components';
 
-import LatencyMonitor from './LatencyMonitor';
 import Graph from './Graph';
 
 import styles from './Routing.module.scss';
@@ -19,12 +18,6 @@ const Routing: React.FC = () => {
 
   return (
     <div className={cx('base')}>
-      <Toolbar elevation={2}>
-        <div className={cx('latency')}>
-          Latency:&nbsp;
-          <LatencyMonitor />
-        </div>
-      </Toolbar>
       <Box pad="md" className={cx('container')}>
         <Graph
           inputs={inputs}
