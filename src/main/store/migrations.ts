@@ -339,9 +339,7 @@ const migrations: Migrations<StoreType> = {
         hideDisabled: false,
         filterInKey: false,
         groupBy: 'none',
-        defaultNotation: settings.chordDisplay[0]
-          ? settings.chordDisplay[0].chordNotation
-          : 'short',
+        defaultNotation: 'short',
         disabled: [],
         aliases: [['maj', '']],
       },
