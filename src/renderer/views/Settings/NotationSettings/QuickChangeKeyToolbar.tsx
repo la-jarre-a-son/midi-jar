@@ -8,9 +8,9 @@ export const QuickChangeKeyToolbar: React.FC = () => {
   const { settings, updateSetting } = useSettings();
 
   return (
-    <Box elevation={2} pad="md">
-      <InputGroup block>
-        <InputContainerLabel>Key Signature</InputContainerLabel>
+    <Box elevation={2}>
+      <InputGroup as="label" block>
+        <InputContainerLabel>Key</InputContainerLabel>
         <Select
           onChange={(value: string) => updateSetting('notation.key', value)}
           value={settings.notation.key}

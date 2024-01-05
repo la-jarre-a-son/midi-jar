@@ -16,7 +16,6 @@ import ChordQuiz from './views/ChordQuiz';
 import CircleOfFifths from './views/CircleOfFifths';
 
 import settingsRoutes from './views/Settings';
-import { QuickChangeKeyToolbar } from './views/Settings/NotationSettings';
 import CircleOfFifthsSettings from './views/Settings/CircleOfFifthsSettings';
 import ChordQuizSettings from './views/Settings/ChordQuizSettings';
 
@@ -50,15 +49,7 @@ const router = createHashRouter(
           </ChordDisplay>
         }
       >
-        <Route
-          path="settings"
-          element={
-            <>
-              <QuickChangeKeyToolbar />
-              <ChordDisplayNamespaceSettings parentPath="../.." />
-            </>
-          }
-        />
+        <Route path="settings" element={<ChordDisplayNamespaceSettings parentPath="../.." />} />
       </Route>
       <Route
         path="circle-of-fifths"
@@ -74,15 +65,7 @@ const router = createHashRouter(
           </MidiMessageManagerProvider>
         }
       >
-        <Route
-          path="settings"
-          element={
-            <>
-              <QuickChangeKeyToolbar />
-              <CircleOfFifthsSettings />
-            </>
-          }
-        />
+        <Route path="settings" element={<CircleOfFifthsSettings />} />
       </Route>
       <Route
         path="quiz"
@@ -94,15 +77,7 @@ const router = createHashRouter(
           </MidiMessageManagerProvider>
         }
       >
-        <Route
-          path="settings"
-          element={
-            <>
-              <QuickChangeKeyToolbar />
-              <ChordQuizSettings />
-            </>
-          }
-        />
+        <Route path="settings" element={<ChordQuizSettings />} />
       </Route>
       <Route
         path="chord-dictionary"
