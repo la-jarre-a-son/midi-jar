@@ -12,6 +12,7 @@ export * from './InputNumber';
 
 export * from './ChordIntervals';
 export * from './ChordName';
+export * from './ChordNameLink';
 export * from './CircleFifths';
 export * from './Notation';
 export * from './PianoKeyboard';
