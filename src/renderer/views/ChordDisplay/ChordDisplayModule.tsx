@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 
 import { useModuleSettings, useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
-import { ChordName, Notation, PianoKeyboard, ChordIntervals } from 'renderer/components';
+import { Notation, PianoKeyboard, ChordIntervals, ChordNameLink } from 'renderer/components';
 
 import styles from './ChordDisplay.module.scss';
 
@@ -51,20 +51,6 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
 
   return (
     <div id="chordDisplay" className={cx('base')}>
-      {displayAltChords && (
-        <div id="alternativeChords" className={cx('alternativeChords')}>
-          {chords.map((chord, index) =>
-            index > 0 ? (
-              <ChordName
-                key={index}
-                chord={chord}
-                notation={chordNotation}
-                highlightAlterations={highlightAlterations}
-              />
-            ) : null
-          )}
-        </div>
-      )}
       <div id="container" className={cx('container')}>
         {displayNotation && (
           <Notation
@@ -79,7 +65,7 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
         <div id="display" className={cx('display')}>
           {displayChord && (
             <div id="chord" className={cx('chord', { 'chord--withNotation': displayNotation })}>
-              <ChordName
+              <ChordNameLink
                 chord={chords[0]}
                 notation={chordNotation}
                 highlightAlterations={highlightAlterations}
@@ -98,6 +84,20 @@ const ChordDisplayModule: React.FC<Props> = ({ moduleId }) => {
                 pitchClasses={pitchClasses}
                 tonic={chords[0]?.tonic}
               />
+            </div>
+          )}
+          {displayAltChords && (
+            <div id="alternativeChords" className={cx('alternativeChords')}>
+              {chords.map((chord, index) =>
+                index > 0 ? (
+                  <ChordNameLink
+                    key={index}
+                    chord={chord}
+                    notation={chordNotation}
+                    highlightAlterations={highlightAlterations}
+                  />
+                ) : null
+              )}
             </div>
           )}
         </div>

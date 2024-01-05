@@ -38,7 +38,7 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
 
 .display {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -68,7 +68,7 @@ $View_ChordDisplay_textShadow: 0 0.05em 0.1em rgba($color-black, 0.6) !default;
 
 .alternativeChords {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   right: 0;
   padding: 1vw;
