@@ -20,7 +20,7 @@ jobs:
       - name: Install Node.js and NPM
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
           cache: npm
           registry-url: 'https://npm.pkg.github.com'
           scope: '@la-jarre-a-son'

@@ -30,7 +30,7 @@ const ChordDisplayAddModal: React.FC<Props> = ({ open, onCancel, onSave }) => {
   };
 
   return (
-    <Modal open={open} onClose={onCancel} size="sm">
+    <Modal open={open} onClose={onCancel} size="sm" disableAutoFocus>
       <ModalHeader title="New module" />
       <ModalContent>
         <FormField label="Name" error={errors.name}>
