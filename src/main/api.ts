@@ -181,6 +181,13 @@ midi.manager.addListener(
   }
 );
 
+midi.manager.addListener(
+  'wireChannel',
+  (input: string, output: string, type: 'physical' | 'internal', channel: number) => {
+    sendToAll('midi:wireChannel', input, output, type, channel);
+  }
+);
+
 midi.manager.addListener('activity', (latency: number, device: string) => {
   sendToAll(`midi:activity`, latency, device);
 });

@@ -46,6 +46,7 @@ window.midi = {
   onOutputs: jest.fn().mockReturnValue(jest.fn()),
   getWires: jest.fn(),
   onWires: jest.fn().mockReturnValue(jest.fn()),
+  onWireChannel: jest.fn().mockReturnValue(jest.fn()),
   onLatency: jest.fn().mockReturnValue(jest.fn()),
   onMidiMessage: jest.fn().mockReturnValue(jest.fn()),
 };

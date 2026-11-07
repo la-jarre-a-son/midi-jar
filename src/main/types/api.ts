@@ -18,9 +18,14 @@ export type ApiMidiRoute = {
   output: string;
   type: 'physical' | 'internal';
   enabled: boolean;
+  mapChannel2To1?: boolean;
+  channelMap?: { from: number; to: number };
+  channelMapPosition?: { x: number; y: number };
+  wireOffset?: number;
 };
 
 export type ApiMidiWire = {
   route: ApiMidiRoute;
   connected: boolean;
+  currentChannel?: number | null;
 };

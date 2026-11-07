@@ -10,3 +10,16 @@
     display: none;
   }
 }
+
+.zoomHint {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  z-index: 20;
+  pointer-events: none;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+}

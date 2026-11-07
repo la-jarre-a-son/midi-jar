@@ -14,22 +14,46 @@ const getEdgeId = (input: string, output: string, type: string) =>
 export const mapDevicesToNodes = (
   inputs: ApiMidiInput[],
   outputs: ApiMidiOutput[],
-  viewportWidth: number
+  viewportWidth: number,
+  wires: ApiMidiWire[] = []
 ): Node[] => {
+  // Connected ports first; preserve the original device order within each group.
+  const connectedInputs = new Set(wires.map((wire) => wire.route.input));
+  const connectedOutputs = new Set(
+    wires.map((wire) => `${wire.route.type}:${wire.route.output}`)
+  );
+
+  const orderedInputs = inputs
+    .map((input, index) => ({ input, index }))
+    .sort(
+      (a, b) =>
+        Number(connectedInputs.has(b.input.name)) -
+          Number(connectedInputs.has(a.input.name)) ||
+        a.index - b.index
+    )
+    .map(({ input }) => input);
+
+  const orderedOutputs = outputs
+    .map((output, index) => ({ output, index }))
+    .sort(
+      (a, b) =>
+        Number(connectedOutputs.has(`${b.output.type}:${b.output.name}`)) -
+          Number(connectedOutputs.has(`${a.output.type}:${a.output.name}`)) ||
+        a.index - b.index
+    )
+    .map(({ output }) => output);
+
   return [
-    ...inputs.map((input, index) => ({
+    ...orderedInputs.map((input, index) => ({
       id: getNodeInputId(input.name),
       type: 'midiInput',
       data: { label: input.name, input },
-      position: {
-        x: 0,
-        y: NODE_VERTICAL_SPACING + index * (NODES_HEIGHT + NODE_VERTICAL_SPACING),
-      },
+      position: { x: 0, y: NODE_VERTICAL_SPACING + index * (NODES_HEIGHT + NODE_VERTICAL_SPACING) },
       width: NODES_WIDTH,
       height: NODES_HEIGHT,
       style: { width: NODES_WIDTH, height: NODES_HEIGHT },
     })),
-    ...outputs.map((output, index) => ({
+    ...orderedOutputs.map((output, index) => ({
       id: getNodeOutputId(output.type, output.name),
       type: 'midiOutput',
       targetPosition: Position.Left,
@@ -47,12 +71,13 @@ export const mapDevicesToNodes = (
 
 export const mapWiresToEdges = (
   wires: ApiMidiWire[],
-  onDelete: (wire: ApiMidiWire) => void
+  onDelete: (wire: ApiMidiWire) => void,
+  onToggleChannelMap: (wire: ApiMidiWire) => void
 ): Edge[] =>
   wires.map((wire) => ({
     id: getEdgeId(wire.route.input, wire.route.output, wire.route.type),
     type: 'wire',
     source: getNodeInputId(wire.route.input),
     target: getNodeOutputId(wire.route.type, wire.route.output),
-    data: { onDelete, wire },
+    data: { onDelete, onToggleChannelMap, wire },
   }));

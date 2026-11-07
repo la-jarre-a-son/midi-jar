@@ -1,6 +1,6 @@
 import makeDebug from 'debug';
 import { EventEmitter } from 'events';
-import midi from '@julusian/midi';
+import { Input, Output } from '@julusian/midi';
 
 import { MidiMessage } from '../types/Midi';
 import { InternalOutput } from './InternalOutput';
@@ -14,8 +14,8 @@ import { getModuleOutputs, sortOutputsFn } from './utils';
 
 const debug = makeDebug('app:midi');
 
-const midiIn = new midi.Input();
-const midiOut = new midi.Output();
+const midiIn = new Input();
+const midiOut = new Output();
 
 const IGNORE_RTMIDI_REGEX = /RtMidi/i;
 
@@ -170,6 +170,15 @@ export class MidiDeviceManager extends EventEmitter {
 
   routeMidi(routes: MidiRoute[]) {
     const previousWires = this.wires;
+    // Routing changes rebuild MidiWire instances. Preserve the last observed
+    // channel for connections that remain, otherwise their badges briefly
+    // become empty until another MIDI message arrives.
+    const previousChannels = new Map(
+      previousWires.map((wire) => [
+        `${wire.route.input}\u0000${wire.route.type}\u0000${wire.route.output}`,
+        wire.currentChannel,
+      ])
+    );
 
     this.wires = [];
     for (let r = 0; r < routes.length; r += 1) {
@@ -178,6 +187,11 @@ export class MidiDeviceManager extends EventEmitter {
         const input = this.getOrCreateInput(route.input);
         const output = this.getOrCreateOutput(route.output, route.type);
         const wire = new MidiWire(routes[r]);
+        const wireKey = `${wire.route.input}\u0000${wire.route.type}\u0000${wire.route.output}`;
+        wire.currentChannel = previousChannels.get(wireKey) ?? null;
+        wire.addListener('channel', (channel: number) => {
+          this.emit('wireChannel', wire.route.input, wire.route.output, wire.route.type, channel);
+        });
         wire.plug(input, output);
         this.wires.push(wire);
       }

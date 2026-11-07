@@ -1,0 +1,56 @@
+@import 'tokens';
+
+$Button_transition: 0.3s ease !default;
+
+:global(.react-flow__edge.react-flow__edge-wire.inactive) {
+  pointer-events: all;
+}
+
+:global(.react-flow__edge-path).path {
+  stroke-width: 2;
+}
+
+.container,
+.mapContainer {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button,
+.mapButton {
+  appearance: none;
+  height: 22px;
+  background: $color-neutral-normal;
+  border: none;
+  color: $color-white;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 8px;
+  line-height: 1;
+  z-index: 10;
+  transition: all $Button_transition;
+
+  &:hover {
+    background-color: $color-warning-normal;
+    box-shadow: 0 0 6px 2px rgba($color-warning-normal, 0.4);
+  }
+}
+
+.button {
+  width: 22px;
+}
+
+.mapButton {
+  width: 34px;
+  border-radius: 11px;
+  font-size: 9px;
+  background: $color-neutral-normal;
+
+  &.active {
+    background: #39834a;
+  }
+}

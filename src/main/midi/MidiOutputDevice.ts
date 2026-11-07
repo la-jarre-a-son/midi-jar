@@ -1,5 +1,5 @@
 import makeDebug from 'debug';
-import midi, { Output } from '@julusian/midi';
+import { Output } from '@julusian/midi';
 
 import { MidiMessageHandler, MidiMessage } from '../types/Midi';
 import { ApiMidiOutput } from '../types/api';
@@ -24,7 +24,7 @@ export class MidiOutputDevice {
     this.port = null;
     this.connected = connected;
     this.error = false;
-    this.output = new midi.Output();
+    this.output = new Output();
     this.handlers = [];
   }
 
@@ -54,7 +54,10 @@ export class MidiOutputDevice {
   }
 
   send(message: MidiMessage, timestamp: number, device: string) {
-    this.output.sendMessage(message);
+    // @julusian/midi's declaration only accepts a 3-byte tuple, while MIDI
+    // messages may legitimately be 2 bytes (or longer). Keep the original
+    // byte array unchanged and narrow only at this library type boundary.
+    this.output.sendMessage(message as unknown as [number, number, number]);
     process.nextTick(() => {
       for (let i = 0; i < this.handlers.length; i += 1) {
         this.handlers[i](message, timestamp, this.name);

@@ -1,6 +1,6 @@
 import makeDebug from 'debug';
 import { EventEmitter } from 'events';
-import midi, { Input } from '@julusian/midi';
+import { Input } from '@julusian/midi';
 
 import { ApiMidiInput } from '../types/api';
 import { MidiMessageHandler, MidiMessage } from '../types/Midi';
@@ -26,10 +26,13 @@ export class MidiInputDevice extends EventEmitter {
     this.connected = connected;
     this.error = false;
     this.port = null;
-    this.input = new midi.Input();
+    this.input = new Input();
     this.handlers = [];
 
-    this.input.on('message', this.onMessage.bind(this));
+    // @julusian/midi Input extends Node's EventEmitter at runtime. Cast here
+    // because the package's declaration surface does not expose inherited
+    // EventEmitter methods consistently under this project's TS resolution.
+    (this.input as unknown as EventEmitter).on('message', this.onMessage.bind(this));
     this.input.ignoreTypes(false, false, false);
   }
 

@@ -1,4 +1,6 @@
+/* eslint-disable no-bitwise -- MIDI status bytes require bit masks. */
 import makeDebug from 'debug';
+import { EventEmitter } from 'events';
 
 import { MidiMessage } from '../types/Midi';
 import { ApiMidiWire } from '../types/api';
@@ -9,7 +11,7 @@ import { MidiOutput } from './MidiOutput';
 
 const debug = makeDebug('app:midi:MidiWire');
 
-export class MidiWire {
+export class MidiWire extends EventEmitter {
   route: MidiRoute;
 
   connected = false;
@@ -18,7 +20,10 @@ export class MidiWire {
 
   output: MidiOutput | null = null;
 
+  currentChannel: number | null = null;
+
   constructor(route: MidiRoute) {
+    super();
     this.route = route;
 
     this.send = this.send.bind(this);
@@ -52,9 +57,35 @@ export class MidiWire {
   }
 
   send(message: MidiMessage, timestamp: number, device: string) {
-    if (this.output) {
-      this.output.send(message, timestamp, device);
+    const status = Number(message[0]) & 0xff;
+
+    // Only 0x80-0xEF are MIDI Channel Voice status bytes.
+    // System Common, SysEx and System Real-Time messages have no channel nibble.
+    if (status >= 0x80 && status <= 0xef) {
+      const nextChannel = (status & 0x0f) + 1;
+      if (nextChannel !== this.currentChannel) {
+        this.currentChannel = nextChannel;
+        this.emit('channel', this.currentChannel);
+      }
     }
+
+    if (!this.output) return;
+
+    // Support the generic channel map and the legacy CH2 -> CH1 setting.
+    const channelMap =
+      this.route.channelMap || (this.route.mapChannel2To1 ? { from: 2, to: 1 } : undefined);
+
+    if (channelMap && status >= 0x80 && status <= 0xef && (status & 0x0f) === channelMap.from - 1) {
+      // Preserve the original MIDI message length (e.g. Program Change is 2 bytes).
+      const outgoing: MidiMessage = [
+        (status & 0xf0) | ((channelMap.to - 1) & 0x0f),
+        ...message.slice(1),
+      ];
+      this.output.send(outgoing, timestamp, device);
+      return;
+    }
+
+    this.output.send(message, timestamp, device);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -63,7 +94,11 @@ export class MidiWire {
   }
 
   toApi(): ApiMidiWire {
-    return { route: this.route.toApi(), connected: this.connected };
+    return {
+      route: this.route.toApi(),
+      connected: this.connected,
+      currentChannel: this.currentChannel,
+    };
   }
 }
 

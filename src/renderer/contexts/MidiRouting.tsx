@@ -27,7 +27,19 @@ type WiresChangedAction = {
   value: ApiMidiWire[];
 };
 
-type Action = InputsChangedAction | OutputsChangedAction | WiresChangedAction;
+type WireChannelChangedAction = {
+  type: 'WIRE_CHANNEL_CHANGED';
+  input: string;
+  output: string;
+  outputType: 'physical' | 'internal';
+  channel: number;
+};
+
+type Action =
+  | InputsChangedAction
+  | OutputsChangedAction
+  | WiresChangedAction
+  | WireChannelChangedAction;
 
 // An interface for our state
 interface State {
@@ -58,11 +70,17 @@ function reducer(state: State, action: Action): State {
     }
     case 'WIRES_CHANGED': {
       const wires = action.value;
-
-      return {
-        ...state,
-        wires,
-      };
+      return { ...state, wires };
+    }
+    case 'WIRE_CHANNEL_CHANGED': {
+      const wires = state.wires.map((wire) =>
+        wire.route.input === action.input &&
+        wire.route.output === action.output &&
+        wire.route.type === action.outputType
+          ? { ...wire, currentChannel: action.channel }
+          : wire
+      );
+      return { ...state, wires };
     }
 
     default:
@@ -116,11 +134,15 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
     const offInputs = window.midi.onInputs(onMIDIInputs);
     const offOutputs = window.midi.onOutputs(onMIDIOutputs);
     const offWires = window.midi.onWires(onMIDIWires);
+    const offWireChannel = window.midi.onWireChannel((input, output, outputType, channel) => {
+      dispatch({ type: 'WIRE_CHANNEL_CHANGED', input, output, outputType, channel });
+    });
 
     return () => {
       offInputs();
       offOutputs();
       offWires();
+      offWireChannel();
     };
   }, [onMIDIInputs, onMIDIOutputs, onMIDIWires]);
 
