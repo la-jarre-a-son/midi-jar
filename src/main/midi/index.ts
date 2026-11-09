@@ -39,17 +39,31 @@ function routeMidi() {
   manager.routeMidi(routes);
 }
 
+export function setRoutes(apiRoutes: ApiMidiRoute[]) {
+  const routes = apiRoutes.map((route) => MidiRoute.fromApi(route));
+  setMidiRoutes(routes);
+  debug('Set routes', routes);
+  routeMidi();
+}
+
 export function addRoute(apiRoute: ApiMidiRoute) {
   const route = MidiRoute.fromApi(apiRoute);
   debug('Adding route', route);
 
   const routes = getMidiRoutes();
 
-  const existingRoute = routes.find((r) => r.isSame(route));
+  const existingIndex = routes.findIndex((r) => r.isSame(route));
 
-  if (!existingRoute) {
+  if (existingIndex === -1) {
     setMidiRoutes([...routes, route]);
     debug('Added route', route);
+  } else {
+    // Treat addRoute as an upsert. Replacing an existing route in place avoids
+    // a delete/add gap that briefly tears down the MIDI wire during UI edits.
+    const nextRoutes = [...routes];
+    nextRoutes[existingIndex] = route;
+    setMidiRoutes(nextRoutes);
+    debug('Updated route', route);
   }
   routeMidi();
 }

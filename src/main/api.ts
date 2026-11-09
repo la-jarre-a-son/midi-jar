@@ -143,6 +143,10 @@ ipcMain.on('midi:addRoute', (_event, route: ApiMidiRoute) => {
   midi.addRoute(route);
 });
 
+ipcMain.on('midi:setRoutes', (_event, routes: ApiMidiRoute[]) => {
+  midi.setRoutes(routes);
+});
+
 ipcMain.on('midi:deleteRoute', (_event, route: ApiMidiRoute) => {
   midi.deleteRoute(route);
 });
@@ -178,6 +182,13 @@ midi.manager.addListener(
   (namespace: string, message: MidiMessage, timestamp: number, device: string) => {
     sendToAll(`midi:message:*`, message, timestamp, device);
     sendToAll(`midi:message:${namespace}`, message, timestamp, device);
+  }
+);
+
+midi.manager.addListener(
+  'wireChannel',
+  (input: string, output: string, type: 'physical' | 'internal', channel: number) => {
+    sendToAll('midi:wireChannel', input, output, type, channel);
   }
 );
 

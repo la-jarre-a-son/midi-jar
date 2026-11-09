@@ -79,6 +79,7 @@ export type ChordDictionarySettings = {
 export type NotationSettings = {
   key: string;
   accidentals: 'flat' | 'sharp';
+  noteNaming: 'auto' | 'sharp' | 'flat';
   staffClef: 'both' | 'bass' | 'treble';
   staffTranspose: number;
 };

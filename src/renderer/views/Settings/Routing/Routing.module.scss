@@ -23,3 +23,18 @@ $View_SettingsRouting_padding: $space-lg !default;
     display: none;
   }
 }
+
+.presetLabel { font-size: 12px; white-space: nowrap; }
+.presetSelect { min-width: 130px; max-width: 190px; height: 30px; padding: 0 6px; border: 1px solid #999; border-radius: 4px; background: white; color: #222; }
+
+.presetEditor {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.presetNameInput {
+  min-width: 150px;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 4px 8px;
+}

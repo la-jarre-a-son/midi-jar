@@ -8,6 +8,7 @@ interface MidiRoutingContextInterface {
   wires: ApiMidiWire[];
   refreshDevices: () => void;
   clearRoutes: () => void;
+  setRoutes: (routes: ApiMidiRoute[]) => void;
   addRoute: (route: ApiMidiRoute) => void;
   deleteRoute: (route: ApiMidiRoute) => void;
 }
@@ -27,7 +28,19 @@ type WiresChangedAction = {
   value: ApiMidiWire[];
 };
 
-type Action = InputsChangedAction | OutputsChangedAction | WiresChangedAction;
+type WireChannelChangedAction = {
+  type: 'WIRE_CHANNEL_CHANGED';
+  input: string;
+  output: string;
+  outputType: 'physical' | 'internal';
+  channel: number;
+};
+
+type Action =
+  | InputsChangedAction
+  | OutputsChangedAction
+  | WiresChangedAction
+  | WireChannelChangedAction;
 
 // An interface for our state
 interface State {
@@ -58,11 +71,17 @@ function reducer(state: State, action: Action): State {
     }
     case 'WIRES_CHANGED': {
       const wires = action.value;
-
-      return {
-        ...state,
-        wires,
-      };
+      return { ...state, wires };
+    }
+    case 'WIRE_CHANNEL_CHANGED': {
+      const wires = state.wires.map((wire) =>
+        wire.route.input === action.input &&
+        wire.route.output === action.output &&
+        wire.route.type === action.outputType
+          ? { ...wire, currentChannel: action.channel }
+          : wire
+      );
+      return { ...state, wires };
     }
 
     default:
@@ -106,6 +125,7 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
 
   const refreshDevices = useCallback(() => window.midi.refreshDevices(), []);
   const clearRoutes = useCallback(() => window.midi.clearRoutes(), []);
+  const setRoutes = useCallback((routes: ApiMidiRoute[]) => window.midi.setRoutes(routes), []);
   const addRoute = useCallback((route: ApiMidiRoute) => window.midi.addRoute(route), []);
   const deleteRoute = useCallback((route: ApiMidiRoute) => window.midi.deleteRoute(route), []);
 
@@ -116,11 +136,15 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
     const offInputs = window.midi.onInputs(onMIDIInputs);
     const offOutputs = window.midi.onOutputs(onMIDIOutputs);
     const offWires = window.midi.onWires(onMIDIWires);
+    const offWireChannel = window.midi.onWireChannel((input, output, outputType, channel) => {
+      dispatch({ type: 'WIRE_CHANNEL_CHANGED', input, output, outputType, channel });
+    });
 
     return () => {
       offInputs();
       offOutputs();
       offWires();
+      offWireChannel();
     };
   }, [onMIDIInputs, onMIDIOutputs, onMIDIWires]);
 
@@ -129,10 +153,11 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
       ...state,
       refreshDevices,
       clearRoutes,
+      setRoutes,
       addRoute,
       deleteRoute,
     }),
-    [state, refreshDevices, addRoute, deleteRoute, clearRoutes]
+    [state, refreshDevices, addRoute, deleteRoute, clearRoutes, setRoutes]
   );
 
   return <MidiRoutingContext.Provider value={value}>{children}</MidiRoutingContext.Provider>;

@@ -1,4 +1,11 @@
 export const fields = {
+  noteNaming: {
+    choices: [
+      { value: 'auto', label: 'Auto (key signature)' },
+      { value: 'sharp', label: 'Sharps (C#, D#, ...)' },
+      { value: 'flat', label: 'Flats (Db, Eb, ...)' },
+    ],
+  },
   accidentals: {
     choices: [
       {

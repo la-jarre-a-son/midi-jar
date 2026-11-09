@@ -11,6 +11,17 @@ const NotationSettings: React.FC = () => {
 
   return (
     <Container size="md">
+      <FormControlLabel
+        label="Note Naming"
+        hint="Choose how note names are spelled throughout the application"
+        reverse
+      >
+        <Select
+          options={fields.noteNaming.choices}
+          onChange={(value) => updateSetting('notation.noteNaming', value)}
+          value={settings.notation.noteNaming}
+        />
+      </FormControlLabel>
       <FormControlLabel label="Key Signature" reverse>
         <InputNote
           onChange={(value: string) => updateSetting('notation.key', value)}

@@ -7,8 +7,8 @@ import { getURLHash } from './util';
 
 import packageJson from '../../package.json';
 
-export const DEFAULT_WINDOW_WIDTH = 1024;
-export const DEFAULT_WINDOW_HEIGHT = 768;
+export const DEFAULT_WINDOW_WIDTH = 1280;
+export const DEFAULT_WINDOW_HEIGHT = 900;
 export const DEFAULT_WINDOW_MIN_WIDTH = 480;
 export const DEFAULT_WINDOW_MIN_HEIGHT = 260;
 

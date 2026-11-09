@@ -5,6 +5,11 @@ export interface MidiRouteRaw {
   output: string;
   type: 'physical' | 'internal';
   enabled: boolean;
+  // When true, MIDI channel 2 is rewritten to channel 1 on this route.
+  mapChannel2To1?: boolean;
+  channelMap?: { from: number; to: number };
+  channelMapPosition?: { x: number; y: number };
+  wireOffset?: number;
 }
 
 export class MidiRoute {
@@ -16,11 +21,23 @@ export class MidiRoute {
 
   enabled: boolean;
 
+  mapChannel2To1: boolean;
+
+  channelMap?: { from: number; to: number };
+
+  channelMapPosition?: { x: number; y: number };
+
+  wireOffset?: number;
+
   constructor(raw: MidiRouteRaw) {
     this.input = raw.input;
     this.output = raw.output;
     this.type = raw.type;
     this.enabled = !!raw.enabled;
+    this.mapChannel2To1 = !!raw.mapChannel2To1;
+    this.channelMap = raw.channelMap || (raw.mapChannel2To1 ? { from: 2, to: 1 } : undefined);
+    this.channelMapPosition = raw.channelMapPosition;
+    this.wireOffset = raw.wireOffset;
   }
 
   isSame(route: MidiRoute) {
@@ -41,6 +58,10 @@ export class MidiRoute {
       output: this.output,
       type: this.type,
       enabled: this.enabled,
+      mapChannel2To1: this.mapChannel2To1,
+      channelMap: this.channelMap,
+      channelMapPosition: this.channelMapPosition,
+      wireOffset: this.wireOffset,
     };
   }
 
@@ -50,6 +71,10 @@ export class MidiRoute {
       output: this.output,
       type: this.type,
       enabled: this.enabled,
+      mapChannel2To1: this.mapChannel2To1,
+      channelMap: this.channelMap,
+      channelMapPosition: this.channelMapPosition,
+      wireOffset: this.wireOffset,
     };
   }
 }

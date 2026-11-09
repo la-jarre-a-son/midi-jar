@@ -336,6 +336,14 @@
                 "key": {
                     "type": "string"
                 },
+                "noteNaming": {
+                    "enum": [
+                        "auto",
+                        "flat",
+                        "sharp"
+                    ],
+                    "type": "string"
+                },
                 "staffClef": {
                     "enum": [
                         "bass",

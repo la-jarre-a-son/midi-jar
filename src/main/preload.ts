@@ -62,6 +62,7 @@ export const MidiApi = {
   refreshDevices: () => ipcRenderer.send('midi:refreshDevices'),
   clearRoutes: () => ipcRenderer.send('midi:clearRoutes'),
   addRoute: (route: ApiMidiRoute) => ipcRenderer.send('midi:addRoute', route),
+  setRoutes: (routes: ApiMidiRoute[]) => ipcRenderer.send('midi:setRoutes', routes),
   deleteRoute: (route: ApiMidiRoute) => ipcRenderer.send('midi:deleteRoute', route),
   getInputs: () => ipcRenderer.send('midi:getInputs'),
   onInputs: (callback: (inputs: ApiMidiInput[]) => void) =>
@@ -71,6 +72,14 @@ export const MidiApi = {
     registerListener('midi:outputs')(callback),
   getWires: () => ipcRenderer.send('midi:getWires'),
   onWires: (callback: (outputs: ApiMidiWire[]) => void) => registerListener('midi:wires')(callback),
+  onWireChannel: (
+    callback: (
+      input: string,
+      output: string,
+      type: 'physical' | 'internal',
+      channel: number
+    ) => void
+  ) => registerListener('midi:wireChannel')(callback),
   onLatency: (callback: (latency: number, device: string) => void) =>
     registerListener('midi:activity')(callback),
   onMidiMessage: (

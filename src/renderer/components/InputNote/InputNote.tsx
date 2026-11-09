@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 
 import { Note } from 'tonal';
 import { Input, Button, InputGroup } from '@la-jarre-a-son/ui';
+
+import { getPreferredNoteName } from 'renderer/helpers/note';
 import { MidiLearn } from '../MidiLearn';
 
 import { InputNoteProps } from './types';
@@ -66,9 +68,9 @@ export const InputNote: React.FC<InputNoteProps> = ({
       const inputNote = Note.fromMidi(midi);
       const note = Note.get(inputNote);
       if (withOctave) {
-        onChange(note.name);
+        onChange(getPreferredNoteName(note.name));
       } else {
-        onChange(note.pc);
+        onChange(getPreferredNoteName(note.pc));
       }
       learningPromise.current = Promise.resolve();
       setLearning(false);
@@ -80,7 +82,7 @@ export const InputNote: React.FC<InputNoteProps> = ({
     <InputGroup>
       <Input
         className={cx('base', className)}
-        value={value ?? ''}
+        value={getPreferredNoteName(value?.toString() || '')}
         onChange={onChange}
         onKeyPress={handleKeyPress}
         type="text"

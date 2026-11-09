@@ -38,6 +38,7 @@ window.app = {
 window.midi = {
   refreshDevices: jest.fn(),
   clearRoutes: jest.fn(),
+  setRoutes: jest.fn(),
   addRoute: jest.fn(),
   deleteRoute: jest.fn(),
   getInputs: jest.fn(),
@@ -46,6 +47,7 @@ window.midi = {
   onOutputs: jest.fn().mockReturnValue(jest.fn()),
   getWires: jest.fn(),
   onWires: jest.fn().mockReturnValue(jest.fn()),
+  onWireChannel: jest.fn().mockReturnValue(jest.fn()),
   onLatency: jest.fn().mockReturnValue(jest.fn()),
   onMidiMessage: jest.fn().mockReturnValue(jest.fn()),
 };

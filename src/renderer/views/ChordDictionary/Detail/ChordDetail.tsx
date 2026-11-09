@@ -19,6 +19,7 @@ import { defaultKeyboardSettings } from 'main/store/defaults';
 
 import { useSettings } from 'renderer/contexts/Settings';
 import { ALIAS_NOTATION, getChordDegrees, getNoteInKeySignature } from 'renderer/helpers';
+import { formatSharpsFlats, getPreferredNoteName } from 'renderer/helpers/note';
 import {
   ChordIntervals,
   ChordName,
@@ -259,8 +260,14 @@ const ChordDetail: React.FC = () => {
               {alternativeChords.map((altChord) => (
                 <ListItem
                   key={altChord.symbol}
-                  interactive
-                  onClick={() => goToChordDetail(`${altChord.tonic + altChord.aliases[0]}`)}
+                  interactive={!!altChord.tonic}
+                  onClick={() => {
+                    if (altChord.tonic) {
+                      goToChordDetail(
+                        `${getPreferredNoteName(altChord.tonic)}${altChord.aliases[0]}`
+                      );
+                    }
+                  }}
                 >
                   <ChordName chord={altChord} />
                 </ListItem>
@@ -284,7 +291,9 @@ const ChordDetail: React.FC = () => {
             );
             const altChordName =
               altChord && altChord.tonic
-                ? getNoteInKeySignature(altChord.tonic, keySignature.notes) + altChord.aliases[0]
+                ? `${formatSharpsFlats(
+                    getNoteInKeySignature(altChord.tonic, keySignature.notes)
+                  )}${altChord.aliases[0]}`
                 : '';
 
             return (
@@ -292,12 +301,14 @@ const ChordDetail: React.FC = () => {
                 <div className={cx('inversionInfo')}>
                   <ChordName className={cx('inversionChord')} chord={slashChord} />
                   <div className={cx('inversionInterval')}>inversion on {interval}</div>
-                  {altChord && (
+                  {altChord && altChord.tonic && (
                     <div className={cx('inversionAltChord')}>
                       {'see also '}
                       <Link
                         as={NavLink}
-                        to={`../${encodeURIComponent(altChord.tonic + altChord.aliases[0])}`}
+                        to={`../${encodeURIComponent(
+                          getPreferredNoteName(altChord.tonic) + altChord.aliases[0]
+                        )}`}
                       >
                         {altChordName}
                       </Link>
@@ -328,19 +339,27 @@ const ChordDetail: React.FC = () => {
           <section className={cx('column')}>
             <h2 className={cx('title')}>Simplified</h2>
             <div className={cx('chordSet')}>
-              {subsetChords.map((c, index) => (
-                <NavButton
-                  key={index}
-                  className={cx('chordButton')}
-                  intent="primary"
-                  size="sm"
-                  hoverIntent
-                  rounded
-                  to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
-                >
-                  <ChordName chord={c} />
-                </NavButton>
-              ))}
+              {subsetChords.map((c, index) =>
+                c.tonic ? (
+                  <NavButton
+                    key={index}
+                    className={cx('chordButton')}
+                    intent="primary"
+                    size="sm"
+                    hoverIntent
+                    rounded
+                    to={`../${encodeURIComponent(
+                      getPreferredNoteName(c.tonic) + c.aliases[0]
+                    )}`}
+                  >
+                    <ChordName chord={c} />
+                  </NavButton>
+                ) : (
+                  <div key={index} className={cx('chordButton')}>
+                    <ChordName chord={c} />
+                  </div>
+                )
+              )}
             </div>
           </section>
         )}
@@ -348,19 +367,27 @@ const ChordDetail: React.FC = () => {
           <section className={cx('column')}>
             <h2 className={cx('title')}>Extended</h2>
             <div className={cx('chordSet')}>
-              {supersetChords.map((c, index) => (
-                <NavButton
-                  key={index}
-                  className={cx('chordButton')}
-                  intent="primary"
-                  size="sm"
-                  hoverIntent
-                  rounded
-                  to={`../${encodeURIComponent(c.tonic + c.aliases[0])}`}
-                >
-                  <ChordName chord={c} />
-                </NavButton>
-              ))}
+              {supersetChords.map((c, index) =>
+                c.tonic ? (
+                  <NavButton
+                    key={index}
+                    className={cx('chordButton')}
+                    intent="primary"
+                    size="sm"
+                    hoverIntent
+                    rounded
+                    to={`../${encodeURIComponent(
+                      getPreferredNoteName(c.tonic) + c.aliases[0]
+                    )}`}
+                  >
+                    <ChordName chord={c} />
+                  </NavButton>
+                ) : (
+                  <div key={index} className={cx('chordButton')}>
+                    <ChordName chord={c} />
+                  </div>
+                )
+              )}
             </div>
           </section>
         )}
