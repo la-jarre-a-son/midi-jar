@@ -1,3 +1,27 @@
+# Unreleased
+
+## Features
+
+- **MIDI Routing: Flexible Connections**: Added a flexible MIDI routing editor that allows users to connect MIDI input and output devices in different combinations. Channel mapping is also supported, making it possible to remap incoming MIDI channels to different output channels.
+
+- **MIDI Routing: Improved Visual Layout**: Improved the visual presentation of MIDI connections using a graph-based interface. Users can zoom in and out to inspect the routing layout in more detail, and automatically arrange nodes to keep connections organized. These features make it easier to understand and manage complex routing configurations, even when many devices and connections are involved. Zoom can be controlled using the mouse or keyboard shortcuts: `Ctrl + +` to zoom in and `Ctrl + -` to zoom out.
+
+- **MIDI Routing: Save and Load Presets**: Added the ability to save and load MIDI routing configurations as presets. Complete routing setups, including device connections and channel mappings, can be saved for different purposes or equipment configurations. Saved presets can be loaded at any time, making it easy to switch between different routing setups without having to configure all connections again.
+
+- **Note Naming: Display Preferences**: Added a global preference for choosing how musical note names are displayed. Users can select from three options:
+  - **Auto**: Automatically chooses sharp or flat notation based on the current key signature. When neither spelling is clearly preferred, flat notation is used by default.
+  - **Sharps**: Always uses sharp notation (C#, D#, F#, G#, A#).
+  - **Flats**: Always uses flat notation (Db, Eb, Gb, Ab, Bb).
+
+  This setting provides consistent note naming across chord names, the Chord Dictionary, note input fields, and music notation.
+
+## Fixes
+
+- **Chord Dictionary**: Improved handling of chords with no defined root note (tonic). Operations that require a valid root note are now handled safely, preventing invalid links and navigation errors.
+
+- **Build**: Fixed an issue where the cleanup process removed renderer DLL files required for development when creating an installer. The cleanup process now removes only the specified build output directories while preserving development DLL files. This allows developers to run `npm start` after packaging without having to rebuild the renderer DLLs.
+
+
 # 1.7.0 (2024-01-05)
 
 ## Features
