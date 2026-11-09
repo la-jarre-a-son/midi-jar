@@ -143,6 +143,10 @@ ipcMain.on('midi:addRoute', (_event, route: ApiMidiRoute) => {
   midi.addRoute(route);
 });
 
+ipcMain.on('midi:setRoutes', (_event, routes: ApiMidiRoute[]) => {
+  midi.setRoutes(routes);
+});
+
 ipcMain.on('midi:deleteRoute', (_event, route: ApiMidiRoute) => {
   midi.deleteRoute(route);
 });

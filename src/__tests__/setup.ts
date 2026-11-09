@@ -38,6 +38,7 @@ window.app = {
 window.midi = {
   refreshDevices: jest.fn(),
   clearRoutes: jest.fn(),
+  setRoutes: jest.fn(),
   addRoute: jest.fn(),
   deleteRoute: jest.fn(),
   getInputs: jest.fn(),

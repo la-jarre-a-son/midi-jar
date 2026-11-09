@@ -20,7 +20,7 @@ const readPresets = (): Preset[] => {
   }
 };
 const Routing: React.FC = () => {
-  const { inputs, outputs, wires, refreshDevices, addRoute, deleteRoute, clearRoutes } =
+  const { inputs, outputs, wires, refreshDevices, addRoute, deleteRoute, clearRoutes, setRoutes } =
     useMidiRouting();
   const [presets, setPresets] = useState<Preset[]>(readPresets);
   const [selectedPreset, setSelectedPreset] = useState('');
@@ -55,8 +55,7 @@ const Routing: React.FC = () => {
   const loadPreset = () => {
     const preset = presets.find((item) => item.name === selectedPreset);
     if (!preset) return;
-    clearRoutes();
-    preset.routes.forEach((route) => addRoute(route));
+    setRoutes(preset.routes);
   };
   const deletePreset = () => {
     if (!selectedPreset) return;

@@ -62,6 +62,7 @@ export const MidiApi = {
   refreshDevices: () => ipcRenderer.send('midi:refreshDevices'),
   clearRoutes: () => ipcRenderer.send('midi:clearRoutes'),
   addRoute: (route: ApiMidiRoute) => ipcRenderer.send('midi:addRoute', route),
+  setRoutes: (routes: ApiMidiRoute[]) => ipcRenderer.send('midi:setRoutes', routes),
   deleteRoute: (route: ApiMidiRoute) => ipcRenderer.send('midi:deleteRoute', route),
   getInputs: () => ipcRenderer.send('midi:getInputs'),
   onInputs: (callback: (inputs: ApiMidiInput[]) => void) =>

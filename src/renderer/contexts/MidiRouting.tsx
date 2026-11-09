@@ -8,6 +8,7 @@ interface MidiRoutingContextInterface {
   wires: ApiMidiWire[];
   refreshDevices: () => void;
   clearRoutes: () => void;
+  setRoutes: (routes: ApiMidiRoute[]) => void;
   addRoute: (route: ApiMidiRoute) => void;
   deleteRoute: (route: ApiMidiRoute) => void;
 }
@@ -124,6 +125,7 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
 
   const refreshDevices = useCallback(() => window.midi.refreshDevices(), []);
   const clearRoutes = useCallback(() => window.midi.clearRoutes(), []);
+  const setRoutes = useCallback((routes: ApiMidiRoute[]) => window.midi.setRoutes(routes), []);
   const addRoute = useCallback((route: ApiMidiRoute) => window.midi.addRoute(route), []);
   const deleteRoute = useCallback((route: ApiMidiRoute) => window.midi.deleteRoute(route), []);
 
@@ -151,10 +153,11 @@ const MidiRoutingProvider: React.FC<Props> = ({ children }) => {
       ...state,
       refreshDevices,
       clearRoutes,
+      setRoutes,
       addRoute,
       deleteRoute,
     }),
-    [state, refreshDevices, addRoute, deleteRoute, clearRoutes]
+    [state, refreshDevices, addRoute, deleteRoute, clearRoutes, setRoutes]
   );
 
   return <MidiRoutingContext.Provider value={value}>{children}</MidiRoutingContext.Provider>;
