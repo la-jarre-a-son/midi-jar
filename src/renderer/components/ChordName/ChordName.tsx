@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import { formatSharpsFlats } from 'renderer/helpers/note';
+import { formatSharpsFlats, getPreferredNoteName } from 'renderer/helpers/note';
 import {
   tokenizeChord,
   tokenizeChordType,
@@ -66,7 +66,7 @@ export const ChordName: React.FC<ChordNameProps> = ({
   return (
     <div className={cx('base', 'chord', highlightAlterations && '--highlighted', className)}>
       <span className={cx('tonic', 'chord-tonic')}>
-        {latinSharpsFlats ? tonic : formatSharpsFlats(tonic)}
+        {latinSharpsFlats ? getPreferredNoteName(tonic) : formatSharpsFlats(tonic)}
       </span>
       <span className={cx('name', 'chord-name')}>
         <span className={cx('quality')}>{formatQuality(first)}</span>
@@ -79,7 +79,7 @@ export const ChordName: React.FC<ChordNameProps> = ({
       </span>
       {!hideRoot && chord.root && (
         <span className={cx('root', 'chord-root')}>
-          /{latinSharpsFlats ? chord.root : formatSharpsFlats(chord.root)}
+          /{latinSharpsFlats ? getPreferredNoteName(chord.root) : formatSharpsFlats(chord.root)}
         </span>
       )}
     </div>

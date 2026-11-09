@@ -7,6 +7,7 @@ import { SidebarContainer } from '@la-jarre-a-son/ui';
 import { useSettings } from 'renderer/contexts/Settings';
 import useNotes from 'renderer/hooks/useNotes';
 import { NOTE_NAMES, getNoteInKeySignature } from 'renderer/helpers';
+import { getPreferredNoteName } from 'renderer/helpers/note';
 
 import ChordDictionaryChromaMenu from './ChordDictionaryChromaMenu';
 import ChordDictionaryChordMenu from './ChordDictionaryChordMenu';
@@ -53,7 +54,7 @@ const ChordDictionary: React.FC<Props> = ({ disableUpdate }) => {
         navigate('./');
       } else {
         const name = encodeURIComponent(
-          `${getNoteInKeySignature(tonic, keySignature.notes)}${type}`
+          `${getPreferredNoteName(getNoteInKeySignature(tonic, keySignature.notes))}${type}`
         );
         navigate(`./${name}`);
       }

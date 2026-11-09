@@ -11,7 +11,7 @@ import {
   BarlineType,
 } from 'vexflow';
 
-import { formatSharpsFlats } from 'renderer/helpers/note';
+import { formatAccidentalSymbols } from 'renderer/helpers/note';
 
 import { NotationProps } from './types';
 import { getTransposedNotes, getVoice } from './utils';
@@ -63,7 +63,7 @@ export const Notation: React.FC<NotationProps> = ({
         staveTreble.addClef('treble');
         staveTreble.addKeySignature(keySignature.tonic);
         staveTreble.setText(
-          `Key: ${formatSharpsFlats(keySignature.tonic)}`,
+          `Key: ${formatAccidentalSymbols(keySignature.tonic)}`,
           Modifier.Position.ABOVE,
           {
             justification: 0,
@@ -118,9 +118,11 @@ export const Notation: React.FC<NotationProps> = ({
         const stave = new Stave(0, STAVE_Y, staveWidth);
         stave.addClef(staffClef);
         stave.addKeySignature(keySignature.tonic);
-        stave.setText(`Key: ${formatSharpsFlats(keySignature.tonic)}`, Modifier.Position.ABOVE, {
-          justification: 0,
-        });
+        stave.setText(
+          `Key: ${formatAccidentalSymbols(keySignature.tonic)}`,
+          Modifier.Position.ABOVE,
+          { justification: 0 }
+        );
         stave.setBegBarType(BarlineType.NONE);
         stave.setNoteStartX(60 + keySignatureWidth);
         stave.setContext(context).draw();

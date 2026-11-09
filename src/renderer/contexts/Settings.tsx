@@ -4,6 +4,7 @@ import { Settings } from 'main/types/Settings';
 import { defaults } from 'main/store/defaults';
 import { SettingsEvent } from 'renderer/managers/SettingsManager';
 import { mergeDeep } from 'renderer/helpers';
+import { setNoteNamingPreference } from 'renderer/helpers/note';
 
 import { useSettingsManager } from './SettingsManager';
 
@@ -30,6 +31,7 @@ const SettingsProvider: React.FC<Props> = ({ children }) => {
   const onSettingsChange = useCallback(
     (s: Settings) => {
       const newSettings = mergeDeep(defaults.settings, s);
+      setNoteNamingPreference(newSettings.notation.noteNaming, newSettings.notation.key);
       setSettings(newSettings);
       setInited(true);
     },

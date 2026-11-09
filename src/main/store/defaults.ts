@@ -89,6 +89,7 @@ export const defaultChordDictionarySettings: ChordDictionarySettings = {
 export const defaultNotationSettings: NotationSettings = {
   key: 'C',
   accidentals: 'flat' as const,
+  noteNaming: 'auto' as const,
   staffClef: 'both' as const,
   staffTranspose: 0,
 };

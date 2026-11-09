@@ -1,6 +1,19 @@
 /* eslint-disable no-bitwise */
 import { Key, Note, Range } from 'tonal';
 
+export type NoteNamingPreference = 'auto' | 'sharp' | 'flat';
+
+let noteNamingPreference: NoteNamingPreference = 'auto';
+let noteNamingKey = 'C';
+
+export const setNoteNamingPreference = (
+  preference: NoteNamingPreference = 'auto',
+  key = 'C'
+) => {
+  noteNamingPreference = preference;
+  noteNamingKey = key;
+};
+
 export type KeySignatureConfig = {
   alteration: number;
   tonic: string;
@@ -15,6 +28,10 @@ const REGEX_SHARP = /#/g;
 
 const FLAT = '♭';
 const SHARP = '♯';
+
+const SHARP_NOTE_NAMES: Record<number, string> = { 1: 'C#', 3: 'D#', 6: 'F#', 8: 'G#', 10: 'A#' };
+const FLAT_NOTE_NAMES: Record<number, string> = { 1: 'Db', 3: 'Eb', 6: 'Gb', 8: 'Ab', 10: 'Bb' };
+const NOTE_NAME_PREFIX = /^([A-Ga-g])([#b]?)(-?\d+)?/;
 
 const getKeySignatureNotes = (scale: string[], useSharps = false) => {
   const scaleChromas = scale.map(Note.chroma);
@@ -68,5 +85,37 @@ export const getNoteInKeySignature = (note: string, keySignatureNotes?: string[]
   return note;
 };
 
-export const formatSharpsFlats = (str: string) =>
+/**
+ * Convert the leading note name to the user's preferred enharmonic spelling.
+ * Any chord quality/extension text after the note is preserved.
+ */
+export const getPreferredNoteName = (str: string, preference = noteNamingPreference) => {
+  if (!str) return str;
+
+  // In Auto mode, follow the currently selected key signature. A neutral key
+  // signature (C major / A minor) defaults to flats, as agreed for this app.
+  let effectivePreference: 'sharp' | 'flat';
+  if (preference === 'auto') {
+    effectivePreference = getKeySignature(noteNamingKey).alteration > 0 ? 'sharp' : 'flat';
+  } else {
+    effectivePreference = preference;
+  }
+
+  const match = str.match(NOTE_NAME_PREFIX);
+  if (!match) return str;
+
+  const chroma = Note.chroma(`${match[1]}${match[2] || ''}`);
+  if (chroma === undefined || chroma === null) return str;
+
+  const names = effectivePreference === 'flat' ? FLAT_NOTE_NAMES : SHARP_NOTE_NAMES;
+  const preferredPitchClass = names[chroma];
+  if (!preferredPitchClass) return str;
+
+  return `${preferredPitchClass}${match[3] || ''}${str.slice(match[0].length)}`;
+};
+
+export const formatAccidentalSymbols = (str: string) =>
   str ? str.replace(REGEX_FLAT, FLAT).replace(REGEX_SHARP, SHARP) : str;
+
+export const formatSharpsFlats = (str: string) =>
+  formatAccidentalSymbols(getPreferredNoteName(str));
